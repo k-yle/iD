@@ -65,7 +65,7 @@
   "devDependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
     "@fortawesome/free-brands-svg-icons": "~5.12.0",
-    "@fortawesome/free-regular-svg-icons": "~5.12.0",
+    "@fortawesome/free-regular-svg-icons": "~5.12.1",
     "@fortawesome/free-solid-svg-icons": "~5.12.0",
     "@ideditor/temaki": "~3.19.0",
     "@mapbox/maki": "^6.0.0",
