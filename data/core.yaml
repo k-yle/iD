@@ -345,6 +345,12 @@ en:
       not_downloaded:
         single: This feature can't be moved because parts of it have not yet been downloaded.
         multiple: These features can't be moved because parts of them have not yet been downloaded.
+    follow:
+      error:
+        intersection_of_mutiple_ways: The last two nodes are intersections of multiple ways
+        intersection_of_different_ways: The last two nodes must be part of the same way
+        needs_more_initial_nodes: Draw at least two nodes in the same way first
+        unknown: Failed to continue way
     reflect:
       title:
         long: Flip Long
@@ -782,7 +788,7 @@ en:
   map_data:
     title: Map Data
     description: Map Data
-    key: F
+    key: U
     data_layers: Data Layers
     layers:
       osm:

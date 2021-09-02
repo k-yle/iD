@@ -18,6 +18,7 @@ import { utilRebind } from '../util/rebind';
 import { utilKeybinding } from '../util';
 
 export function behaviorDrawWay(context, wayID, mode, startGraph) {
+    const keybinding = utilKeybinding('drawWay');
 
     var dispatch = d3_dispatch('rejectedSelfIntersection');
 
@@ -38,6 +39,9 @@ export function behaviorDrawWay(context, wayID, mode, startGraph) {
     var _drawNode;
 
     var _didResolveTempEdit = false;
+    /** @type {osmNode} */
+    let _lastAddedNode, _secondLastAddedNode;
+    let _finished = false;
 
     function createDrawNode(loc) {
         // don't make the draw node until we actually need it
@@ -395,6 +399,9 @@ export function behaviorDrawWay(context, wayID, mode, startGraph) {
             return;
         }
 
+        _secondLastAddedNode = _lastAddedNode;
+        _lastAddedNode = node;
+
         attemptAdd(d, node.loc, function() {
             context.replace(
                 function actionReplaceDrawNode(graph) {
@@ -412,6 +419,74 @@ export function behaviorDrawWay(context, wayID, mode, startGraph) {
         });
     };
 
+    /** see PR #8671 */
+    function followMode() {
+        if (_finished) return;
+
+        try {
+            // get the last 2 added nodes.
+            // check if they are both part of only oneway (the same one)
+            // check if the ways that they're part of are the same way
+            // find index of the last two nodes, to determine the direction to travel around the existing way
+            // add the next node to the way we are drawing
+            if (!_lastAddedNode || !_secondLastAddedNode) {
+                context.ui().flash
+                    .duration(4000)
+                    .iconName('#iD-icon-no')
+                    .label(t('operations.follow.error.needs_more_initial_nodes'))();
+                return;
+            }
+
+            const lastNodesParents = startGraph.parentWays(_lastAddedNode);
+            const secondLastNodesParents = startGraph.parentWays(_secondLastAddedNode);
+
+            if (lastNodesParents.length !== 1 || secondLastNodesParents.length !== 1) {
+                context.ui().flash
+                    .duration(4000)
+                    .iconName('#iD-icon-no')
+                    .label(t('operations.follow.error.intersection_of_mutiple_ways'))();
+                return;
+            }
+
+            if (lastNodesParents[0].id !== secondLastNodesParents[0].id) {
+                context.ui().flash
+                    .duration(4000)
+                    .iconName('#iD-icon-no')
+                    .label(t('operations.follow.error.intersection_of_different_ways'))();
+                return;
+            }
+
+            const way = lastNodesParents[0];
+
+            const indexOfLast = way.nodes.indexOf(_lastAddedNode.id);
+            const indexOfSecondLast = way.nodes.indexOf(_secondLastAddedNode.id);
+
+            // for a closed way, the first/last node is the same so it appears twice in the array,
+            // but indexOf always finds the first occurance. This is only an issue when following a way
+            // in descending order
+            const isDescendingPastZero = indexOfLast === way.nodes.length - 2 && indexOfSecondLast === 0;
+
+            let nextNodeIndex = indexOfLast + (indexOfLast > indexOfSecondLast && !isDescendingPastZero ? 1 : -1);
+            // if we're following a closed way and we pass the first/last node, the  next index will be -1
+            if (nextNodeIndex === -1) nextNodeIndex = indexOfSecondLast === 1 ? way.nodes.length - 2 : 1;
+
+            const nextNode = startGraph.entity(way.nodes[nextNodeIndex]);
+
+            drawWay.addNode(nextNode, {
+                geometry: { type: 'Point', coordinates: nextNode.loc },
+                id: nextNode.id,
+                properties: { target: true, entity: nextNode },
+            });
+        } catch (ex) {
+            context.ui().flash
+                .duration(4000)
+                .iconName('#iD-icon-no')
+                .label(t('operations.follow.error.unknown'))();
+        }
+    }
+
+    keybinding.on('F', followMode);
+    d3_select(document).call(keybinding);
 
     // Finish the draw operation, removing the temporary edit.
     // If the way has enough nodes to be valid, it's selected.
@@ -428,6 +503,7 @@ export function behaviorDrawWay(context, wayID, mode, startGraph) {
         context.pop(1);
         _didResolveTempEdit = true;
         context.resumeChangeDispatch();
+        _finished = true;
 
         var way = context.hasEntity(wayID);
         if (!way || way.isDegenerate()) {
