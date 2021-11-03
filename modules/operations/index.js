@@ -1,4 +1,5 @@
 export { operationCircularize } from './circularize';
+export { operationGridify } from './gridify';
 export { operationContinue } from './continue';
 export { operationCopy } from './copy';
 export { operationDelete } from './delete';
