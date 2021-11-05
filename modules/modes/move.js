@@ -16,6 +16,7 @@ import { utilFastMouse } from '../util/util';
 
 
 import { operationCircularize } from '../operations/circularize';
+import { operationGridify } from '../operations/gridify';
 import { operationDelete } from '../operations/delete';
 import { operationOrthogonalize } from '../operations/orthogonalize';
 import { operationReflectLong, operationReflectShort } from '../operations/reflect';
@@ -35,6 +36,7 @@ export function modeMove(context, entityIDs, baseGraph) {
     var behaviors = [
         behaviorEdit(context),
         operationCircularize(context, entityIDs).behavior,
+        operationGridify(context, entityIDs).behavior,
         operationDelete(context, entityIDs).behavior,
         operationOrthogonalize(context, entityIDs).behavior,
         operationReflectLong(context, entityIDs).behavior,
