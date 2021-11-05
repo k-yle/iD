@@ -22937,6 +22937,133 @@
       return action;
   }
 
+  /**
+   * gets a point that's frac% along a line between (x1, y1) and (x2, y2)
+   * @param {Coord} start
+   * @param {Coord} end
+   * @param {number} frac
+   * @returns {Coord}
+   */
+  const k = ([x1, y1], [x2, y2], frac) => [
+      x1 + frac * (x2 - x1),
+      y1 + frac * (y2 - y1)
+  ];
+
+  /** @param {Coord} start @param {Coord} end */
+  const distanceBetween = ([x1, y1], [x2, y2]) =>
+      Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+
+
+  // to make the code more logical
+  // 0 1  =  A B
+  // 3 2  =  D C
+  // rows is down (AD & BC), cols is across (AB & DC)
+  const [A, B, C, D] = [0, 1, 2, 3];
+
+
+  /**
+   * @param {string} wayId
+   * @param {ReturnType<import("../geo/raw_mercator").geoRawMercator>} projection
+   */
+  const actionGridify = (wayId, projection) => {
+      /**
+       * @param {number} shortLength
+       * @param {number} longLength
+       */
+      const action = (shortLength, longLength) => (graph) => {
+          const originalWay = graph.entity(wayId);
+          const originalNodes = utilArrayUniq(graph.childNodes(originalWay));
+          const points = originalNodes.map(n => projection(n.loc));
+
+          // work out whether rows or cols is the long side
+          const avgColLength = (distanceBetween(points[A], points[B])+ distanceBetween(points[C], points[D]))/2;
+          const avgRowLength = (distanceBetween(points[A], points[D])+ distanceBetween(points[B], points[C]))/2;
+
+          let rows, cols;
+          if (avgColLength > avgRowLength) {
+              // columns is the long side
+              [rows, cols] = [shortLength, longLength];
+          } else {
+              // rows is the long side
+              [cols, rows] = [shortLength, longLength];
+          }
+
+
+          // these are the lists of new points along each side of the original way
+          const left = new Array(cols + 1).fill().map((_, i) => k(points[A], points[B], i / cols));
+          const right = new Array(cols + 1).fill().map((_, i) => k(points[D], points[C], i / cols));
+          const top = new Array(rows + 1).fill().map((_, i) => k(points[A], points[D], i / rows));
+          const bottom = new Array(rows + 1).fill().map((_, i) => k(points[B], points[C], i / rows));
+
+          /** @type {Coord[][]} */
+          const newWays = [];
+          for (let row = 0; row < rows; row++) {
+              for (let col = 0; col < cols; col++) {
+                  newWays.push([
+                  /*W*/ k(top[row], bottom[row], col / cols),
+                  /*X*/ k(left[col], right[col], (row + 1) / rows),
+                  /*Z*/ k(top[row + 1], bottom[row + 1], (col + 1) / cols),
+                  /*Y*/ k(top[row], bottom[row], (col + 1) / cols),
+                  ]);
+              }
+          }
+
+          /** @type {{ [key: string]: osmNode }} we keep track of this to re-use nodes */
+          const allNewNodes = {};
+
+          // add the original 4 nodes to allNewNodes so that they can be re-used
+          for (let i = 0; i < points.length; i++) {
+              const key = points[i].join(',');
+              allNewNodes[key] = originalNodes[i];
+          }
+
+          for (const newWay of newWays) {
+              /** @type {osmNode[]} the nodes in this new way */
+              const nodes = [];
+
+              for (const coord of newWay) {
+                  const key = coord.join(',');
+                  if (key in allNewNodes) {
+                      // re use existing node
+                      nodes.push(allNewNodes[key]);
+                  } else {
+                      // create new node
+                      const newNode = new osmNode({ loc: projection.invert(coord) });
+                      graph = graph.replace(newNode);
+                      nodes.push(newNode);
+                      allNewNodes[key] = newNode;
+                  }
+              }
+              nodes.push(nodes[0]); // make it a closed way
+
+              const segOsmWay = new osmWay({
+                  nodes: nodes.map(n => n.id),
+                  tags: originalWay.tags
+              });
+              graph = graph.replace(segOsmWay);
+          }
+
+          graph = graph.remove(originalWay); // delete the original way
+
+          return graph;
+      };
+
+      action.disabled = (graph) => {
+          const way = graph.entity(wayId);
+          const nodes = utilArrayUniq(graph.childNodes(way));
+
+          if (!graph.entity(wayId).isClosed()) return 'not_closed';
+          if (nodes.length > 4) return 'more_than_four_nodes';
+          if (nodes.length < 4) return 'less_than_four_nodes';
+
+          return false;
+      };
+
+      action.transitionable = true;
+
+      return action;
+  };
+
   // https://github.com/openstreetmap/potlatch2/blob/master/net/systemeD/halcyon/connection/actions/DeleteWayAction.as
   function actionDeleteWay(wayID) {
 
@@ -29215,6 +29342,102 @@
       return operation;
   }
 
+  /** @param {string[]} selectedIDs */
+  function operationGridify(context, selectedIDs) {
+      let _extent;
+      const _action = getAction(selectedIDs[0]);
+      const _coords = utilGetAllNodes(selectedIDs, context.graph()).map(n => n.loc);
+
+      /** @param {string} entityID */
+      function getAction(entityID) {
+          const entity = context.entity(entityID);
+
+          // this operation is only show when a single way is selected
+          if (entity.type !== 'way' || selectedIDs.length !== 1) return null;
+
+          if (!_extent) {
+              _extent =  entity.extent(context.graph());
+          } else {
+              _extent = _extent.extend(entity.extent(context.graph()));
+          }
+
+          return actionGridify(entityID, context.projection);
+      }
+
+      const operation = () => {
+          if (!_action) return;
+
+          const longLength = prompt('Long Length');
+          if (longLength === null) return;
+          const shortLength = prompt('Short Length');
+          if (shortLength === null) return;
+
+          // this would have no effect except for damaging the way's history
+          if (shortLength === '1' && longLength === '1') return;
+
+          const difference = context.perform(_action(+shortLength, +longLength), operation.annotation());
+
+          // select all the new areas so that mappers can easily add/change tags
+          const idsToSelect = difference.extantIDs().filter(id => context.entity(id).type === 'way');
+          context.enter(modeSelect(context, idsToSelect));
+
+          window.setTimeout(() => context.validator().validate(), 300); // after any transition
+      };
+
+      operation.available = () => !!_action;
+
+
+      // don't cache this because the visible extent could change
+      operation.disabled = () => {
+          if (!_action) return '';
+
+          const isDisabled = _action.disabled(context.graph());
+          if (isDisabled) {
+              return isDisabled;
+          } else if (_extent.percentContainedIn(context.map().extent()) < 0.8) {
+              return 'too_large';
+          } else if (someMissing()) {
+              return 'not_downloaded';
+          } else if (selectedIDs.some(context.hasHiddenConnections)) {
+              return 'connected_to_hidden';
+          }
+
+          return false;
+
+
+          function someMissing() {
+              if (context.inIntro()) return false;
+              const osm = context.connection();
+              if (osm) {
+                  const missing = _coords.filter(loc => !osm.isDataLoaded(loc));
+                  if (missing.length) {
+                      missing.forEach(loc => context.loadTileAtLoc(loc));
+                      return true;
+                  }
+              }
+              return false;
+          }
+      };
+
+
+      operation.tooltip = () => {
+          const disableReason = operation.disabled();
+          return disableReason ?
+              _t('operations.gridify.disabled.' + disableReason) :
+              _t('operations.gridify.tooltip');
+      };
+
+
+      operation.annotation = () => _t('operations.gridify.annotation');
+
+      operation.id = 'gridify';
+      operation.keys = [_t('operations.gridify.key')];
+      operation.title = _t('operations.gridify.title');
+      operation.behavior = behaviorOperation(context).which(operation);
+
+      return operation;
+  }
+
   // Translate a MacOS key command into the appropriate Windows/Linux equivalent.
   // For example, ⌘Z -> Ctrl+Z
   var uiCmd = function (code) {
@@ -29980,6 +30203,7 @@
       var behaviors = [
           behaviorEdit(context),
           operationCircularize(context, entityIDs).behavior,
+          operationGridify(context, entityIDs).behavior,
           operationDelete(context, entityIDs).behavior,
           operationOrthogonalize(context, entityIDs).behavior,
           operationReflectLong(context, entityIDs).behavior,
@@ -59105,6 +59329,7 @@
 
           // operation icons
           circularize_icon: icon('#iD-operation-circularize', 'inline operation'),
+          gridify_icon: icon('#iD-operation-gridify', 'inline operation'),
           continue_icon: icon('#iD-operation-continue', 'inline operation'),
           copy_icon: icon('#iD-operation-copy', 'inline operation'),
           delete_icon: icon('#iD-operation-delete', 'inline operation'),
@@ -59153,6 +59378,7 @@
           note: _t.html('modes.add_note.label'),
 
           circularize: _t.html('operations.circularize.title'),
+          gridify: _t.html('operations.gridify.title'),
           continue: _t.html('operations.continue.title'),
           copy: _t.html('operations.copy.title'),
           delete: _t.html('operations.delete.title'),
@@ -82397,6 +82623,7 @@
               'straighten',
               'orthogonalize',
               'circularize',
+              'gridify',
               'move',
               'rotate',
               'reflect',
@@ -96303,6 +96530,7 @@
   var Operations = /*#__PURE__*/Object.freeze({
     __proto__: null,
     operationCircularize: operationCircularize,
+    operationGridify: operationGridify,
     operationContinue: operationContinue,
     operationCopy: operationCopy,
     operationDelete: operationDelete,
@@ -97515,6 +97743,7 @@
     actionChangePreset: actionChangePreset,
     actionChangeTags: actionChangeTags,
     actionCircularize: actionCircularize,
+    actionGridify: actionGridify,
     actionConnect: actionConnect,
     actionCopyEntities: actionCopyEntities,
     actionDeleteMember: actionDeleteMember,
@@ -97635,6 +97864,7 @@
     modeSelectError: modeSelectError,
     modeSelectNote: modeSelectNote,
     operationCircularize: operationCircularize,
+    operationGridify: operationGridify,
     operationContinue: operationContinue,
     operationCopy: operationCopy,
     operationDelete: operationDelete,

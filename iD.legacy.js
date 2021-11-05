@@ -37794,6 +37794,184 @@
 	  return action;
 	}
 
+	/**
+	 * gets a point that's frac% along a line between (x1, y1) and (x2, y2)
+	 * @param {Coord} start
+	 * @param {Coord} end
+	 * @param {number} frac
+	 * @returns {Coord}
+	 */
+
+	var k = function k(_ref, _ref2, frac) {
+	  var _ref3 = _slicedToArray(_ref, 2),
+	      x1 = _ref3[0],
+	      y1 = _ref3[1];
+
+	  var _ref4 = _slicedToArray(_ref2, 2),
+	      x2 = _ref4[0],
+	      y2 = _ref4[1];
+
+	  return [x1 + frac * (x2 - x1), y1 + frac * (y2 - y1)];
+	};
+	/** @param {Coord} start @param {Coord} end */
+
+
+	var distanceBetween = function distanceBetween(_ref5, _ref6) {
+	  var _ref7 = _slicedToArray(_ref5, 2),
+	      x1 = _ref7[0],
+	      y1 = _ref7[1];
+
+	  var _ref8 = _slicedToArray(_ref6, 2),
+	      x2 = _ref8[0],
+	      y2 = _ref8[1];
+
+	  return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+	}; // to make the code more logical
+	// 0 1  =  A B
+	// 3 2  =  D C
+	// rows is down (AD & BC), cols is across (AB & DC)
+
+
+	var A = 0,
+	    B = 1,
+	    C = 2,
+	    D = 3;
+	/**
+	 * @param {string} wayId
+	 * @param {ReturnType<import("../geo/raw_mercator").geoRawMercator>} projection
+	 */
+
+	var actionGridify = function actionGridify(wayId, projection) {
+	  /**
+	   * @param {number} shortLength
+	   * @param {number} longLength
+	   */
+	  var action = function action(shortLength, longLength) {
+	    return function (graph) {
+	      var originalWay = graph.entity(wayId);
+	      var originalNodes = utilArrayUniq(graph.childNodes(originalWay));
+	      var points = originalNodes.map(function (n) {
+	        return projection(n.loc);
+	      }); // work out whether rows or cols is the long side
+
+	      var avgColLength = (distanceBetween(points[A], points[B]) + distanceBetween(points[C], points[D])) / 2;
+	      var avgRowLength = (distanceBetween(points[A], points[D]) + distanceBetween(points[B], points[C])) / 2;
+	      var rows, cols;
+
+	      if (avgColLength > avgRowLength) {
+	        // columns is the long side
+	        rows = shortLength;
+	        cols = longLength;
+	      } else {
+	        // rows is the long side
+	        cols = shortLength;
+	        rows = longLength;
+	      } // these are the lists of new points along each side of the original way
+
+
+	      var left = new Array(cols + 1).fill().map(function (_, i) {
+	        return k(points[A], points[B], i / cols);
+	      });
+	      var right = new Array(cols + 1).fill().map(function (_, i) {
+	        return k(points[D], points[C], i / cols);
+	      });
+	      var top = new Array(rows + 1).fill().map(function (_, i) {
+	        return k(points[A], points[D], i / rows);
+	      });
+	      var bottom = new Array(rows + 1).fill().map(function (_, i) {
+	        return k(points[B], points[C], i / rows);
+	      });
+	      /** @type {Coord[][]} */
+
+	      var newWays = [];
+
+	      for (var row = 0; row < rows; row++) {
+	        for (var col = 0; col < cols; col++) {
+	          newWays.push([
+	          /*W*/
+	          k(top[row], bottom[row], col / cols),
+	          /*X*/
+	          k(left[col], right[col], (row + 1) / rows),
+	          /*Z*/
+	          k(top[row + 1], bottom[row + 1], (col + 1) / cols),
+	          /*Y*/
+	          k(top[row], bottom[row], (col + 1) / cols)]);
+	        }
+	      }
+	      /** @type {{ [key: string]: osmNode }} we keep track of this to re-use nodes */
+
+
+	      var allNewNodes = {}; // add the original 4 nodes to allNewNodes so that they can be re-used
+
+	      for (var i = 0; i < points.length; i++) {
+	        var key = points[i].join(',');
+	        allNewNodes[key] = originalNodes[i];
+	      }
+
+	      for (var _i = 0, _newWays = newWays; _i < _newWays.length; _i++) {
+	        var newWay = _newWays[_i];
+
+	        /** @type {osmNode[]} the nodes in this new way */
+	        var nodes = [];
+
+	        var _iterator = _createForOfIteratorHelper(newWay),
+	            _step;
+
+	        try {
+	          for (_iterator.s(); !(_step = _iterator.n()).done;) {
+	            var coord = _step.value;
+
+	            var _key = coord.join(',');
+
+	            if (_key in allNewNodes) {
+	              // re use existing node
+	              nodes.push(allNewNodes[_key]);
+	            } else {
+	              // create new node
+	              var newNode = new osmNode({
+	                loc: projection.invert(coord)
+	              });
+	              graph = graph.replace(newNode);
+	              nodes.push(newNode);
+	              allNewNodes[_key] = newNode;
+	            }
+	          }
+	        } catch (err) {
+	          _iterator.e(err);
+	        } finally {
+	          _iterator.f();
+	        }
+
+	        nodes.push(nodes[0]); // make it a closed way
+
+	        var segOsmWay = new osmWay({
+	          nodes: nodes.map(function (n) {
+	            return n.id;
+	          }),
+	          tags: originalWay.tags
+	        });
+	        graph = graph.replace(segOsmWay);
+	      }
+
+	      graph = graph.remove(originalWay); // delete the original way
+
+	      return graph;
+	    };
+	  };
+
+	  action.disabled = function (graph) {
+	    var way = graph.entity(wayId);
+	    var nodes = utilArrayUniq(graph.childNodes(way));
+	    if (!graph.entity(wayId).isClosed()) return 'not_closed';
+	    if (nodes.length > 4) return 'more_than_four_nodes';
+	    if (nodes.length < 4) return 'less_than_four_nodes';
+	    return false;
+	  };
+
+	  action.transitionable = true;
+	  return action;
+	};
+
 	function actionDeleteWay(wayID) {
 	  function canDeleteNode(node, graph) {
 	    // don't delete nodes still attached to ways or relations
@@ -44164,6 +44342,111 @@
 	  return operation;
 	}
 
+	/** @param {string[]} selectedIDs */
+
+	function operationGridify(context, selectedIDs) {
+	  var _extent;
+
+	  var _action = getAction(selectedIDs[0]);
+
+	  var _coords = utilGetAllNodes(selectedIDs, context.graph()).map(function (n) {
+	    return n.loc;
+	  });
+	  /** @param {string} entityID */
+
+
+	  function getAction(entityID) {
+	    var entity = context.entity(entityID); // this operation is only show when a single way is selected
+
+	    if (entity.type !== 'way' || selectedIDs.length !== 1) return null;
+
+	    if (!_extent) {
+	      _extent = entity.extent(context.graph());
+	    } else {
+	      _extent = _extent.extend(entity.extent(context.graph()));
+	    }
+
+	    return actionGridify(entityID, context.projection);
+	  }
+
+	  var operation = function operation() {
+	    if (!_action) return;
+	    var longLength = prompt('Long Length');
+	    if (longLength === null) return;
+	    var shortLength = prompt('Short Length');
+	    if (shortLength === null) return; // this would have no effect except for damaging the way's history
+
+	    if (shortLength === '1' && longLength === '1') return;
+	    var difference = context.perform(_action(+shortLength, +longLength), operation.annotation()); // select all the new areas so that mappers can easily add/change tags
+
+	    var idsToSelect = difference.extantIDs().filter(function (id) {
+	      return context.entity(id).type === 'way';
+	    });
+	    context.enter(modeSelect(context, idsToSelect));
+	    window.setTimeout(function () {
+	      return context.validator().validate();
+	    }, 300); // after any transition
+	  };
+
+	  operation.available = function () {
+	    return !!_action;
+	  }; // don't cache this because the visible extent could change
+
+
+	  operation.disabled = function () {
+	    if (!_action) return '';
+
+	    var isDisabled = _action.disabled(context.graph());
+
+	    if (isDisabled) {
+	      return isDisabled;
+	    } else if (_extent.percentContainedIn(context.map().extent()) < 0.8) {
+	      return 'too_large';
+	    } else if (someMissing()) {
+	      return 'not_downloaded';
+	    } else if (selectedIDs.some(context.hasHiddenConnections)) {
+	      return 'connected_to_hidden';
+	    }
+
+	    return false;
+
+	    function someMissing() {
+	      if (context.inIntro()) return false;
+	      var osm = context.connection();
+
+	      if (osm) {
+	        var missing = _coords.filter(function (loc) {
+	          return !osm.isDataLoaded(loc);
+	        });
+
+	        if (missing.length) {
+	          missing.forEach(function (loc) {
+	            return context.loadTileAtLoc(loc);
+	          });
+	          return true;
+	        }
+	      }
+
+	      return false;
+	    }
+	  };
+
+	  operation.tooltip = function () {
+	    var disableReason = operation.disabled();
+	    return disableReason ? _t('operations.gridify.disabled.' + disableReason) : _t('operations.gridify.tooltip');
+	  };
+
+	  operation.annotation = function () {
+	    return _t('operations.gridify.annotation');
+	  };
+
+	  operation.id = 'gridify';
+	  operation.keys = [_t('operations.gridify.key')];
+	  operation.title = _t('operations.gridify.title');
+	  operation.behavior = behaviorOperation(context).which(operation);
+	  return operation;
+	}
+
 	// For example, ⌘Z -> Ctrl+Z
 
 	var uiCmd = function uiCmd(code) {
@@ -44869,7 +45152,7 @@
 	    button: 'browse'
 	  };
 	  var keybinding = utilKeybinding('move');
-	  var behaviors = [behaviorEdit(context), operationCircularize(context, entityIDs).behavior, operationDelete(context, entityIDs).behavior, operationOrthogonalize(context, entityIDs).behavior, operationReflectLong(context, entityIDs).behavior, operationReflectShort(context, entityIDs).behavior, operationRotate(context, entityIDs).behavior];
+	  var behaviors = [behaviorEdit(context), operationCircularize(context, entityIDs).behavior, operationGridify(context, entityIDs).behavior, operationDelete(context, entityIDs).behavior, operationOrthogonalize(context, entityIDs).behavior, operationReflectLong(context, entityIDs).behavior, operationReflectShort(context, entityIDs).behavior, operationRotate(context, entityIDs).behavior];
 	  var annotation = entityIDs.length === 1 ? _t('operations.move.annotation.' + context.graph().geometry(entityIDs[0])) : _t('operations.move.annotation.feature', {
 	    n: entityIDs.length
 	  });
@@ -71668,6 +71951,7 @@
 	      save_icon: icon('#iD-icon-save', 'inline'),
 	      // operation icons
 	      circularize_icon: icon('#iD-operation-circularize', 'inline operation'),
+	      gridify_icon: icon('#iD-operation-gridify', 'inline operation'),
 	      continue_icon: icon('#iD-operation-continue', 'inline operation'),
 	      copy_icon: icon('#iD-operation-copy', 'inline operation'),
 	      delete_icon: icon('#iD-operation-delete', 'inline operation'),
@@ -71712,6 +71996,7 @@
 	      area: _t.html('modes.add_area.title'),
 	      note: _t.html('modes.add_note.label'),
 	      circularize: _t.html('operations.circularize.title'),
+	      gridify: _t.html('operations.gridify.title'),
 	      "continue": _t.html('operations.continue.title'),
 	      copy: _t.html('operations.copy.title'),
 	      "delete": _t.html('operations.delete.title'),
@@ -90815,7 +91100,7 @@
 	}
 
 	function uiPaneHelp(context) {
-	  var docKeys = [['help', ['welcome', 'open_data_h', 'open_data', 'before_start_h', 'before_start', 'open_source_h', 'open_source', 'open_source_help']], ['overview', ['navigation_h', 'navigation_drag', 'navigation_zoom', 'features_h', 'features', 'nodes_ways']], ['editing', ['select_h', 'select_left_click', 'select_right_click', 'select_space', 'multiselect_h', 'multiselect', 'multiselect_shift_click', 'multiselect_lasso', 'undo_redo_h', 'undo_redo', 'save_h', 'save', 'save_validation', 'upload_h', 'upload', 'backups_h', 'backups', 'keyboard_h', 'keyboard']], ['feature_editor', ['intro', 'definitions', 'type_h', 'type', 'type_picker', 'fields_h', 'fields_all_fields', 'fields_example', 'fields_add_field', 'tags_h', 'tags_all_tags', 'tags_resources']], ['points', ['intro', 'add_point_h', 'add_point', 'add_point_finish', 'move_point_h', 'move_point', 'delete_point_h', 'delete_point', 'delete_point_command']], ['lines', ['intro', 'add_line_h', 'add_line', 'add_line_draw', 'add_line_continue', 'add_line_finish', 'modify_line_h', 'modify_line_dragnode', 'modify_line_addnode', 'connect_line_h', 'connect_line', 'connect_line_display', 'connect_line_drag', 'connect_line_tag', 'disconnect_line_h', 'disconnect_line_command', 'move_line_h', 'move_line_command', 'move_line_connected', 'delete_line_h', 'delete_line', 'delete_line_command']], ['areas', ['intro', 'point_or_area_h', 'point_or_area', 'add_area_h', 'add_area_command', 'add_area_draw', 'add_area_continue', 'add_area_finish', 'square_area_h', 'square_area_command', 'modify_area_h', 'modify_area_dragnode', 'modify_area_addnode', 'delete_area_h', 'delete_area', 'delete_area_command']], ['relations', ['intro', 'edit_relation_h', 'edit_relation', 'edit_relation_add', 'edit_relation_delete', 'maintain_relation_h', 'maintain_relation', 'relation_types_h', 'multipolygon_h', 'multipolygon', 'multipolygon_create', 'multipolygon_merge', 'turn_restriction_h', 'turn_restriction', 'turn_restriction_field', 'turn_restriction_editing', 'route_h', 'route', 'route_add', 'boundary_h', 'boundary', 'boundary_add']], ['operations', ['intro', 'intro_2', 'straighten', 'orthogonalize', 'circularize', 'move', 'rotate', 'reflect', 'continue', 'reverse', 'disconnect', 'split', 'extract', 'merge', 'delete', 'downgrade', 'copy_paste']], ['notes', ['intro', 'add_note_h', 'add_note', 'place_note', 'move_note', 'update_note_h', 'update_note', 'save_note_h', 'save_note']], ['imagery', ['intro', 'sources_h', 'choosing', 'sources', 'offsets_h', 'offset', 'offset_change']], ['streetlevel', ['intro', 'using_h', 'using', 'photos', 'viewer']], ['gps', ['intro', 'survey', 'using_h', 'using', 'tracing', 'upload']], ['qa', ['intro', 'tools_h', 'tools', 'issues_h', 'issues']]];
+	  var docKeys = [['help', ['welcome', 'open_data_h', 'open_data', 'before_start_h', 'before_start', 'open_source_h', 'open_source', 'open_source_help']], ['overview', ['navigation_h', 'navigation_drag', 'navigation_zoom', 'features_h', 'features', 'nodes_ways']], ['editing', ['select_h', 'select_left_click', 'select_right_click', 'select_space', 'multiselect_h', 'multiselect', 'multiselect_shift_click', 'multiselect_lasso', 'undo_redo_h', 'undo_redo', 'save_h', 'save', 'save_validation', 'upload_h', 'upload', 'backups_h', 'backups', 'keyboard_h', 'keyboard']], ['feature_editor', ['intro', 'definitions', 'type_h', 'type', 'type_picker', 'fields_h', 'fields_all_fields', 'fields_example', 'fields_add_field', 'tags_h', 'tags_all_tags', 'tags_resources']], ['points', ['intro', 'add_point_h', 'add_point', 'add_point_finish', 'move_point_h', 'move_point', 'delete_point_h', 'delete_point', 'delete_point_command']], ['lines', ['intro', 'add_line_h', 'add_line', 'add_line_draw', 'add_line_continue', 'add_line_finish', 'modify_line_h', 'modify_line_dragnode', 'modify_line_addnode', 'connect_line_h', 'connect_line', 'connect_line_display', 'connect_line_drag', 'connect_line_tag', 'disconnect_line_h', 'disconnect_line_command', 'move_line_h', 'move_line_command', 'move_line_connected', 'delete_line_h', 'delete_line', 'delete_line_command']], ['areas', ['intro', 'point_or_area_h', 'point_or_area', 'add_area_h', 'add_area_command', 'add_area_draw', 'add_area_continue', 'add_area_finish', 'square_area_h', 'square_area_command', 'modify_area_h', 'modify_area_dragnode', 'modify_area_addnode', 'delete_area_h', 'delete_area', 'delete_area_command']], ['relations', ['intro', 'edit_relation_h', 'edit_relation', 'edit_relation_add', 'edit_relation_delete', 'maintain_relation_h', 'maintain_relation', 'relation_types_h', 'multipolygon_h', 'multipolygon', 'multipolygon_create', 'multipolygon_merge', 'turn_restriction_h', 'turn_restriction', 'turn_restriction_field', 'turn_restriction_editing', 'route_h', 'route', 'route_add', 'boundary_h', 'boundary', 'boundary_add']], ['operations', ['intro', 'intro_2', 'straighten', 'orthogonalize', 'circularize', 'gridify', 'move', 'rotate', 'reflect', 'continue', 'reverse', 'disconnect', 'split', 'extract', 'merge', 'delete', 'downgrade', 'copy_paste']], ['notes', ['intro', 'add_note_h', 'add_note', 'place_note', 'move_note', 'update_note_h', 'update_note', 'save_note_h', 'save_note']], ['imagery', ['intro', 'sources_h', 'choosing', 'sources', 'offsets_h', 'offset', 'offset_change']], ['streetlevel', ['intro', 'using_h', 'using', 'photos', 'viewer']], ['gps', ['intro', 'survey', 'using_h', 'using', 'tracing', 'upload']], ['qa', ['intro', 'tools_h', 'tools', 'issues_h', 'issues']]];
 	  var headings = {
 	    'help.help.open_data_h': 3,
 	    'help.help.before_start_h': 3,
@@ -103288,6 +103573,7 @@
 	var Operations = /*#__PURE__*/Object.freeze({
 		__proto__: null,
 		operationCircularize: operationCircularize,
+		operationGridify: operationGridify,
 		operationContinue: operationContinue,
 		operationCopy: operationCopy,
 		operationDelete: operationDelete,
@@ -104312,6 +104598,7 @@
 		actionChangePreset: actionChangePreset,
 		actionChangeTags: actionChangeTags,
 		actionCircularize: actionCircularize,
+		actionGridify: actionGridify,
 		actionConnect: actionConnect,
 		actionCopyEntities: actionCopyEntities,
 		actionDeleteMember: actionDeleteMember,
@@ -104432,6 +104719,7 @@
 		modeSelectError: modeSelectError,
 		modeSelectNote: modeSelectNote,
 		operationCircularize: operationCircularize,
+		operationGridify: operationGridify,
 		operationContinue: operationContinue,
 		operationCopy: operationCopy,
 		operationDelete: operationDelete,
