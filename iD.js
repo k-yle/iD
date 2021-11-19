@@ -8309,6 +8309,7 @@
       var clipExtent = [[0, 0], [0, 0]];
 
 
+      /** @returns {[x: number, y: number]} */
       function projection(point) {
           point = project(point[0] * Math.PI / 180, point[1] * Math.PI / 180);
           return [point[0] * k + x, y - point[1] * k];
@@ -22937,6 +22938,10 @@
       return action;
   }
 
+  // @ts-check
+
+  /** @typedef {[x: number, y: number]} Coord */
+
   /**
    * gets a point that's frac% along a line between (x1, y1) and (x2, y2)
    * @param {Coord} start
@@ -22965,7 +22970,7 @@
    * @param {string} wayId
    * @param {ReturnType<import("../geo/raw_mercator").geoRawMercator>} projection
    */
-  const actionGridify = (wayId, projection) => {
+  const actionDivide = (wayId, projection) => {
       /**
        * @param {number} shortLength
        * @param {number} longLength
@@ -22976,8 +22981,8 @@
           const points = originalNodes.map(n => projection(n.loc));
 
           // work out whether rows or cols is the long side
-          const avgColLength = (distanceBetween(points[A], points[B])+ distanceBetween(points[C], points[D]))/2;
-          const avgRowLength = (distanceBetween(points[A], points[D])+ distanceBetween(points[B], points[C]))/2;
+          const avgColLength = (distanceBetween(points[A], points[B]) + distanceBetween(points[C], points[D])) / 2;
+          const avgRowLength = (distanceBetween(points[A], points[D]) + distanceBetween(points[B], points[C])) / 2;
 
           let rows, cols;
           if (avgColLength > avgRowLength) {
@@ -23017,7 +23022,8 @@
               allNewNodes[key] = originalNodes[i];
           }
 
-          for (const newWay of newWays) {
+          for (let i = 0; i < newWays.length; i++) {
+              const newWay = newWays[i];
               /** @type {osmNode[]} the nodes in this new way */
               const nodes = [];
 
@@ -23028,7 +23034,7 @@
                       nodes.push(allNewNodes[key]);
                   } else {
                       // create new node
-                      const newNode = new osmNode({ loc: projection.invert(coord) });
+                      const newNode = osmNode({ loc: projection.invert(coord) });
                       graph = graph.replace(newNode);
                       nodes.push(newNode);
                       allNewNodes[key] = newNode;
@@ -23036,14 +23042,14 @@
               }
               nodes.push(nodes[0]); // make it a closed way
 
-              const segOsmWay = new osmWay({
+              let segOsmWay = osmWay({
+                  id: i === 0 ? originalWay.id : undefined, // preserve history, re-use the original way for the first segment
                   nodes: nodes.map(n => n.id),
                   tags: originalWay.tags
               });
+
               graph = graph.replace(segOsmWay);
           }
-
-          graph = graph.remove(originalWay); // delete the original way
 
           return graph;
       };
@@ -23551,6 +23557,11 @@
   function actionDisconnect(nodeId, newNodeId) {
       var wayIds;
 
+      var disconnectableRelationTypes = {
+          'associatedStreet': true,
+          'enforcement': true,
+          'site': true,
+      };
 
       var action = function(graph) {
           var node = graph.entity(nodeId);
@@ -23621,7 +23632,9 @@
 
           parentWays.forEach(function(way) {
               var relations = graph.parentRelations(way);
-              relations.forEach(function(relation) {
+              relations
+              .filter(relation => !disconnectableRelationTypes[relation.tags.type])
+              .forEach(function(relation) {
                   if (relation.id in seenRelationIds) {
                       if (wayIds) {
                           if (wayIds.indexOf(way.id) !== -1 ||
@@ -29342,8 +29355,14 @@
       return operation;
   }
 
+  // @ts-check
+
+  /** the maximum number of sections allowed, limited for performance reasons */
+  const DIVIDE_LIMIT = 200;
+
+
   /** @param {string[]} selectedIDs */
-  function operationGridify(context, selectedIDs) {
+  function operationDivide(context, selectedIDs) {
       let _extent;
       const _action = getAction(selectedIDs[0]);
       const _coords = utilGetAllNodes(selectedIDs, context.graph()).map(n => n.loc);
@@ -29361,19 +29380,27 @@
               _extent = _extent.extend(entity.extent(context.graph()));
           }
 
-          return actionGridify(entityID, context.projection);
+          return actionDivide(entityID, context.projection);
       }
 
       const operation = () => {
           if (!_action) return;
 
-          const longLength = prompt('Long Length');
-          if (longLength === null) return;
-          const shortLength = prompt('Short Length');
-          if (shortLength === null) return;
+          const longLength = +prompt('Long Length');
+          if (!longLength) return;
+          const shortLength = +prompt('Short Length');
+          if (!shortLength) return;
 
-          // this would have no effect except for damaging the way's history
-          if (shortLength === '1' && longLength === '1') return;
+          // this would have no effect
+          if (shortLength === 1 && longLength === 1) return;
+
+          if (shortLength * longLength > DIVIDE_LIMIT) {
+              context.ui().flash
+                  .duration(4000)
+                  .iconName('#iD-icon-no')
+                  .label(_t('operations.divide.error.too_big', { limit: DIVIDE_LIMIT }))();
+              return;
+          }
 
           const difference = context.perform(_action(+shortLength, +longLength), operation.annotation());
 
@@ -29423,16 +29450,16 @@
       operation.tooltip = () => {
           const disableReason = operation.disabled();
           return disableReason ?
-              _t('operations.gridify.disabled.' + disableReason) :
-              _t('operations.gridify.tooltip');
+              _t('operations.divide.disabled.' + disableReason) :
+              _t('operations.divide.tooltip');
       };
 
 
-      operation.annotation = () => _t('operations.gridify.annotation');
+      operation.annotation = () => _t('operations.divide.annotation');
 
-      operation.id = 'gridify';
-      operation.keys = [_t('operations.gridify.key')];
-      operation.title = _t('operations.gridify.title');
+      operation.id = 'divide';
+      operation.keys = [_t('operations.divide.key')];
+      operation.title = _t('operations.divide.title');
       operation.behavior = behaviorOperation(context).which(operation);
 
       return operation;
@@ -30203,7 +30230,7 @@
       var behaviors = [
           behaviorEdit(context),
           operationCircularize(context, entityIDs).behavior,
-          operationGridify(context, entityIDs).behavior,
+          operationDivide(context, entityIDs).behavior,
           operationDelete(context, entityIDs).behavior,
           operationOrthogonalize(context, entityIDs).behavior,
           operationReflectLong(context, entityIDs).behavior,
@@ -41511,7 +41538,7 @@
           }
 
           // Differentiate based on the loc rounded to 4 digits, since two ways can cross multiple times.
-          var uniqueID = '' + crossing.crossPoint[0].toFixed(4) + ',' + crossing.crossPoint[1].toFixed(4);
+          var uniqueID = crossing.crossPoint[0].toFixed(4) + ',' + crossing.crossPoint[1].toFixed(4);
 
           return new validationIssue({
               type: type,
@@ -46997,7 +47024,7 @@
         mapillary: 'Mapillary Images',
         'mapillary-map-features': 'Mapillary Map Features',
         'mapillary-signs': 'Mapillary Signs',
-        openstreetcam: 'OpenStreetCam Images'
+        kartaview: 'KartaView Images'
       };
 
       for (let layerID in photoOverlayLayers) {
@@ -53081,31 +53108,31 @@
       return drawMapFeatures;
   }
 
-  function svgOpenstreetcamImages(projection, context, dispatch) {
+  function svgKartaviewImages(projection, context, dispatch) {
       var throttledRedraw = throttle(function () { dispatch.call('change'); }, 1000);
       var minZoom = 12;
       var minMarkerZoom = 16;
       var minViewfieldZoom = 18;
       var layer = select(null);
-      var _openstreetcam;
+      var _kartaview;
 
 
       function init() {
-          if (svgOpenstreetcamImages.initialized) return;  // run once
-          svgOpenstreetcamImages.enabled = false;
-          svgOpenstreetcamImages.initialized = true;
+          if (svgKartaviewImages.initialized) return;  // run once
+          svgKartaviewImages.enabled = false;
+          svgKartaviewImages.initialized = true;
       }
 
 
       function getService() {
-          if (services.openstreetcam && !_openstreetcam) {
-              _openstreetcam = services.openstreetcam;
-              _openstreetcam.event.on('loadedImages', throttledRedraw);
-          } else if (!services.openstreetcam && _openstreetcam) {
-              _openstreetcam = null;
+          if (services.kartaview && !_kartaview) {
+              _kartaview = services.kartaview;
+              _kartaview.event.on('loadedImages', throttledRedraw);
+          } else if (!services.kartaview && _kartaview) {
+              _kartaview = null;
           }
 
-          return _openstreetcam;
+          return _kartaview;
       }
 
 
@@ -53322,10 +53349,10 @@
 
 
       function drawImages(selection) {
-          var enabled = svgOpenstreetcamImages.enabled,
+          var enabled = svgKartaviewImages.enabled,
               service = getService();
 
-          layer = selection.selectAll('.layer-openstreetcam')
+          layer = selection.selectAll('.layer-kartaview')
               .data(service ? [0] : []);
 
           layer.exit()
@@ -53333,7 +53360,7 @@
 
           var layerEnter = layer.enter()
               .append('g')
-              .attr('class', 'layer-openstreetcam')
+              .attr('class', 'layer-kartaview')
               .style('display', enabled ? 'block' : 'none');
 
           layerEnter
@@ -53360,14 +53387,14 @@
 
 
       drawImages.enabled = function(_) {
-          if (!arguments.length) return svgOpenstreetcamImages.enabled;
-          svgOpenstreetcamImages.enabled = _;
-          if (svgOpenstreetcamImages.enabled) {
+          if (!arguments.length) return svgKartaviewImages.enabled;
+          svgKartaviewImages.enabled = _;
+          if (svgKartaviewImages.enabled) {
               showLayer();
-              context.photos().on('change.openstreetcam_images', update);
+              context.photos().on('change.kartaview_images', update);
           } else {
               hideLayer();
-              context.photos().on('change.openstreetcam_images', null);
+              context.photos().on('change.kartaview_images', null);
           }
           dispatch.call('change');
           return this;
@@ -53763,7 +53790,7 @@
           { id: 'mapillary-position', layer: svgMapillaryPosition(projection, context) },
           { id: 'mapillary-map-features',  layer: svgMapillaryMapFeatures(projection, context, dispatch) },
           { id: 'mapillary-signs',  layer: svgMapillarySigns(projection, context, dispatch) },
-          { id: 'openstreetcam', layer: svgOpenstreetcamImages(projection, context, dispatch) },
+          { id: 'kartaview', layer: svgKartaviewImages(projection, context, dispatch) },
           { id: 'debug', layer: svgDebug(projection, context) },
           { id: 'geolocate', layer: svgGeolocate(projection) },
           { id: 'touch', layer: svgTouch() }
@@ -56659,7 +56686,7 @@
 
   function rendererPhotos(context) {
       var dispatch = dispatch$8('change');
-      var _layerIDs = ['streetside', 'mapillary', 'mapillary-map-features', 'mapillary-signs', 'openstreetcam'];
+      var _layerIDs = ['streetside', 'mapillary', 'mapillary-map-features', 'mapillary-signs', 'kartaview'];
       var _allPhotoTypes = ['flat', 'panoramic'];
       var _shownPhotoTypes = _allPhotoTypes.slice();   // shallow copy
       var _dateFilters = ['fromDate', 'toDate'];
@@ -56771,16 +56798,16 @@
       }
 
       photos.shouldFilterByDate = function() {
-          return showsLayer('mapillary') || showsLayer('openstreetcam') || showsLayer('streetside');
+          return showsLayer('mapillary') || showsLayer('kartaview') || showsLayer('streetside');
       };
 
       photos.shouldFilterByPhotoType = function() {
           return showsLayer('mapillary') ||
-              (showsLayer('streetside') && showsLayer('openstreetcam'));
+              (showsLayer('streetside') && showsLayer('kartaview'));
       };
 
       photos.shouldFilterByUsername = function() {
-          return !showsLayer('mapillary') && showsLayer('openstreetcam') && !showsLayer('streetside');
+          return !showsLayer('mapillary') && showsLayer('kartaview') && !showsLayer('streetside');
       };
 
       photos.showsPhotoType = function(val) {
@@ -56832,22 +56859,22 @@
               this.setUsernameFilter(hash.photo_username, false);
           }
           if (hash.photo_overlay) {
-              // support enabling photo layers by default via a URL parameter, e.g. `photo_overlay=openstreetcam;mapillary;streetside`
-
+              // support enabling photo layers by default via a URL parameter, e.g. `photo_overlay=kartaview;mapillary;streetside`
               var hashOverlayIDs = hash.photo_overlay.replace(/;/g, ',').split(',');
               hashOverlayIDs.forEach(function(id) {
+                  if (id === 'openstreetcam') id = 'kartaview'; // legacy alias
                   var layer = _layerIDs.indexOf(id) !== -1 && context.layers().layer(id);
                   if (layer && !layer.enabled()) layer.enabled(true);
               });
           }
           if (hash.photo) {
               // support opening a photo via a URL parameter, e.g. `photo=mapillary-fztgSDtLpa08ohPZFZjeRQ`
-
               var photoIds = hash.photo.replace(/;/g, ',').split(',');
               var photoId = photoIds.length && photoIds[0].trim();
               var results = /(.*)\/(.*)/g.exec(photoId);
               if (results && results.length >= 3) {
                   var serviceId = results[1];
+                  if (serviceId === 'openstreetcam') serviceId = 'kartaview'; // legacy alias
                   var photoKey = results[2];
                   var service = services[serviceId];
                   if (service && service.ensureViewerLoaded) {
@@ -59329,7 +59356,7 @@
 
           // operation icons
           circularize_icon: icon('#iD-operation-circularize', 'inline operation'),
-          gridify_icon: icon('#iD-operation-gridify', 'inline operation'),
+          divide_icon: icon('#iD-operation-divide', 'inline operation'),
           continue_icon: icon('#iD-operation-continue', 'inline operation'),
           copy_icon: icon('#iD-operation-copy', 'inline operation'),
           delete_icon: icon('#iD-operation-delete', 'inline operation'),
@@ -59378,7 +59405,7 @@
           note: _t.html('modes.add_note.label'),
 
           circularize: _t.html('operations.circularize.title'),
-          gridify: _t.html('operations.gridify.title'),
+          divide: _t.html('operations.divide.title'),
           continue: _t.html('operations.continue.title'),
           copy: _t.html('operations.copy.title'),
           delete: _t.html('operations.delete.title'),
@@ -64010,7 +64037,7 @@
               .on('click', function () {
                   if (services.streetside) { services.streetside.hideViewer(context); }
                   if (services.mapillary) { services.mapillary.hideViewer(context); }
-                  if (services.openstreetcam) { services.openstreetcam.hideViewer(context); }
+                  if (services.kartaview) { services.kartaview.hideViewer(context); }
               })
               .append('div')
               .call(svgIcon('#iD-icon-close'));
@@ -67029,21 +67056,16 @@
         .attr('height', d)
         .attr('viewBox', `0 0 ${d} ${d}`);
 
-      ['fill', 'stroke'].forEach(klass => {
         svgEnter
           .append('path')
-          .attr('class', `area ${klass}`)
+          .attr('class', 'area')
           .attr('d', 'M9.5,7.5 L25.5,7.5 L28.5,12.5 L49.5,12.5 C51.709139,12.5 53.5,14.290861 53.5,16.5 L53.5,43.5 C53.5,45.709139 51.709139,47.5 49.5,47.5 L10.5,47.5 C8.290861,47.5 6.5,45.709139 6.5,43.5 L6.5,12.5 L9.5,7.5 Z');
-      });
 
       categoryBorder = categoryBorderEnter.merge(categoryBorder);
 
       if (category) {
-        const tagClasses = svgTagClasses().getClassesString(category.members.collection[0].addTags, '');
-        categoryBorder.selectAll('path.stroke')
-          .attr('class', `area stroke ${tagClasses}`);
-        categoryBorder.selectAll('path.fill')
-          .attr('class', `area fill ${tagClasses}`);
+        categoryBorder.selectAll('path')
+          .attr('class', `area ${category.id}`);
       }
    }
 
@@ -70911,13 +70933,12 @@
 
 
       radio.tags = function(tags) {
-
-          radios.property('checked', function(d) {
+          function isOptionChecked(d) {
               if (field.key) {
                   return tags[field.key] === d;
               }
               return !!(typeof tags[d] === 'string' && tags[d].toLowerCase() !== 'no');
-          });
+          }
 
           function isMixed(d) {
               if (field.key) {
@@ -70926,13 +70947,19 @@
               return Array.isArray(tags[d]);
           }
 
+          radios.property('checked', function(d) {
+              return isOptionChecked(d) &&
+                  (field.key || field.options.filter(isOptionChecked).length === 1);
+          });
+
           labels
               .classed('active', function(d) {
                   if (field.key) {
                       return (Array.isArray(tags[field.key]) && tags[field.key].includes(d))
                           || tags[field.key] === d;
                   }
-                  return Array.isArray(tags[d]) || !!(tags[d] && tags[d].toLowerCase() !== 'no');
+                  return Array.isArray(tags[d]) && tags[d].some(v => typeof v === 'string' && v.toLowerCase() !== 'no') ||
+                      !!(typeof tags[d] === 'string' && tags[d].toLowerCase() !== 'no');
               })
               .classed('mixed', isMixed)
               .attr('title', function(d) {
@@ -71191,22 +71218,24 @@
               extent._extend(_intersection.vertices[i].extent());
           }
 
+          var padTop = 35; // reserve top space for hint text
+
           // If this is a large intersection, adjust zoom to fit extent
           if (_intersection.vertices.length > 1) {
-              var padding = 180;   // in z22 pixels
+              var hPadding = Math.min(160, Math.max(110, d[0] * 0.4));
+              var vPadding = 160;
               var tl = projection([extent[0][0], extent[1][1]]);
               var br = projection([extent[1][0], extent[0][1]]);
-              var hFactor = (br[0] - tl[0]) / (d[0] - padding);
-              var vFactor = (br[1] - tl[1]) / (d[1] - padding);
+              var hFactor = (br[0] - tl[0]) / (d[0] - hPadding);
+              var vFactor = (br[1] - tl[1]) / (d[1] - vPadding - padTop);
               var hZoomDiff = Math.log(Math.abs(hFactor)) / Math.LN2;
               var vZoomDiff = Math.log(Math.abs(vFactor)) / Math.LN2;
               z = z - Math.max(hZoomDiff, vZoomDiff);
               projection.scale(geoZoomToScale(z));
           }
 
-          var padTop = 35;   // reserve top space for hint text
           var extentCenter = projection(extent.center());
-          extentCenter[1] = extentCenter[1] - padTop;
+          extentCenter[1] = extentCenter[1] - padTop / 2;
 
           projection
               .translate(geoVecSubtract(c, extentCenter))
@@ -82623,7 +82652,7 @@
               'straighten',
               'orthogonalize',
               'circularize',
-              'gridify',
+              'divide',
               'move',
               'rotate',
               'reflect',
@@ -84403,7 +84432,7 @@
                   var titleID;
                   if (d.id === 'mapillary-signs') titleID = 'mapillary.signs.tooltip';
                   else if (d.id === 'mapillary') titleID = 'mapillary_images.tooltip';
-                  else if (d.id === 'openstreetcam') titleID = 'openstreetcam_images.tooltip';
+                  else if (d.id === 'kartaview') titleID = 'kartaview_images.tooltip';
                   else titleID = d.id.replace(/-/g, '_') + '.tooltip';
                   select(this)
                       .call(uiTooltip()
@@ -84886,7 +84915,11 @@
               .call(uiSpinner(context));
 
           // Map controls
-          var controls = overMap
+          var controlsWrap = overMap
+              .append('div')
+              .attr('class', 'map-controls-wrap');
+
+          var controls = controlsWrap
               .append('div')
               .attr('class', 'map-controls');
 
@@ -84905,9 +84938,9 @@
               .attr('class', 'map-control geolocate-control')
               .call(uiGeolocate(context));
 
-          controls.on('wheel.mapControls', function(d3_event) {
+          controlsWrap.on('wheel.mapControls', function(d3_event) {
               if (!d3_event.deltaX) {
-                  controls.node().scrollTop += d3_event.deltaY;
+                  controlsWrap.node().scrollTop += d3_event.deltaY;
               }
           });
 
@@ -86653,7 +86686,7 @@
     cache: () => _nsi
   };
 
-  var apibase$3 = 'https://openstreetcam.org';
+  var apibase$3 = 'https://kartaview.org';
   var maxResults$1 = 1000;
   var tileZoom$1 = 14;
   var tiler$3 = utilTiler().zoomExtent([tileZoom$1, tileZoom$1]).skipNullIsland(true);
@@ -86815,7 +86848,7 @@
   }
 
 
-  var serviceOpenstreetcam = {
+  var serviceKartaview = {
 
       init: function() {
           if (!_oscCache) {
@@ -86894,15 +86927,15 @@
 
           if (_loadViewerPromise$1) return _loadViewerPromise$1;
 
-          // add osc-wrapper
-          var wrap = context.container().select('.photoviewer').selectAll('.osc-wrapper')
+          // add kartaview-wrapper
+          var wrap = context.container().select('.photoviewer').selectAll('.kartaview-wrapper')
               .data([0]);
 
           var that = this;
 
           var wrapEnter = wrap.enter()
               .append('div')
-              .attr('class', 'photo-wrapper osc-wrapper')
+              .attr('class', 'photo-wrapper kartaview-wrapper')
               .classed('hide', true)
               .call(imgZoom.on('zoom', zoomPan))
               .on('dblclick.zoom', null);
@@ -86939,11 +86972,11 @@
 
           wrapEnter
               .append('div')
-              .attr('class', 'osc-image-wrap');
+              .attr('class', 'kartaview-image-wrap');
 
 
           // Register viewer resize handler
-          context.ui().photoviewer.on('resize.openstreetcam', function(dimensions) {
+          context.ui().photoviewer.on('resize.kartaview', function(dimensions) {
               imgZoom = d3_zoom()
                   .extent([[0, 0], dimensions])
                   .translateExtent([[0, 0], dimensions])
@@ -86954,7 +86987,7 @@
 
           function zoomPan(d3_event) {
               var t = d3_event.transform;
-              context.container().select('.photoviewer .osc-image-wrap')
+              context.container().select('.photoviewer .kartaview-image-wrap')
                   .call(utilSetTransform, t.x, t.y, t.k);
           }
 
@@ -86973,14 +87006,14 @@
                   if (r < -180) r += 360;
                   sequence.rotation = r;
 
-                  var wrap = context.container().select('.photoviewer .osc-wrapper');
+                  var wrap = context.container().select('.photoviewer .kartaview-wrapper');
 
                   wrap
                       .transition()
                       .duration(100)
                       .call(imgZoom.transform, identity$2);
 
-                  wrap.selectAll('.osc-image')
+                  wrap.selectAll('.kartaview-image')
                       .transition()
                       .duration(100)
                       .style('transform', 'rotate(' + r + 'deg)');
@@ -87016,15 +87049,15 @@
           var viewer = context.container().select('.photoviewer')
               .classed('hide', false);
 
-          var isHidden = viewer.selectAll('.photo-wrapper.osc-wrapper.hide').size();
+          var isHidden = viewer.selectAll('.photo-wrapper.kartaview-wrapper.hide').size();
 
           if (isHidden) {
               viewer
-                  .selectAll('.photo-wrapper:not(.osc-wrapper)')
+                  .selectAll('.photo-wrapper:not(.kartaview-wrapper)')
                   .classed('hide', true);
 
               viewer
-                  .selectAll('.photo-wrapper.osc-wrapper')
+                  .selectAll('.photo-wrapper.kartaview-wrapper')
                   .classed('hide', false);
           }
 
@@ -87070,8 +87103,8 @@
 
           if (!d) return this;
 
-          var wrap = context.container().select('.photoviewer .osc-wrapper');
-          var imageWrap = wrap.selectAll('.osc-image-wrap');
+          var wrap = context.container().select('.photoviewer .kartaview-wrapper');
+          var imageWrap = wrap.selectAll('.kartaview-image-wrap');
           var attribution = wrap.selectAll('.photo-attribution').html('');
 
           wrap
@@ -87080,7 +87113,7 @@
               .call(imgZoom.transform, identity$2);
 
           imageWrap
-              .selectAll('.osc-image')
+              .selectAll('.kartaview-image')
               .remove();
 
           if (d) {
@@ -87089,7 +87122,7 @@
 
               imageWrap
                   .append('img')
-                  .attr('class', 'osc-image')
+                  .attr('class', 'kartaview-image')
                   .attr('src', apibase$3 + '/' + d.imagePath)
                   .style('transform', 'rotate(' + r + 'deg)');
 
@@ -87098,7 +87131,7 @@
                       .append('a')
                       .attr('class', 'captured_by')
                       .attr('target', '_blank')
-                      .attr('href', 'https://openstreetcam.org/user/' + encodeURIComponent(d.captured_by))
+                      .attr('href', 'https://kartaview.org/user/' + encodeURIComponent(d.captured_by))
                       .html('@' + d.captured_by);
 
                   attribution
@@ -87121,8 +87154,8 @@
                   .append('a')
                   .attr('class', 'image-link')
                   .attr('target', '_blank')
-                  .attr('href', 'https://openstreetcam.org/details/' + d.sequence_id + '/' + d.sequence_index)
-                  .html('openstreetcam.org');
+                  .attr('href', 'https://kartaview.org/details/' + d.sequence_id + '/' + d.sequence_index)
+                  .html('kartaview.org');
           }
 
           return this;
@@ -87178,17 +87211,17 @@
           // highlight sibling viewfields on either the selected or the hovered sequences
           var highlightedImageKeys = utilArrayUnion(hoveredImageKeys, selectedImageKeys);
 
-          context.container().selectAll('.layer-openstreetcam .viewfield-group')
+          context.container().selectAll('.layer-kartaview .viewfield-group')
               .classed('highlighted', function(d) { return highlightedImageKeys.indexOf(d.key) !== -1; })
               .classed('hovered', function(d) { return d.key === hoveredImageKey; })
               .classed('currentView', function(d) { return d.key === selectedImageKey; });
 
-          context.container().selectAll('.layer-openstreetcam .sequence')
+          context.container().selectAll('.layer-kartaview .sequence')
               .classed('highlighted', function(d) { return d.properties.key === hoveredSequenceKey; })
               .classed('currentView', function(d) { return d.properties.key === selectedSequenceKey; });
 
           // update viewfields if needed
-          context.container().selectAll('.layer-openstreetcam .viewfield-group .viewfield')
+          context.container().selectAll('.layer-kartaview .viewfield-group .viewfield')
               .attr('d', viewfieldPath);
 
           function viewfieldPath() {
@@ -87208,7 +87241,7 @@
           if (!window.mocha) {
               var hash = utilStringQs(window.location.hash);
               if (imageKey) {
-                  hash.photo = 'openstreetcam/' + imageKey;
+                  hash.photo = 'kartaview/' + imageKey;
               } else {
                   delete hash.photo;
               }
@@ -94775,7 +94808,7 @@
     osmose: serviceOsmose,
     mapillary: serviceMapillary,
     nsi: serviceNsi,
-    openstreetcam: serviceOpenstreetcam,
+    kartaview: serviceKartaview,
     osm: serviceOsm,
     osmWikibase: serviceOsmWikibase,
     maprules: serviceMapRules,
@@ -96530,7 +96563,7 @@
   var Operations = /*#__PURE__*/Object.freeze({
     __proto__: null,
     operationCircularize: operationCircularize,
-    operationGridify: operationGridify,
+    operationDivide: operationDivide,
     operationContinue: operationContinue,
     operationCopy: operationCopy,
     operationDelete: operationDelete,
@@ -97743,7 +97776,7 @@
     actionChangePreset: actionChangePreset,
     actionChangeTags: actionChangeTags,
     actionCircularize: actionCircularize,
-    actionGridify: actionGridify,
+    actionDivide: actionDivide,
     actionConnect: actionConnect,
     actionCopyEntities: actionCopyEntities,
     actionDeleteMember: actionDeleteMember,
@@ -97864,7 +97897,7 @@
     modeSelectError: modeSelectError,
     modeSelectNote: modeSelectNote,
     operationCircularize: operationCircularize,
-    operationGridify: operationGridify,
+    operationDivide: operationDivide,
     operationContinue: operationContinue,
     operationCopy: operationCopy,
     operationDelete: operationDelete,
@@ -97930,7 +97963,7 @@
     serviceMapRules: serviceMapRules,
     serviceNominatim: serviceNominatim,
     serviceNsi: serviceNsi,
-    serviceOpenstreetcam: serviceOpenstreetcam,
+    serviceKartaview: serviceKartaview,
     serviceOsm: serviceOsm,
     serviceOsmWikibase: serviceOsmWikibase,
     serviceStreetside: serviceStreetside,
@@ -97953,7 +97986,7 @@
     svgMidpoints: svgMidpoints,
     svgNotes: svgNotes,
     svgMarkerSegments: svgMarkerSegments,
-    svgOpenstreetcamImages: svgOpenstreetcamImages,
+    svgKartaviewImages: svgKartaviewImages,
     svgOsm: svgOsm,
     svgPassiveVertex: svgPassiveVertex,
     svgPath: svgPath,

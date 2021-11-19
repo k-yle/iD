@@ -2635,14 +2635,14 @@
 }
 
 
-/* OpenStreetCam Image Layer */
-.ideditor .layer-openstreetcam {
+/* KartaView Image Layer */
+.ideditor .layer-kartaview {
     pointer-events: none;
 }
-.ideditor .layer-openstreetcam .viewfield-group * {
+.ideditor .layer-kartaview .viewfield-group * {
     fill: #20c4ff;
 }
-.ideditor .layer-openstreetcam .sequence {
+.ideditor .layer-kartaview .sequence {
     stroke: #20c4ff;
 }
 
@@ -2742,8 +2742,8 @@
     margin-right: 6px;
 }
 
-/* OpenStreetCam viewer */
-.ideditor .osc-wrapper {
+/* KartaView viewer */
+.ideditor .kartaview-wrapper {
     position: relative;
     background-color: #000;
     background-image: url(img/loader-black.gif);
@@ -2751,16 +2751,16 @@
     background-repeat: no-repeat;
 }
 
-.ideditor .osc-wrapper .photo-attribution a:active {
+.ideditor .kartaview-wrapper .photo-attribution a:active {
     color: #20c4ff;
 }
 @media (hover: hover) {
-    .ideditor .osc-wrapper .photo-attribution a:hover {
+    .ideditor .kartaview-wrapper .photo-attribution a:hover {
         color: #20c4ff;
     }
 }
 
-.ideditor .osc-image-wrap {
+.ideditor .kartaview-image-wrap {
     width: 100%;
     height: 100%;
     -webkit-transform-origin:0 0;
@@ -3081,6 +3081,59 @@
 .ideditor.mode-select-error .fill-partial path.area.fill,
 .ideditor.mode-select-note .fill-partial path.area.fill {
     pointer-events: visibleStroke;
+}
+.ideditor svg.preset-icon-category-border path {
+    stroke-width: 1;
+    stroke: rgb(170, 170, 170);
+    fill: rgba(170, 170, 170, 0.3);
+}
+
+.ideditor .preset-category-barrier svg.preset-icon-category-border path {
+    stroke: rgb(200, 144, 144);
+    fill: rgba(200, 144, 144, 0.3);
+}
+
+.ideditor .preset-category-building svg.preset-icon-category-border path {
+    stroke: rgb(224, 110, 95);
+    fill: rgba(224, 110, 95, 0.3);
+}
+
+.ideditor .preset-category-landuse svg.preset-icon-category-border path {
+    stroke: rgb(196, 189, 25);
+    fill: rgba(196, 189, 25, 0.3);
+}
+
+.ideditor .preset-category-natural svg.preset-icon-category-border path,
+.ideditor .preset-category-playground svg.preset-icon-category-border path,
+.ideditor .preset-category-golf svg.preset-icon-category-border path {
+    stroke: rgb(140, 208, 95);
+    fill: rgba(140, 208, 95, 0.3);
+}
+
+.ideditor .preset-category-water svg.preset-icon-category-border path,
+.ideditor .preset-category-waterway svg.preset-icon-category-border path {
+    stroke: rgb(119, 211, 222);
+    fill: rgba(119, 211, 222, 0.3);
+}
+
+.ideditor .preset-category-utility svg.preset-icon-category-border path {
+    stroke: rgb(125, 125, 125);
+    fill: rgba(219, 219, 125, 0.3);
+}
+
+.ideditor .preset-category-path svg.preset-icon-category-border path {
+    stroke: rgb(221, 221, 204);
+    fill: rgba(221, 221, 204, 0.3);
+}
+
+.ideditor .preset-category-road_service svg.preset-icon-category-border path,
+.ideditor .preset-category-road_minor svg.preset-icon-category-border path,
+.ideditor .preset-category-road_major svg.preset-icon-category-border path {
+    stroke: #999;
+}
+
+.ideditor .preset-category-rail svg.preset-icon-category-border path {
+    stroke: #555;
 }
 /* Basics
 ------------------------------------------------------- */
@@ -6474,12 +6527,27 @@
 
 /* Map Controls
 ------------------------------------------------------- */
+.ideditor .map-controls-wrap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 100%;
+    z-index: 100;
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
+    pointer-events: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.ideditor .map-controls-wrap::-webkit-scrollbar {
+    display: none;
+}
 .ideditor .map-controls {
     right: 0;
     top: 0;
     width: 40px;
     position: absolute;
-    z-index: 100;
     bottom: 0;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -6490,11 +6558,6 @@
             flex-direction: column;
     padding: 5px 0;
     pointer-events: none;
-    overflow-x: hidden;
-    overflow-y: auto;
-}
-.ideditor .map-controls::-webkit-scrollbar {
-    display: none;
 }
 .ideditor .map-controls:before {
     content: '';
