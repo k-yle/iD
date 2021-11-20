@@ -37829,6 +37829,18 @@
 	      y2 = _ref8[1];
 
 	  return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+	};
+	/**
+	 * the key is used to avoid duplicating nodes. We round to
+	 * 8 decimal places to avoid floating point precissions issues.
+	 * @param {Coord} coord
+	 */
+
+
+	var coordsToKey = function coordsToKey(coord) {
+	  return coord.map(function (x) {
+	    return x.toFixed(8);
+	  }).join(',');
 	}; // to make the code more logical
 	// 0 1  =  A B
 	// 3 2  =  D C
@@ -37907,7 +37919,7 @@
 	      var allNewNodes = {}; // add the original 4 nodes to allNewNodes so that they can be re-used
 
 	      for (var i = 0; i < points.length; i++) {
-	        var key = points[i].join(',');
+	        var key = coordsToKey(points[i]);
 	        allNewNodes[key] = originalNodes[i];
 	      }
 
@@ -37924,7 +37936,7 @@
 	          for (_iterator.s(); !(_step = _iterator.n()).done;) {
 	            var coord = _step.value;
 
-	            var _key = coord.join(',');
+	            var _key = coordsToKey(coord);
 
 	            if (_key in allNewNodes) {
 	              // re use existing node

@@ -22959,6 +22959,14 @@
       Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 
 
+  /**
+   * the key is used to avoid duplicating nodes. We round to
+   * 8 decimal places to avoid floating point precissions issues.
+   * @param {Coord} coord
+   */
+  const coordsToKey = (coord) => coord.map(x => x.toFixed(8)).join(',');
+
+
   // to make the code more logical
   // 0 1  =  A B
   // 3 2  =  D C
@@ -23018,7 +23026,7 @@
 
           // add the original 4 nodes to allNewNodes so that they can be re-used
           for (let i = 0; i < points.length; i++) {
-              const key = points[i].join(',');
+              const key = coordsToKey(points[i]);
               allNewNodes[key] = originalNodes[i];
           }
 
@@ -23028,7 +23036,7 @@
               const nodes = [];
 
               for (const coord of newWay) {
-                  const key = coord.join(',');
+                  const key = coordsToKey(coord);
                   if (key in allNewNodes) {
                       // re use existing node
                       nodes.push(allNewNodes[key]);
