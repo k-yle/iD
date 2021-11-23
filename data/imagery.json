@@ -70994,6 +70994,18 @@
     "overlay": true
   },
   {
+    "id": "openseamap-overlay",
+    "name": "OpenSeaMap",
+    "type": "tms",
+    "template": "https://t1.openseamap.org/seamark/{z}/{x}/{y}.png",
+    "zoomExtent": [0, 20],
+    "terms_url": "https://openseamap.org",
+    "terms_text": "Rendering: OpenSeaMap, © Map data OpenStreetMap contributors",
+    "description": "Overlay imagery showing seamarks based on OpenStreetMap data",
+    "icon": "https://map.openseamap.org/resources/icons/OpenSeaMapLogo_32.png",
+    "overlay": true
+  },
+  {
     "id": "osmfr-basque",
     "name": "OpenStreetMap (Basque Style)",
     "type": "tms",
