@@ -148,6 +148,9 @@ export function helpHtml(id, replacements) {
         help: t.html('help.title'),
         ok: t.html('intro.ok')
         };
+        for (var key in helpStringReplacements) {
+            helpStringReplacements[key] = { html: helpStringReplacements[key] };
+        }
     }
 
     var reps;
