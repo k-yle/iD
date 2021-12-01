@@ -115,6 +115,7 @@ export const actionDivide = (wayId, projection) => {
 
             let segOsmWay = osmWay({
                 id: i === 0 ? originalWay.id : undefined, // preserve history, re-use the original way for the first segment
+                version: i === 0 ? originalWay.version : undefined,
                 nodes: nodes.map(n => n.id),
                 tags: originalWay.tags
             });
