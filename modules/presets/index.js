@@ -10,6 +10,7 @@ import { presetCollection } from './collection';
 import { presetField } from './field';
 import { presetPreset } from './preset';
 import { utilArrayUniq, utilRebind } from '../util';
+import { customFields, customPresets } from './custom.json';
 
 export { presetCategory };
 export { presetCollection };
@@ -69,8 +70,8 @@ export function presetIndex() {
         _this.merge({
           categories: vals[0],
           defaults: vals[1],
-          presets: vals[2],
-          fields: vals[3]
+          presets: Object.assign({}, vals[2], customPresets),
+          fields: Object.assign({}, vals[3], customFields),
         });
         osmSetAreaKeys(_this.areaKeys());
         osmSetPointTags(_this.pointTags());

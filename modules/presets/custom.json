@@ -1,0 +1,57 @@
+{
+    "customPresets": {
+        "amenity/theatre": {
+            "icon": "maki-theatre",
+            "fields": [
+                "name",
+                "operator",
+                "operator/type",
+                "capacity",
+                "start_date",
+                "hearing_loop",
+                "is_in",
+                "website",
+                "wheelchair",
+                "address",
+                "building_area"
+            ],
+            "moreFields": [],
+            "geometry": ["point", "area"],
+            "tags": {
+                "amenity": "theatre"
+            }
+        },
+        "amenity/events_venue": {
+            "icon": "fas-users",
+            "fields": [
+                "name",
+                "level",
+                "operator",
+                "operator/type",
+                "capacity",
+                "start_date",
+                "hearing_loop",
+                "is_in",
+                "website",
+                "wheelchair",
+                "address",
+                "building_area"
+            ],
+            "moreFields": [],
+            "geometry": ["point", "area"],
+            "tags": {
+                "amenity": "events_venue"
+            }
+        }
+    },
+    "customFields": {
+        "hearing_loop": {
+            "key": "hearing_loop",
+            "type": "check"
+        },
+        "is_in": {
+            "key": "is_in",
+            "type": "text"
+        }
+    }
+}
