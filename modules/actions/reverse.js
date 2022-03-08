@@ -115,6 +115,10 @@ export function actionReverse(entityID, options) {
         return valueReplacements[value] || value;
     }
 
+    function isDirectionlessTrafficSign(tags) {
+        return (tags.highway === 'give_way' || tags.highway === 'stop') && !tags.direction;
+    }
+
 
     // Reverse the direction of tags attached to the nodes - #3076
     function reverseNodeTags(graph, nodeIDs) {
@@ -126,6 +130,10 @@ export function actionReverse(entityID, options) {
             for (var key in node.tags) {
                 tags[reverseKey(key)] = reverseValue(key, node.tags[key], node.id === entityID);
             }
+
+            // for directionless traffic signs, the first flip just adds the direction tag
+            if (isDirectionlessTrafficSign(tags)) tags.direction = 'forward';
+
             graph = graph.replace(node.update({tags: tags}));
         }
         return graph;
@@ -175,6 +183,10 @@ export function actionReverse(entityID, options) {
                 return false;
             }
         }
+
+        // exception for give_way and stop signs - they're flipable even if they don't have a direction tag
+        if (isDirectionlessTrafficSign(entity.tags)) return false;
+
         return 'nondirectional_node';
     };
 
