@@ -197,6 +197,9 @@ export const osmOneWayForwardTags: TagDictionary<boolean> = {
         'sled': true,
         'yes': true
     },
+    'railway:preferred_direction': {
+        'forward': true,
+    },
     'seamark:type': {
         'two-way_route': true,
         'recommended_traffic_lane': true,
@@ -223,6 +226,9 @@ export const osmOneWayBackwardTags: TagDictionary<boolean> = {
     'oneway': {
         '-1': true,
     },
+    'railway:preferred_direction': {
+        'backward': true,
+    },
 };
 export const osmOneWayBiDirectionalTags: TagDictionary<boolean> = {
     'conveying': {
@@ -231,6 +237,12 @@ export const osmOneWayBiDirectionalTags: TagDictionary<boolean> = {
     'oneway': {
         'alternating': true,
         'reversible': true,
+    },
+    'railway:preferred_direction': {
+        'both': true,
+    },
+    'railway:bidirectional': {
+        'regular': true,
     },
 };
 export const osmOneWayTags = merge(
@@ -298,6 +310,9 @@ export const osmSidednessTags: TagDictionary<true | string> = {
     'man_made': {
         'embankment': 'embankment-man_made',
         'quay': true
+    },
+    'railway': {
+        'platform_edge': 'man_made', // re-use rendering style for one-sided man_made=*
     },
     'waterway': {
         'weir': true
