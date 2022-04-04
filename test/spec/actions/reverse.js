@@ -335,12 +335,10 @@ describe('iD.actionReverse', function () {
                 new iD.osmWay({id: 'directionF', tags: {direction: 'forward'}}),
                 new iD.osmWay({id: 'priorityF', tags: {priority: 'forward'}}),
                 new iD.osmWay({id: 'trolley_wireF', tags: {trolley_wire: 'forward'}}),
-                new iD.osmWay({id: 'preferred_directionF', tags: {'railway:preferred_direction': 'forward'}}),
                 new iD.osmWay({id: 'conveyingB', tags: {conveying: 'backward'}}),
                 new iD.osmWay({id: 'directionB', tags: {direction: 'backward'}}),
                 new iD.osmWay({id: 'priorityB', tags: {priority: 'backward'}}),
-                new iD.osmWay({id: 'trolley_wireB', tags: {trolley_wire: 'backward'}}),
-                new iD.osmWay({id: 'preferred_directionB', tags: {'railway:preferred_direction': 'backward'}})
+                new iD.osmWay({id: 'trolley_wireB', tags: {trolley_wire: 'backward'}})
             ]);
 
             expect(iD.actionReverse('directionF')(graph)
@@ -349,8 +347,6 @@ describe('iD.actionReverse', function () {
                 .entity('priorityF').tags).toEqual({priority: 'backward'}, 'priorityF');
             expect(iD.actionReverse('trolley_wireF')(graph)
                 .entity('trolley_wireF').tags).toEqual({trolley_wire: 'backward'}, 'trolley_wireF');
-            expect(iD.actionReverse('preferred_directionF')(graph)
-                .entity('preferred_directionF').tags).toEqual({'railway:preferred_direction': 'backward'}, 'preferred_directionF');
 
             expect(iD.actionReverse('directionB')(graph)
                 .entity('directionB').tags).toEqual({direction: 'forward'}, 'directionB');
@@ -358,8 +354,6 @@ describe('iD.actionReverse', function () {
                 .entity('priorityB').tags).toEqual({priority: 'forward'}, 'priorityB');
             expect(iD.actionReverse('trolley_wireB')(graph)
                 .entity('trolley_wireB').tags).toEqual({trolley_wire: 'forward'}, 'trolley_wireB');
-            expect(iD.actionReverse('preferred_directionB')(graph)
-                .entity('preferred_directionB').tags).toEqual({'railway:preferred_direction': 'forward'}, 'preferred_directionB');
         });
 
         it('drops "s" from forwards/backwards when reversing', function () {
