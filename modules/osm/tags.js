@@ -151,6 +151,14 @@ export var osmOneWayTags = {
         'sled': true,
         'yes': true
     },
+    'railway:preferred_direction': {
+        'forward': true,
+        'backward': true,
+        'both': true,
+    },
+    'railway:bidirectional': {
+        'regular': true,
+    },
     'seamark:type': {
         'two-way_route': true,
         'recommended_traffic_lane': true,
@@ -212,6 +220,9 @@ export var osmRightSideIsInsideTags = {
     'man_made': {
         'embankment': true,
         'quay': true
+    },
+    'railway': {
+        'platform_edge': 'man_made', // re-use rendering style for one-sided man_made=*
     },
     'waterway': {
         'weir': true

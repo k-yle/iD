@@ -147,7 +147,10 @@ Object.assign(osmWay.prototype, {
             'reversible': true,
             'alternating': true,
             'no': false,
-            '0': false
+            '0': false,
+            'forward': true,
+            'backward': true,
+            'both': true,
         };
         if (values[this.tags.oneway] !== undefined) {
             return values[this.tags.oneway];
