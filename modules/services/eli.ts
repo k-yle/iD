@@ -22,7 +22,6 @@ const discard = [
   /^openinframap-(petroleum|power|telecoms)$/,
   /^openpt_map$/,
   /^openrailwaymap$/,
-  /^openseamap$/,
   /^opensnowmap-overlay$/,
 
   /^US-TIGER-Roads-201\d/,
