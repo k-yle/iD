@@ -15,7 +15,7 @@ const defaultOsmApiConnections = {
   live: {
     url: 'https://www.openstreetmap.org',
     apiUrl: 'https://api.openstreetmap.org',
-    client_id: '0tmNTmd0Jo1dQp4AUmMBLtGiD9YpMuXzHefitcuVStc'
+    client_id: 'mNNNraAMgp4HGqaiv5cgRIwxMrfQcvs9NIPr6-1Ks4I',
   },
   dev: {
     url: 'https://api06.dev.openstreetmap.org',
