@@ -8,6 +8,18 @@ import { utilDetect } from './detect';
 import { geoExtent } from '../geo/extent';
 
 
+/** fallback tags used if there is no name tag, and no addr: or network+ref tags */
+const osmOtherNameTags = new Set([
+    'alt_name',
+    'official_name',
+    'loc_name',
+    'seamark:name',
+    'sector:name',
+    'addr:housename',
+    'lock_name',
+]);
+
+
 export function utilTagText(entity) {
     var obj = (entity && entity.tags) || {};
     return Object.keys(obj)
@@ -227,10 +239,42 @@ export function utilDisplayName(entity, hideNetwork) {
     }
 
     if (keyComponents.length) {
-        name = t('inspector.display_name.' + keyComponents.join('_'), tags);
+        return t('inspector.display_name.' + keyComponents.join('_'), tags);
     }
 
-    return name;
+    // if there's still no name found, try some other name-like tags
+    let otherNameTag;
+    for (const key of osmOtherNameTags) {
+        if (entity.tags[key]) {
+            otherNameTag = entity.tags[key];
+            break;
+        }
+    }
+    if (otherNameTag) return otherNameTag;
+
+    // as a last resort, use the street address as a name
+    if (!name && entity.tags['addr:unit'] && entity.tags['addr:housenumber'] && entity.tags['addr:street']) {
+        return t('inspector.display_name_addr_with_unit', {
+            unit: entity.tags['addr:unit'],
+            housenumber: entity.tags['addr:housenumber'],
+            street: entity.tags['addr:street']
+        });
+    }
+
+    if (!name && entity.tags['addr:housenumber'] && entity.tags['addr:street']) {
+        return t('inspector.display_name_addr', {
+            housenumber: entity.tags['addr:housenumber'],
+            street: entity.tags['addr:street']
+        });
+    }
+
+    if (!name && entity.tags['addr:housenumber']) {
+        return t('inspector.display_name_addr_housenumber_only', {
+            housenumber: entity.tags['addr:housenumber'],
+        });
+    }
+
+    return undefined; // no name found
 }
 
 
