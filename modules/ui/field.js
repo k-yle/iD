@@ -375,7 +375,11 @@ export function uiField(context, presetField, entityIDs, options) {
                         return prerequisiteTag.values.includes(value);
                     }
                     if (prerequisiteTag.value) {
-                        return prerequisiteTag.value === value;
+                        if (prerequisiteTag.value.startsWith('/') && prerequisiteTag.value.endsWith('/')) {
+                            return new RegExp(prerequisiteTag.value.slice(1).slice(0, -1)).test(value);
+                        } else {
+                            return prerequisiteTag.value === value;
+                        }
                     }
                     if (!value) return false;
                 } else if (prerequisiteTag.keyNot) {
