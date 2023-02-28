@@ -781,14 +781,24 @@
 
 /* Pink things */
 .ideditor path.stroke.tag-landuse-industrial,
+.ideditor path.stroke[class*="tag-seamark_type-separation"],
 .ideditor path.stroke.tag-power-plant {
     stroke: rgb(228, 164, 245);
 }
 .ideditor path.fill.tag-landuse-industrial,
+.ideditor path.fill[class*="tag-seamark_type-separation"],
 .ideditor path.fill.tag-power-plant {
     stroke: rgba(228, 164, 245, 0.3);
     fill: rgba(228, 164, 245, 0.3);
 }
+.ideditor .preset-icon-fill path.area.stroke[class*="tag-seamark_type-separation"] {
+    stroke: rgb(190, 143, 240);
+}
+
+.ideditor .pattern-color-anchorage, .ideditor .pattern-color-fairway {
+    fill: rgba(236, 236, 236, 0.3);
+}
+
 
 
 /* Teal things */
@@ -1889,28 +1899,57 @@
 }
 
 
-/* ferry routes  */
+/* ferry routes & linear seamarks */
 .ideditor .preset-icon .icon.tag-route-ferry {
     color: #58a9ed;
     fill: #fff;
 }
+.ideditor .preset-icon .icon.tag-seamark_type-recommended_track,
+.ideditor .preset-icon .icon.tag-seamark_type-navigation_line {
+    color: #aaaaaa;
+    fill: #fff;
+}
+.ideditor .preset-icon .icon[class*="tag-seamark_type-separation"] {
+    color: #be8ff0;
+    fill: #fff;
+}
+.ideditor path.line.shadow.tag-seamark_type-navigation_line,
+.ideditor path.line.shadow.tag-seamark_type-recommended_track,
 .ideditor path.line.shadow.tag-route-ferry {
     stroke-width: 16;
 }
+.ideditor path.line.stroke.tag-seamark_type-navigation_line,
+.ideditor path.line.stroke.tag-seamark_type-separation_boundary,
 .ideditor path.line.stroke.tag-route-ferry {
     stroke: #58a9ed;
     stroke-width: 3;
     stroke-linecap: butt;
     stroke-dasharray: 12,8;
 }
+.ideditor .low-zoom path.line.shadow.tag-seamark_type-navigation_line,
+.ideditor .low-zoom path.line.shadow.tag-seamark_type-recommended_track,
 .ideditor .low-zoom path.line.shadow.tag-route-ferry {
     stroke-width: 12;
 }
+.ideditor .low-zoom path.line.stroke.tag-seamark_type-navigation_line,
+.ideditor .preset-icon-container path.line.stroke.tag-seamark_type-navigation_line,
 .ideditor .low-zoom path.line.stroke.tag-route-ferry,
 .ideditor .preset-icon-container path.line.stroke.tag-route-ferry {
     stroke-width: 2;
     stroke-dasharray: 6,4;
 }
+.ideditor path.line.stroke.tag-seamark_type-recommended_track,
+.ideditor path.line.stroke.tag-seamark_type-navigation_line {
+    stroke: #aaaaaa;
+}
+.ideditor path.line.stroke.tag-route-ferry {
+    stroke: #58a9ed;
+}
+.ideditor path.line.stroke[class*="tag-seamark_type-separation"]  {
+    stroke: #be8ff0;
+}
+.ideditor path.line.casing.tag-seamark_type-navigation_line,
+.ideditor path.line.casing.tag-seamark_type-recommended_track,
 .ideditor path.line.casing.tag-route-ferry {
     stroke: none;
 }

@@ -28670,7 +28670,7 @@
         val = "all";
       } else {
         val = (this.tags.direction || "").toLowerCase();
-        var re2 = /:direction$/i;
+        var re2 = /:(direction|orientation)$/i;
         var keys = Object.keys(this.tags);
         for (i2 = 0; i2 < keys.length; i2++) {
           if (re2.test(keys[i2])) {
@@ -46368,7 +46368,8 @@ ${content}</tr>
       "route",
       "attraction",
       "building:part",
-      "indoor"
+      "indoor",
+      "seamark:type"
     ];
     var statuses = Object.keys(osmLifecyclePrefixes);
     var secondaries = [
@@ -46432,8 +46433,8 @@ ${content}</tr>
           continue;
         if (k2 === "piste:type") {
           k2 = "piste";
-        } else if (k2 === "building:part") {
-          k2 = "building_part";
+        } else if (k2.includes(":")) {
+          k2 = k2.replace(":", "_");
         }
         primary = k2;
         if (statuses.indexOf(v) !== -1) {
@@ -46592,6 +46593,10 @@ ${content}</tr>
     surface: {
       grass: "grass",
       sand: "beach"
+    },
+    "seamark:type": {
+      anchorage: "anchorage",
+      fairway: "fairway"
     }
   };
   function svgTagPattern(tags) {
@@ -47962,6 +47967,7 @@ ${content}</tr>
       _defsSelection.append("marker").attr("id", "ideditor-viewfield-marker-wireframe").attr("viewBox", "0 0 16 16").attr("refX", 8).attr("refY", 16).attr("markerWidth", 4).attr("markerHeight", 4).attr("markerUnits", "strokeWidth").attr("orient", "auto").append("path").attr("class", "viewfield-marker-path").attr("d", "M 6,14 C 8,13.4 8,13.4 10,14 L 16,3 C 12,0 4,0 0,3 z").attr("fill", "none").attr("stroke", "#fff").attr("stroke-width", "0.5px").attr("stroke-opacity", "0.75");
       var patterns2 = _defsSelection.selectAll("pattern").data([
         // pattern name, pattern image name
+        ["anchorage", "anchorage"],
         ["beach", "dots"],
         ["construction", "construction"],
         ["cemetery", "cemetery"],
@@ -47969,6 +47975,7 @@ ${content}</tr>
         ["cemetery_buddhist", "cemetery_buddhist"],
         ["cemetery_muslim", "cemetery_muslim"],
         ["cemetery_jewish", "cemetery_jewish"],
+        ["fairway", "lines"],
         ["farmland", "farmland"],
         ["farmyard", "farmyard"],
         ["forest", "forest"],
@@ -48252,6 +48259,9 @@ ${content}</tr>
       ["point", "shop", "*", 10],
       ["point", "tourism", "*", 10],
       ["point", "camp_site", "*", 10],
+      ["line", "seamark:name", "*", 12],
+      ["area", "seamark:name", "*", 12],
+      ["point", "seamark:name", "*", 10],
       ["line", "ref", "*", 12],
       ["area", "ref", "*", 12],
       ["point", "ref", "*", 10],
@@ -62344,7 +62354,13 @@ ${content}</tr>
               return prerequisiteTag.valueNot !== value;
             }
             if (prerequisiteTag.value) {
-              return prerequisiteTag.value === value;
+              if (Array.isArray(prerequisiteTag.value)) {
+                return prerequisiteTag.value.includes(value);
+              } else if (prerequisiteTag.value.startsWith("/") && prerequisiteTag.value.endsWith("/")) {
+                return new RegExp(prerequisiteTag.value.slice(1).slice(0, -1)).test(value);
+              } else {
+                return prerequisiteTag.value === value;
+              }
             }
           } else if (prerequisiteTag.keyNot) {
             if (entity.tags[prerequisiteTag.keyNot])
@@ -65667,7 +65683,7 @@ ${content}</tr>
       });
       link2.exit().remove();
       var linkEnter = link2.enter().append("a").attr("class", "view-on-osm").attr("target", "_blank").attr("href", url).call(svgIcon("#iD-icon-out-link", "inline"));
-      if (!_what.timestamp)
+      if (!_what || _what.timestamp)
         return;
       const timeago = getRelativeDate(new Date(_what.timestamp));
       linkEnter.append("span").text(_t("inspector.last_modified", { timeago, user: _what.user }));
