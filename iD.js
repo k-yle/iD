@@ -65666,6 +65666,8 @@ ${content}</tr>
       return `on ${date.toLocaleDateString(preferredLanguage)}`;
     }
     const [number3, units] = timeSince(date);
+    if (!Number.isFinite(number3))
+      return "-";
     return new Intl.RelativeTimeFormat(preferredLanguage).format(-number3, units);
   }
   function uiViewOnOSM(context) {
