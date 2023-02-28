@@ -15715,6 +15715,7 @@
     actionRevert: () => actionRevert,
     actionRotate: () => actionRotate,
     actionScale: () => actionScale,
+    actionSequence: () => actionSequence,
     actionSplit: () => actionSplit,
     actionStraightenNodes: () => actionStraightenNodes,
     actionStraightenWay: () => actionStraightenWay,
@@ -15823,6 +15824,7 @@
     operationReflectShort: () => operationReflectShort,
     operationReverse: () => operationReverse,
     operationRotate: () => operationRotate,
+    operationSequence: () => operationSequence,
     operationSplit: () => operationSplit,
     operationStraighten: () => operationStraighten,
     osmAreaKeys: () => osmAreaKeys,
@@ -29104,6 +29106,34 @@
     return action;
   };
 
+  // modules/actions/sequence.js
+  var actionSequence = (nodes) => {
+    const action = (options2) => (graph) => {
+      let current = options2.startNum;
+      for (const node of nodes) {
+        let modifiedNode = osmNode({
+          ...node,
+          tags: {
+            ...node.tags,
+            [options2.key]: options2.template.replace(/\%/g, `${current}`)
+          }
+        });
+        graph = graph.replace(modifiedNode);
+        current += options2.incrementBy;
+      }
+      return graph;
+    };
+    action.disabled = () => {
+      if (nodes.some((n2) => n2.type !== "node"))
+        return "not_closed";
+      if (nodes.length < 1)
+        return "less_than_four_nodes";
+      return false;
+    };
+    action.transitionable = true;
+    return action;
+  };
+
   // modules/actions/delete_way.js
   function actionDeleteWay(wayID) {
     function canDeleteNode(node, graph) {
@@ -34641,6 +34671,67 @@
     return operation;
   }
 
+  // modules/operations/sequence.js
+  function operationSequence(context, selectedIDs) {
+    let _extent;
+    const nodes = utilGetAllNodes(selectedIDs, context.graph());
+    const _action = getAction(selectedIDs[0]);
+    function getAction(entityID) {
+      const entity = context.entity(entityID);
+      if (selectedIDs.length < 1)
+        return null;
+      if (!_extent) {
+        _extent = entity.extent(context.graph());
+      } else {
+        _extent = _extent.extend(entity.extent(context.graph()));
+      }
+      return actionSequence(nodes);
+    }
+    const operation = () => {
+      if (!_action)
+        return;
+      const key = prompt("What key?", "ref");
+      if (!key)
+        return;
+      const template = prompt("Enter pattern for value, use % for the dynamic value", "%");
+      if (!template)
+        return;
+      let _startNum = prompt("Start number", "0");
+      if (_startNum === null)
+        return;
+      const startNum = +_startNum;
+      let incrementBy = +prompt("Increment by", "1");
+      if (incrementBy === null)
+        return;
+      context.perform(_action({ key, template, startNum, incrementBy }), operation.annotation());
+      window.setTimeout(() => context.validator().validate(), 300);
+    };
+    operation.available = () => !!_action;
+    operation.disabled = () => {
+      if (!_action)
+        return "";
+      const isDisabled = _action.disabled();
+      if (isDisabled) {
+        return isDisabled;
+      } else if (_extent.percentContainedIn(context.map().extent()) < 0.8) {
+        return "too_large";
+      } else if (selectedIDs.some(context.hasHiddenConnections)) {
+        return "connected_to_hidden";
+      }
+      return false;
+    };
+    operation.tooltip = () => {
+      const disableReason = operation.disabled();
+      return disableReason ? _t("operations.sequence.disabled." + disableReason) : _t("operations.sequence.tooltip");
+    };
+    operation.annotation = () => "used the sequence operation";
+    operation.id = "sequence";
+    operation.keys = ["X"];
+    operation.title = _t("operations.sequence.title");
+    operation.behavior = behaviorOperation(context).which(operation);
+    return operation;
+  }
+
   // modules/modes/move.js
   function modeMove(context, entityIDs, baseGraph) {
     var _tolerancePx = 4;
@@ -34653,6 +34744,7 @@
       behaviorEdit(context),
       operationCircularize(context, entityIDs).behavior,
       operationDivide(context, entityIDs).behavior,
+      operationSequence(context, entityIDs).behavior,
       operationDelete(context, entityIDs).behavior,
       operationOrthogonalize(context, entityIDs).behavior,
       operationReflectLong(context, entityIDs).behavior,
@@ -54028,6 +54120,7 @@ ${content}</tr>
         // operation icons
         circularize_icon: icon("#iD-operation-circularize", "inline operation"),
         divide_icon: icon("#iD-operation-divide", "inline operation"),
+        sequence_icon: icon("#iD-operation-divide", "inline operation"),
         continue_icon: icon("#iD-operation-continue", "inline operation"),
         copy_icon: icon("#iD-operation-copy", "inline operation"),
         delete_icon: icon("#iD-operation-delete", "inline operation"),
@@ -69564,6 +69657,7 @@ ${content}</tr>
         "orthogonalize",
         "circularize",
         "divide",
+        "sequence",
         "move",
         "rotate",
         "reflect",
@@ -77024,6 +77118,7 @@ ${content}</tr>
     operationReflectShort: () => operationReflectShort,
     operationReverse: () => operationReverse,
     operationRotate: () => operationRotate,
+    operationSequence: () => operationSequence,
     operationSplit: () => operationSplit,
     operationStraighten: () => operationStraighten
   });
