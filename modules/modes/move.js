@@ -21,6 +21,7 @@ import { operationDelete } from '../operations/delete';
 import { operationOrthogonalize } from '../operations/orthogonalize';
 import { operationReflectLong, operationReflectShort } from '../operations/reflect';
 import { operationRotate } from '../operations/rotate';
+import { operationSequence } from '../operations/sequence';
 
 
 export function modeMove(context, entityIDs, baseGraph) {
@@ -37,6 +38,7 @@ export function modeMove(context, entityIDs, baseGraph) {
         behaviorEdit(context),
         operationCircularize(context, entityIDs).behavior,
         operationDivide(context, entityIDs).behavior,
+        operationSequence(context, entityIDs).behavior,
         operationDelete(context, entityIDs).behavior,
         operationOrthogonalize(context, entityIDs).behavior,
         operationReflectLong(context, entityIDs).behavior,

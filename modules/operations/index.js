@@ -1,5 +1,6 @@
 export { operationCircularize } from './circularize';
 export { operationDivide } from './divide';
+export { operationSequence } from './sequence';
 export { operationContinue } from './continue';
 export { operationCopy } from './copy';
 export { operationDelete } from './delete';

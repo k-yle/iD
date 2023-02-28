@@ -329,12 +329,16 @@
             },
             {
                 "shortcuts": ["operations.divide.key"],
-                "text": "shortcuts.editing.operations.divide"
-            },
-            {
-              "shortcuts": ["operations.reflect.key.long"],
-              "text": "shortcuts.editing.operations.reflect_long"
-            },
+                        "text": "shortcuts.editing.operations.divide"
+                    },
+                    {
+                        "shortcuts": ["operations.sequence.key"],
+                        "text": "shortcuts.editing.operations.sequence"
+                    },
+                    {
+                        "shortcuts": ["operations.reflect.key.long"],
+                        "text": "shortcuts.editing.operations.reflect_long"
+                    },
             {
               "shortcuts": ["operations.reflect.key.short"],
               "text": "shortcuts.editing.operations.reflect_short"
