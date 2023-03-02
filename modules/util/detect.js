@@ -98,6 +98,10 @@ export function utilDetect(refresh) {
         .filter(Boolean)
     ));
 
+  if (_detected.browserLocales[0].startsWith('en')) {
+    _detected.browserLocales = ['en-NZ'];
+  }
+
 
   /* Host */
   const loc = window.top.location;
