@@ -26379,8 +26379,8 @@
     let _favorites;
     let _geometryIndex = { point: {}, vertex: {}, line: {}, area: {}, relation: {} };
     let _loadPromise;
-    _this.ensureLoaded = () => {
-      if (_loadPromise)
+    _this.ensureLoaded = (bypassCache) => {
+      if (_loadPromise && !bypassCache)
         return _loadPromise;
       return _loadPromise = Promise.all([
         _mainFileFetcher.get("preset_categories"),
@@ -43286,7 +43286,7 @@ ${content}</tr>
   }
 
   // modules/validations/suspicious_name.js
-  function validationSuspiciousName() {
+  function validationSuspiciousName(context) {
     const type2 = "suspicious_name";
     const keysToTestForGenericValues = [
       "aerialway",
@@ -43327,20 +43327,25 @@ ${content}</tr>
       }
       return false;
     }
-    function isGenericName(name, tags) {
+    function nameMatchesPresetName(name, presetName) {
+      if (!presetName)
+        return false;
+      return name.toLowerCase() === presetName.toLowerCase();
+    }
+    function isGenericName(name, tags, presetName) {
       name = name.toLowerCase();
-      return nameMatchesRawTag(name, tags) || isGenericMatchInNsi(tags);
+      return nameMatchesRawTag(name, tags) || nameMatchesPresetName(name, presetName) || isGenericMatchInNsi(tags);
     }
     function makeGenericNameIssue(entityId, nameKey, genericName, langCode) {
       return new validationIssue({
         type: type2,
         subtype: "generic_name",
         severity: "warning",
-        message: function(context) {
-          let entity = context.hasEntity(this.entityIds[0]);
+        message: function(context2) {
+          let entity = context2.hasEntity(this.entityIds[0]);
           if (!entity)
             return "";
-          let preset = _mainPresetIndex.match(entity, context.graph());
+          let preset = _mainPresetIndex.match(entity, context2.graph());
           let langName = langCode && _mainLocalizer.languageName(langCode);
           return _t.append(
             "issues.generic_name.message" + (langName ? "_language" : ""),
@@ -43355,12 +43360,12 @@ ${content}</tr>
             new validationIssueFix({
               icon: "iD-operation-delete",
               title: _t.append("issues.fix.remove_the_name.title"),
-              onClick: function(context) {
+              onClick: function(context2) {
                 let entityId2 = this.issue.entityIds[0];
-                let entity = context.entity(entityId2);
+                let entity = context2.entity(entityId2);
                 let tags = Object.assign({}, entity.tags);
                 delete tags[nameKey];
-                context.perform(
+                context2.perform(
                   actionChangeTags(entityId2, tags),
                   _t("issues.fix.remove_generic_name.annotation")
                 );
@@ -43378,11 +43383,11 @@ ${content}</tr>
         type: type2,
         subtype: "not_name",
         severity: "warning",
-        message: function(context) {
-          const entity = context.hasEntity(this.entityIds[0]);
+        message: function(context2) {
+          const entity = context2.hasEntity(this.entityIds[0]);
           if (!entity)
             return "";
-          const preset = _mainPresetIndex.match(entity, context.graph());
+          const preset = _mainPresetIndex.match(entity, context2.graph());
           const langName = langCode && _mainLocalizer.languageName(langCode);
           return _t.append(
             "issues.incorrect_name.message" + (langName ? "_language" : ""),
@@ -43397,12 +43402,12 @@ ${content}</tr>
             new validationIssueFix({
               icon: "iD-operation-delete",
               title: _t.append("issues.fix.remove_the_name.title"),
-              onClick: function(context) {
+              onClick: function(context2) {
                 const entityId2 = this.issue.entityIds[0];
-                const entity = context.entity(entityId2);
+                const entity = context2.entity(entityId2);
                 let tags = Object.assign({}, entity.tags);
                 delete tags[nameKey];
-                context.perform(
+                context2.perform(
                   actionChangeTags(entityId2, tags),
                   _t("issues.fix.remove_mistaken_name.annotation")
                 );
@@ -43422,6 +43427,7 @@ ${content}</tr>
         return [];
       let issues = [];
       const notNames2 = (tags["not:name"] || "").split(";");
+      const presetName = _mainPresetIndex.match(entity, context.graph()).name();
       for (let key in tags) {
         const m = key.match(/^name(?:(?::)([a-zA-Z_-]+))?$/);
         if (!m)
@@ -43437,7 +43443,7 @@ ${content}</tr>
             }
           }
         }
-        if (isGenericName(value, tags)) {
+        if (isGenericName(value, tags, presetName)) {
           issues.provisional = _waitingForNsi;
           issues.push(makeGenericNameIssue(entity.id, key, value, langCode));
         }
