@@ -65785,7 +65785,7 @@ ${content}</tr>
       link2.exit().remove();
       var linkEnter = link2.enter().append("a").attr("class", "view-on-osm").attr("target", "_blank").attr("href", url).call(svgIcon("#iD-icon-out-link", "inline"));
       const timeago = _what ? getRelativeDate(new Date(_what.timestamp)) : "-";
-      linkEnter.append("span").text(_t("inspector.last_modified", { timeago, user: _what.user }));
+      linkEnter.append("span").text(_t("inspector.last_modified", { timeago, user: _what ? _what.user : "Unknown" }));
     }
     viewOnOSM.what = function(_) {
       if (!arguments.length)
