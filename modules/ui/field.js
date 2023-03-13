@@ -344,6 +344,8 @@ export function uiField(context, presetField, entityIDs, options) {
                     if (prerequisiteTag.value) {
                         if (Array.isArray(prerequisiteTag.value)) {
                             return prerequisiteTag.value.includes(value);
+                        } else if (prerequisiteTag.value.startsWith('/') && prerequisiteTag.value.endsWith('/')) {
+                            return new RegExp(prerequisiteTag.value.slice(1).slice(0, -1)).test(value);
                         } else {
                             return prerequisiteTag.value === value;
                         }

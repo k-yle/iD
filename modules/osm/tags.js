@@ -65,6 +65,10 @@ export var osmAreaKeysExceptions = {
     },
     amenity: {
         bicycle_parking: true
+    },
+    'seamark:type': {
+        'shoreline_construction': true,
+        'water_turbulence': true
     }
 };
 
@@ -226,7 +230,11 @@ export var osmRightSideIsInsideTags = {
         'platform_edge': 'man_made', // re-use rendering style for one-sided man_made=*
     },
     'waterway': {
+        'floating_barrier': true,
         'weir': true
+    },
+    'seamark:shoreline_construction:category': {
+        'fender': 'man_made', // re-use rendering style for one-sided man_made=*
     }
 };
 

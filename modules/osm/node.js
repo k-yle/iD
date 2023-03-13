@@ -77,7 +77,7 @@ Object.assign(osmNode.prototype, {
             val = (this.tags.direction || '').toLowerCase();
 
             // better suffix-style direction tag
-            var re = /:direction$/i;
+            var re = /:(direction|orientation)$/i;
             var keys = Object.keys(this.tags);
             for (i = 0; i < keys.length; i++) {
                 if (re.test(keys[i])) {

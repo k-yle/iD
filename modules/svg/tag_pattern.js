@@ -74,6 +74,10 @@ var patterns = {
     surface: {
         grass: 'grass',
         sand: 'beach'
+    },
+    'seamark:type': {
+        anchorage: 'anchorage',
+        fairway: 'fairway',
     }
 };
 
