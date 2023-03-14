@@ -13958,6 +13958,568 @@
     }
   });
 
+  // node_modules/name-suggestion-index/node_modules/quickselect/quickselect.js
+  var require_quickselect2 = __commonJS({
+    "node_modules/name-suggestion-index/node_modules/quickselect/quickselect.js"(exports2, module2) {
+      (function(global3, factory) {
+        typeof exports2 === "object" && typeof module2 !== "undefined" ? module2.exports = factory() : typeof define === "function" && define.amd ? define(factory) : global3.quickselect = factory();
+      })(exports2, function() {
+        "use strict";
+        function quickselect2(arr, k2, left, right, compare) {
+          quickselectStep(arr, k2, left || 0, right || arr.length - 1, compare || defaultCompare);
+        }
+        function quickselectStep(arr, k2, left, right, compare) {
+          while (right > left) {
+            if (right - left > 600) {
+              var n2 = right - left + 1;
+              var m = k2 - left + 1;
+              var z = Math.log(n2);
+              var s = 0.5 * Math.exp(2 * z / 3);
+              var sd = 0.5 * Math.sqrt(z * s * (n2 - s) / n2) * (m - n2 / 2 < 0 ? -1 : 1);
+              var newLeft = Math.max(left, Math.floor(k2 - m * s / n2 + sd));
+              var newRight = Math.min(right, Math.floor(k2 + (n2 - m) * s / n2 + sd));
+              quickselectStep(arr, k2, newLeft, newRight, compare);
+            }
+            var t = arr[k2];
+            var i2 = left;
+            var j2 = right;
+            swap2(arr, left, k2);
+            if (compare(arr[right], t) > 0)
+              swap2(arr, left, right);
+            while (i2 < j2) {
+              swap2(arr, i2, j2);
+              i2++;
+              j2--;
+              while (compare(arr[i2], t) < 0)
+                i2++;
+              while (compare(arr[j2], t) > 0)
+                j2--;
+            }
+            if (compare(arr[left], t) === 0)
+              swap2(arr, left, j2);
+            else {
+              j2++;
+              swap2(arr, j2, right);
+            }
+            if (j2 <= k2)
+              left = j2 + 1;
+            if (k2 <= j2)
+              right = j2 - 1;
+          }
+        }
+        function swap2(arr, i2, j2) {
+          var tmp = arr[i2];
+          arr[i2] = arr[j2];
+          arr[j2] = tmp;
+        }
+        function defaultCompare(a, b) {
+          return a < b ? -1 : a > b ? 1 : 0;
+        }
+        return quickselect2;
+      });
+    }
+  });
+
+  // node_modules/name-suggestion-index/node_modules/rbush/index.js
+  var require_rbush2 = __commonJS({
+    "node_modules/name-suggestion-index/node_modules/rbush/index.js"(exports2, module2) {
+      "use strict";
+      module2.exports = rbush;
+      module2.exports.default = rbush;
+      var quickselect2 = require_quickselect2();
+      function rbush(maxEntries, format2) {
+        if (!(this instanceof rbush))
+          return new rbush(maxEntries, format2);
+        this._maxEntries = Math.max(4, maxEntries || 9);
+        this._minEntries = Math.max(2, Math.ceil(this._maxEntries * 0.4));
+        if (format2) {
+          this._initFormat(format2);
+        }
+        this.clear();
+      }
+      rbush.prototype = {
+        all: function() {
+          return this._all(this.data, []);
+        },
+        search: function(bbox2) {
+          var node = this.data, result = [], toBBox = this.toBBox;
+          if (!intersects(bbox2, node))
+            return result;
+          var nodesToSearch = [], i2, len, child, childBBox;
+          while (node) {
+            for (i2 = 0, len = node.children.length; i2 < len; i2++) {
+              child = node.children[i2];
+              childBBox = node.leaf ? toBBox(child) : child;
+              if (intersects(bbox2, childBBox)) {
+                if (node.leaf)
+                  result.push(child);
+                else if (contains(bbox2, childBBox))
+                  this._all(child, result);
+                else
+                  nodesToSearch.push(child);
+              }
+            }
+            node = nodesToSearch.pop();
+          }
+          return result;
+        },
+        collides: function(bbox2) {
+          var node = this.data, toBBox = this.toBBox;
+          if (!intersects(bbox2, node))
+            return false;
+          var nodesToSearch = [], i2, len, child, childBBox;
+          while (node) {
+            for (i2 = 0, len = node.children.length; i2 < len; i2++) {
+              child = node.children[i2];
+              childBBox = node.leaf ? toBBox(child) : child;
+              if (intersects(bbox2, childBBox)) {
+                if (node.leaf || contains(bbox2, childBBox))
+                  return true;
+                nodesToSearch.push(child);
+              }
+            }
+            node = nodesToSearch.pop();
+          }
+          return false;
+        },
+        load: function(data) {
+          if (!(data && data.length))
+            return this;
+          if (data.length < this._minEntries) {
+            for (var i2 = 0, len = data.length; i2 < len; i2++) {
+              this.insert(data[i2]);
+            }
+            return this;
+          }
+          var node = this._build(data.slice(), 0, data.length - 1, 0);
+          if (!this.data.children.length) {
+            this.data = node;
+          } else if (this.data.height === node.height) {
+            this._splitRoot(this.data, node);
+          } else {
+            if (this.data.height < node.height) {
+              var tmpNode = this.data;
+              this.data = node;
+              node = tmpNode;
+            }
+            this._insert(node, this.data.height - node.height - 1, true);
+          }
+          return this;
+        },
+        insert: function(item) {
+          if (item)
+            this._insert(item, this.data.height - 1);
+          return this;
+        },
+        clear: function() {
+          this.data = createNode([]);
+          return this;
+        },
+        remove: function(item, equalsFn) {
+          if (!item)
+            return this;
+          var node = this.data, bbox2 = this.toBBox(item), path = [], indexes = [], i2, parent, index, goingUp;
+          while (node || path.length) {
+            if (!node) {
+              node = path.pop();
+              parent = path[path.length - 1];
+              i2 = indexes.pop();
+              goingUp = true;
+            }
+            if (node.leaf) {
+              index = findItem(item, node.children, equalsFn);
+              if (index !== -1) {
+                node.children.splice(index, 1);
+                path.push(node);
+                this._condense(path);
+                return this;
+              }
+            }
+            if (!goingUp && !node.leaf && contains(node, bbox2)) {
+              path.push(node);
+              indexes.push(i2);
+              i2 = 0;
+              parent = node;
+              node = node.children[0];
+            } else if (parent) {
+              i2++;
+              node = parent.children[i2];
+              goingUp = false;
+            } else
+              node = null;
+          }
+          return this;
+        },
+        toBBox: function(item) {
+          return item;
+        },
+        compareMinX: compareNodeMinX,
+        compareMinY: compareNodeMinY,
+        toJSON: function() {
+          return this.data;
+        },
+        fromJSON: function(data) {
+          this.data = data;
+          return this;
+        },
+        _all: function(node, result) {
+          var nodesToSearch = [];
+          while (node) {
+            if (node.leaf)
+              result.push.apply(result, node.children);
+            else
+              nodesToSearch.push.apply(nodesToSearch, node.children);
+            node = nodesToSearch.pop();
+          }
+          return result;
+        },
+        _build: function(items, left, right, height) {
+          var N = right - left + 1, M = this._maxEntries, node;
+          if (N <= M) {
+            node = createNode(items.slice(left, right + 1));
+            calcBBox(node, this.toBBox);
+            return node;
+          }
+          if (!height) {
+            height = Math.ceil(Math.log(N) / Math.log(M));
+            M = Math.ceil(N / Math.pow(M, height - 1));
+          }
+          node = createNode([]);
+          node.leaf = false;
+          node.height = height;
+          var N2 = Math.ceil(N / M), N1 = N2 * Math.ceil(Math.sqrt(M)), i2, j2, right2, right3;
+          multiSelect(items, left, right, N1, this.compareMinX);
+          for (i2 = left; i2 <= right; i2 += N1) {
+            right2 = Math.min(i2 + N1 - 1, right);
+            multiSelect(items, i2, right2, N2, this.compareMinY);
+            for (j2 = i2; j2 <= right2; j2 += N2) {
+              right3 = Math.min(j2 + N2 - 1, right2);
+              node.children.push(this._build(items, j2, right3, height - 1));
+            }
+          }
+          calcBBox(node, this.toBBox);
+          return node;
+        },
+        _chooseSubtree: function(bbox2, node, level, path) {
+          var i2, len, child, targetNode, area, enlargement, minArea, minEnlargement;
+          while (true) {
+            path.push(node);
+            if (node.leaf || path.length - 1 === level)
+              break;
+            minArea = minEnlargement = Infinity;
+            for (i2 = 0, len = node.children.length; i2 < len; i2++) {
+              child = node.children[i2];
+              area = bboxArea(child);
+              enlargement = enlargedArea(bbox2, child) - area;
+              if (enlargement < minEnlargement) {
+                minEnlargement = enlargement;
+                minArea = area < minArea ? area : minArea;
+                targetNode = child;
+              } else if (enlargement === minEnlargement) {
+                if (area < minArea) {
+                  minArea = area;
+                  targetNode = child;
+                }
+              }
+            }
+            node = targetNode || node.children[0];
+          }
+          return node;
+        },
+        _insert: function(item, level, isNode) {
+          var toBBox = this.toBBox, bbox2 = isNode ? item : toBBox(item), insertPath = [];
+          var node = this._chooseSubtree(bbox2, this.data, level, insertPath);
+          node.children.push(item);
+          extend2(node, bbox2);
+          while (level >= 0) {
+            if (insertPath[level].children.length > this._maxEntries) {
+              this._split(insertPath, level);
+              level--;
+            } else
+              break;
+          }
+          this._adjustParentBBoxes(bbox2, insertPath, level);
+        },
+        // split overflowed node into two
+        _split: function(insertPath, level) {
+          var node = insertPath[level], M = node.children.length, m = this._minEntries;
+          this._chooseSplitAxis(node, m, M);
+          var splitIndex = this._chooseSplitIndex(node, m, M);
+          var newNode = createNode(node.children.splice(splitIndex, node.children.length - splitIndex));
+          newNode.height = node.height;
+          newNode.leaf = node.leaf;
+          calcBBox(node, this.toBBox);
+          calcBBox(newNode, this.toBBox);
+          if (level)
+            insertPath[level - 1].children.push(newNode);
+          else
+            this._splitRoot(node, newNode);
+        },
+        _splitRoot: function(node, newNode) {
+          this.data = createNode([node, newNode]);
+          this.data.height = node.height + 1;
+          this.data.leaf = false;
+          calcBBox(this.data, this.toBBox);
+        },
+        _chooseSplitIndex: function(node, m, M) {
+          var i2, bbox1, bbox2, overlap, area, minOverlap, minArea, index;
+          minOverlap = minArea = Infinity;
+          for (i2 = m; i2 <= M - m; i2++) {
+            bbox1 = distBBox(node, 0, i2, this.toBBox);
+            bbox2 = distBBox(node, i2, M, this.toBBox);
+            overlap = intersectionArea(bbox1, bbox2);
+            area = bboxArea(bbox1) + bboxArea(bbox2);
+            if (overlap < minOverlap) {
+              minOverlap = overlap;
+              index = i2;
+              minArea = area < minArea ? area : minArea;
+            } else if (overlap === minOverlap) {
+              if (area < minArea) {
+                minArea = area;
+                index = i2;
+              }
+            }
+          }
+          return index;
+        },
+        // sorts node children by the best axis for split
+        _chooseSplitAxis: function(node, m, M) {
+          var compareMinX = node.leaf ? this.compareMinX : compareNodeMinX, compareMinY = node.leaf ? this.compareMinY : compareNodeMinY, xMargin = this._allDistMargin(node, m, M, compareMinX), yMargin = this._allDistMargin(node, m, M, compareMinY);
+          if (xMargin < yMargin)
+            node.children.sort(compareMinX);
+        },
+        // total margin of all possible split distributions where each node is at least m full
+        _allDistMargin: function(node, m, M, compare) {
+          node.children.sort(compare);
+          var toBBox = this.toBBox, leftBBox = distBBox(node, 0, m, toBBox), rightBBox = distBBox(node, M - m, M, toBBox), margin = bboxMargin(leftBBox) + bboxMargin(rightBBox), i2, child;
+          for (i2 = m; i2 < M - m; i2++) {
+            child = node.children[i2];
+            extend2(leftBBox, node.leaf ? toBBox(child) : child);
+            margin += bboxMargin(leftBBox);
+          }
+          for (i2 = M - m - 1; i2 >= m; i2--) {
+            child = node.children[i2];
+            extend2(rightBBox, node.leaf ? toBBox(child) : child);
+            margin += bboxMargin(rightBBox);
+          }
+          return margin;
+        },
+        _adjustParentBBoxes: function(bbox2, path, level) {
+          for (var i2 = level; i2 >= 0; i2--) {
+            extend2(path[i2], bbox2);
+          }
+        },
+        _condense: function(path) {
+          for (var i2 = path.length - 1, siblings; i2 >= 0; i2--) {
+            if (path[i2].children.length === 0) {
+              if (i2 > 0) {
+                siblings = path[i2 - 1].children;
+                siblings.splice(siblings.indexOf(path[i2]), 1);
+              } else
+                this.clear();
+            } else
+              calcBBox(path[i2], this.toBBox);
+          }
+        },
+        _initFormat: function(format2) {
+          var compareArr = ["return a", " - b", ";"];
+          this.compareMinX = new Function("a", "b", compareArr.join(format2[0]));
+          this.compareMinY = new Function("a", "b", compareArr.join(format2[1]));
+          this.toBBox = new Function(
+            "a",
+            "return {minX: a" + format2[0] + ", minY: a" + format2[1] + ", maxX: a" + format2[2] + ", maxY: a" + format2[3] + "};"
+          );
+        }
+      };
+      function findItem(item, items, equalsFn) {
+        if (!equalsFn)
+          return items.indexOf(item);
+        for (var i2 = 0; i2 < items.length; i2++) {
+          if (equalsFn(item, items[i2]))
+            return i2;
+        }
+        return -1;
+      }
+      function calcBBox(node, toBBox) {
+        distBBox(node, 0, node.children.length, toBBox, node);
+      }
+      function distBBox(node, k2, p, toBBox, destNode) {
+        if (!destNode)
+          destNode = createNode(null);
+        destNode.minX = Infinity;
+        destNode.minY = Infinity;
+        destNode.maxX = -Infinity;
+        destNode.maxY = -Infinity;
+        for (var i2 = k2, child; i2 < p; i2++) {
+          child = node.children[i2];
+          extend2(destNode, node.leaf ? toBBox(child) : child);
+        }
+        return destNode;
+      }
+      function extend2(a, b) {
+        a.minX = Math.min(a.minX, b.minX);
+        a.minY = Math.min(a.minY, b.minY);
+        a.maxX = Math.max(a.maxX, b.maxX);
+        a.maxY = Math.max(a.maxY, b.maxY);
+        return a;
+      }
+      function compareNodeMinX(a, b) {
+        return a.minX - b.minX;
+      }
+      function compareNodeMinY(a, b) {
+        return a.minY - b.minY;
+      }
+      function bboxArea(a) {
+        return (a.maxX - a.minX) * (a.maxY - a.minY);
+      }
+      function bboxMargin(a) {
+        return a.maxX - a.minX + (a.maxY - a.minY);
+      }
+      function enlargedArea(a, b) {
+        return (Math.max(b.maxX, a.maxX) - Math.min(b.minX, a.minX)) * (Math.max(b.maxY, a.maxY) - Math.min(b.minY, a.minY));
+      }
+      function intersectionArea(a, b) {
+        var minX = Math.max(a.minX, b.minX), minY = Math.max(a.minY, b.minY), maxX = Math.min(a.maxX, b.maxX), maxY = Math.min(a.maxY, b.maxY);
+        return Math.max(0, maxX - minX) * Math.max(0, maxY - minY);
+      }
+      function contains(a, b) {
+        return a.minX <= b.minX && a.minY <= b.minY && b.maxX <= a.maxX && b.maxY <= a.maxY;
+      }
+      function intersects(a, b) {
+        return b.minX <= a.maxX && b.minY <= a.maxY && b.maxX >= a.minX && b.maxY >= a.minY;
+      }
+      function createNode(children2) {
+        return {
+          children: children2,
+          height: 1,
+          leaf: true,
+          minX: Infinity,
+          minY: Infinity,
+          maxX: -Infinity,
+          maxY: -Infinity
+        };
+      }
+      function multiSelect(arr, left, right, n2, compare) {
+        var stack = [left, right], mid;
+        while (stack.length) {
+          right = stack.pop();
+          left = stack.pop();
+          if (right - left <= n2)
+            continue;
+          mid = left + Math.ceil((right - left) / n2 / 2) * n2;
+          quickselect2(arr, mid, left, right, compare);
+          stack.push(left, mid, mid, right);
+        }
+      }
+    }
+  });
+
+  // node_modules/name-suggestion-index/node_modules/which-polygon/index.js
+  var require_which_polygon2 = __commonJS({
+    "node_modules/name-suggestion-index/node_modules/which-polygon/index.js"(exports2, module2) {
+      "use strict";
+      var rbush = require_rbush2();
+      var lineclip2 = require_lineclip();
+      module2.exports = whichPolygon5;
+      function whichPolygon5(data) {
+        var bboxes = [];
+        for (var i2 = 0; i2 < data.features.length; i2++) {
+          var feature3 = data.features[i2];
+          if (!feature3.geometry)
+            continue;
+          var coords = feature3.geometry.coordinates;
+          if (feature3.geometry.type === "Polygon") {
+            bboxes.push(treeItem(coords, feature3.properties));
+          } else if (feature3.geometry.type === "MultiPolygon") {
+            for (var j2 = 0; j2 < coords.length; j2++) {
+              bboxes.push(treeItem(coords[j2], feature3.properties));
+            }
+          }
+        }
+        var tree = rbush().load(bboxes);
+        function query(p, multi) {
+          var output = [], result = tree.search({
+            minX: p[0],
+            minY: p[1],
+            maxX: p[0],
+            maxY: p[1]
+          });
+          for (var i3 = 0; i3 < result.length; i3++) {
+            if (insidePolygon(result[i3].coords, p)) {
+              if (multi)
+                output.push(result[i3].props);
+              else
+                return result[i3].props;
+            }
+          }
+          return multi && output.length ? output : null;
+        }
+        query.tree = tree;
+        query.bbox = function queryBBox(bbox2) {
+          var output = [];
+          var result = tree.search({
+            minX: bbox2[0],
+            minY: bbox2[1],
+            maxX: bbox2[2],
+            maxY: bbox2[3]
+          });
+          for (var i3 = 0; i3 < result.length; i3++) {
+            if (polygonIntersectsBBox(result[i3].coords, bbox2)) {
+              output.push(result[i3].props);
+            }
+          }
+          return output;
+        };
+        return query;
+      }
+      function polygonIntersectsBBox(polygon2, bbox2) {
+        var bboxCenter = [
+          (bbox2[0] + bbox2[2]) / 2,
+          (bbox2[1] + bbox2[3]) / 2
+        ];
+        if (insidePolygon(polygon2, bboxCenter))
+          return true;
+        for (var i2 = 0; i2 < polygon2.length; i2++) {
+          if (lineclip2(polygon2[i2], bbox2).length > 0)
+            return true;
+        }
+        return false;
+      }
+      function insidePolygon(rings, p) {
+        var inside = false;
+        for (var i2 = 0, len = rings.length; i2 < len; i2++) {
+          var ring = rings[i2];
+          for (var j2 = 0, len2 = ring.length, k2 = len2 - 1; j2 < len2; k2 = j2++) {
+            if (rayIntersect(p, ring[j2], ring[k2]))
+              inside = !inside;
+          }
+        }
+        return inside;
+      }
+      function rayIntersect(p, p1, p2) {
+        return p1[1] > p[1] !== p2[1] > p[1] && p[0] < (p2[0] - p1[0]) * (p[1] - p1[1]) / (p2[1] - p1[1]) + p1[0];
+      }
+      function treeItem(coords, props) {
+        var item = {
+          minX: Infinity,
+          minY: Infinity,
+          maxX: -Infinity,
+          maxY: -Infinity,
+          coords,
+          props
+        };
+        for (var i2 = 0; i2 < coords[0].length; i2++) {
+          var p = coords[0][i2];
+          item.minX = Math.min(item.minX, p[0]);
+          item.minY = Math.min(item.minY, p[1]);
+          item.maxX = Math.max(item.maxX, p[0]);
+          item.maxY = Math.max(item.maxY, p[1]);
+        }
+        return item;
+      }
+    }
+  });
+
   // node_modules/store/src/util.js
   var require_util = __commonJS({
     "node_modules/store/src/util.js"(exports2, module2) {
@@ -16340,6 +16902,9 @@
     },
     waterway: {
       dam: true
+    },
+    "seamark:type": {
+      "water_turbulence": true
     }
   };
   function osmTagSuggestingArea(tags) {
@@ -16479,6 +17044,9 @@
     },
     "waterway": {
       "weir": true
+    },
+    "seamark:shoreline_construction:category": {
+      "fender": true
     }
   };
   var osmRoutableHighwayTagValues = {
@@ -26357,7 +26925,8 @@
   var _mainPresetIndex = presetIndex();
   function presetIndex() {
     const dispatch10 = dispatch_default("favoritePreset", "recentsChange");
-    const MAXRECENTS = 30;
+    const MAX_RECENTS_TO_STORE = 30;
+    const MAX_RECENTS_TO_SHOW = 8;
     const POINT = presetPreset("point", { name: "Point", tags: {}, geometry: ["point", "vertex"], matchScore: 0.1 });
     const LINE = presetPreset("line", { name: "Line", tags: {}, geometry: ["line"], matchScore: 0.1 });
     const AREA = presetPreset("area", { name: "Area", tags: { area: "yes" }, geometry: ["area"], matchScore: 0.1 });
@@ -26646,7 +27215,7 @@
     _this.defaults = (geometry, n2, startWithRecents, loc, extraPresets) => {
       let recents = [];
       if (startWithRecents) {
-        recents = _this.recent().matchGeometry(geometry).collection.slice(0, 4);
+        recents = _this.recent().matchGeometry(geometry).collection.slice(0, MAX_RECENTS_TO_SHOW);
       }
       let defaults2;
       if (_addablePresetIDs) {
@@ -26792,7 +27361,7 @@
       } else {
         item = RibbonItem(preset, "recent");
       }
-      while (items.length >= MAXRECENTS) {
+      while (items.length >= MAX_RECENTS_TO_STORE) {
         items.pop();
       }
       items.unshift(item);
@@ -29107,26 +29676,27 @@
   };
 
   // modules/actions/sequence.js
-  var actionSequence = (nodes) => {
+  var actionSequence = (osmFeatures) => {
     const action = (options2) => (graph) => {
       let current = options2.startNum;
-      for (const node of nodes) {
-        let modifiedNode = osmNode({
-          ...node,
-          tags: {
-            ...node.tags,
-            [options2.key]: options2.template.replace(/\%/g, `${current}`)
-          }
-        });
-        graph = graph.replace(modifiedNode);
-        current += options2.incrementBy;
+      if (!Number.isNaN(+current))
+        current = +current;
+      for (const osmFeature of osmFeatures) {
+        graph = graph.replace(osmFeature.mergeTags({
+          [options2.key]: options2.template.replace(/\%/g, `${current}`)
+        }));
+        if (typeof current === "number") {
+          current += options2.incrementBy;
+        } else {
+          current = String.fromCharCode(current.charCodeAt(0) + options2.incrementBy);
+        }
       }
       return graph;
     };
     action.disabled = () => {
-      if (nodes.some((n2) => n2.type !== "node"))
+      if (osmFeatures.some((n2) => n2.type === "relation"))
         return "not_closed";
-      if (nodes.length < 1)
+      if (osmFeatures.length < 1)
         return "less_than_four_nodes";
       return false;
     };
@@ -34674,7 +35244,8 @@
   // modules/operations/sequence.js
   function operationSequence(context, selectedIDs) {
     let _extent;
-    const nodes = utilGetAllNodes(selectedIDs, context.graph());
+    const graph = context.graph();
+    const osmFeatures = selectedIDs.map((id2) => graph.hasEntity(id2)).filter(Boolean);
     const _action = getAction(selectedIDs[0]);
     function getAction(entityID) {
       const entity = context.entity(entityID);
@@ -34685,7 +35256,7 @@
       } else {
         _extent = _extent.extend(entity.extent(context.graph()));
       }
-      return actionSequence(nodes);
+      return actionSequence(osmFeatures);
     }
     const operation = () => {
       if (!_action)
@@ -34696,13 +35267,13 @@
       const template = prompt("Enter pattern for value, use % for the dynamic value", "%");
       if (!template)
         return;
-      let _startNum = prompt("Start number", "0");
-      if (_startNum === null)
+      let startNum = prompt("Start number (or letter)", "0");
+      if (startNum === null)
         return;
-      const startNum = +_startNum;
-      let incrementBy = +prompt("Increment by", "1");
-      if (incrementBy === null)
+      let _incrementBy = prompt("Increment by", "1");
+      if (_incrementBy === null)
         return;
+      const incrementBy = +_incrementBy;
       context.perform(_action({ key, template, startNum, incrementBy }), operation.annotation());
       window.setTimeout(() => context.validator().validate(), 300);
     };
@@ -41053,7 +41624,7 @@ ${content}</tr>
         if (featureType1 === "waterway")
           return {};
         if (featureType1 === "railway")
-          return {};
+          return { railway: "railway_crossing" };
       } else {
         if (featureTypes.indexOf("highway") !== -1) {
           if (featureTypes.indexOf("railway") !== -1) {
@@ -71601,7 +72172,7 @@ ${content}</tr>
   };
 
   // node_modules/name-suggestion-index/lib/matcher.js
-  var import_which_polygon4 = __toESM(require_which_polygon(), 1);
+  var import_which_polygon4 = __toESM(require_which_polygon2(), 1);
 
   // node_modules/name-suggestion-index/lib/simplify.js
   var import_diacritics3 = __toESM(require_diacritics(), 1);
@@ -71620,6 +72191,11 @@ ${content}</tr>
         "amenity/casino",
         "amenity/gambling",
         "leisure/adult_gaming_centre"
+      ],
+      bar: [
+        "amenity/bar",
+        "amenity/pub",
+        "amenity/restaurant"
       ],
       beauty: [
         "shop/beauty",
@@ -71716,11 +72292,9 @@ ${content}</tr>
         "leisure/sports_center"
       ],
       food: [
-        "amenity/bar",
         "amenity/cafe",
         "amenity/fast_food",
         "amenity/ice_cream",
-        "amenity/pub",
         "amenity/restaurant",
         "shop/bakery",
         "shop/candy",
