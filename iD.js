@@ -16352,6 +16352,8 @@
     geoVecSubtract: () => geoVecSubtract,
     geoViewportEdge: () => geoViewportEdge,
     geoZoomToScale: () => geoZoomToScale,
+    getRadiusInPixels: () => getRadiusInPixels,
+    getRadiusTag: () => getRadiusTag,
     localizer: () => _mainLocalizer,
     locationManager: () => _sharedLocationManager,
     modeAddArea: () => modeAddArea,
@@ -16419,6 +16421,7 @@
     osmTurn: () => osmTurn,
     osmVertexTags: () => osmVertexTags,
     osmWay: () => osmWay,
+    parseDistanceWithUnit: () => parseDistanceWithUnit,
     prefs: () => corePreferences,
     presetCategory: () => presetCategory,
     presetCollection: () => presetCollection,
@@ -17046,7 +17049,8 @@
       "weir": true
     },
     "seamark:shoreline_construction:category": {
-      "fender": true
+      "fender": "man_made"
+      // re-use rendering style for one-sided man_made=*
     }
   };
   var osmRoutableHighwayTagValues = {
@@ -41609,15 +41613,21 @@ ${content}</tr>
           var entity1IsPath = osmPathHighwayTagValues[entity1.tags.highway];
           var entity2IsPath = osmPathHighwayTagValues[entity2.tags.highway];
           if ((entity1IsPath || entity2IsPath) && entity1IsPath !== entity2IsPath) {
+            if (!bothLines)
+              return {};
             var roadFeature = entity1IsPath ? entity2 : entity1;
             if (nonCrossingHighways[roadFeature.tags.highway]) {
               return {};
             }
             var pathFeature = entity1IsPath ? entity1 : entity2;
             if (["marked", "unmarked", "traffic_signals", "uncontrolled"].indexOf(pathFeature.tags.crossing) !== -1) {
-              return bothLines ? { highway: "crossing", crossing: pathFeature.tags.crossing } : {};
+              var tags = { highway: "crossing", crossing: pathFeature.tags.crossing };
+              if ("crossing:markings" in pathFeature.tags) {
+                tags["crossing:markings"] = pathFeature.tags["crossing:markings"];
+              }
+              return tags;
             }
-            return bothLines ? { highway: "crossing" } : {};
+            return { highway: "crossing" };
           }
           return {};
         }
@@ -51362,6 +51372,11 @@ ${content}</tr>
         return "node point " + d.id;
       }).order();
       enter.append("path").call(markerPath, "shadow");
+      enter.filter((d) => getRadiusTag(d.tags)).append("circle").attr("class", "radius").attr("data-nodeId", (node) => node.id);
+      selection2.selectAll(".radius").data([zoom]).attr("r", (_zoom, _zero, [self2]) => {
+        const node = graph.entities[self2.dataset.nodeId];
+        return getRadiusInPixels(node, context.projection);
+      });
       enter.append("ellipse").attr("cx", 0.5).attr("cy", 1).attr("rx", 6.5).attr("ry", 3).attr("class", "stroke");
       enter.append("path").call(markerPath, "stroke");
       enter.append("use").attr("transform", "translate(-5.5, -20)").attr("class", "icon").attr("width", "12px").attr("height", "12px");
@@ -51529,6 +51544,11 @@ ${content}</tr>
         return "node vertex " + d.id;
       }).order();
       enter.append("circle").attr("class", "shadow");
+      enter.filter((d) => getRadiusTag(d.tags)).append("circle").attr("class", "radius").attr("data-nodeId", (node) => node.id);
+      selection2.selectAll(".radius").data([zoom]).attr("r", (_zoom, _zero, [self2]) => {
+        const node = graph.entities[self2.dataset.nodeId];
+        return getRadiusInPixels(node, context.projection);
+      });
       enter.append("circle").attr("class", "stroke");
       enter.filter(function(d) {
         return d.hasInterestingTags();
@@ -72076,6 +72096,78 @@ ${content}</tr>
       }
     };
     return context;
+  }
+
+  // modules/core/planar.js
+  function parseDistanceWithUnit(tagValue, defaultUnit) {
+    if (!tagValue)
+      return void 0;
+    const imperialCombo = tagValue.match(/([\d.]+) *('|′|ft|foot|feet) *([\d.]+) *("|″|in|inch|inches)/);
+    if (imperialCombo) {
+      const feet = +imperialCombo[1];
+      const inches = +imperialCombo[3];
+      return feet / 3.281 + inches / 39.37;
+    }
+    const unit2 = tagValue.match(/[^\d.]+/)?.[0].trim() || defaultUnit;
+    const value = parseFloat(tagValue);
+    if (Number.isNaN(value))
+      return void 0;
+    switch (unit2) {
+      case "mm":
+        return value / 1e3;
+      case "cm":
+        return value / 100;
+      case "metres":
+      case "m":
+        return value;
+      case "hectometres":
+      case "hm":
+        return value * 100;
+      case "kilometres":
+      case "km":
+        return value * 1e3;
+      case "statute_miles":
+      case "miles":
+      case "mi":
+        return value * 1609;
+      case "nautical_miles":
+      case "nm":
+        return value * 1852;
+      case "yard":
+      case "yards":
+      case "yd":
+        return value / 1.094;
+      case "\u2032":
+      case "'":
+      case "feet":
+      case "foot":
+      case "ft":
+        return value / 3.281;
+      case "\u2033":
+      case '"':
+      case "inch":
+      case "inches":
+      case "in":
+        return value / 39.37;
+      default:
+        return void 0;
+    }
+  }
+  function getRadiusTag(tags) {
+    return (
+      // diameter tags
+      parseDistanceWithUnit(tags.diameter, "mm") / 2 || parseDistanceWithUnit(tags.diameter_crown, "m") / 2 || parseDistanceWithUnit(tags["hole:diameter"], "m") / 2 || // radius tags
+      parseDistanceWithUnit(tags.radius, "m") || parseDistanceWithUnit(tags.crown_radius, "m") || parseDistanceWithUnit(tags["seamark:anchor_berth:radius"], tags["seamark:anchor_berth:units"] || "m") || void 0
+    );
+  }
+  function getRadiusInPixels(node, projection2) {
+    const radius = getRadiusTag(node.tags);
+    const center = projection2(node.loc);
+    const pointOnCircumference = projection2([
+      node.loc[0],
+      node.loc[1] + geoMetersToLat(radius)
+    ]);
+    return center[1] - pointOnCircumference[1];
   }
 
   // modules/services/nominatim.js
