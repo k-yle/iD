@@ -62878,7 +62878,7 @@ ${content}</tr>
     function allKeys() {
       let keys = field.keys || [field.key];
       if (field.type === "directionalCombo" && field.key) {
-        keys = keys.concat(field.key);
+        keys = keys.concat(field.key, `${field.key}:both`);
       }
       return keys;
     }
