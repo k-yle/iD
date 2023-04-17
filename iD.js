@@ -61152,14 +61152,16 @@ ${content}</tr>
       const commonKey = field.key;
       const otherKey = key === field.keys[0] ? field.keys[1] : field.keys[0];
       dispatch10.call("change", this, (tags) => {
-        const otherValue = tags[otherKey] || tags[commonKey];
+        const otherValue = tags[otherKey] || tags[commonKey] || tags[`${commonKey}:both`];
         if (newValue === otherValue) {
           tags[commonKey] = newValue;
           delete tags[key];
           delete tags[otherKey];
+          delete tags[`${commonKey}:both`];
         } else {
           tags[key] = newValue;
           delete tags[commonKey];
+          delete tags[`${commonKey}:both`];
           tags[otherKey] = otherValue;
         }
         return tags;
@@ -61169,7 +61171,7 @@ ${content}</tr>
       _tags = tags;
       const commonKey = field.key;
       for (let key in _combos) {
-        const uniqueValues = [...new Set([].concat(_tags[commonKey]).concat(_tags[key]).filter(Boolean))];
+        const uniqueValues = [...new Set([].concat(_tags[commonKey]).concat(_tags[`${commonKey}:both`]).concat(_tags[key]).filter(Boolean))];
         _combos[key].tags({ [key]: uniqueValues.length > 1 ? uniqueValues : uniqueValues[0] });
       }
     };
