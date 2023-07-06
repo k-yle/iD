@@ -4,6 +4,7 @@ import { modeDrawArea } from '../modes/draw_area';
 import { behaviorOperation } from '../behavior/operation';
 import { actionDeleteNode } from '../actions/delete_node';
 import { utilArrayGroupBy } from '../util';
+import { actionChangeTags } from '../actions';
 
 
 export function operationContinue(context, selectedIDs) {
@@ -35,6 +36,18 @@ export function operationContinue(context, selectedIDs) {
         if (!affix) {
             context.perform(actionDeleteNode(_vertex.id));
         }
+
+        // remove fixme=continue and noexit=yes from the vertex
+        if (_vertex.tags.fixme === 'continue' || _vertex.tags.noexit === 'yes') {
+            context.perform((graph) => {
+                const newTags = { ..._vertex.tags };
+                delete newTags.fixme;
+                delete newTags.noexit;
+
+                return actionChangeTags(_vertex.id, newTags)(graph);
+            }, operation.annotation());
+        }
+
         context.enter(
             _candidateGeometry === 'line' ?
             modeDrawLine(context, _candidate.id, context.graph(), 'line', affix || _candidate.nodes.indexOf(_vertex.id), true) :
