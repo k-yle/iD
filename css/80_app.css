@@ -4969,6 +4969,14 @@ img.tile-debug {
 
 /* Modals / Prompts
 ------------------------------------------------------- */
+
+.info-modal {
+    background: white;
+}
+.info-modal-inner {
+    padding: 32px;
+}
+
 .modal {
     top: 5%;
     max-height: 90%;
