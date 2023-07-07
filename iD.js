@@ -26639,8 +26639,8 @@
       let locale2 = _localeCode;
       if (locale2.toLowerCase() === "en-us")
         locale2 = "en";
-      _languageNames = _localeStrings.general[locale2].languageNames;
-      _scriptNames = _localeStrings.general[locale2].scriptNames;
+      _languageNames = _localeStrings.general[locale2].languageNames || _localeStrings.general[_languageCode].languageNames;
+      _scriptNames = _localeStrings.general[locale2].scriptNames || _localeStrings.general[_languageCode].scriptNames;
       _usesMetric = _localeCode.slice(-3).toLowerCase() !== "-us";
     }
     localizer.loadLocale = (locale2, scopeId, directory) => {
@@ -26783,7 +26783,7 @@
       return ret;
     };
     localizer.languageName = (code, options2) => {
-      if (_languageNames[code]) {
+      if (_languageNames && _languageNames[code]) {
         return _languageNames[code];
       }
       if (options2 && options2.localOnly)
@@ -26794,9 +26794,9 @@
           return localizer.t("translate.language_and_code", { language: langInfo.nativeName, code });
         } else if (langInfo.base && langInfo.script) {
           const base = langInfo.base;
-          if (_languageNames[base]) {
+          if (_languageNames && _languageNames[base]) {
             const scriptCode = langInfo.script;
-            const script = _scriptNames[scriptCode] || scriptCode;
+            const script = _scriptNames && _scriptNames[scriptCode] || scriptCode;
             return localizer.t("translate.language_and_code", { language: _languageNames[base], code: script });
           } else if (_dataLanguages[base] && _dataLanguages[base].nativeName) {
             return localizer.t("translate.language_and_code", { language: _dataLanguages[base].nativeName, code });
@@ -63170,8 +63170,11 @@ ${content}</tr>
         }
       }
       wikidata.itemsForSearchQuery(q, function(err, data) {
-        if (err)
+        if (err) {
+          if (err !== "No query")
+            console.error(err);
           return;
+        }
         var result = data.map(function(item) {
           return {
             id: item.id,
@@ -77914,7 +77917,7 @@ ${content}</tr>
       _wikidataCache = {};
     },
     // Search for Wikidata items matching the query
-    itemsForSearchQuery: function _itemsForSearchQuery(query, callback, language) {
+    itemsForSearchQuery: function(query, callback, language) {
       if (!query) {
         if (callback)
           callback("No query", {});
@@ -77934,10 +77937,11 @@ ${content}</tr>
         limit: 10,
         origin: "*"
       });
-      json_default(url).then(function(result) {
+      json_default(url).then((result) => {
         if (result && result.error) {
           if (result.error.code === "badvalue" && result.error.info.includes(lang) && !language && lang.includes("-")) {
-            _itemsForSearchQuery(query, callback, lang.split("-")[0]);
+            this.itemsForSearchQuery(query, callback, lang.split("-")[0]);
+            return;
           } else {
             throw new Error(result.error);
           }
