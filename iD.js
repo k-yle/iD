@@ -5,7 +5,6 @@
   var __getOwnPropNames = Object.getOwnPropertyNames;
   var __getProtoOf = Object.getPrototypeOf;
   var __hasOwnProp = Object.prototype.hasOwnProperty;
-  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
   var __commonJS = (cb, mod) => function __require() {
     return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
   };
@@ -29,10 +28,6 @@
     isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
     mod
   ));
-  var __publicField = (obj, key, value) => {
-    __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-    return value;
-  };
 
   // node_modules/diacritics/index.js
   var require_diacritics = __commonJS({
@@ -22855,12 +22850,12 @@
       "abortcontroller-polyfill": "^1.7.5",
       "aes-js": "^3.1.2",
       "alif-toolkit": "^1.2.9",
-      "core-js-bundle": "^3.30.2",
+      "core-js-bundle": "^3.31.1",
       diacritics: "1.3.0",
       "fast-deep-equal": "~3.1.1",
       "fast-json-stable-stringify": "2.1.0",
       "lodash-es": "~4.17.15",
-      marked: "~5.1.0",
+      marked: "~5.1.1",
       "node-diff3": "~3.1.0",
       "osm-auth": "~2.1.0",
       pannellum: "2.5.6",
@@ -22878,22 +22873,22 @@
       "@rapideditor/temaki": "~5.4.0",
       "@mapbox/maki": "^8.0.1",
       "@openstreetmap/id-tagging-schema": "^6.3.0",
-      "@transifex/api": "^5.2.0",
+      "@transifex/api": "^5.4.0",
       autoprefixer: "^10.4.14",
       chai: "^4.3.7",
       chalk: "^4.1.2",
       "cldr-core": "^43.0.0",
-      "cldr-localenames-full": "^43.0.0",
+      "cldr-localenames-full": "^43.1.0",
       "concat-files": "^0.1.1",
       d3: "~7.8.5",
       dotenv: "^16.3.1",
       "editor-layer-index": "github:osmlab/editor-layer-index#gh-pages",
-      esbuild: "^0.17.19",
-      "esbuild-visualizer": "^0.4.0",
+      esbuild: "^0.18.11",
+      "esbuild-visualizer": "^0.4.1",
       eslint: "^8.44.0",
       "fetch-mock": "^9.11.0",
       gaze: "^1.1.3",
-      glob: "^10.2.6",
+      glob: "^10.3.3",
       happen: "^0.3.2",
       "js-yaml": "^4.0.0",
       "json-stringify-pretty-compact": "^3.0.0",
@@ -22909,8 +22904,8 @@
       "name-suggestion-index": "~6.0",
       "node-fetch": "^2.6.11",
       "npm-run-all": "^4.0.0",
-      "osm-community-index": "~5.5.2",
-      postcss: "^8.4.24",
+      "osm-community-index": "~5.5.3",
+      postcss: "^8.4.25",
       "postcss-selector-prepend": "^0.5.0",
       shelljs: "^0.8.0",
       shx: "^0.3.0",
@@ -25845,6 +25840,10 @@
     }
     if (shouldUpdate === void 0) {
       shouldUpdate = (a, b) => a !== b;
+    }
+    const supportedTypes = ["text", "search", "url", "tel", "password"];
+    if (!supportedTypes.includes(this.type)) {
+      return selection2.each(setValue(value, shouldUpdate));
     }
     return selection2.each(stickyCursor(setValue(value, shouldUpdate)));
   }
@@ -31444,12 +31443,12 @@
   });
 
   // modules/osm/qa_item.js
-  var QAItem = class {
+  var QAItem = class _QAItem {
     constructor(loc, service, itemType, id2, props) {
       this.loc = loc;
       this.service = service.title;
       this.itemType = itemType;
-      this.id = id2 ? id2 : `${QAItem.id()}`;
+      this.id = id2 ? id2 : `${_QAItem.id()}`;
       this.update(props);
       if (service && typeof service.getIcon === "function") {
         this.icon = service.getIcon(itemType);
@@ -38217,7 +38216,7 @@
     }
     return out;
   }
-  var Lexer = class {
+  var Lexer = class _Lexer {
     constructor(options2) {
       this.tokens = [];
       this.tokens.links = /* @__PURE__ */ Object.create(null);
@@ -38262,14 +38261,14 @@
      * Static Lex Method
      */
     static lex(src, options2) {
-      const lexer2 = new Lexer(options2);
+      const lexer2 = new _Lexer(options2);
       return lexer2.lex(src);
     }
     /**
      * Static Lex Inline Method
      */
     static lexInline(src, options2) {
-      const lexer2 = new Lexer(options2);
+      const lexer2 = new _Lexer(options2);
       return lexer2.inlineTokens(src);
     }
     /**
@@ -38816,7 +38815,7 @@ ${content}</tr>
       return this.getNextSafeSlug(slug, options2.dryrun);
     }
   };
-  var Parser = class {
+  var Parser = class _Parser {
     constructor(options2) {
       this.options = options2 || defaults;
       this.options.renderer = this.options.renderer || new Renderer();
@@ -38829,14 +38828,14 @@ ${content}</tr>
      * Static Parse Method
      */
     static parse(tokens, options2) {
-      const parser3 = new Parser(options2);
+      const parser3 = new _Parser(options2);
       return parser3.parse(tokens);
     }
     /**
      * Static Parse Inline Method
      */
     static parseInline(tokens, options2) {
-      const parser3 = new Parser(options2);
+      const parser3 = new _Parser(options2);
       return parser3.parseInline(tokens);
     }
     /**
@@ -39052,6 +39051,10 @@ ${content}</tr>
     constructor(options2) {
       this.options = options2 || defaults;
     }
+    static passThroughHooks = /* @__PURE__ */ new Set([
+      "preprocess",
+      "postprocess"
+    ]);
     /**
      * Process markdown before marked
      */
@@ -39065,10 +39068,6 @@ ${content}</tr>
       return html2;
     }
   };
-  __publicField(Hooks, "passThroughHooks", /* @__PURE__ */ new Set([
-    "preprocess",
-    "postprocess"
-  ]));
   var Marked = class {
     defaults = getDefaults();
     options = this.setOptions;
@@ -39350,7 +39349,7 @@ ${content}</tr>
     }
     #onError(silent, async, callback) {
       return (e) => {
-        e.message += "\nPlease report this to https://github.com/markedjs/this.";
+        e.message += "\nPlease report this to https://github.com/markedjs/marked.";
         if (silent) {
           const msg = "<p>An error occurred:</p><pre>" + escape4(e.message + "", true) + "</pre>";
           if (async) {
@@ -68041,7 +68040,7 @@ ${content}</tr>
     if (typeof str2 !== "string")
       return "";
     return import_diacritics2.default.remove(
-      str2.replace(/&/g, "and").replace(/İ/ig, "i").replace(/[\s\-=_!"#%'*{},.\/:;?\(\)\[\]@\\$\^*+<>«»~`’\u00a1\u00a7\u00b6\u00b7\u00bf\u037e\u0387\u055a-\u055f\u0589\u05c0\u05c3\u05c6\u05f3\u05f4\u0609\u060a\u060c\u060d\u061b\u061e\u061f\u066a-\u066d\u06d4\u0700-\u070d\u07f7-\u07f9\u0830-\u083e\u085e\u0964\u0965\u0970\u0af0\u0df4\u0e4f\u0e5a\u0e5b\u0f04-\u0f12\u0f14\u0f85\u0fd0-\u0fd4\u0fd9\u0fda\u104a-\u104f\u10fb\u1360-\u1368\u166d\u166e\u16eb-\u16ed\u1735\u1736\u17d4-\u17d6\u17d8-\u17da\u1800-\u1805\u1807-\u180a\u1944\u1945\u1a1e\u1a1f\u1aa0-\u1aa6\u1aa8-\u1aad\u1b5a-\u1b60\u1bfc-\u1bff\u1c3b-\u1c3f\u1c7e\u1c7f\u1cc0-\u1cc7\u1cd3\u200b-\u200f\u2016\u2017\u2020-\u2027\u2030-\u2038\u203b-\u203e\u2041-\u2043\u2047-\u2051\u2053\u2055-\u205e\u2cf9-\u2cfc\u2cfe\u2cff\u2d70\u2e00\u2e01\u2e06-\u2e08\u2e0b\u2e0e-\u2e16\u2e18\u2e19\u2e1b\u2e1e\u2e1f\u2e2a-\u2e2e\u2e30-\u2e39\u3001-\u3003\u303d\u30fb\ua4fe\ua4ff\ua60d-\ua60f\ua673\ua67e\ua6f2-\ua6f7\ua874-\ua877\ua8ce\ua8cf\ua8f8-\ua8fa\ua92e\ua92f\ua95f\ua9c1-\ua9cd\ua9de\ua9df\uaa5c-\uaa5f\uaade\uaadf\uaaf0\uaaf1\uabeb\ufe10-\ufe16\ufe19\ufe30\ufe45\ufe46\ufe49-\ufe4c\ufe50-\ufe52\ufe54-\ufe57\ufe5f-\ufe61\ufe68\ufe6a\ufe6b\ufeff\uff01-\uff03\uff05-\uff07\uff0a\uff0c\uff0e\uff0f\uff1a\uff1b\uff1f\uff20\uff3c\uff61\uff64\uff65]+/g, "").toLowerCase()
+      str2.replace(/&/g, "and").replace(/(İ|i̇)/ig, "i").replace(/[\s\-=_!"#%'*{},.\/:;?\(\)\[\]@\\$\^*+<>«»~`’\u00a1\u00a7\u00b6\u00b7\u00bf\u037e\u0387\u055a-\u055f\u0589\u05c0\u05c3\u05c6\u05f3\u05f4\u0609\u060a\u060c\u060d\u061b\u061e\u061f\u066a-\u066d\u06d4\u0700-\u070d\u07f7-\u07f9\u0830-\u083e\u085e\u0964\u0965\u0970\u0af0\u0df4\u0e4f\u0e5a\u0e5b\u0f04-\u0f12\u0f14\u0f85\u0fd0-\u0fd4\u0fd9\u0fda\u104a-\u104f\u10fb\u1360-\u1368\u166d\u166e\u16eb-\u16ed\u1735\u1736\u17d4-\u17d6\u17d8-\u17da\u1800-\u1805\u1807-\u180a\u1944\u1945\u1a1e\u1a1f\u1aa0-\u1aa6\u1aa8-\u1aad\u1b5a-\u1b60\u1bfc-\u1bff\u1c3b-\u1c3f\u1c7e\u1c7f\u1cc0-\u1cc7\u1cd3\u2000-\u206f\u2cf9-\u2cfc\u2cfe\u2cff\u2d70\u2e00-\u2e7f\u3001-\u3003\u303d\u30fb\ua4fe\ua4ff\ua60d-\ua60f\ua673\ua67e\ua6f2-\ua6f7\ua874-\ua877\ua8ce\ua8cf\ua8f8-\ua8fa\ua92e\ua92f\ua95f\ua9c1-\ua9cd\ua9de\ua9df\uaa5c-\uaa5f\uaade\uaadf\uaaf0\uaaf1\uabeb\ufe10-\ufe16\ufe19\ufe30\ufe45\ufe46\ufe49-\ufe4c\ufe50-\ufe52\ufe54-\ufe57\ufe5f-\ufe61\ufe68\ufe6a\ufe6b\ufeff\uff01-\uff03\uff05-\uff07\uff0a\uff0c\uff0e\uff0f\uff1a\uff1b\uff1f\uff20\uff3c\uff61\uff64\uff65]+/g, "").toLowerCase()
     );
   }
 
