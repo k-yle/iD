@@ -29,6 +29,7 @@ export function coreFileFetcher() {
     'qa_data': 'data/qa_data.min.json',
     'shortcuts': 'data/shortcuts.min.json',
     'territory_languages': 'data/territory_languages.min.json',
+    traffic_signs: 'https://raw.githubusercontent.com/k-yle/traffic-signs/main/data/index.json',
     'oci_defaults': ociCdnUrl.replace('{version}', ociVersionMinor) + 'dist/defaults.min.json',
     'oci_features': ociCdnUrl.replace('{version}', ociVersionMinor) + 'dist/featureCollection.min.json',
     'oci_resources': ociCdnUrl.replace('{version}', ociVersionMinor) + 'dist/resources.min.json',

@@ -34,6 +34,8 @@ export function uiFieldCombo(field, context) {
         .caseSensitive(field.caseSensitive)
         .minItems(1);
     var _container = d3_select(null);
+    let trafficPreview = d3_select(null);
+    let trafficSignsPromise;
     var _inputWrap = d3_select(null);
     var _input = d3_select(null);
     var _lengthIndicator = uiLengthIndicator(context.maxCharsForTagValue());
@@ -402,6 +404,49 @@ export function uiFieldCombo(field, context) {
         dispatch.call('change', this, t);
     }
 
+    /** @param {string | string[] | undefined} newValue */
+    function updateTrafficSignPreview(newValue) {
+        if (typeof newValue !== 'string') return;
+
+        let defaultCountryCode = newValue?.split(':')[0].toUpperCase();
+
+        if (!defaultCountryCode || !trafficSignsPromise) return;
+
+        trafficSignsPromise.then((trafficSignsDB) => {
+            const signs = newValue.split(/[;,]+/).map(_signId => {
+                const signId = _signId.trim();
+                const countryCode = signId.includes(":")
+                    ? signId.split(':')[0].toUpperCase()
+                    : defaultCountryCode;
+
+                const mainCode = signId.includes(":")
+                    ? signId.split(":").slice(1).join(":")
+                    : signId;
+
+                const code = mainCode.split('[')[0].toUpperCase();
+                const variant = mainCode.split('[')[1]?.split(']')[0].toUpperCase();
+
+                return { countryCode, code, variant };
+            });
+
+            const URLs = signs.map(sign => {
+                const def = trafficSignsDB[sign.countryCode]?.[sign.code]?.urls;
+                if (!def) return undefined;
+                return def[sign.variant] || def[""] || Object.values(def)[0];
+            }).filter(Boolean);
+
+            trafficPreview
+                .selectAll('img')
+                .remove();
+            trafficPreview
+                .selectAll('img')
+                .data(URLs, d => d)
+                .enter()
+                .append('img')
+                .attr('src', d => d);
+        });
+    }
+
 
     function removeMultikey(d3_event, d) {
         d3_event.preventDefault();
@@ -438,11 +483,24 @@ export function uiFieldCombo(field, context) {
         _container = selection.selectAll('.form-field-input-wrap')
             .data([0]);
 
+
         var type = (_isMulti || _isSemi) ? 'multicombo': 'combo';
         _container = _container.enter()
             .append('div')
             .attr('class', 'form-field-input-wrap form-field-input-' + type)
             .merge(_container);
+
+
+        if (field.key === 'traffic_sign') {
+            trafficSignsPromise ||= fileFetcher.get('traffic_signs');
+
+            trafficPreview = selection.selectAll('.form-field-input-traffic-preview')
+                .data([0]);
+            trafficPreview = trafficPreview.enter()
+                .append('div')
+                .attr('class', 'form-field-input-traffic-preview')
+                .merge(trafficPreview);
+        }
 
         if (_isMulti || _isSemi) {
             _container = _container.selectAll('.chiplist')
@@ -571,6 +629,8 @@ export function uiFieldCombo(field, context) {
     combo.tags = function(tags) {
         _tags = tags;
         var stringsField = field.resolveReference('stringsCrossReference');
+
+        updateTrafficSignPreview(tags[field.key]);
 
         var isMixed = Array.isArray(tags[field.key]);
         var showsValue = value => !isMixed && value && !(field.type === 'typeCombo' && value === 'yes');
