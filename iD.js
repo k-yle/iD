@@ -62915,7 +62915,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     }
     function updateTrafficSignPreview(newValue) {
       const [countryCode, values] = newValue?.split(":") || [];
-      if (!countryCode || !values)
+      if (!countryCode || !values || !trafficSignsPromise)
         return;
       trafficSignsPromise.then((trafficSignsDB) => {
         const signIds = values.split(/[;,]+/).map((signId) => signId.split("[")[0]);
