@@ -1,10 +1,32 @@
 (() => {
   var __create = Object.create;
   var __defProp = Object.defineProperty;
+  var __defProps = Object.defineProperties;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+  var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
   var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __getOwnPropSymbols = Object.getOwnPropertySymbols;
   var __getProtoOf = Object.getPrototypeOf;
   var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __propIsEnum = Object.prototype.propertyIsEnumerable;
+  var __knownSymbol = (name, symbol) => {
+    if (symbol = Symbol[name])
+      return symbol;
+    throw Error("Symbol." + name + " is not defined");
+  };
+  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+  var __spreadValues = (a2, b2) => {
+    for (var prop in b2 || (b2 = {}))
+      if (__hasOwnProp.call(b2, prop))
+        __defNormalProp(a2, prop, b2[prop]);
+    if (__getOwnPropSymbols)
+      for (var prop of __getOwnPropSymbols(b2)) {
+        if (__propIsEnum.call(b2, prop))
+          __defNormalProp(a2, prop, b2[prop]);
+      }
+    return a2;
+  };
+  var __spreadProps = (a2, b2) => __defProps(a2, __getOwnPropDescs(b2));
   var __require = /* @__PURE__ */ ((x2) => typeof require !== "undefined" ? require : typeof Proxy !== "undefined" ? new Proxy(x2, {
     get: (a2, b2) => (typeof require !== "undefined" ? require : a2)[b2]
   }) : x2)(function(x2) {
@@ -35,6 +57,60 @@
     isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
     mod
   ));
+  var __publicField = (obj, key, value) => {
+    __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+    return value;
+  };
+  var __accessCheck = (obj, member, msg) => {
+    if (!member.has(obj))
+      throw TypeError("Cannot " + msg);
+  };
+  var __privateAdd = (obj, member, value) => {
+    if (member.has(obj))
+      throw TypeError("Cannot add the same private member more than once");
+    member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
+  };
+  var __privateMethod = (obj, member, method) => {
+    __accessCheck(obj, member, "access private method");
+    return method;
+  };
+  var __await = function(promise, isYieldStar) {
+    this[0] = promise;
+    this[1] = isYieldStar;
+  };
+  var __yieldStar = (value) => {
+    var obj = value[__knownSymbol("asyncIterator")];
+    var isAwait = false;
+    var method;
+    var it = {};
+    if (obj == null) {
+      obj = value[__knownSymbol("iterator")]();
+      method = (k3) => it[k3] = (x2) => obj[k3](x2);
+    } else {
+      obj = obj.call(value);
+      method = (k3) => it[k3] = (v2) => {
+        if (isAwait) {
+          isAwait = false;
+          if (k3 === "throw")
+            throw v2;
+          return v2;
+        }
+        isAwait = true;
+        return {
+          done: false,
+          value: new __await(new Promise((resolve) => {
+            var x2 = obj[k3](v2);
+            if (!(x2 instanceof Object))
+              throw TypeError("Object expected");
+            resolve(x2);
+          }), 1)
+        };
+      };
+    }
+    return it[__knownSymbol("iterator")] = () => it, method("next"), "throw" in obj ? method("throw") : it.throw = (x2) => {
+      throw x2;
+    }, "return" in obj && method("return"), it;
+  };
 
   // node_modules/vparse/index.js
   var require_vparse = __commonJS({
@@ -823,14 +899,14 @@
         var [lng, lat] = center;
         if (typeof lng !== "number" || typeof lat !== "number") {
           throw new Error(
-            `ERROR! Longitude and Latitude has to be numbers but where ${typeof lng} and ${typeof lat}`
+            "ERROR! Longitude and Latitude has to be numbers but where ".concat(typeof lng, " and ").concat(typeof lat)
           );
         }
         if (lng > 180 || lng < -180) {
-          throw new Error(`ERROR! Longitude has to be between -180 and 180 but was ${lng}`);
+          throw new Error("ERROR! Longitude has to be between -180 and 180 but was ".concat(lng));
         }
         if (lat > 90 || lat < -90) {
-          throw new Error(`ERROR! Latitude has to be between -90 and 90 but was ${lat}`);
+          throw new Error("ERROR! Latitude has to be between -90 and 90 but was ".concat(lat));
         }
       };
     }
@@ -841,10 +917,10 @@
     "node_modules/circle-to-polygon/input-validation/validateRadius.js"(exports2) {
       exports2.validateRadius = function validateRadius(radius) {
         if (typeof radius !== "number") {
-          throw new Error(`ERROR! Radius has to be a positive number but was: ${typeof radius}`);
+          throw new Error("ERROR! Radius has to be a positive number but was: ".concat(typeof radius));
         }
         if (radius <= 0) {
-          throw new Error(`ERROR! Radius has to be a positive number but was: ${radius}`);
+          throw new Error("ERROR! Radius has to be a positive number but was: ".concat(radius));
         }
       };
     }
@@ -856,10 +932,10 @@
       exports2.validateNumberOfEdges = function validateNumberOfEdges(numberOfEdges) {
         if (typeof numberOfEdges !== "number") {
           const ARGUMENT_TYPE = Array.isArray(numberOfEdges) ? "array" : typeof numberOfEdges;
-          throw new Error(`ERROR! Number of edges has to be a number but was: ${ARGUMENT_TYPE}`);
+          throw new Error("ERROR! Number of edges has to be a number but was: ".concat(ARGUMENT_TYPE));
         }
         if (numberOfEdges < 3) {
-          throw new Error(`ERROR! Number of edges has to be at least 3 but was: ${numberOfEdges}`);
+          throw new Error("ERROR! Number of edges has to be at least 3 but was: ".concat(numberOfEdges));
         }
       };
     }
@@ -871,10 +947,10 @@
       exports2.validateEarthRadius = function validateEarthRadius(earthRadius2) {
         if (typeof earthRadius2 !== "number") {
           const ARGUMENT_TYPE = Array.isArray(earthRadius2) ? "array" : typeof earthRadius2;
-          throw new Error(`ERROR! Earth radius has to be a number but was: ${ARGUMENT_TYPE}`);
+          throw new Error("ERROR! Earth radius has to be a number but was: ".concat(ARGUMENT_TYPE));
         }
         if (earthRadius2 <= 0) {
-          throw new Error(`ERROR! Earth radius has to be a positive number but was: ${earthRadius2}`);
+          throw new Error("ERROR! Earth radius has to be a positive number but was: ".concat(earthRadius2));
         }
       };
     }
@@ -886,7 +962,7 @@
       exports2.validateBearing = function validateBearing(bearing) {
         if (typeof bearing !== "number") {
           const ARGUMENT_TYPE = Array.isArray(bearing) ? "array" : typeof bearing;
-          throw new Error(`ERROR! Bearing has to be a number but was: ${ARGUMENT_TYPE}`);
+          throw new Error("ERROR! Bearing has to be a number but was: ".concat(ARGUMENT_TYPE));
         }
       };
     }
@@ -16158,6 +16234,7 @@
     validationMismatchedGeometry: () => validationMismatchedGeometry,
     validationMissingRole: () => validationMissingRole,
     validationMissingTag: () => validationMissingTag,
+    validationOneLaneWithNoOneway: () => validationOneLaneWithNoOneway,
     validationOutdatedTags: () => validationOutdatedTags,
     validationPrivateData: () => validationPrivateData,
     validationSuspiciousName: () => validationSuspiciousName,
@@ -16308,6 +16385,7 @@
   var defaultOsmApiConnections = {
     live: {
       url: "https://www.openstreetmap.org",
+      apiUrl: "https://api.openstreetmap.org",
       client_id: "mNNNraAMgp4HGqaiv5cgRIwxMrfQcvs9NIPr6-1Ks4I",
       client_secret: "6qDuwjkjb1M5y7ZHAJEY-U4aJV8Thd4vePEu4a544yE"
     },
@@ -16391,7 +16469,7 @@
       "abortcontroller-polyfill": "^1.7.5",
       "aes-js": "^3.1.2",
       "alif-toolkit": "^1.2.9",
-      "core-js-bundle": "^3.32.0",
+      "core-js-bundle": "^3.33.2",
       diacritics: "1.3.0",
       exifr: "^7.1.3",
       "fast-deep-equal": "~3.1.1",
@@ -16414,10 +16492,11 @@
       "@fortawesome/free-solid-svg-icons": "~6.4.2",
       "@mapbox/maki": "^8.0.1",
       "@openstreetmap/id-tagging-schema": "^6.4.1",
-      "@rapideditor/temaki": "~5.4.0",
+      "@rapideditor/temaki": "^5.6.0",
       "@transifex/api": "^5.4.0",
       autoprefixer: "^10.4.15",
-      chai: "^4.3.7",
+      "browserslist-to-esbuild": "^1.2.0",
+      chai: "^4.3.10",
       chalk: "^4.1.2",
       "cldr-core": "^43.0.0",
       "cldr-localenames-full": "^43.1.0",
@@ -16444,10 +16523,10 @@
       minimist: "^1.2.8",
       mocha: "^10.2.0",
       "name-suggestion-index": "~6.0",
-      "node-fetch": "^2.6.12",
+      "node-fetch": "^2.7.0",
       "npm-run-all": "^4.0.0",
-      "osm-community-index": "~5.5.5",
-      postcss: "^8.4.28",
+      "osm-community-index": "~5.6.0",
+      postcss: "^8.4.31",
       "postcss-selector-prepend": "^0.5.0",
       shelljs: "^0.8.0",
       shx: "^0.3.0",
@@ -16462,7 +16541,7 @@
       node: ">=16.14"
     },
     browserslist: [
-      "> 0.2%, last 6 major versions, Firefox ESR, maintained node versions"
+      "> 0.3%, last 6 major versions, Firefox ESR, maintained node versions"
     ]
   };
 
@@ -16471,7 +16550,7 @@
   function coreFileFetcher() {
     const ociVersion = package_default.dependencies["osm-community-index"] || package_default.devDependencies["osm-community-index"];
     const v2 = (0, import_vparse.default)(ociVersion);
-    const ociVersionMinor = `${v2.major}.${v2.minor}`;
+    const ociVersionMinor = "".concat(v2.major, ".").concat(v2.minor);
     const presetsVersion = package_default.devDependencies["@openstreetmap/id-tagging-schema"];
     let _this = {};
     let _inflight4 = {};
@@ -16508,7 +16587,7 @@
       const file = _fileMap[which];
       const url = file && _this.asset(file);
       if (!url) {
-        return Promise.reject(`Unknown data file for "${which}"`);
+        return Promise.reject('Unknown data file for "'.concat(which, '"'));
       }
       if (url.includes("{presets_version}")) {
         return _this.get("presets_package").then((result) => {
@@ -16532,7 +16611,7 @@
         }).then((result) => {
           delete _inflight4[url];
           if (!result) {
-            throw new Error(`No data loaded for "${which}"`);
+            throw new Error('No data loaded for "'.concat(which, '"'));
           }
           _cachedData[which] = result;
           return result;
@@ -17367,12 +17446,13 @@
     return features;
   }
   function aggregateFeature(id2) {
+    var _a;
     const features = featuresIn(id2, false);
     if (features.length === 0)
       return null;
     let aggregateCoordinates = [];
     for (const feature22 of features) {
-      if (feature22.geometry?.type === "MultiPolygon" && feature22.geometry.coordinates) {
+      if (((_a = feature22.geometry) == null ? void 0 : _a.type) === "MultiPolygon" && feature22.geometry.coordinates) {
         aggregateCoordinates = aggregateCoordinates.concat(feature22.geometry.coordinates);
       }
     }
@@ -17484,7 +17564,7 @@
         }
       }
       if (this._strict) {
-        throw new Error(`validateLocation:  Invalid location: "${location}".`);
+        throw new Error('validateLocation:  Invalid location: "'.concat(location, '".'));
       } else {
         return null;
       }
@@ -17545,7 +17625,7 @@
         return Object.assign(valid, { feature: feature3 });
       }
       if (this._strict) {
-        throw new Error(`resolveLocation:  Couldn't resolve location "${location}".`);
+        throw new Error("resolveLocation:  Couldn't resolve location \"".concat(location, '".'));
       } else {
         return null;
       }
@@ -17574,7 +17654,7 @@
       let exclude = (locationSet.exclude || []).map(validator).filter(Boolean);
       if (!include.length) {
         if (this._strict) {
-          throw new Error(`validateLocationSet:  LocationSet includes nothing.`);
+          throw new Error("validateLocationSet:  LocationSet includes nothing.");
         } else {
           locationSet.include = ["Q2"];
           include = [{ type: "countrycoder", location: "Q2", id: "Q2" }];
@@ -17782,7 +17862,7 @@
         const locationSetID = result.id;
         obj.locationSetID = locationSetID;
         if (!result.feature.geometry.coordinates.length || !result.feature.properties.area) {
-          throw new Error(`locationSet ${locationSetID} resolves to an empty feature.`);
+          throw new Error("locationSet ".concat(locationSetID, " resolves to an empty feature."));
         }
         let geojson = JSON.parse(JSON.stringify(result.feature));
         geojson.id = locationSetID;
@@ -22143,7 +22223,7 @@
   // node_modules/d3-array/src/merge.js
   function* flatten(arrays) {
     for (const array2 of arrays) {
-      yield* array2;
+      yield* __yieldStar(array2);
     }
   }
   function merge(arrays) {
@@ -24656,12 +24736,12 @@
   var reN = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*";
   var reP = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*";
   var reHex = /^#([0-9a-f]{3,8})$/;
-  var reRgbInteger = new RegExp(`^rgb\\(${reI},${reI},${reI}\\)$`);
-  var reRgbPercent = new RegExp(`^rgb\\(${reP},${reP},${reP}\\)$`);
-  var reRgbaInteger = new RegExp(`^rgba\\(${reI},${reI},${reI},${reN}\\)$`);
-  var reRgbaPercent = new RegExp(`^rgba\\(${reP},${reP},${reP},${reN}\\)$`);
-  var reHslPercent = new RegExp(`^hsl\\(${reN},${reP},${reP}\\)$`);
-  var reHslaPercent = new RegExp(`^hsla\\(${reN},${reP},${reP},${reN}\\)$`);
+  var reRgbInteger = new RegExp("^rgb\\(".concat(reI, ",").concat(reI, ",").concat(reI, "\\)$"));
+  var reRgbPercent = new RegExp("^rgb\\(".concat(reP, ",").concat(reP, ",").concat(reP, "\\)$"));
+  var reRgbaInteger = new RegExp("^rgba\\(".concat(reI, ",").concat(reI, ",").concat(reI, ",").concat(reN, "\\)$"));
+  var reRgbaPercent = new RegExp("^rgba\\(".concat(reP, ",").concat(reP, ",").concat(reP, ",").concat(reN, "\\)$"));
+  var reHslPercent = new RegExp("^hsl\\(".concat(reN, ",").concat(reP, ",").concat(reP, "\\)$"));
+  var reHslaPercent = new RegExp("^hsla\\(".concat(reN, ",").concat(reP, ",").concat(reP, ",").concat(reN, "\\)$"));
   var named = {
     aliceblue: 15792383,
     antiquewhite: 16444375,
@@ -24895,14 +24975,14 @@
     toString: rgb_formatRgb
   }));
   function rgb_formatHex() {
-    return `#${hex(this.r)}${hex(this.g)}${hex(this.b)}`;
+    return "#".concat(hex(this.r)).concat(hex(this.g)).concat(hex(this.b));
   }
   function rgb_formatHex8() {
-    return `#${hex(this.r)}${hex(this.g)}${hex(this.b)}${hex((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
+    return "#".concat(hex(this.r)).concat(hex(this.g)).concat(hex(this.b)).concat(hex((isNaN(this.opacity) ? 1 : this.opacity) * 255));
   }
   function rgb_formatRgb() {
     const a2 = clampa(this.opacity);
-    return `${a2 === 1 ? "rgb(" : "rgba("}${clampi(this.r)}, ${clampi(this.g)}, ${clampi(this.b)}${a2 === 1 ? ")" : `, ${a2})`}`;
+    return "".concat(a2 === 1 ? "rgb(" : "rgba(").concat(clampi(this.r), ", ").concat(clampi(this.g), ", ").concat(clampi(this.b)).concat(a2 === 1 ? ")" : ", ".concat(a2, ")"));
   }
   function clampa(opacity) {
     return isNaN(opacity) ? 1 : Math.max(0, Math.min(1, opacity));
@@ -24983,7 +25063,7 @@
     },
     formatHsl() {
       const a2 = clampa(this.opacity);
-      return `${a2 === 1 ? "hsl(" : "hsla("}${clamph(this.h)}, ${clampt(this.s) * 100}%, ${clampt(this.l) * 100}%${a2 === 1 ? ")" : `, ${a2})`}`;
+      return "".concat(a2 === 1 ? "hsl(" : "hsla(").concat(clamph(this.h), ", ").concat(clampt(this.s) * 100, "%, ").concat(clampt(this.l) * 100, "%").concat(a2 === 1 ? ")" : ", ".concat(a2, ")"));
     }
   }));
   function clamph(value) {
@@ -26208,7 +26288,7 @@
     var timing;
     while (!(timing = node.__transition) || !(timing = timing[id2])) {
       if (!(node = node.parentNode)) {
-        throw new Error(`transition ${id2} not found`);
+        throw new Error("transition ".concat(id2, " not found"));
       }
     }
     return timing;
@@ -26996,7 +27076,7 @@
       };
       let fileMap = _mainFileFetcher.fileMap();
       for (let scopeId in localeDirs) {
-        const key = `locales_index_${scopeId}`;
+        const key = "locales_index_".concat(scopeId);
         if (!fileMap[key]) {
           fileMap[key] = localeDirs[scopeId] + "/index.min.json";
         }
@@ -27068,9 +27148,9 @@
         return Promise.resolve(locale2);
       }
       let fileMap = _mainFileFetcher.fileMap();
-      const key = `locale_${scopeId}_${locale2}`;
+      const key = "locale_".concat(scopeId, "_").concat(locale2);
       if (!fileMap[key]) {
-        fileMap[key] = `${directory}/${locale2}.min.json`;
+        fileMap[key] = "".concat(directory, "/").concat(locale2, ".min.json");
       }
       return _mainFileFetcher.get(key).then((d2) => {
         if (!_localeStrings[scopeId])
@@ -27137,7 +27217,7 @@
                   value = value.toString();
                 }
               }
-              const token = `{${key}}`;
+              const token = "{".concat(key, "}");
               const regex = new RegExp(token, "g");
               result = result.replace(regex, value);
             }
@@ -27161,7 +27241,7 @@
           locale: null
         };
       }
-      const missing = `Missing ${locale2} translation: ${origStringId}`;
+      const missing = "Missing ".concat(locale2, " translation: ").concat(origStringId);
       if (typeof console !== "undefined")
         console.error(missing);
       return {
@@ -27187,7 +27267,7 @@
       }
       const info = localizer.tInfo(stringId, replacements, locale2);
       if (info.text) {
-        return `<span class="localized-text" lang="${info.locale || "und"}">${info.text}</span>`;
+        return '<span class="localized-text" lang="'.concat(info.locale || "und", '">').concat(info.text, "</span>");
       } else {
         return "";
       }
@@ -27246,12 +27326,12 @@
       const numerals = Array.from({ length: 10 }).map((_2, i3) => format2.format(i3));
       const index = new Map(numerals.map((d2, i3) => [d2, i3]));
       const literalPart = parts.find((d2) => d2.type === "literal");
-      const literal = literalPart && new RegExp(`[${literalPart.value}]`, "g");
+      const literal = literalPart && new RegExp("[".concat(literalPart.value, "]"), "g");
       const groupPart = parts.find((d2) => d2.type === "group");
-      const group = groupPart && new RegExp(`[${groupPart.value}]`, "g");
+      const group = groupPart && new RegExp("[".concat(groupPart.value, "]"), "g");
       const decimalPart = parts.find((d2) => d2.type === "decimal");
-      const decimal = decimalPart && new RegExp(`[${decimalPart.value}]`);
-      const numeral = new RegExp(`[${numerals.join("")}]`, "g");
+      const decimal = decimalPart && new RegExp("[".concat(decimalPart.value, "]"));
+      const numeral = new RegExp("[".concat(numerals.join(""), "]"), "g");
       const getIndex = (d2) => index.get(d2);
       return (string) => {
         string = string.trim();
@@ -27272,11 +27352,11 @@
         if ("formatToParts" in format2) {
           const parts = format2.formatToParts(-12345.6);
           const literalPart = parts.find((d2) => d2.type === "literal");
-          literal = literalPart && new RegExp(`[${literalPart.value}]`, "g");
+          literal = literalPart && new RegExp("[".concat(literalPart.value, "]"), "g");
           const groupPart = parts.find((d2) => d2.type === "group");
-          group = groupPart && new RegExp(`[${groupPart.value}]`, "g");
+          group = groupPart && new RegExp("[".concat(groupPart.value, "]"), "g");
           const decimalPart = parts.find((d2) => d2.type === "decimal");
-          decimal = decimalPart && new RegExp(`[${decimalPart.value}]`);
+          decimal = decimalPart && new RegExp("[".concat(decimalPart.value, "]"));
         }
       }
       return (string) => {
@@ -27438,8 +27518,8 @@
     _this.matchGeometry = (geom) => _this.geometry.indexOf(geom) >= 0;
     _this.matchAllGeometry = (geometries) => _this.members.collection.some((preset) => preset.matchAllGeometry(geometries));
     _this.matchScore = () => -1;
-    _this.name = () => _t(`_tagging.presets.categories.${categoryID}.name`, { "default": categoryID });
-    _this.nameLabel = () => _t.append(`_tagging.presets.categories.${categoryID}.name`, { "default": categoryID });
+    _this.name = () => _t("_tagging.presets.categories.".concat(categoryID, ".name"), { "default": categoryID });
+    _this.nameLabel = () => _t.append("_tagging.presets.categories.".concat(categoryID, ".name"), { "default": categoryID });
     _this.terms = () => [];
     _this.searchName = () => {
       if (!_searchName) {
@@ -27471,10 +27551,10 @@
     _this.matchAllGeometry = (geometries) => {
       return !_this.geometry || geometries.every((geom) => _this.geometry.indexOf(geom) !== -1);
     };
-    _this.t = (scope, options2) => _t(`_tagging.presets.fields.${fieldID}.${scope}`, options2);
-    _this.t.html = (scope, options2) => _t.html(`_tagging.presets.fields.${fieldID}.${scope}`, options2);
-    _this.t.append = (scope, options2) => _t.append(`_tagging.presets.fields.${fieldID}.${scope}`, options2);
-    _this.hasTextForStringId = (scope) => _mainLocalizer.hasTextForStringId(`_tagging.presets.fields.${fieldID}.${scope}`);
+    _this.t = (scope, options2) => _t("_tagging.presets.fields.".concat(fieldID, ".").concat(scope), options2);
+    _this.t.html = (scope, options2) => _t.html("_tagging.presets.fields.".concat(fieldID, ".").concat(scope), options2);
+    _this.t.append = (scope, options2) => _t.append("_tagging.presets.fields.".concat(fieldID, ".").concat(scope), options2);
+    _this.hasTextForStringId = (scope) => _mainLocalizer.hasTextForStringId("_tagging.presets.fields.".concat(fieldID, ".").concat(scope));
     _this.resolveReference = (which) => {
       const referenceRegex = /^\{(.*)\}$/;
       const match = (field[which] || "").match(referenceRegex);
@@ -27483,7 +27563,7 @@
         if (field2) {
           return field2;
         }
-        console.error(`Unable to resolve referenced field: ${match[1]}`);
+        console.error("Unable to resolve referenced field: ".concat(match[1]));
       }
       return _this;
     };
@@ -27551,11 +27631,11 @@
       return score;
     };
     _this.t = (scope, options2) => {
-      const textID = `_tagging.presets.presets.${presetID}.${scope}`;
+      const textID = "_tagging.presets.presets.".concat(presetID, ".").concat(scope);
       return _t(textID, options2);
     };
     _this.t.append = (scope, options2) => {
-      const textID = `_tagging.presets.presets.${presetID}.${scope}`;
+      const textID = "_tagging.presets.presets.".concat(presetID, ".").concat(scope);
       return _t.append(textID, options2);
     };
     function resolveReference(which) {
@@ -27565,7 +27645,7 @@
         if (preset2) {
           return preset2;
         }
-        console.error(`Unable to resolve referenced preset: ${match[1]}`);
+        console.error("Unable to resolve referenced preset: ".concat(match[1]));
       }
       return _this;
     }
@@ -27704,7 +27784,7 @@
         } else if (allFields[fieldID]) {
           resolved.push(allFields[fieldID]);
         } else {
-          console.log(`Cannot resolve "${fieldID}" found in ${_this.id}.${which}`);
+          console.log('Cannot resolve "'.concat(fieldID, '" found in ').concat(_this.id, ".").concat(which));
         }
       });
       if (!resolved.length) {
@@ -27714,7 +27794,7 @@
           let parent = allPresets[parentID];
           if (loc) {
             const validHere = _sharedLocationManager.locationSetsAt(loc);
-            if (parent?.locationSetID && !validHere[parent.locationSetID]) {
+            if ((parent == null ? void 0 : parent.locationSetID) && !validHere[parent.locationSetID]) {
               const candidateIDs = Object.keys(allPresets).filter((k3) => k3.startsWith(parentID));
               parent = allPresets[candidateIDs.find((candidateID) => {
                 const candidate = allPresets[candidateID];
@@ -28372,7 +28452,7 @@
         const isRelativeDirection = field.type === "combo";
         return isDirectionField && isRelativeDirection;
       });
-      return maybeDirectionField?.key || false;
+      return (maybeDirectionField == null ? void 0 : maybeDirectionField.key) || false;
     }
     function reverseNodeTags(graph, nodeIDs) {
       for (var i3 = 0; i3 < nodeIDs.length; i3++) {
@@ -30190,7 +30270,7 @@
         current = +current;
       for (const osmFeature of osmFeatures) {
         graph = graph.replace(osmFeature.mergeTags({
-          [options2.key]: options2.template.replace(/\%/g, `${current}`)
+          [options2.key]: options2.template.replace(/\%/g, "".concat(current))
         }));
         if (typeof current === "number") {
           current += options2.incrementBy;
@@ -31537,7 +31617,7 @@
       this.loc = loc;
       this.service = service.title;
       this.itemType = itemType;
-      this.id = id2 ? id2 : `${_QAItem.id()}`;
+      this.id = id2 ? id2 : "".concat(_QAItem.id());
       this.update(props);
       if (service && typeof service.getIcon === "function") {
         this.icon = service.getIcon(itemType);
@@ -36669,13 +36749,13 @@
     }
     return capture;
     function linkErrorObject2(d2) {
-      return { html: `<a class="error_object_link">${d2}</a>` };
+      return { html: '<a class="error_object_link">'.concat(d2, "</a>") };
     }
     function linkEntity2(d2) {
-      return { html: `<a class="error_entity_link">${d2}</a>` };
+      return { html: '<a class="error_entity_link">'.concat(d2, "</a>") };
     }
     function linkURL(d2) {
-      return { html: `<a class="kr_external_link" target="_blank" href="${d2}">${d2}</a>` };
+      return { html: '<a class="kr_external_link" target="_blank" href="'.concat(d2, '">').concat(d2, "</a>") };
     }
     function parse211(capture2) {
       let newList = [];
@@ -36704,11 +36784,11 @@
       const items = capture2.split(",");
       items.forEach((item) => {
         item = item.split(" ");
-        const role = `"${item[0]}"`;
+        const role = '"'.concat(item[0], '"');
         const idType2 = item[1].slice(0, 1);
         let id2 = item[2].slice(1);
         id2 = linkEntity2(idType2 + id2);
-        newList.push(`${role} ${item[1]} ${id2}`);
+        newList.push("".concat(role, " ").concat(item[1], " ").concat(id2));
       });
       return newList.join(", ");
     }
@@ -36766,7 +36846,7 @@
           return;
         const [left, top, right, bottom] = tile.extent.rectangle();
         const params = Object.assign({}, options2, { left, bottom, right, top });
-        const url = `${_krUrlRoot}/export.php?` + utilQsString(params);
+        const url = "".concat(_krUrlRoot, "/export.php?") + utilQsString(params);
         const controller = new AbortController();
         _cache.inflightTile[tile.id] = controller;
         json_default(url, { signal: controller.signal }).then((data) => {
@@ -36797,7 +36877,7 @@
             const whichTemplate = _krData.errorTypes[whichType];
             switch (whichType) {
               case "170":
-                description = `This feature has a FIXME tag: ${description}`;
+                description = "This feature has a FIXME tag: ".concat(description);
                 break;
               case "292":
               case "293":
@@ -36808,7 +36888,7 @@
               case "296":
               case "297":
               case "298":
-                description = `This turn-restriction~${description}`;
+                description = "This turn-restriction~".concat(description);
                 break;
               case "300":
                 description = "This highway is missing a maxspeed tag";
@@ -36816,7 +36896,7 @@
               case "411":
               case "412":
               case "413":
-                description = `This feature~${description}`;
+                description = "This feature~".concat(description);
                 break;
             }
             let coincident = false;
@@ -36859,7 +36939,7 @@
       if (d2.newComment !== void 0) {
         params.co = d2.newComment;
       }
-      const url = `${_krUrlRoot}/comment.php?` + utilQsString(params);
+      const url = "".concat(_krUrlRoot, "/comment.php?") + utilQsString(params);
       const controller = new AbortController();
       _cache.inflightPost[d2.id] = controller;
       json_default(url, { signal: controller.signal }).finally(() => {
@@ -36868,7 +36948,7 @@
           this.removeItem(d2);
         } else if (d2.newStatus === "ignore_t") {
           this.removeItem(d2);
-          _cache.closed[`${d2.schema}:${d2.id}`] = true;
+          _cache.closed["".concat(d2.schema, ":").concat(d2.id)] = true;
         } else {
           d2 = this.replaceItem(d2.update({
             comment: d2.newComment,
@@ -36909,7 +36989,7 @@
       updateRtree(encodeIssueRtree(item), false);
     },
     issueURL(item) {
-      return `${_krUrlRoot}/report_map.php?schema=${item.schema}&error=${item.id}`;
+      return "".concat(_krUrlRoot, "/report_map.php?schema=").concat(item.schema, "&error=").concat(item.id);
     },
     // Get an array of issues closed during this session.
     // Used to populate `closed:keepright` changeset tag
@@ -36956,10 +37036,10 @@
     }
   }
   function linkErrorObject(d2) {
-    return { html: `<a class="error_object_link">${d2}</a>` };
+    return { html: '<a class="error_object_link">'.concat(d2, "</a>") };
   }
   function linkEntity(d2) {
-    return { html: `<a class="error_entity_link">${d2}</a>` };
+    return { html: '<a class="error_entity_link">'.concat(d2, "</a>") };
   }
   function pointAverage(points) {
     if (points.length) {
@@ -36992,7 +37072,7 @@
       315: "northwest",
       360: "north"
     };
-    return _t(`QA.improveOSM.directions.${compass[dir]}`);
+    return _t("QA.improveOSM.directions.".concat(compass[dir]));
   }
   function preventCoincident(loc, bumpUp) {
     let coincident = false;
@@ -37047,7 +37127,7 @@
             params,
             k3 === "mr" ? { type: "PARKING,ROAD,BOTH,PATH" } : { confidenceLevel: "C1" }
           );
-          const url = `${_impOsmUrls[k3]}/search?` + utilQsString(kParams);
+          const url = "".concat(_impOsmUrls[k3], "/search?") + utilQsString(kParams);
           const controller = new AbortController();
           requests[k3] = controller;
           json_default(url, { signal: controller.signal }).then((data) => {
@@ -37059,7 +37139,7 @@
             if (data.roadSegments) {
               data.roadSegments.forEach((feature3) => {
                 const { points, wayId, fromNodeId, toNodeId } = feature3;
-                const itemId = `${wayId}${fromNodeId}${toNodeId}`;
+                const itemId = "".concat(wayId).concat(fromNodeId).concat(toNodeId);
                 let mid = points.length / 2;
                 let loc;
                 if (mid % 1 === 0) {
@@ -37096,16 +37176,16 @@
               data.tiles.forEach((feature3) => {
                 const { type: type2, x: x2, y: y2, numberOfTrips } = feature3;
                 const geoType = type2.toLowerCase();
-                const itemId = `${geoType}${x2}${y2}${numberOfTrips}`;
+                const itemId = "".concat(geoType).concat(x2).concat(y2).concat(numberOfTrips);
                 let loc = pointAverage(feature3.points);
                 loc = preventCoincident(loc, false);
-                let d2 = new QAItem(loc, this, `${k3}-${geoType}`, itemId, {
+                let d2 = new QAItem(loc, this, "".concat(k3, "-").concat(geoType), itemId, {
                   issueKey: k3,
                   identifier: { x: x2, y: y2 }
                 });
                 d2.replacements = {
                   num_trips: numberOfTrips,
-                  geometry_type: _t(`QA.improveOSM.geometry_types.${geoType}`)
+                  geometry_type: _t("QA.improveOSM.geometry_types.".concat(geoType))
                 };
                 if (numberOfTrips === -1) {
                   d2.desc = _t("QA.improveOSM.error_types.mr.description_alt", d2.replacements);
@@ -37117,7 +37197,7 @@
             if (data.entities) {
               data.entities.forEach((feature3) => {
                 const { point: point2, id: id2, segments, numberOfPasses, turnType } = feature3;
-                const itemId = `${id2.replace(/[,:+#]/g, "_")}`;
+                const itemId = "".concat(id2.replace(/[,:+#]/g, "_"));
                 const loc = preventCoincident([point2.lon, point2.lat], true);
                 const ids = id2.split(",");
                 const from_way = ids[0];
@@ -37170,7 +37250,7 @@
       } else if (key === "tr") {
         qParams.targetId = item.identifier;
       }
-      const url = `${_impOsmUrls[key]}/retrieveComments?` + utilQsString(qParams);
+      const url = "".concat(_impOsmUrls[key], "/retrieveComments?") + utilQsString(qParams);
       const cacheComments = (data) => {
         item.comments = data.comments ? data.comments.reverse() : [];
         this.replaceItem(item);
@@ -37190,7 +37270,7 @@
           return callback(err, d2);
         }
         const key = d2.issueKey;
-        const url = `${_impOsmUrls[key]}/comment`;
+        const url = "".concat(_impOsmUrls[key], "/comment");
         const payload = {
           username: user.display_name,
           targetIds: [d2.identifier]
@@ -37559,10 +37639,10 @@
     }).join("\n");
   }
   var _Tokenizer = class {
-    options;
-    rules;
-    lexer;
     constructor(options2) {
+      __publicField(this, "options");
+      __publicField(this, "rules");
+      __publicField(this, "lexer");
       this.options = options2 || _defaults;
     }
     space(src) {
@@ -37659,11 +37739,11 @@
           loose: false,
           items: []
         };
-        bull = isordered ? `\\d{1,9}\\${bull.slice(-1)}` : `\\${bull}`;
+        bull = isordered ? "\\d{1,9}\\".concat(bull.slice(-1)) : "\\".concat(bull);
         if (this.options.pedantic) {
           bull = isordered ? bull : "[*+-]";
         }
-        const itemRegex = new RegExp(`^( {0,3}${bull})((?:[	 ][^\\n]*)?(?:\\n|$))`);
+        const itemRegex = new RegExp("^( {0,3}".concat(bull, ")((?:[	 ][^\\n]*)?(?:\\n|$))"));
         while (src) {
           endEarly = false;
           if (!(cap = itemRegex.exec(src))) {
@@ -37692,10 +37772,10 @@
             endEarly = true;
           }
           if (!endEarly) {
-            const nextBulletRegex = new RegExp(`^ {0,${Math.min(3, indent2 - 1)}}(?:[*+-]|\\d{1,9}[.)])((?:[ 	][^\\n]*)?(?:\\n|$))`);
-            const hrRegex = new RegExp(`^ {0,${Math.min(3, indent2 - 1)}}((?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$)`);
-            const fencesBeginRegex = new RegExp(`^ {0,${Math.min(3, indent2 - 1)}}(?:\`\`\`|~~~)`);
-            const headingBeginRegex = new RegExp(`^ {0,${Math.min(3, indent2 - 1)}}#`);
+            const nextBulletRegex = new RegExp("^ {0,".concat(Math.min(3, indent2 - 1), "}(?:[*+-]|\\d{1,9}[.)])((?:[ 	][^\\n]*)?(?:\\n|$))"));
+            const hrRegex = new RegExp("^ {0,".concat(Math.min(3, indent2 - 1), "}((?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$)"));
+            const fencesBeginRegex = new RegExp("^ {0,".concat(Math.min(3, indent2 - 1), "}(?:```|~~~)"));
+            const headingBeginRegex = new RegExp("^ {0,".concat(Math.min(3, indent2 - 1), "}#"));
             while (src) {
               rawLine = src.split("\n", 1)[0];
               nextLine = rawLine;
@@ -38004,7 +38084,7 @@
       let match = this.rules.inline.emStrong.lDelim.exec(src);
       if (!match)
         return;
-      if (match[3] && prevChar.match(/[\p{L}\p{N}]/u))
+      if (match[3] && prevChar.match(new RegExp("[\\p{L}\\p{N}]", "u")))
         return;
       const nextChar = match[1] || match[2] || "";
       if (!nextChar || !prevChar || this.rules.inline.punctuation.exec(prevChar)) {
@@ -38195,23 +38275,21 @@
   block.lheading = edit(block.lheading).replace(/bull/g, block.bullet).getRegex();
   block.paragraph = edit(block._paragraph).replace("hr", block.hr).replace("heading", " {0,3}#{1,6} ").replace("|lheading", "").replace("|table", "").replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", block._tag).getRegex();
   block.blockquote = edit(block.blockquote).replace("paragraph", block.paragraph).getRegex();
-  block.normal = { ...block };
-  block.gfm = {
-    ...block.normal,
+  block.normal = __spreadValues({}, block);
+  block.gfm = __spreadProps(__spreadValues({}, block.normal), {
     table: "^ *([^\\n ].*\\|.*)\\n {0,3}(?:\\| *)?(:?-+:? *(?:\\| *:?-+:? *)*)(?:\\| *)?(?:\\n((?:(?! *\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)"
     // Cells
-  };
+  });
   block.gfm.table = edit(block.gfm.table).replace("hr", block.hr).replace("heading", " {0,3}#{1,6} ").replace("blockquote", " {0,3}>").replace("code", " {4}[^\\n]").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", block._tag).getRegex();
   block.gfm.paragraph = edit(block._paragraph).replace("hr", block.hr).replace("heading", " {0,3}#{1,6} ").replace("|lheading", "").replace("table", block.gfm.table).replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", block._tag).getRegex();
-  block.pedantic = {
-    ...block.normal,
-    html: edit(`^ *(?:comment *(?:\\n|\\s*$)|<(tag)[\\s\\S]+?</\\1> *(?:\\n{2,}|\\s*$)|<tag(?:"[^"]*"|'[^']*'|\\s[^'"/>\\s]*)*?/?> *(?:\\n{2,}|\\s*$))`).replace("comment", block._comment).replace(/tag/g, "(?!(?:a|em|strong|small|s|cite|q|dfn|abbr|data|time|code|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo|span|br|wbr|ins|del|img)\\b)\\w+(?!:|[^\\w\\s@]*@)\\b").getRegex(),
+  block.pedantic = __spreadProps(__spreadValues({}, block.normal), {
+    html: edit("^ *(?:comment *(?:\\n|\\s*$)|<(tag)[\\s\\S]+?</\\1> *(?:\\n{2,}|\\s*$)|<tag(?:\"[^\"]*\"|'[^']*'|\\s[^'\"/>\\s]*)*?/?> *(?:\\n{2,}|\\s*$))").replace("comment", block._comment).replace(/tag/g, "(?!(?:a|em|strong|small|s|cite|q|dfn|abbr|data|time|code|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo|span|br|wbr|ins|del|img)\\b)\\w+(?!:|[^\\w\\s@]*@)\\b").getRegex(),
     def: /^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +(["(][^\n]+[")]))? *(?:\n+|$)/,
     heading: /^(#{1,6})(.*)(?:\n+|$)/,
     fences: noopTest,
     lheading: /^(.+?)\n {0,3}(=+|-+) *(?:\n+|$)/,
     paragraph: edit(block.normal._paragraph).replace("hr", block.hr).replace("heading", " *#{1,6} *[^\n]").replace("lheading", block.lheading).replace("blockquote", " {0,3}>").replace("|fences", "").replace("|list", "").replace("|html", "").getRegex()
-  };
+  });
   var inline = {
     escape: /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/,
     autolink: /^<(scheme:[^\s\x00-\x1f<>]*|email)>/,
@@ -38258,9 +38336,8 @@
   inline.reflink = edit(inline.reflink).replace("label", inline._label).replace("ref", block._label).getRegex();
   inline.nolink = edit(inline.nolink).replace("ref", block._label).getRegex();
   inline.reflinkSearch = edit(inline.reflinkSearch, "g").replace("reflink", inline.reflink).replace("nolink", inline.nolink).getRegex();
-  inline.normal = { ...inline };
-  inline.pedantic = {
-    ...inline.normal,
+  inline.normal = __spreadValues({}, inline);
+  inline.pedantic = __spreadProps(__spreadValues({}, inline.normal), {
     strong: {
       start: /^__|\*\*/,
       middle: /^__(?=\S)([\s\S]*?\S)__(?!_)|^\*\*(?=\S)([\s\S]*?\S)\*\*(?!\*)/,
@@ -38275,22 +38352,20 @@
     },
     link: edit(/^!?\[(label)\]\((.*?)\)/).replace("label", inline._label).getRegex(),
     reflink: edit(/^!?\[(label)\]\s*\[([^\]]*)\]/).replace("label", inline._label).getRegex()
-  };
-  inline.gfm = {
-    ...inline.normal,
+  });
+  inline.gfm = __spreadProps(__spreadValues({}, inline.normal), {
     escape: edit(inline.escape).replace("])", "~|])").getRegex(),
     _extended_email: /[A-Za-z0-9._+-]+(@)[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![-_])/,
     url: /^((?:ftp|https?):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/,
     _backpedal: /(?:[^?!.,:;*_'"~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_'"~)]+(?!$))+/,
     del: /^(~~?)(?=[^\s~])([\s\S]*?[^\s~])\1(?=[^~]|$)/,
     text: /^([`~]+|[^`~])(?:(?= {2,}\n)|(?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)|[\s\S]*?(?:(?=[\\<!\[`*~_]|\b_|https?:\/\/|ftp:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)))/
-  };
+  });
   inline.gfm.url = edit(inline.gfm.url, "i").replace("email", inline.gfm._extended_email).getRegex();
-  inline.breaks = {
-    ...inline.gfm,
+  inline.breaks = __spreadProps(__spreadValues({}, inline.gfm), {
     br: edit(inline.br).replace("{2,}", "*").getRegex(),
     text: edit(inline.gfm.text).replace("\\b_", "\\b_| {2,}\\n").replace(/\{2,\}/g, "*").getRegex()
-  };
+  });
   function smartypants(text2) {
     return text2.replace(/---/g, "\u2014").replace(/--/g, "\u2013").replace(/(^|[-\u2014/(\[{"\s])'/g, "$1\u2018").replace(/'/g, "\u2019").replace(/(^|[-\u2014/(\[{\u2018\s])"/g, "$1\u201C").replace(/"/g, "\u201D").replace(/\.{3}/g, "\u2026");
   }
@@ -38307,12 +38382,12 @@
     return out;
   }
   var _Lexer = class __Lexer {
-    tokens;
-    options;
-    state;
-    tokenizer;
-    inlineQueue;
     constructor(options2) {
+      __publicField(this, "tokens");
+      __publicField(this, "options");
+      __publicField(this, "state");
+      __publicField(this, "tokenizer");
+      __publicField(this, "inlineQueue");
       this.tokens = [];
       this.tokens.links = /* @__PURE__ */ Object.create(null);
       this.options = options2 || _defaults;
@@ -38681,8 +38756,8 @@
     }
   };
   var _Renderer = class {
-    options;
     constructor(options2) {
+      __publicField(this, "options");
       this.options = options2 || _defaults;
     }
     code(code, infostring, escaped) {
@@ -38701,9 +38776,7 @@
       return '<pre><code class="' + this.options.langPrefix + escape4(lang) + '">' + (escaped ? code : escape4(code, true)) + "</code></pre>\n";
     }
     blockquote(quote2) {
-      return `<blockquote>
-${quote2}</blockquote>
-`;
+      return "<blockquote>\n".concat(quote2, "</blockquote>\n");
     }
     html(html2, block2) {
       return html2;
@@ -38711,11 +38784,9 @@ ${quote2}</blockquote>
     heading(text2, level, raw, slugger) {
       if (this.options.headerIds) {
         const id2 = this.options.headerPrefix + slugger.slug(raw);
-        return `<h${level} id="${id2}">${text2}</h${level}>
-`;
+        return "<h".concat(level, ' id="').concat(id2, '">').concat(text2, "</h").concat(level, ">\n");
       }
-      return `<h${level}>${text2}</h${level}>
-`;
+      return "<h".concat(level, ">").concat(text2, "</h").concat(level, ">\n");
     }
     hr() {
       return this.options.xhtml ? "<hr/>\n" : "<hr>\n";
@@ -38725,49 +38796,44 @@ ${quote2}</blockquote>
       return "<" + type2 + startatt + ">\n" + body + "</" + type2 + ">\n";
     }
     listitem(text2, task, checked) {
-      return `<li>${text2}</li>
-`;
+      return "<li>".concat(text2, "</li>\n");
     }
     checkbox(checked) {
       return "<input " + (checked ? 'checked="" ' : "") + 'disabled="" type="checkbox"' + (this.options.xhtml ? " /" : "") + "> ";
     }
     paragraph(text2) {
-      return `<p>${text2}</p>
-`;
+      return "<p>".concat(text2, "</p>\n");
     }
     table(header, body) {
       if (body)
-        body = `<tbody>${body}</tbody>`;
+        body = "<tbody>".concat(body, "</tbody>");
       return "<table>\n<thead>\n" + header + "</thead>\n" + body + "</table>\n";
     }
     tablerow(content) {
-      return `<tr>
-${content}</tr>
-`;
+      return "<tr>\n".concat(content, "</tr>\n");
     }
     tablecell(content, flags) {
       const type2 = flags.header ? "th" : "td";
-      const tag = flags.align ? `<${type2} align="${flags.align}">` : `<${type2}>`;
-      return tag + content + `</${type2}>
-`;
+      const tag = flags.align ? "<".concat(type2, ' align="').concat(flags.align, '">') : "<".concat(type2, ">");
+      return tag + content + "</".concat(type2, ">\n");
     }
     /**
      * span level renderer
      */
     strong(text2) {
-      return `<strong>${text2}</strong>`;
+      return "<strong>".concat(text2, "</strong>");
     }
     em(text2) {
-      return `<em>${text2}</em>`;
+      return "<em>".concat(text2, "</em>");
     }
     codespan(text2) {
-      return `<code>${text2}</code>`;
+      return "<code>".concat(text2, "</code>");
     }
     br() {
       return this.options.xhtml ? "<br/>" : "<br>";
     }
     del(text2) {
-      return `<del>${text2}</del>`;
+      return "<del>".concat(text2, "</del>");
     }
     link(href, title, text2) {
       href = cleanUrl(this.options.sanitize, this.options.baseUrl, href);
@@ -38786,9 +38852,9 @@ ${content}</tr>
       if (href === null) {
         return text2;
       }
-      let out = `<img src="${href}" alt="${text2}"`;
+      let out = '<img src="'.concat(href, '" alt="').concat(text2, '"');
       if (title) {
-        out += ` title="${title}"`;
+        out += ' title="'.concat(title, '"');
       }
       out += this.options.xhtml ? "/>" : ">";
       return out;
@@ -38828,8 +38894,8 @@ ${content}</tr>
     }
   };
   var _Slugger = class {
-    seen;
     constructor() {
+      __publicField(this, "seen");
       this.seen = {};
     }
     serialize(value) {
@@ -38863,11 +38929,11 @@ ${content}</tr>
     }
   };
   var _Parser = class __Parser {
-    options;
-    renderer;
-    textRenderer;
-    slugger;
     constructor(options2) {
+      __publicField(this, "options");
+      __publicField(this, "renderer");
+      __publicField(this, "textRenderer");
+      __publicField(this, "slugger");
       this.options = options2 || _defaults;
       this.options.renderer = this.options.renderer || new _Renderer();
       this.renderer = this.options.renderer;
@@ -39084,14 +39150,10 @@ ${content}</tr>
     }
   };
   var _Hooks = class {
-    options;
     constructor(options2) {
+      __publicField(this, "options");
       this.options = options2 || _defaults;
     }
-    static passThroughHooks = /* @__PURE__ */ new Set([
-      "preprocess",
-      "postprocess"
-    ]);
     /**
      * Process markdown before marked
      */
@@ -39105,21 +39167,28 @@ ${content}</tr>
       return html2;
     }
   };
+  __publicField(_Hooks, "passThroughHooks", /* @__PURE__ */ new Set([
+    "preprocess",
+    "postprocess"
+  ]));
+  var _parseMarkdown, parseMarkdown_fn, _onError, onError_fn;
   var Marked = class {
-    defaults = _getDefaults();
-    options = this.setOptions;
-    parse = this.#parseMarkdown(_Lexer.lex, _Parser.parse);
-    parseInline = this.#parseMarkdown(_Lexer.lexInline, _Parser.parseInline);
-    Parser = _Parser;
-    parser = _Parser.parse;
-    Renderer = _Renderer;
-    TextRenderer = _TextRenderer;
-    Lexer = _Lexer;
-    lexer = _Lexer.lex;
-    Tokenizer = _Tokenizer;
-    Slugger = _Slugger;
-    Hooks = _Hooks;
     constructor(...args) {
+      __privateAdd(this, _parseMarkdown);
+      __privateAdd(this, _onError);
+      __publicField(this, "defaults", _getDefaults());
+      __publicField(this, "options", this.setOptions);
+      __publicField(this, "parse", __privateMethod(this, _parseMarkdown, parseMarkdown_fn).call(this, _Lexer.lex, _Parser.parse));
+      __publicField(this, "parseInline", __privateMethod(this, _parseMarkdown, parseMarkdown_fn).call(this, _Lexer.lexInline, _Parser.parseInline));
+      __publicField(this, "Parser", _Parser);
+      __publicField(this, "parser", _Parser.parse);
+      __publicField(this, "Renderer", _Renderer);
+      __publicField(this, "TextRenderer", _TextRenderer);
+      __publicField(this, "Lexer", _Lexer);
+      __publicField(this, "lexer", _Lexer.lex);
+      __publicField(this, "Tokenizer", _Tokenizer);
+      __publicField(this, "Slugger", _Slugger);
+      __publicField(this, "Hooks", _Hooks);
       this.use(...args);
     }
     /**
@@ -39161,7 +39230,7 @@ ${content}</tr>
     use(...args) {
       const extensions = this.defaults.extensions || { renderers: {}, childTokens: {} };
       args.forEach((pack) => {
-        const opts = { ...pack };
+        const opts = __spreadValues({}, pack);
         opts.async = this.defaults.async || opts.async || false;
         if (pack.extensions) {
           pack.extensions.forEach((ext) => {
@@ -39284,139 +39353,141 @@ ${content}</tr>
             return values;
           };
         }
-        this.defaults = { ...this.defaults, ...opts };
+        this.defaults = __spreadValues(__spreadValues({}, this.defaults), opts);
       });
       return this;
     }
     setOptions(opt) {
-      this.defaults = { ...this.defaults, ...opt };
+      this.defaults = __spreadValues(__spreadValues({}, this.defaults), opt);
       return this;
     }
-    #parseMarkdown(lexer2, parser3) {
-      return (src, optOrCallback, callback) => {
-        if (typeof optOrCallback === "function") {
-          callback = optOrCallback;
-          optOrCallback = null;
-        }
-        const origOpt = { ...optOrCallback };
-        const opt = { ...this.defaults, ...origOpt };
-        const throwError = this.#onError(!!opt.silent, !!opt.async, callback);
-        if (typeof src === "undefined" || src === null) {
-          return throwError(new Error("marked(): input parameter is undefined or null"));
-        }
-        if (typeof src !== "string") {
-          return throwError(new Error("marked(): input parameter is of type " + Object.prototype.toString.call(src) + ", string expected"));
-        }
-        checkDeprecations(opt, callback);
-        if (opt.hooks) {
-          opt.hooks.options = opt;
-        }
-        if (callback) {
-          const highlight = opt.highlight;
-          let tokens;
-          try {
-            if (opt.hooks) {
-              src = opt.hooks.preprocess(src);
-            }
-            tokens = lexer2(src, opt);
-          } catch (e3) {
-            return throwError(e3);
-          }
-          const done = (err) => {
-            let out;
-            if (!err) {
-              try {
-                if (opt.walkTokens) {
-                  this.walkTokens(tokens, opt.walkTokens);
-                }
-                out = parser3(tokens, opt);
-                if (opt.hooks) {
-                  out = opt.hooks.postprocess(out);
-                }
-              } catch (e3) {
-                err = e3;
-              }
-            }
-            opt.highlight = highlight;
-            return err ? throwError(err) : callback(null, out);
-          };
-          if (!highlight || highlight.length < 3) {
-            return done();
-          }
-          delete opt.highlight;
-          if (!tokens.length)
-            return done();
-          let pending = 0;
-          this.walkTokens(tokens, (token) => {
-            if (token.type === "code") {
-              pending++;
-              setTimeout(() => {
-                highlight(token.text, token.lang, (err, code) => {
-                  if (err) {
-                    return done(err);
-                  }
-                  if (code != null && code !== token.text) {
-                    token.text = code;
-                    token.escaped = true;
-                  }
-                  pending--;
-                  if (pending === 0) {
-                    done();
-                  }
-                });
-              }, 0);
-            }
-          });
-          if (pending === 0) {
-            done();
-          }
-          return;
-        }
-        if (opt.async) {
-          return Promise.resolve(opt.hooks ? opt.hooks.preprocess(src) : src).then((src2) => lexer2(src2, opt)).then((tokens) => opt.walkTokens ? Promise.all(this.walkTokens(tokens, opt.walkTokens)).then(() => tokens) : tokens).then((tokens) => parser3(tokens, opt)).then((html2) => opt.hooks ? opt.hooks.postprocess(html2) : html2).catch(throwError);
-        }
+  };
+  _parseMarkdown = new WeakSet();
+  parseMarkdown_fn = function(lexer2, parser3) {
+    return (src, optOrCallback, callback) => {
+      if (typeof optOrCallback === "function") {
+        callback = optOrCallback;
+        optOrCallback = null;
+      }
+      const origOpt = __spreadValues({}, optOrCallback);
+      const opt = __spreadValues(__spreadValues({}, this.defaults), origOpt);
+      const throwError = __privateMethod(this, _onError, onError_fn).call(this, !!opt.silent, !!opt.async, callback);
+      if (typeof src === "undefined" || src === null) {
+        return throwError(new Error("marked(): input parameter is undefined or null"));
+      }
+      if (typeof src !== "string") {
+        return throwError(new Error("marked(): input parameter is of type " + Object.prototype.toString.call(src) + ", string expected"));
+      }
+      checkDeprecations(opt, callback);
+      if (opt.hooks) {
+        opt.hooks.options = opt;
+      }
+      if (callback) {
+        const highlight = opt.highlight;
+        let tokens;
         try {
           if (opt.hooks) {
             src = opt.hooks.preprocess(src);
           }
-          const tokens = lexer2(src, opt);
-          if (opt.walkTokens) {
-            this.walkTokens(tokens, opt.walkTokens);
-          }
-          let html2 = parser3(tokens, opt);
-          if (opt.hooks) {
-            html2 = opt.hooks.postprocess(html2);
-          }
-          return html2;
+          tokens = lexer2(src, opt);
         } catch (e3) {
           return throwError(e3);
         }
-      };
-    }
-    #onError(silent, async, callback) {
-      return (e3) => {
-        e3.message += "\nPlease report this to https://github.com/markedjs/marked.";
-        if (silent) {
-          const msg = "<p>An error occurred:</p><pre>" + escape4(e3.message + "", true) + "</pre>";
-          if (async) {
-            return Promise.resolve(msg);
+        const done = (err) => {
+          let out;
+          if (!err) {
+            try {
+              if (opt.walkTokens) {
+                this.walkTokens(tokens, opt.walkTokens);
+              }
+              out = parser3(tokens, opt);
+              if (opt.hooks) {
+                out = opt.hooks.postprocess(out);
+              }
+            } catch (e3) {
+              err = e3;
+            }
           }
-          if (callback) {
-            callback(null, msg);
-            return;
-          }
-          return msg;
+          opt.highlight = highlight;
+          return err ? throwError(err) : callback(null, out);
+        };
+        if (!highlight || highlight.length < 3) {
+          return done();
         }
+        delete opt.highlight;
+        if (!tokens.length)
+          return done();
+        let pending = 0;
+        this.walkTokens(tokens, (token) => {
+          if (token.type === "code") {
+            pending++;
+            setTimeout(() => {
+              highlight(token.text, token.lang, (err, code) => {
+                if (err) {
+                  return done(err);
+                }
+                if (code != null && code !== token.text) {
+                  token.text = code;
+                  token.escaped = true;
+                }
+                pending--;
+                if (pending === 0) {
+                  done();
+                }
+              });
+            }, 0);
+          }
+        });
+        if (pending === 0) {
+          done();
+        }
+        return;
+      }
+      if (opt.async) {
+        return Promise.resolve(opt.hooks ? opt.hooks.preprocess(src) : src).then((src2) => lexer2(src2, opt)).then((tokens) => opt.walkTokens ? Promise.all(this.walkTokens(tokens, opt.walkTokens)).then(() => tokens) : tokens).then((tokens) => parser3(tokens, opt)).then((html2) => opt.hooks ? opt.hooks.postprocess(html2) : html2).catch(throwError);
+      }
+      try {
+        if (opt.hooks) {
+          src = opt.hooks.preprocess(src);
+        }
+        const tokens = lexer2(src, opt);
+        if (opt.walkTokens) {
+          this.walkTokens(tokens, opt.walkTokens);
+        }
+        let html2 = parser3(tokens, opt);
+        if (opt.hooks) {
+          html2 = opt.hooks.postprocess(html2);
+        }
+        return html2;
+      } catch (e3) {
+        return throwError(e3);
+      }
+    };
+  };
+  _onError = new WeakSet();
+  onError_fn = function(silent, async, callback) {
+    return (e3) => {
+      e3.message += "\nPlease report this to https://github.com/markedjs/marked.";
+      if (silent) {
+        const msg = "<p>An error occurred:</p><pre>" + escape4(e3.message + "", true) + "</pre>";
         if (async) {
-          return Promise.reject(e3);
+          return Promise.resolve(msg);
         }
         if (callback) {
-          callback(e3);
+          callback(null, msg);
           return;
         }
-        throw e3;
-      };
-    }
+        return msg;
+      }
+      if (async) {
+        return Promise.reject(e3);
+      }
+      if (callback) {
+        callback(e3);
+        return;
+      }
+      throw e3;
+    };
   };
   var markedInstance = new Marked();
   function marked(src, opt, callback) {
@@ -39541,7 +39612,7 @@ ${content}</tr>
         if (_cache3.loadedTile[tile.id] || _cache3.inflightTile[tile.id])
           return;
         let [x2, y2, z2] = tile.xyz;
-        let url = `${_osmoseUrlRoot}/issues/${z2}/${x2}/${y2}.geojson?` + utilQsString(params);
+        let url = "".concat(_osmoseUrlRoot, "/issues/").concat(z2, "/").concat(x2, "/").concat(y2, ".geojson?") + utilQsString(params);
         let controller = new AbortController();
         _cache3.inflightTile[tile.id] = controller;
         json_default(url, { signal: controller.signal }).then((data) => {
@@ -39550,7 +39621,7 @@ ${content}</tr>
           if (data.features) {
             data.features.forEach((issue) => {
               const { item, class: cl, uuid: id2 } = issue.properties;
-              const itemType = `${item}-${cl}`;
+              const itemType = "".concat(item, "-").concat(cl);
               if (itemType in _osmoseData.icons) {
                 let loc = issue.geometry.coordinates;
                 loc = preventCoincident2(loc);
@@ -39574,7 +39645,7 @@ ${content}</tr>
       if (issue.elems !== void 0) {
         return Promise.resolve(issue);
       }
-      const url = `${_osmoseUrlRoot}/issue/${issue.id}?langs=${_mainLocalizer.localeCode()}`;
+      const url = "".concat(_osmoseUrlRoot, "/issue/").concat(issue.id, "?langs=").concat(_mainLocalizer.localeCode());
       const cacheDetails = (data) => {
         issue.elems = data.elems.map((e3) => e3.type.substring(0, 1) + e3.id);
         issue.detail = data.subtitle ? marked(data.subtitle.auto) : "";
@@ -39598,7 +39669,7 @@ ${content}</tr>
           const [item2 = { class: [] }] = cat.items;
           const [cl2 = null] = item2.class;
           if (!cl2) {
-            console.log(`Osmose strings request (${itemType}) had unexpected data`);
+            console.log("Osmose strings request (".concat(itemType, ") had unexpected data"));
             return;
           }
           const { item: itemInt, color: color2 } = item2;
@@ -39618,7 +39689,7 @@ ${content}</tr>
           _cache3.strings[locale2][itemType] = issueStrings;
         };
         const [item, cl] = itemType.split("-");
-        const url = `${_osmoseUrlRoot}/items/${item}/class/${cl}?langs=${locale2}`;
+        const url = "".concat(_osmoseUrlRoot, "/items/").concat(item, "/class/").concat(cl, "?langs=").concat(locale2);
         return json_default(url).then(cacheData);
       }).filter(Boolean);
       return Promise.all(allRequests).then(() => _cache3.strings[locale2]);
@@ -39633,7 +39704,7 @@ ${content}</tr>
       if (_cache3.inflightPost[issue.id]) {
         return callback({ message: "Issue update already inflight", status: -2 }, issue);
       }
-      const url = `${_osmoseUrlRoot}/issue/${issue.id}/${issue.newStatus}`;
+      const url = "".concat(_osmoseUrlRoot, "/issue/").concat(issue.id, "/").concat(issue.newStatus);
       const controller = new AbortController();
       const after = () => {
         delete _cache3.inflightPost[issue.id];
@@ -39691,7 +39762,7 @@ ${content}</tr>
       return _cache3.closed;
     },
     itemURL(item) {
-      return `https://osmose.openstreetmap.fr/en/error/${item.id}`;
+      return "https://osmose.openstreetmap.fr/en/error/".concat(item.id);
     }
   };
 
@@ -39702,9 +39773,9 @@ ${content}</tr>
   var accessToken = "MLY|4100327730013843|5bb78b81720791946a9a7b956c57b7cf";
   var apiUrl = "https://graph.mapillary.com/";
   var baseTileUrl = "https://tiles.mapillary.com/maps/vtp";
-  var mapFeatureTileUrl = `${baseTileUrl}/mly_map_feature_point/2/{z}/{x}/{y}?access_token=${accessToken}`;
-  var tileUrl = `${baseTileUrl}/mly1_public/2/{z}/{x}/{y}?access_token=${accessToken}`;
-  var trafficSignTileUrl = `${baseTileUrl}/mly_map_feature_traffic_sign/2/{z}/{x}/{y}?access_token=${accessToken}`;
+  var mapFeatureTileUrl = "".concat(baseTileUrl, "/mly_map_feature_point/2/{z}/{x}/{y}?access_token=").concat(accessToken);
+  var tileUrl = "".concat(baseTileUrl, "/mly1_public/2/{z}/{x}/{y}?access_token=").concat(accessToken);
+  var trafficSignTileUrl = "".concat(baseTileUrl, "/mly_map_feature_traffic_sign/2/{z}/{x}/{y}?access_token=").concat(accessToken);
   var viewercss = "mapillary-js/mapillary.css";
   var viewerjs = "mapillary-js/mapillary.js";
   var minZoom = 14;
@@ -39727,7 +39798,7 @@ ${content}</tr>
   }
   function loadTile(which, url, tile) {
     const cache = _mlyCache.requests;
-    const tileId = `${tile.id}-${which}`;
+    const tileId = "".concat(tile.id, "-").concat(which);
     if (cache.loaded[tileId] || cache.inflight[tileId])
       return;
     const controller = new AbortController();
@@ -40144,7 +40215,7 @@ ${content}</tr>
         context.map().centerEase(loc);
         that.updateUrlImage(image.id);
         if (_mlyShowFeatureDetections || _mlyShowSignDetections) {
-          that.updateDetections(image.id, `${apiUrl}/${image.id}/detections?access_token=${accessToken}&fields=id,image,geometry,value`);
+          that.updateDetections(image.id, "".concat(apiUrl, "/").concat(image.id, "/detections?access_token=").concat(accessToken, "&fields=id,image,geometry,value"));
         }
         dispatch5.call("imageChanged");
       }
@@ -40167,7 +40238,7 @@ ${content}</tr>
     },
     // Return a list of detection objects for the given id
     getDetections: function(id2) {
-      return loadData(`${apiUrl}/${id2}/detections?access_token=${accessToken}&fields=id,value,image`);
+      return loadData("".concat(apiUrl, "/").concat(id2, "/detections?access_token=").concat(accessToken, "&fields=id,value,image"));
     },
     // Set the currently visible image
     setActiveImage: function(image) {
@@ -41574,6 +41645,7 @@ ${content}</tr>
     validationMismatchedGeometry: () => validationMismatchedGeometry,
     validationMissingRole: () => validationMissingRole,
     validationMissingTag: () => validationMissingTag,
+    validationOneLaneWithNoOneway: () => validationOneLaneWithNoOneway,
     validationOutdatedTags: () => validationOutdatedTags,
     validationPrivateData: () => validationPrivateData,
     validationSuspiciousName: () => validationSuspiciousName,
@@ -42958,11 +43030,11 @@ ${content}</tr>
         const secondLastNodesParents = historyGraph.parentWays(historyGraph.entity(secondLastNodeId)).filter((w2) => w2.id !== wayID);
         const featureType = getFeatureType(lastNodesParents);
         if (lastNodesParents.length !== 1 || secondLastNodesParents.length === 0) {
-          context.ui().flash.duration(4e3).iconName("#iD-icon-no").label(_t.append(`operations.follow.error.intersection_of_multiple_ways.${featureType}`))();
+          context.ui().flash.duration(4e3).iconName("#iD-icon-no").label(_t.append("operations.follow.error.intersection_of_multiple_ways.".concat(featureType)))();
           return;
         }
         if (!secondLastNodesParents.some((n3) => n3.id === lastNodesParents[0].id)) {
-          context.ui().flash.duration(4e3).iconName("#iD-icon-no").label(_t.append(`operations.follow.error.intersection_of_different_ways.${featureType}`))();
+          context.ui().flash.duration(4e3).iconName("#iD-icon-no").label(_t.append("operations.follow.error.intersection_of_different_ways.".concat(featureType)))();
           return;
         }
         const way = lastNodesParents[0];
@@ -43571,7 +43643,7 @@ ${content}</tr>
       }).filter(Boolean);
       function getReference(id2) {
         return function showReference(selection2) {
-          selection2.selectAll(".issue-reference").data([0]).enter().append("div").attr("class", "issue-reference").call(_t.append(`issues.incompatible_source.reference.${id2}`));
+          selection2.selectAll(".issue-reference").data([0]).enter().append("div").attr("class", "issue-reference").call(_t.append("issues.incompatible_source.reference.".concat(id2)));
         };
       }
     };
@@ -44130,6 +44202,68 @@ ${content}</tr>
     return validation;
   }
 
+  // modules/validations/oneway_onelane.js
+  function validationOneLaneWithNoOneway() {
+    const type2 = "oneway_onelane";
+    function createSuggestion(onewayValue, entity) {
+      return new validationIssueFix({
+        icon: "iD-icon-data",
+        title: _t.append("issues.fix.tag_as_oneway_".concat(onewayValue, ".title")),
+        onClick: (context) => {
+          const newTags = __spreadProps(__spreadValues({}, entity.tags), { oneway: onewayValue });
+          context.perform(
+            actionChangeTags(entity.id, newTags),
+            _t("issues.fix.tag_as_oneway_".concat(onewayValue, ".annotation"))
+          );
+        }
+      });
+    }
+    function makeOneLaneIssue(entity) {
+      return new validationIssue({
+        type: type2,
+        subtype: type2,
+        severity: "warning",
+        message: (context) => _t.append(
+          "issues.oneway_onelane.message",
+          { feature: utilDisplayLabel(entity, context.graph()) }
+        ),
+        reference: showReference,
+        entityIds: [entity.id],
+        hash: type2,
+        dynamicFixes: () => [
+          // suggest adding `oneway` tag (automatic)
+          ...["yes", "alternating"].map((onewayValue) => createSuggestion(onewayValue, entity)),
+          // or changing the `lanes` tag (manual)
+          new validationIssueFix({ title: _t.append("issues.fix.change_lane_tag.title") }),
+          // or suggest adding the `lane_markings=no` tag (automatic)
+          new validationIssueFix({
+            icon: "iD-icon-data",
+            title: _t.append("issues.fix.tag_as_oneway_no_markings.title"),
+            onClick: (context) => {
+              const newTags = __spreadProps(__spreadValues({}, entity.tags), { lane_markings: "no" });
+              delete newTags.lanes;
+              context.perform(
+                actionChangeTags(entity.id, newTags),
+                _t("issues.fix.tag_as_oneway_no_markings.annotation")
+              );
+            }
+          })
+        ]
+      });
+    }
+    function showReference(selection2) {
+      selection2.selectAll(".issue-reference").data([0]).enter().append("div").attr("class", "issue-reference").call(_t.append("issues.".concat(type2, ".reference")));
+    }
+    const validation = (entity) => {
+      const isOneLane = entity.tags.lanes === "1";
+      if (entity.type !== "way" || entity.isOneWay() || !isOneLane)
+        return [];
+      return [makeOneLaneIssue(entity)];
+    };
+    validation.type = type2;
+    return validation;
+  }
+
   // modules/validations/outdated_tags.js
   function validationOutdatedTags() {
     const type2 = "outdated_tags";
@@ -44262,7 +44396,7 @@ ${content}</tr>
           return graph2;
         let newTags2 = Object.assign({}, currEntity.tags);
         const wd = item.mainTag;
-        const notwd = `not:${wd}`;
+        const notwd = "not:".concat(wd);
         const qid = item.tags[wd];
         newTags2[notwd] = qid;
         if (newTags2[wd] === qid) {
@@ -44276,7 +44410,7 @@ ${content}</tr>
         const currEntity = context.hasEntity(entity.id);
         if (!currEntity)
           return "";
-        let messageID = `issues.outdated_tags.${prefix}message`;
+        let messageID = "issues.outdated_tags.".concat(prefix, "message");
         if (subtype === "noncanonical_brand" && isOnlyAddingTags) {
           messageID += "_incomplete";
         }
@@ -44291,11 +44425,11 @@ ${content}</tr>
       }
       function showReference(selection2) {
         let enter = selection2.selectAll(".issue-reference").data([0]).enter();
-        enter.append("div").attr("class", "issue-reference").call(_t.append(`issues.outdated_tags.${prefix}reference`));
+        enter.append("div").attr("class", "issue-reference").call(_t.append("issues.outdated_tags.".concat(prefix, "reference")));
         enter.append("strong").call(_t.append("issues.suggested"));
         enter.append("table").attr("class", "tagDiff-table").selectAll(".tagDiff-row").data(tagDiff).enter().append("tr").attr("class", "tagDiff-row").append("td").attr("class", (d2) => {
           let klass = d2.type === "+" ? "add" : "remove";
-          return `tagDiff-cell tagDiff-cell-${klass}`;
+          return "tagDiff-cell tagDiff-cell-".concat(klass);
         }).html((d2) => d2.display);
       }
     }
@@ -44539,7 +44673,7 @@ ${content}</tr>
         },
         reference: showReference,
         entityIds: [entityId],
-        hash: `${nameKey}=${genericName}`,
+        hash: "".concat(nameKey, "=").concat(genericName),
         dynamicFixes: function() {
           return [
             new validationIssueFix({
@@ -44581,7 +44715,7 @@ ${content}</tr>
         },
         reference: showReference,
         entityIds: [entityId],
-        hash: `${nameKey}=${incorrectName}`,
+        hash: "".concat(nameKey, "=").concat(incorrectName),
         dynamicFixes: function() {
           return [
             new validationIssueFix({
@@ -45579,11 +45713,7 @@ ${content}</tr>
 
   // modules/renderer/background_source.js
   var isRetina = window.devicePixelRatio && window.devicePixelRatio >= 2;
-  window.matchMedia(`
-        (-webkit-min-device-pixel-ratio: 2), /* Safari */
-        (min-resolution: 2dppx),             /* standard */
-        (min-resolution: 192dpi)             /* fallback */
-    `).addListener(function() {
+  window.matchMedia("\n        (-webkit-min-device-pixel-ratio: 2), /* Safari */\n        (min-resolution: 2dppx),             /* standard */\n        (min-resolution: 192dpi)             /* fallback */\n    ").addListener(function() {
     isRetina = window.devicePixelRatio && window.devicePixelRatio >= 2;
   });
   function localeDateString(s2) {
@@ -45664,7 +45794,7 @@ ${content}</tr>
       return source;
     };
     source.url = function(coord2) {
-      var result = _template.replace(/#[\s\S]*/u, "");
+      var result = _template.replace(new RegExp("#[\\s\\S]*", "u"), "");
       if (result === "")
         return result;
       if (!source.type || source.id === "custom") {
@@ -45791,9 +45921,9 @@ ${content}</tr>
       let subDomainNumbers = subDomains.map((subDomain) => {
         return subDomain.substring(1);
       }).join(",");
-      template = template.replace("{subdomain}", `t{switch:${subDomainNumbers}}`).replace("{quadkey}", "{u}");
+      template = template.replace("{subdomain}", "t{switch:".concat(subDomainNumbers, "}")).replace("{quadkey}", "{u}");
       if (!new URLSearchParams(template).has(strictParam)) {
-        template += `&${strictParam}=z`;
+        template += "&".concat(strictParam, "=z");
       }
       bing.template(template);
       providers = imageryResource.imageryProviders.map(function(provider) {
@@ -46635,17 +46765,17 @@ ${content}</tr>
       }
       let baseFilter = "";
       if (_brightness !== 1) {
-        baseFilter += ` brightness(${_brightness})`;
+        baseFilter += " brightness(".concat(_brightness, ")");
       }
       if (_contrast !== 1) {
-        baseFilter += ` contrast(${_contrast})`;
+        baseFilter += " contrast(".concat(_contrast, ")");
       }
       if (_saturation !== 1) {
-        baseFilter += ` saturate(${_saturation})`;
+        baseFilter += " saturate(".concat(_saturation, ")");
       }
       if (_sharpness < 1) {
         const blur = number_default(0.5, 5)(1 - _sharpness);
-        baseFilter += ` blur(${blur}px)`;
+        baseFilter += " blur(".concat(blur, "px)");
       }
       let base = selection2.selectAll(".layer-background").data([0]);
       base = base.enter().insert("div", ".layer-data").attr("class", "layer layer-background").merge(base);
@@ -46658,9 +46788,9 @@ ${content}</tr>
         mixBlendMode = "overlay";
         maskFilter = "saturate(0) blur(3px) invert(1)";
         let contrast = _sharpness - 1;
-        maskFilter += ` contrast(${contrast})`;
+        maskFilter += " contrast(".concat(contrast, ")");
         let brightness = number_default(1, 0.85)(_sharpness - 1);
-        maskFilter += ` brightness(${brightness})`;
+        maskFilter += " brightness(".concat(brightness, ")");
       }
       let mask = base.selectAll(".layer-unsharp-mask").data(_sharpness > 1 ? [0] : []);
       mask.exit().remove();
@@ -46681,7 +46811,7 @@ ${content}</tr>
       let hash = utilStringQs(window.location.hash);
       let id2 = currSource.id;
       if (id2 === "custom") {
-        id2 = `custom:${currSource.template()}`;
+        id2 = "custom:".concat(currSource.template());
       }
       if (id2) {
         hash.background = id2;
@@ -46694,7 +46824,7 @@ ${content}</tr>
         delete hash.overlays;
       }
       if (Math.abs(x2) > EPSILON || Math.abs(y2) > EPSILON) {
-        hash.offset = `${x2},${y2}`;
+        hash.offset = "".concat(x2, ",").concat(y2);
       } else {
         delete hash.offset;
       }
@@ -46789,6 +46919,15 @@ ${content}</tr>
       baseLayer.source(!fail ? d2 : background.findSource("none"));
       dispatch14.call("change");
       background.updateImagery();
+      if (d2.id === "MAPNIK") {
+        const locatorOverlay = background.overlayLayerSources().find(
+          (overlay) => overlay.isLocatorOverlay()
+        );
+        const isLocatorOverlayActive = !!locatorOverlay;
+        if (isLocatorOverlayActive) {
+          setTimeout(() => background.toggleOverlayLayer(locatorOverlay), 0);
+        }
+      }
       return background;
     };
     background.findSource = (id2) => {
@@ -48072,13 +48211,13 @@ ${content}</tr>
     return Array.from(element.getElementsByTagName(tagName));
   }
   function normalizeId(id2) {
-    return id2[0] === "#" ? id2 : `#${id2}`;
+    return id2[0] === "#" ? id2 : "#".concat(id2);
   }
   function $ns(element, tagName, ns) {
     return Array.from(element.getElementsByTagNameNS(ns, tagName));
   }
   function nodeVal(node) {
-    node?.normalize();
+    node == null ? void 0 : node.normalize();
     return node && node.textContent || "";
   }
   function get1(node, tagName, callback) {
@@ -48131,12 +48270,12 @@ ${content}</tr>
     return properties;
   }
   function isElement(node) {
-    return node?.nodeType === 1;
+    return (node == null ? void 0 : node.nodeType) === 1;
   }
   function getLineStyle(node) {
     return get3(node, "line", (lineStyle) => {
       const val = Object.assign({}, val1(lineStyle, "color", (color2) => {
-        return { stroke: `#${color2}` };
+        return { stroke: "#".concat(color2) };
       }), $num(lineStyle, "opacity", (opacity) => {
         return { "stroke-opacity": opacity };
       }), $num(lineStyle, "width", (width) => {
@@ -48188,6 +48327,7 @@ ${content}</tr>
     };
   }
   function extractProperties(node) {
+    var _a;
     const properties = getMulti(node, [
       "name",
       "cmt",
@@ -48198,7 +48338,7 @@ ${content}</tr>
     ]);
     const extensions = Array.from(node.getElementsByTagNameNS("http://www.garmin.com/xmlschemas/GpxExtensions/v3", "*"));
     for (const child of extensions) {
-      if (child.parentNode?.parentNode === node) {
+      if (((_a = child.parentNode) == null ? void 0 : _a.parentNode) === node) {
         properties[child.tagName.replace(":", "_")] = nodeVal(child);
       }
     }
@@ -48437,7 +48577,7 @@ ${content}</tr>
   }
   function getMaybeHTMLDescription(node) {
     const descriptionNode = get1(node, "description");
-    for (const c2 of Array.from(descriptionNode?.childNodes || [])) {
+    for (const c2 of Array.from((descriptionNode == null ? void 0 : descriptionNode.childNodes) || [])) {
       if (c2.nodeType === 4) {
         return {
           description: {
@@ -48604,6 +48744,7 @@ ${content}</tr>
     };
   }
   function getPlacemark(node, styleMap, schema, options2) {
+    var _a;
     const { coordTimes, geometries } = getGeometry(node);
     const geometry = geometryListToGeometry(geometries);
     if (!geometry && options2.skipNullGeometry) {
@@ -48625,7 +48766,7 @@ ${content}</tr>
         }
       } : {})
     };
-    if (feature3.properties?.visibility !== void 0) {
+    if (((_a = feature3.properties) == null ? void 0 : _a.visibility) !== void 0) {
       feature3.properties.visibility = feature3.properties.visibility !== "0";
     }
     const id2 = node.getAttribute("id");
@@ -48697,8 +48838,9 @@ ${content}</tr>
     return null;
   }
   function getGroundOverlay(node, styleMap, schema, options2) {
+    var _a;
     const box = getGroundOverlayBox(node);
-    const geometry = box?.geometry || null;
+    const geometry = (box == null ? void 0 : box.geometry) || null;
     if (!geometry && options2.skipNullGeometry) {
       return null;
     }
@@ -48728,10 +48870,10 @@ ${content}</tr>
         extractTimeStamp(node)
       )
     };
-    if (box?.bbox) {
+    if (box == null ? void 0 : box.bbox) {
       feature3.bbox = box.bbox;
     }
-    if (feature3.properties?.visibility !== void 0) {
+    if (((_a = feature3.properties) == null ? void 0 : _a.visibility) !== void 0) {
       feature3.properties.visibility = feature3.properties.visibility !== "0";
     }
     const id2 = node.getAttribute("id");
@@ -49205,7 +49347,7 @@ ${content}</tr>
       legend = legend.enter().append("div").attr("class", "fillD debug-legend").merge(legend);
       let legendItems = legend.selectAll(".debug-legend-item").data(debugData, (d2) => d2.label);
       legendItems.exit().remove();
-      legendItems.enter().append("span").attr("class", (d2) => `debug-legend-item ${d2.class}`).text((d2) => d2.label);
+      legendItems.enter().append("span").attr("class", (d2) => "debug-legend-item ".concat(d2.class)).text((d2) => d2.label);
       let layer = selection2.selectAll(".layer-debug").data(showImagery || showDownloaded ? [0] : []);
       layer.exit().remove();
       layer = layer.enter().append("g").attr("class", "layer-debug").merge(layer);
@@ -49268,7 +49410,7 @@ ${content}</tr>
     function drawDefs(selection2) {
       _defsSelection = selection2.append("defs");
       function addOnewayMarker(name, colour) {
-        _defsSelection.append("marker").attr("id", `ideditor-oneway-marker-${name}`).attr("viewBox", "0 0 10 5").attr("refX", 2.5).attr("refY", 2.5).attr("markerWidth", 2).attr("markerHeight", 2).attr("markerUnits", "strokeWidth").attr("orient", "auto").append("path").attr("class", "oneway-marker-path").attr("d", "M 5,3 L 0,3 L 0,2 L 5,2 L 5,0 L 10,2.5 L 5,5 z").attr("stroke", "none").attr("fill", colour).attr("opacity", "0.75");
+        _defsSelection.append("marker").attr("id", "ideditor-oneway-marker-".concat(name)).attr("viewBox", "0 0 10 5").attr("refX", 2.5).attr("refY", 2.5).attr("markerWidth", 2).attr("markerHeight", 2).attr("markerUnits", "strokeWidth").attr("orient", "auto").append("path").attr("class", "oneway-marker-path").attr("d", "M 5,3 L 0,3 L 0,2 L 5,2 L 5,0 L 10,2.5 L 5,5 z").attr("stroke", "none").attr("fill", colour).attr("opacity", "0.75");
       }
       addOnewayMarker("black", "#000");
       addOnewayMarker("white", "#fff");
@@ -49415,7 +49557,7 @@ ${content}</tr>
       const getTransform = svgPointTransform(projection2);
       const markers = drawLayer.selectAll(".qaItem.keepRight").data(data, (d2) => d2.id);
       markers.exit().remove();
-      const markersEnter = markers.enter().append("g").attr("class", (d2) => `qaItem ${d2.service} itemId-${d2.id} itemType-${d2.parentIssueType}`);
+      const markersEnter = markers.enter().append("g").attr("class", (d2) => "qaItem ".concat(d2.service, " itemId-").concat(d2.id, " itemType-").concat(d2.parentIssueType));
       markersEnter.append("ellipse").attr("cx", 0.5).attr("cy", 1).attr("rx", 6.5).attr("ry", 3).attr("class", "stroke");
       markersEnter.append("path").call(markerPath, "shadow");
       markersEnter.append("use").attr("class", "qaItem-fill").attr("width", "20px").attr("height", "20px").attr("x", "-8px").attr("y", "-22px").attr("xlink:href", "#iD-icon-bolt");
@@ -49425,7 +49567,7 @@ ${content}</tr>
       const fillClass = context.getDebug("target") ? "pink " : "nocolor ";
       const targets = touchLayer.selectAll(".qaItem.keepRight").data(data, (d2) => d2.id);
       targets.exit().remove();
-      targets.enter().append("rect").attr("width", "20px").attr("height", "20px").attr("x", "-8px").attr("y", "-22px").merge(targets).sort(sortY).attr("class", (d2) => `qaItem ${d2.service} target ${fillClass} itemId-${d2.id}`).attr("transform", getTransform);
+      targets.enter().append("rect").attr("width", "20px").attr("height", "20px").attr("x", "-8px").attr("y", "-22px").merge(targets).sort(sortY).attr("class", (d2) => "qaItem ".concat(d2.service, " target ").concat(fillClass, " itemId-").concat(d2.id)).attr("transform", getTransform);
       function sortY(a2, b2) {
         return a2.id === selectedID ? 1 : b2.id === selectedID ? -1 : a2.severity === "error" && b2.severity !== "error" ? 1 : b2.severity === "error" && a2.severity !== "error" ? -1 : b2.loc[1] - a2.loc[1];
       }
@@ -50116,12 +50258,12 @@ ${content}</tr>
   function l(e3, t2 = o) {
     if (n2)
       try {
-        return "function" == typeof __require ? Promise.resolve(t2(__require(e3))) : import(
+        return "function" == typeof __require ? Promise.resolve(t2(__require(e3))) : Promise.resolve().then(() => (
           /* webpackIgnore: true */
-          e3
-        ).then(t2);
+          __toESM(__require(e3))
+        )).then(t2);
       } catch (t3) {
-        console.warn(`Couldn't load ${e3}`);
+        console.warn("Couldn't load ".concat(e3));
       }
   }
   var h = e.fetch;
@@ -50295,7 +50437,7 @@ ${content}</tr>
     }
   };
   function P(e3, t2) {
-    g2(`${e3} '${t2}' was not loaded, try using full build of exifr.`);
+    g2("".concat(e3, " '").concat(t2, "' was not loaded, try using full build of exifr."));
   }
   var k2 = class extends Map {
     constructor(e3) {
@@ -50303,7 +50445,7 @@ ${content}</tr>
     }
     get(e3, t2) {
       return this.has(e3) || P(this.kind, e3), t2 && (e3 in t2 || function(e4, t3) {
-        g2(`Unknown ${e4} '${t3}'.`);
+        g2("Unknown ".concat(e4, " '").concat(t3, "'."));
       }(this.kind, e3), t2[e3].enabled || P(this.kind, e3)), super.get(e3);
     }
     keyList() {
@@ -50324,7 +50466,7 @@ ${content}</tr>
     return A2.has(i3) ? v(e3, t2, i3) : n3 ? async function(e4, t3) {
       let i4 = await t3(e4);
       return new I(i4);
-    }(e3, n3) : void g2(`Parser ${i3} is not loaded`);
+    }(e3, n3) : void g2("Parser ".concat(i3, " is not loaded"));
   }
   async function v(e3, t2, i3) {
     let n3 = new (A2.get(i3))(e3, t2);
@@ -50390,7 +50532,7 @@ ${content}</tr>
           }
           this.applyInheritables(i3);
         } else
-          true === i3 || false === i3 ? this.parse = this.enabled = i3 : g2(`Invalid options argument: ${i3}`);
+          true === i3 || false === i3 ? this.parse = this.enabled = i3 : g2("Invalid options argument: ".concat(i3));
     }
     applyInheritables(e3) {
       let t2, i3;
@@ -50418,7 +50560,7 @@ ${content}</tr>
       return void 0 !== t2 || (t2 = new this(e3), J.set(e3, t2)), t2;
     }
     constructor(e3) {
-      super(), true === e3 ? this.setupFromTrue() : void 0 === e3 ? this.setupFromUndefined() : Array.isArray(e3) ? this.setupFromArray(e3) : "object" == typeof e3 ? this.setupFromObject(e3) : g2(`Invalid options argument ${e3}`), void 0 === this.firstChunkSize && (this.firstChunkSize = t ? this.firstChunkSizeBrowser : this.firstChunkSizeNode), this.mergeOutput && (this.ifd1.enabled = false), this.filterNestedSegmentTags(), this.traverseTiffDependencyTree(), this.checkLoadedPlugins();
+      super(), true === e3 ? this.setupFromTrue() : void 0 === e3 ? this.setupFromUndefined() : Array.isArray(e3) ? this.setupFromArray(e3) : "object" == typeof e3 ? this.setupFromObject(e3) : g2("Invalid options argument ".concat(e3)), void 0 === this.firstChunkSize && (this.firstChunkSize = t ? this.firstChunkSizeBrowser : this.firstChunkSizeNode), this.mergeOutput && (this.ifd1.enabled = false), this.filterNestedSegmentTags(), this.traverseTiffDependencyTree(), this.checkLoadedPlugins();
     }
     setupFromUndefined() {
       let e3;
@@ -50581,7 +50723,7 @@ ${content}</tr>
             try {
               e4.chunk = await this.file.readChunk(t3, i4);
             } catch (t4) {
-              g2(`Couldn't read segment: ${JSON.stringify(e4)}. ${t4.message}`);
+              g2("Couldn't read segment: ".concat(JSON.stringify(e4), ". ").concat(t4.message));
             }
         else
           this.file.byteLength > t3 + i4 ? e4.chunk = this.file.subarray(t3, i4) : void 0 === e4.size ? e4.chunk = this.file.subarray(t3) : g2("Segment unreachable: " + JSON.stringify(e4));
@@ -50758,7 +50900,7 @@ ${content}</tr>
     }
     parseTag(e3, t2, i3) {
       let { chunk: n3 } = this, s2 = n3.getUint16(e3 + 2), r2 = n3.getUint32(e3 + 4), a2 = ue[s2];
-      if (a2 * r2 <= 4 ? e3 += 8 : e3 = n3.getUint32(e3 + 8), (s2 < 1 || s2 > 13) && g2(`Invalid TIFF value type. block: ${i3.toUpperCase()}, tag: ${t2.toString(16)}, type: ${s2}, offset ${e3}`), e3 > n3.byteLength && g2(`Invalid TIFF value offset. block: ${i3.toUpperCase()}, tag: ${t2.toString(16)}, type: ${s2}, offset ${e3} is outside of chunk size ${n3.byteLength}`), 1 === s2)
+      if (a2 * r2 <= 4 ? e3 += 8 : e3 = n3.getUint32(e3 + 8), (s2 < 1 || s2 > 13) && g2("Invalid TIFF value type. block: ".concat(i3.toUpperCase(), ", tag: ").concat(t2.toString(16), ", type: ").concat(s2, ", offset ").concat(e3)), e3 > n3.byteLength && g2("Invalid TIFF value offset. block: ".concat(i3.toUpperCase(), ", tag: ").concat(t2.toString(16), ", type: ").concat(s2, ", offset ").concat(e3, " is outside of chunk size ").concat(n3.byteLength)), 1 === s2)
         return n3.getUint8Array(e3, r2);
       if (2 === s2)
         return m(n3.getString(e3, r2));
@@ -50824,7 +50966,7 @@ ${content}</tr>
         case 13:
           return i3.getUint32(t2);
         default:
-          g2(`Invalid tiff type ${e3}`);
+          g2("Invalid tiff type ".concat(e3));
       }
     }
   };
@@ -50859,8 +51001,7 @@ ${content}</tr>
       if (this.ifd0)
         return;
       let { file: e3 } = this;
-      this.findIfd0Offset(), this.ifd0Offset < 8 && g2("Malformed EXIF data"), !e3.chunked && this.ifd0Offset > e3.byteLength && g2(`IFD0 offset points to outside of file.
-this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tiff && await e3.ensureChunk(this.ifd0Offset, S(this.options));
+      this.findIfd0Offset(), this.ifd0Offset < 8 && g2("Malformed EXIF data"), !e3.chunked && this.ifd0Offset > e3.byteLength && g2("IFD0 offset points to outside of file.\nthis.ifd0Offset: ".concat(this.ifd0Offset, ", file.byteLength: ").concat(e3.byteLength)), e3.tiff && await e3.ensureChunk(this.ifd0Offset, S(this.options));
       let t2 = this.parseBlock(this.ifd0Offset, "ifd0");
       return 0 !== t2.size ? (this.exifOffset = t2.get(34665), this.interopOffset = t2.get(40965), this.gpsOffset = t2.get(34853), this.xmp = t2.get(700), this.iptc = t2.get(33723), this.icc = t2.get(34675), this.options.sanitize && (t2.delete(34665), t2.delete(40965), t2.delete(34853), t2.delete(700), t2.delete(33723), t2.delete(34675)), t2) : void 0;
     }
@@ -51118,7 +51259,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     }
     async _readChunk(e3, t2) {
       let i3 = t2 ? e3 + t2 - 1 : void 0, n3 = this.options.httpHeaders || {};
-      (e3 || i3) && (n3.range = `bytes=${[e3, i3].join("-")}`);
+      (e3 || i3) && (n3.range = "bytes=".concat([e3, i3].join("-")));
       let s2 = await h(this.input, { headers: n3 }), r2 = await s2.arrayBuffer(), a2 = r2.byteLength;
       if (416 !== s2.status)
         return a2 !== t2 && (this.size = e3 + a2), this.set(r2, e3, true);
@@ -51298,9 +51439,9 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         return e4.replace(et, (e6, n4, s2) => {
           if ("<" === n4) {
             let n5 = ++i4[s2];
-            return t3[s2].push(n5), `${e6}#${n5}`;
+            return t3[s2].push(n5), "".concat(e6, "#").concat(n5);
           }
-          return `${e6}#${t3[s2].pop()}`;
+          return "".concat(e6, "#").concat(t3[s2].pop());
         });
       }(e3);
       let t2 = Xe.findAll(e3, "rdf", "Description");
@@ -51355,7 +51496,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     static findAll(e3, t2, i3) {
       if (void 0 !== t2 || void 0 !== i3) {
         t2 = t2 || "[\\w\\d-]+", i3 = i3 || "[\\w\\d-]+";
-        var n3 = new RegExp(`<(${t2}):(${i3})(#\\d+)?((\\s+?[\\w\\d-:]+=("[^"]*"|'[^']*'))*\\s*)(\\/>|>([\\s\\S]*?)<\\/\\1:\\2\\3>)`, "gm");
+        var n3 = new RegExp("<(".concat(t2, "):(").concat(i3, ")(#\\d+)?((\\s+?[\\w\\d-:]+=(\"[^\"]*\"|'[^']*'))*\\s*)(\\/>|>([\\s\\S]*?)<\\/\\1:\\2\\3>)"), "gm");
       } else
         n3 = /<([\w\d-]+):([\w\d-]+)(#\d+)?((\s+?[\w\d-:]+=("[^"]*"|'[^']*'))*\s*)(\/>|>([\s\S]*?)<\/\1:\2\3>)/gm;
       return qe(e3, n3).map(_Xe.unpackMatch);
@@ -51424,7 +51565,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     return "true" === i3 || "false" !== i3 && e3.trim();
   }
   var Ze = ["rdf:li", "rdf:Seq", "rdf:Bag", "rdf:Alt", "rdf:Description"];
-  var et = new RegExp(`(<|\\/)(${Ze.join("|")})`, "g");
+  var et = new RegExp("(<|\\/)(".concat(Ze.join("|"), ")"), "g");
   var tt = Object.freeze({ __proto__: null, default: Me, Exifr: te, fileParsers: w, segmentParsers: T, fileReaders: A2, tagKeys: E, tagValues: B2, tagRevivers: N, createDictionary: U, extendDictionary: F, fetchUrlAsArrayBuffer: M, readBlobAsArrayBuffer: R, chunkedProps: G, otherSegments: V, segments: z, tiffBlocks: H, segmentsAndBlocks: j2, tiffExtractables: W, inheritables: K, allFormatters: X, Options: q, parse: ie, gpsOnlyOptions: me, gps: Se, thumbnailOnlyOptions: Ce, thumbnail: ye, thumbnailUrl: be, orientationOnlyOptions: Ie, orientation: Pe, rotations: ke, get rotateCanvas() {
     return we;
   }, get rotateCss() {
@@ -51845,7 +51986,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     function setStyles(hovered) {
       const viewer = context.container().select(".photoviewer");
       const selected = viewer.empty() ? void 0 : viewer.datum();
-      context.container().selectAll(".layer-local-photos .viewfield-group").classed("hovered", (d2) => d2.id === hovered?.id).classed("highlighted", (d2) => d2.id === hovered?.id || d2.id === selected?.id).classed("currentView", (d2) => d2.id === selected?.id);
+      context.container().selectAll(".layer-local-photos .viewfield-group").classed("hovered", (d2) => d2.id === (hovered == null ? void 0 : hovered.id)).classed("highlighted", (d2) => d2.id === (hovered == null ? void 0 : hovered.id) || d2.id === (selected == null ? void 0 : selected.id)).classed("currentView", (d2) => d2.id === (selected == null ? void 0 : selected.id));
     }
     function display_markers(imageList) {
       imageList = imageList.filter((image) => isArray_default(image.loc) && isNumber_default(image.loc[0]) && isNumber_default(image.loc[1]));
@@ -51861,8 +52002,9 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       const viewfields = markers.selectAll(".viewfield").data(showViewfields ? [0] : []);
       viewfields.exit().remove();
       viewfields.enter().insert("path", "circle").attr("class", "viewfield").attr("transform", function() {
+        var _a;
         const d2 = this.parentNode.__data__;
-        return `rotate(${Math.round(d2.direction ?? 0)},0,0),scale(1.5,1.5),translate(-8,-13)`;
+        return "rotate(".concat(Math.round((_a = d2.direction) != null ? _a : 0), ",0,0),scale(1.5,1.5),translate(-8,-13)");
       }).attr("d", "M 6,9 C 8,8.4 8,8.4 10,9 L 16,-2 C 12,-5 4,-5 0,-2 z").style("visibility", function() {
         const d2 = this.parentNode.__data__;
         return isNumber_default(d2.direction) ? "visible" : "hidden";
@@ -52038,7 +52180,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       const getTransform = svgPointTransform(projection2);
       const markers = drawLayer.selectAll(".qaItem.improveOSM").data(data, (d2) => d2.id);
       markers.exit().remove();
-      const markersEnter = markers.enter().append("g").attr("class", (d2) => `qaItem ${d2.service} itemId-${d2.id} itemType-${d2.itemType}`);
+      const markersEnter = markers.enter().append("g").attr("class", (d2) => "qaItem ".concat(d2.service, " itemId-").concat(d2.id, " itemType-").concat(d2.itemType));
       markersEnter.append("polygon").call(markerPath, "shadow");
       markersEnter.append("ellipse").attr("cx", 0).attr("cy", 0).attr("rx", 4.5).attr("ry", 2).attr("class", "stroke");
       markersEnter.append("polygon").attr("fill", "currentColor").call(markerPath, "qaItem-fill");
@@ -52049,7 +52191,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       const fillClass = context.getDebug("target") ? "pink " : "nocolor ";
       const targets = touchLayer.selectAll(".qaItem.improveOSM").data(data, (d2) => d2.id);
       targets.exit().remove();
-      targets.enter().append("rect").attr("width", "20px").attr("height", "30px").attr("x", "-10px").attr("y", "-28px").merge(targets).sort(sortY).attr("class", (d2) => `qaItem ${d2.service} target ${fillClass} itemId-${d2.id}`).attr("transform", getTransform);
+      targets.enter().append("rect").attr("width", "20px").attr("height", "30px").attr("x", "-10px").attr("y", "-28px").merge(targets).sort(sortY).attr("class", (d2) => "qaItem ".concat(d2.service, " target ").concat(fillClass, " itemId-").concat(d2.id)).attr("transform", getTransform);
       function sortY(a2, b2) {
         return a2.id === selectedID ? 1 : b2.id === selectedID ? -1 : b2.loc[1] - a2.loc[1];
       }
@@ -52149,7 +52291,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       const getTransform = svgPointTransform(projection2);
       const markers = drawLayer.selectAll(".qaItem.osmose").data(data, (d2) => d2.id);
       markers.exit().remove();
-      const markersEnter = markers.enter().append("g").attr("class", (d2) => `qaItem ${d2.service} itemId-${d2.id} itemType-${d2.itemType}`);
+      const markersEnter = markers.enter().append("g").attr("class", (d2) => "qaItem ".concat(d2.service, " itemId-").concat(d2.id, " itemType-").concat(d2.itemType));
       markersEnter.append("polygon").call(markerPath, "shadow");
       markersEnter.append("ellipse").attr("cx", 0).attr("cy", 0).attr("rx", 4.5).attr("ry", 2).attr("class", "stroke");
       markersEnter.append("polygon").attr("fill", (d2) => service.getColor(d2.item)).call(markerPath, "qaItem-fill");
@@ -52160,7 +52302,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       const fillClass = context.getDebug("target") ? "pink" : "nocolor";
       const targets = touchLayer.selectAll(".qaItem.osmose").data(data, (d2) => d2.id);
       targets.exit().remove();
-      targets.enter().append("rect").attr("width", "20px").attr("height", "30px").attr("x", "-10px").attr("y", "-28px").merge(targets).sort(sortY).attr("class", (d2) => `qaItem ${d2.service} target ${fillClass} itemId-${d2.id}`).attr("transform", getTransform);
+      targets.enter().append("rect").attr("width", "20px").attr("height", "30px").attr("x", "-10px").attr("y", "-28px").merge(targets).sort(sortY).attr("class", (d2) => "qaItem ".concat(d2.service, " target ").concat(fillClass, " itemId-").concat(d2.id)).attr("transform", getTransform);
       function sortY(a2, b2) {
         return a2.id === selectedID ? 1 : b2.id === selectedID ? -1 : b2.loc[1] - a2.loc[1];
       }
@@ -54073,7 +54215,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         layergroup.selectAll("g.line-stroke-highlighted").call(drawLineGroup, "stroke", true);
         addMarkers(layergroup, "oneway", "onewaygroup", onewaydata, (d2) => {
           const category = onewayArrowColour(graph.entity(d2.id).tags);
-          return `url(#ideditor-oneway-marker-${category})`;
+          return "url(#ideditor-oneway-marker-".concat(category, ")");
         });
         addMarkers(
           layergroup,
@@ -56048,7 +56190,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         } else {
           userLink.call(svgIcon("#iD-icon-avatar", "pre-text light"));
         }
-        userLink.append("span").attr("class", "label").html(user.display_name);
+        userLink.append("span").attr("class", "label").text(user.display_name);
         loginLogout.classed("hide", false).select("a").text(_t("logout")).on("click", (e3) => {
           e3.preventDefault();
           osm.logout();
@@ -56090,7 +56232,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
   function uiAttribution(context) {
     let _selection = select_default2(null);
     function render(selection2, data, klass) {
-      let div = selection2.selectAll(`.${klass}`).data([0]);
+      let div = selection2.selectAll(".".concat(klass)).data([0]);
       div = div.enter().append("div").attr("class", klass).merge(div);
       let attributions = div.selectAll(".attribution").data(data, (d2) => d2.id);
       attributions.exit().remove();
@@ -56105,7 +56247,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         }
         const sourceID = d2.id.replace(/\./g, "<TX_DOT>");
         const terms_text = _t(
-          `imagery.${sourceID}.attribution.text`,
+          "imagery.".concat(sourceID, ".attribution.text"),
           { default: d2.terms_text || d2.id || d2.name() }
         );
         if (d2.icon && !d2.overlay) {
@@ -60975,7 +61117,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           buttons.filter((d2) => d2.title === s2.title).classed("finished", true);
           if (i3 < chapterFlow.length - 1) {
             const next = chapterFlow[i3 + 1];
-            context.container().select(`button.chapter-${next}`).classed("next", true);
+            context.container().select("button.chapter-".concat(next)).classed("next", true);
           }
           progress.push(chapter);
           corePreferences("walkthrough_progress", utilArrayUniq(progress).join(";"));
@@ -61009,7 +61151,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       let navwrap = selection2.append("div").attr("class", "intro-nav-wrap fillD");
       navwrap.append("svg").attr("class", "intro-nav-wrap-logo").append("use").attr("xlink:href", "#iD-logo-walkthrough");
       let buttonwrap = navwrap.append("div").attr("class", "joined").selectAll("button.chapter");
-      let buttons = buttonwrap.data(chapters).enter().append("button").attr("class", (d2, i3) => `chapter chapter-${chapterFlow[i3]}`).on("click", enterChapter);
+      let buttons = buttonwrap.data(chapters).enter().append("button").attr("class", (d2, i3) => "chapter chapter-".concat(chapterFlow[i3])).on("click", enterChapter);
       buttons.append("span").html((d2) => _t.html(d2.title));
       buttons.append("span").attr("class", "status").call(svgIcon(_mainLocalizer.textDirection() === "rtl" ? "#iD-icon-backward" : "#iD-icon-forward", "inline"));
       enterChapter(null, chapters[0]);
@@ -61805,11 +61947,11 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       function change(doAutoComplete) {
         if (doAutoComplete === void 0)
           doAutoComplete = true;
-        fetchComboData(value(), function() {
+        fetchComboData(value(), function(skipAutosuggest) {
           _selected = null;
           var val = input.property("value");
           if (_suggestions.length) {
-            if (doAutoComplete && input.property("selectionEnd") === val.length) {
+            if (doAutoComplete && !skipAutosuggest && input.property("selectionEnd") === val.length) {
               _selected = tryAutocomplete();
             }
             if (!_selected) {
@@ -61871,7 +62013,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       }
       function fetchComboData(v2, cb) {
         _cancelFetch = false;
-        _fetcher.call(input, v2, function(results) {
+        _fetcher.call(input, v2, function(results, skipAutosuggest) {
           if (_cancelFetch)
             return;
           _suggestions = results;
@@ -61879,7 +62021,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
             _fetched[d2.value] = d2;
           });
           if (cb) {
-            cb();
+            cb(skipAutosuggest);
           }
         });
       }
@@ -62040,7 +62182,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       var hideToggleEnter = hideToggle.enter().append("h3").append("a").attr("role", "button").attr("href", "#").attr("class", "hide-toggle hide-toggle-" + key).call(svgIcon("", "pre-text", "hide-toggle-icon"));
       hideToggleEnter.append("span").attr("class", "hide-toggle-text");
       hideToggle = hideToggleEnter.merge(hideToggle);
-      hideToggle.on("click", toggle).attr("title", _t(`icons.${_expanded ? "collapse" : "expand"}`)).attr("aria-expanded", _expanded).classed("expanded", _expanded);
+      hideToggle.on("click", toggle).attr("title", _t("icons.".concat(_expanded ? "collapse" : "expand"))).attr("aria-expanded", _expanded).classed("expanded", _expanded);
       const label = _label();
       const labelSelection = hideToggle.selectAll(".hide-toggle-text");
       if (typeof label !== "function") {
@@ -62063,7 +62205,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         if (_updatePreference) {
           corePreferences("disclosure." + key + ".expanded", _expanded);
         }
-        hideToggle.classed("expanded", _expanded).attr("aria-expanded", _expanded).attr("title", _t(`icons.${_expanded ? "collapse" : "expand"}`));
+        hideToggle.classed("expanded", _expanded).attr("aria-expanded", _expanded).attr("title", _t("icons.".concat(_expanded ? "collapse" : "expand")));
         hideToggle.selectAll(".hide-toggle-icon").attr(
           "xlink:href",
           _expanded ? "#iD-icon-down" : _mainLocalizer.textDirection() === "rtl" ? "#iD-icon-backward" : "#iD-icon-forward"
@@ -62612,7 +62754,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     lengthIndicator.update = function(val) {
       const strLen = utilUnicodeCharsCount(utilCleanOsmString(val, Number.POSITIVE_INFINITY));
       let indicator = _wrap.selectAll("span.length-indicator").data([strLen]);
-      indicator.enter().append("span").merge(indicator).classed("length-indicator", true).classed("limit-reached", (d2) => d2 > maxChars).style("border-right-width", (d2) => `${Math.abs(maxChars - d2) * 2}px`).style("margin-right", (d2) => d2 > maxChars ? `${(maxChars - d2) * 2}px` : 0).style("opacity", (d2) => d2 > maxChars * 0.8 ? Math.min(1, (d2 / maxChars - 0.8) / (1 - 0.8)) : 0).style("pointer-events", (d2) => d2 > maxChars * 0.8 ? null : "none");
+      indicator.enter().append("span").merge(indicator).classed("length-indicator", true).classed("limit-reached", (d2) => d2 > maxChars).style("border-right-width", (d2) => "".concat(Math.abs(maxChars - d2) * 2, "px")).style("margin-right", (d2) => d2 > maxChars ? "".concat((maxChars - d2) * 2, "px") : 0).style("opacity", (d2) => d2 > maxChars * 0.8 ? Math.min(1, (d2 / maxChars - 0.8) / (1 - 0.8)) : 0).style("pointer-events", (d2) => d2 > maxChars * 0.8 ? null : "none");
       if (_silent)
         return;
       if (strLen > maxChars) {
@@ -62690,7 +62832,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       return dval;
     }
     function getLabelId(field2, v2) {
-      return field2.hasTextForStringId(`options.${v2}.title`) ? `options.${v2}.title` : `options.${v2}`;
+      return field2.hasTextForStringId("options.".concat(v2, ".title")) ? "options.".concat(v2, ".title") : "options.".concat(v2);
     }
     function displayValue(tval) {
       tval = tval || "";
@@ -62750,11 +62892,14 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         return {
           key: v2,
           value: stringsField.t(labelId, { default: v2 }),
-          title: stringsField.t(`options.${v2}.description`, { default: v2 }),
+          title: stringsField.t("options.".concat(v2, ".description"), { default: v2 }),
           display: addComboboxIcons(stringsField.t.append(labelId, { default: v2 }), v2),
           klass: stringsField.hasTextForStringId(labelId) ? "" : "raw-option"
         };
       });
+    }
+    function hasStaticValues() {
+      return getOptions().length > 0;
     }
     function setStaticValues(callback, filter2) {
       _comboData = getOptions();
@@ -62768,7 +62913,9 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     }
     function setTaginfoValues(q2, callback) {
       var queryFilter = (d2) => d2.value.toLowerCase().includes(q2.toLowerCase()) || d2.key.toLowerCase().includes(q2.toLowerCase());
-      setStaticValues(callback, queryFilter);
+      if (hasStaticValues()) {
+        setStaticValues(callback, queryFilter);
+      }
       var stringsField = field.resolveReference("stringsCrossReference");
       var fn = _isMulti ? "multikeys" : "values";
       var query = (_isMulti ? field.key : "") + q2;
@@ -62814,7 +62961,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           return {
             key: v2,
             value: label,
-            title: stringsField.t(`options.${v2}.description`, { default: isLocalizable ? v2 : d2.title !== label ? d2.title : "" }),
+            title: stringsField.t("options.".concat(v2, ".description"), { default: isLocalizable ? v2 : d2.title !== label ? d2.title : "" }),
             display: addComboboxIcons(stringsField.t.append(labelId, { default: v2 }), v2),
             klass: isLocalizable ? "" : "raw-option"
           };
@@ -62822,7 +62969,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         _comboData = _comboData.filter(queryFilter);
         _comboData = objectDifference(_comboData, _multiData);
         if (callback)
-          callback(_comboData);
+          callback(_comboData, hasStaticValues());
       });
     }
     function addComboboxIcons(disp, value) {
@@ -62831,7 +62978,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         return function(selection2) {
           var span = selection2.insert("span", ":first-child").attr("class", "tag-value-icon");
           if (iconsField.icons[value]) {
-            span.call(svgIcon(`#${iconsField.icons[value]}`));
+            span.call(svgIcon("#".concat(iconsField.icons[value])));
           }
           disp.call(this, selection2);
         };
@@ -62914,12 +63061,17 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       dispatch14.call("change", this, t2);
     }
     function updateTrafficSignPreview(newValue) {
-      const [countryCode, values] = newValue?.split(":") || [];
+      if (typeof newValue !== "string")
+        return;
+      const [countryCode, values] = (newValue == null ? void 0 : newValue.split(":")) || [];
       if (!countryCode || !values || !trafficSignsPromise)
         return;
       trafficSignsPromise.then((trafficSignsDB) => {
         const signIds = values.split(/[;,]+/).map((signId) => signId.split("[")[0]);
-        const URLs = signIds.map((signId) => trafficSignsDB[countryCode]?.[signId]?.[0]).filter(Boolean);
+        const URLs = signIds.map((signId) => {
+          var _a, _b;
+          return (_b = (_a = trafficSignsDB[countryCode]) == null ? void 0 : _a[signId]) == null ? void 0 : _b[0];
+        }).filter(Boolean);
         trafficPreview.selectAll("img").remove();
         trafficPreview.selectAll("img").data(URLs, (d2) => d2).enter().append("img").attr("src", (d2) => d2);
       });
@@ -62954,7 +63106,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       var type2 = _isMulti || _isSemi ? "multicombo" : "combo";
       _container = _container.enter().append("div").attr("class", "form-field-input-wrap form-field-input-" + type2).merge(_container);
       if (field.key === "traffic_sign") {
-        trafficSignsPromise ||= _mainFileFetcher.get("traffic_signs");
+        trafficSignsPromise || (trafficSignsPromise = _mainFileFetcher.get("traffic_signs"));
         trafficPreview = selection2.selectAll(".form-field-input-traffic-preview").data([0]);
         trafficPreview = trafficPreview.enter().append("div").attr("class", "form-field-input-traffic-preview").merge(trafficPreview);
       }
@@ -63029,7 +63181,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       if (iconsField.icons) {
         container.selectAll(".tag-value-icon").remove();
         if (iconsField.icons[value]) {
-          container.selectAll(".tag-value-icon").data([value]).enter().insert("div", "input").attr("class", "tag-value-icon").call(svgIcon(`#${iconsField.icons[value]}`));
+          container.selectAll(".tag-value-icon").data([value]).enter().insert("div", "input").attr("class", "tag-value-icon").call(svgIcon("#".concat(iconsField.icons[value])));
         }
       }
     }
@@ -63039,7 +63191,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       updateTrafficSignPreview(tags[field.key]);
       var isMixed = Array.isArray(tags[field.key]);
       var showsValue = (value) => !isMixed && value && !(field.type === "typeCombo" && value === "yes");
-      var isRawValue = (value) => showsValue(value) && !stringsField.hasTextForStringId(`options.${value}`) && !stringsField.hasTextForStringId(`options.${value}.title`);
+      var isRawValue = (value) => showsValue(value) && !stringsField.hasTextForStringId("options.".concat(value)) && !stringsField.hasTextForStringId("options.".concat(value, ".title"));
       var isKnownValue = (value) => showsValue(value) && !isRawValue(value);
       var isReadOnly = !_allowCustomValues;
       if (_isMulti || _isSemi) {
@@ -63329,7 +63481,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           return "form-field-button " + which;
         }).attr("title", function(d2) {
           var which = d2 > 0 ? "increment" : "decrement";
-          return _t(`inspector.${which}`);
+          return _t("inspector.".concat(which));
         }).merge(buttons).on("click", function(d3_event, d2) {
           d3_event.preventDefault();
           var isMixed = Array.isArray(_tags[field.key]);
@@ -63487,6 +63639,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         input.attr("placeholder", format2);
     }
     function validIdentifierValueForLink() {
+      var _a;
       const value = utilGetSetValue(input).trim();
       if (field.type === "url" && value) {
         try {
@@ -63496,7 +63649,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         }
       }
       if (field.type === "identifier" && field.pattern) {
-        return value && value.match(new RegExp(field.pattern))?.[0];
+        return value && ((_a = value.match(new RegExp(field.pattern))) == null ? void 0 : _a[0]);
       }
       if (field.type === "schedule") {
         return value;
@@ -63568,10 +63721,11 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       return i3;
     };
     i3.tags = function(tags) {
+      var _a;
       _tags = tags;
       const vals = getVals(tags);
       const isMixed = vals.size > 1;
-      var val = vals.size === 1 ? [...vals][0] ?? "" : "";
+      var val = vals.size === 1 ? (_a = [...vals][0]) != null ? _a : "" : "";
       var shouldUpdate;
       if (field.type === "number" && val) {
         var numbers2 = val.split(";");
@@ -63942,16 +64096,16 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         const value = resultProp && d2.tags[resultProp] ? d2.tags[resultProp] : d2.tags.name;
         let title = value;
         if (type2 === "street") {
-          title = `${addrField.t("placeholders.street")}: ${title}`;
+          title = "".concat(addrField.t("placeholders.street"), ": ").concat(title);
         } else if (type2 === "place") {
-          title = `${addrField.t("placeholders.place")}: ${title}`;
+          title = "".concat(addrField.t("placeholders.place"), ": ").concat(title);
         }
         return {
           title,
           value,
           dist,
           type: type2,
-          klass: `address-${type2}`
+          klass: "address-".concat(type2)
         };
       }).sort(function(a2, b2) {
         return a2.dist - b2.dist;
@@ -63986,17 +64140,17 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           if (d2.tags.place === "city" || d2.tags.place === "town" || d2.tags.place === "village")
             return true;
         }
-        if (d2.tags[`${field.key}:city`])
+        if (d2.tags["".concat(field.key, ":city")])
           return true;
         return false;
       }
-      return getNear(isAddressable, "city", 200, `${field.key}:city`);
+      return getNear(isAddressable, "city", 200, "".concat(field.key, ":city"));
     }
     function getNearPostcodes() {
       return [...new Set([].concat(getNearValues("postcode")).concat(getNear((d2) => d2.tags.postal_code, "postcode", 200, "postal_code")))];
     }
     function getNearValues(key) {
-      const tagKey = `${field.key}:${key}`;
+      const tagKey = "".concat(field.key, ":").concat(key);
       function hasTag(d2) {
         return _entityIDs.indexOf(d2.id) === -1 && d2.tags[tagKey];
       }
@@ -64075,7 +64229,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           case "street+place":
             nearValues = () => [].concat(getNearStreets()).concat(getNearPlaces());
             d2.isAutoStreetPlace = true;
-            d2.id = _tags[`${field.key}:place`] ? "place" : "street";
+            d2.id = _tags["".concat(field.key, ":place")] ? "place" : "street";
             break;
           case "city":
             nearValues = getNearCities;
@@ -64087,7 +64241,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
             nearValues = getNearValues;
         }
         select_default2(this).call(
-          uiCombobox(context, `address-${d2.isAutoStreetPlace ? "street-place" : d2.id}`).minItems(1).caseSensitive(true).fetcher(function(typedValue, callback) {
+          uiCombobox(context, "address-".concat(d2.isAutoStreetPlace ? "street-place" : d2.id)).minItems(1).caseSensitive(true).fetcher(function(typedValue, callback) {
             typedValue = typedValue.toLowerCase();
             callback(nearValues(d2.id).filter((v2) => v2.value.toLowerCase().indexOf(typedValue) !== -1));
           }).on("accept", function(selected) {
@@ -64134,9 +64288,9 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
               return;
             if (subfield.isAutoStreetPlace) {
               if (subfield.id === "street") {
-                tags[`${field.key}:place`] = void 0;
+                tags["".concat(field.key, ":place")] = void 0;
               } else if (subfield.id === "place") {
-                tags[`${field.key}:street`] = void 0;
+                tags["".concat(field.key, ":street")] = void 0;
               }
             }
             tags[key] = value || void 0;
@@ -64152,7 +64306,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           return _t("inspector.multiple_values");
         }
         if (subfield.isAutoStreetPlace) {
-          return `${getLocalPlaceholder("street")} / ${getLocalPlaceholder("place")}`;
+          return "".concat(getLocalPlaceholder("street"), " / ").concat(getLocalPlaceholder("place"));
         }
         return getLocalPlaceholder(subfield.id);
       });
@@ -64168,8 +64322,8 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       utilGetSetValue(_wrap.selectAll("input"), (subfield) => {
         var val;
         if (subfield.isAutoStreetPlace) {
-          const streetKey = `${field.key}:street`;
-          const placeKey = `${field.key}:place`;
+          const streetKey = "".concat(field.key, ":street");
+          const placeKey = "".concat(field.key, ":place");
           if (tags[streetKey] !== void 0 || tags[placeKey] === void 0) {
             val = tags[streetKey];
             subfield.id = "street";
@@ -64178,7 +64332,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
             subfield.id = "place";
           }
         } else {
-          val = tags[`${field.key}:${subfield.id}`];
+          val = tags["".concat(field.key, ":").concat(subfield.id)];
         }
         return typeof val === "string" ? val : "";
       }).attr("title", function(subfield) {
@@ -64217,11 +64371,10 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     var _tags;
     var _combos = {};
     if (field.type === "cycleway") {
-      field = {
-        ...field,
+      field = __spreadProps(__spreadValues({}, field), {
         key: field.keys[0],
         keys: field.keys.slice(1)
-      };
+      });
     }
     function directionalCombo(selection2) {
       function stripcolon(s2) {
@@ -64241,11 +64394,10 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         return field.t.html("types." + d2);
       });
       enter.append("div").attr("class", "preset-input-directionalcombo-wrap form-field-input-wrap").each(function(key) {
-        const subField = {
-          ...field,
+        const subField = __spreadProps(__spreadValues({}, field), {
           type: "combo",
           key
-        };
+        });
         const combo = uiFieldCombo(subField, context);
         combo.on("change", (t2) => change(key, t2[key]));
         _combos[key] = combo;
@@ -64258,16 +64410,16 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       const commonKey = field.key;
       const otherKey = key === field.keys[0] ? field.keys[1] : field.keys[0];
       dispatch14.call("change", this, (tags) => {
-        const otherValue = tags[otherKey] || tags[commonKey] || tags[`${commonKey}:both`];
+        const otherValue = tags[otherKey] || tags[commonKey] || tags["".concat(commonKey, ":both")];
         if (newValue === otherValue) {
           tags[commonKey] = newValue;
           delete tags[key];
           delete tags[otherKey];
-          delete tags[`${commonKey}:both`];
+          delete tags["".concat(commonKey, ":both")];
         } else {
           tags[key] = newValue;
           delete tags[commonKey];
-          delete tags[`${commonKey}:both`];
+          delete tags["".concat(commonKey, ":both")];
           tags[otherKey] = otherValue;
         }
         return tags;
@@ -64277,7 +64429,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       _tags = tags;
       const commonKey = field.key;
       for (let key in _combos) {
-        const uniqueValues = [...new Set([].concat(_tags[commonKey]).concat(_tags[`${commonKey}:both`]).concat(_tags[key]).filter(Boolean))];
+        const uniqueValues = [...new Set([].concat(_tags[commonKey]).concat(_tags["".concat(commonKey, ":both")]).concat(_tags[key]).filter(Boolean))];
         _combos[key].tags({ [key]: uniqueValues.length > 1 ? uniqueValues : uniqueValues[0] });
       }
     };
@@ -65789,7 +65941,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     });
     function wiki(selection2) {
       let wrap2 = selection2.selectAll(".form-field-input-wrap").data([0]);
-      wrap2 = wrap2.enter().append("div").attr("class", `form-field-input-wrap form-field-input-${field.type}`).merge(wrap2);
+      wrap2 = wrap2.enter().append("div").attr("class", "form-field-input-wrap form-field-input-".concat(field.type)).merge(wrap2);
       let langContainer = wrap2.selectAll(".wiki-lang-container").data([0]);
       langContainer = langContainer.enter().append("div").attr("class", "wiki-lang-container").merge(langContainer);
       _langInput = langContainer.selectAll("input.wiki-lang").data([0]);
@@ -65918,7 +66070,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         if (value && value !== "") {
           utilGetSetValue(_langInput, "");
           const defaultLangInfo = defaultLanguageInfo();
-          _wikiURL = `https://${defaultLangInfo[2]}.wikipedia.org/w/index.php?fulltext=1&search=${value}`;
+          _wikiURL = "https://".concat(defaultLangInfo[2], ".wikipedia.org/w/index.php?fulltext=1&search=").concat(value);
         } else {
           const shownOrDefaultLangInfo = language(
             true
@@ -66019,7 +66171,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     function allKeys() {
       let keys2 = field.keys || [field.key];
       if (field.type === "directionalCombo" && field.key) {
-        keys2 = keys2.concat(field.key, `${field.key}:both`);
+        keys2 = keys2.concat(field.key, "".concat(field.key, ":both"));
       }
       return keys2;
     }
@@ -66327,7 +66479,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         var presets = _mainPresetIndex;
         _fieldsArr = [
           uiField(context, presets.field("comment"), null, { show: true, revert: false }),
-          uiField(context, presets.field("source"), null, { show: false, revert: false }),
+          uiField(context, presets.field("source"), null, { show: true, revert: false }),
           uiField(context, presets.field("hashtags"), null, { show: false, revert: false })
         ];
         _fieldsArr.forEach(function(field) {
@@ -67401,7 +67553,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       let pointBorderEnter = pointBorder.enter();
       const w2 = 40;
       const h2 = 40;
-      pointBorderEnter.append("svg").attr("class", "preset-icon-fill preset-icon-point-border").attr("width", w2).attr("height", h2).attr("viewBox", `0 0 ${w2} ${h2}`).append("path").attr("transform", "translate(11.5, 8)").attr("d", "M 17,8 C 17,13 11,21 8.5,23.5 C 6,21 0,13 0,8 C 0,4 4,-0.5 8.5,-0.5 C 13,-0.5 17,4 17,8 z");
+      pointBorderEnter.append("svg").attr("class", "preset-icon-fill preset-icon-point-border").attr("width", w2).attr("height", h2).attr("viewBox", "0 0 ".concat(w2, " ").concat(h2)).append("path").attr("transform", "translate(11.5, 8)").attr("d", "M 17,8 C 17,13 11,21 8.5,23.5 C 6,21 0,13 0,8 C 0,4 4,-0.5 8.5,-0.5 C 13,-0.5 17,4 17,8 z");
       pointBorder = pointBorderEnter.merge(pointBorder);
     }
     function renderCategoryBorder(container, category) {
@@ -67409,11 +67561,11 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       categoryBorder.exit().remove();
       let categoryBorderEnter = categoryBorder.enter();
       const d2 = 60;
-      let svgEnter = categoryBorderEnter.append("svg").attr("class", "preset-icon-fill preset-icon-category-border").attr("width", d2).attr("height", d2).attr("viewBox", `0 0 ${d2} ${d2}`);
+      let svgEnter = categoryBorderEnter.append("svg").attr("class", "preset-icon-fill preset-icon-category-border").attr("width", d2).attr("height", d2).attr("viewBox", "0 0 ".concat(d2, " ").concat(d2));
       svgEnter.append("path").attr("class", "area").attr("d", "M9.5,7.5 L25.5,7.5 L28.5,12.5 L49.5,12.5 C51.709139,12.5 53.5,14.290861 53.5,16.5 L53.5,43.5 C53.5,45.709139 51.709139,47.5 49.5,47.5 L10.5,47.5 C8.290861,47.5 6.5,45.709139 6.5,43.5 L6.5,12.5 L9.5,7.5 Z");
       categoryBorder = categoryBorderEnter.merge(categoryBorder);
       if (category) {
-        categoryBorder.selectAll("path").attr("class", `area ${category.id}`);
+        categoryBorder.selectAll("path").attr("class", "area ".concat(category.id));
       }
     }
     function renderCircleFill(container, drawVertex) {
@@ -67423,7 +67575,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       const w2 = 60;
       const h2 = 60;
       const d2 = 40;
-      vertexFillEnter.append("svg").attr("class", "preset-icon-fill preset-icon-fill-vertex").attr("width", w2).attr("height", h2).attr("viewBox", `0 0 ${w2} ${h2}`).append("circle").attr("cx", w2 / 2).attr("cy", h2 / 2).attr("r", d2 / 2);
+      vertexFillEnter.append("svg").attr("class", "preset-icon-fill preset-icon-fill-vertex").attr("width", w2).attr("height", h2).attr("viewBox", "0 0 ".concat(w2, " ").concat(h2)).append("circle").attr("cx", w2 / 2).attr("cy", h2 / 2).attr("r", d2 / 2);
       vertexFill = vertexFillEnter.merge(vertexFill);
     }
     function renderSquareFill(container, drawArea, tagClasses) {
@@ -67436,9 +67588,9 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       const l2 = d2 * 2 / 3;
       const c1 = (w2 - l2) / 2;
       const c2 = c1 + l2;
-      fillEnter = fillEnter.append("svg").attr("class", "preset-icon-fill preset-icon-fill-area").attr("width", w2).attr("height", h2).attr("viewBox", `0 0 ${w2} ${h2}`);
+      fillEnter = fillEnter.append("svg").attr("class", "preset-icon-fill preset-icon-fill-area").attr("width", w2).attr("height", h2).attr("viewBox", "0 0 ".concat(w2, " ").concat(h2));
       ["fill", "stroke"].forEach((klass) => {
-        fillEnter.append("path").attr("d", `M${c1} ${c1} L${c1} ${c2} L${c2} ${c2} L${c2} ${c1} Z`).attr("class", `area ${klass}`);
+        fillEnter.append("path").attr("d", "M".concat(c1, " ").concat(c1, " L").concat(c1, " ").concat(c2, " L").concat(c2, " ").concat(c2, " L").concat(c2, " ").concat(c1, " Z")).attr("class", "area ".concat(klass));
       });
       const rVertex = 2.5;
       [[c1, c1], [c1, c2], [c2, c2], [c2, c1]].forEach((point2) => {
@@ -67449,8 +67601,8 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         fillEnter.append("circle").attr("class", "midpoint").attr("cx", point2[0]).attr("cy", point2[1]).attr("r", rMidpoint);
       });
       fill = fillEnter.merge(fill);
-      fill.selectAll("path.stroke").attr("class", `area stroke ${tagClasses}`);
-      fill.selectAll("path.fill").attr("class", `area fill ${tagClasses}`);
+      fill.selectAll("path.stroke").attr("class", "area stroke ".concat(tagClasses));
+      fill.selectAll("path.fill").attr("class", "area fill ".concat(tagClasses));
     }
     function renderLine(container, drawLine, tagClasses) {
       let line = container.selectAll(".preset-icon-line").data(drawLine ? [0] : []);
@@ -67464,16 +67616,16 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       const r2 = 2.5;
       const x12 = (w2 - l2) / 2;
       const x2 = x12 + l2;
-      lineEnter = lineEnter.append("svg").attr("class", "preset-icon-line").attr("width", w2).attr("height", h2).attr("viewBox", `0 0 ${w2} ${h2}`);
+      lineEnter = lineEnter.append("svg").attr("class", "preset-icon-line").attr("width", w2).attr("height", h2).attr("viewBox", "0 0 ".concat(w2, " ").concat(h2));
       ["casing", "stroke"].forEach((klass) => {
-        lineEnter.append("path").attr("d", `M${x12} ${y2} L${x2} ${y2}`).attr("class", `line ${klass}`);
+        lineEnter.append("path").attr("d", "M".concat(x12, " ").concat(y2, " L").concat(x2, " ").concat(y2)).attr("class", "line ".concat(klass));
       });
       [[x12 - 1, y2], [x2 + 1, y2]].forEach((point2) => {
         lineEnter.append("circle").attr("class", "vertex").attr("cx", point2[0]).attr("cy", point2[1]).attr("r", r2);
       });
       line = lineEnter.merge(line);
-      line.selectAll("path.stroke").attr("class", `line stroke ${tagClasses}`);
-      line.selectAll("path.casing").attr("class", `line casing ${tagClasses}`);
+      line.selectAll("path.stroke").attr("class", "line stroke ".concat(tagClasses));
+      line.selectAll("path.casing").attr("class", "line casing ".concat(tagClasses));
     }
     function renderRoute(container, drawRoute, p2) {
       let route = container.selectAll(".preset-icon-route").data(drawRoute ? [0] : []);
@@ -67490,11 +67642,11 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       const x2 = x12 + l2 / 3;
       const x3 = x2 + l2 / 3;
       const x4 = x3 + l2 / 3;
-      routeEnter = routeEnter.append("svg").attr("class", "preset-icon-route").attr("width", w2).attr("height", h2).attr("viewBox", `0 0 ${w2} ${h2}`);
+      routeEnter = routeEnter.append("svg").attr("class", "preset-icon-route").attr("width", w2).attr("height", h2).attr("viewBox", "0 0 ".concat(w2, " ").concat(h2));
       ["casing", "stroke"].forEach((klass) => {
-        routeEnter.append("path").attr("d", `M${x12} ${y12} L${x2} ${y2}`).attr("class", `segment0 line ${klass}`);
-        routeEnter.append("path").attr("d", `M${x2} ${y2} L${x3} ${y12}`).attr("class", `segment1 line ${klass}`);
-        routeEnter.append("path").attr("d", `M${x3} ${y12} L${x4} ${y2}`).attr("class", `segment2 line ${klass}`);
+        routeEnter.append("path").attr("d", "M".concat(x12, " ").concat(y12, " L").concat(x2, " ").concat(y2)).attr("class", "segment0 line ".concat(klass));
+        routeEnter.append("path").attr("d", "M".concat(x2, " ").concat(y2, " L").concat(x3, " ").concat(y12)).attr("class", "segment1 line ".concat(klass));
+        routeEnter.append("path").attr("d", "M".concat(x3, " ").concat(y12, " L").concat(x4, " ").concat(y2)).attr("class", "segment2 line ".concat(klass));
       });
       [[x12, y12], [x2, y2], [x3, y12], [x4, y2]].forEach((point2) => {
         routeEnter.append("circle").attr("class", "vertex").attr("cx", point2[0]).attr("cy", point2[1]).attr("r", r2);
@@ -67506,8 +67658,8 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         for (let i3 in segmentPresetIDs) {
           const segmentPreset = _mainPresetIndex.item(segmentPresetIDs[i3]);
           const segmentTagClasses = svgTagClasses().getClassesString(segmentPreset.tags, "");
-          route.selectAll(`path.stroke.segment${i3}`).attr("class", `segment${i3} line stroke ${segmentTagClasses}`);
-          route.selectAll(`path.casing.segment${i3}`).attr("class", `segment${i3} line casing ${segmentTagClasses}`);
+          route.selectAll("path.stroke.segment".concat(i3)).attr("class", "segment".concat(i3, " line stroke ").concat(segmentTagClasses));
+          route.selectAll("path.casing.segment".concat(i3)).attr("class", "segment".concat(i3, " line casing ").concat(segmentTagClasses));
         }
       }
     }
@@ -68488,7 +68640,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       var header = selection2.selectAll(".header").data([0]);
       var headerEnter = header.enter().append("div").attr("class", "header fillL");
       var direction = _mainLocalizer.textDirection() === "rtl" ? "forward" : "backward";
-      headerEnter.append("button").attr("class", "preset-reset preset-choose").attr("title", _t("inspector.back_tooltip")).call(svgIcon(`#iD-icon-${direction}`));
+      headerEnter.append("button").attr("class", "preset-reset preset-choose").attr("title", _t("inspector.back_tooltip")).call(svgIcon("#iD-icon-".concat(direction)));
       headerEnter.append("button").attr("class", "close").attr("title", _t("icons.close")).on("click", function() {
         context.enter(modeBrowse(context));
       }).call(svgIcon(_modified ? "#iD-icon-apply" : "#iD-icon-close"));
@@ -68971,12 +69123,12 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       const issueKey = d2.issueKey;
       d2.replacements = d2.replacements || {};
       d2.replacements.default = { html: _t.html("inspector.unknown") };
-      return _t.html(`QA.improveOSM.error_types.${issueKey}.description`, d2.replacements);
+      return _t.html("QA.improveOSM.error_types.".concat(issueKey, ".description"), d2.replacements);
     }
     function improveOsmDetails(selection2) {
       const details = selection2.selectAll(".error-details").data(
         _qaItem ? [_qaItem] : [],
-        (d2) => `${d2.id}-${d2.status || 0}`
+        (d2) => "".concat(d2.id, "-").concat(d2.status || 0)
       );
       details.exit().remove();
       const detailsEnter = details.enter().append("div").attr("class", "error-details qa-details-container");
@@ -69044,16 +69196,16 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       const issueKey = d2.issueKey;
       d2.replacements = d2.replacements || {};
       d2.replacements.default = { html: _t.html("inspector.unknown") };
-      return _t.html(`QA.improveOSM.error_types.${issueKey}.title`, d2.replacements);
+      return _t.html("QA.improveOSM.error_types.".concat(issueKey, ".title"), d2.replacements);
     }
     function improveOsmHeader(selection2) {
       const header = selection2.selectAll(".qa-header").data(
         _qaItem ? [_qaItem] : [],
-        (d2) => `${d2.id}-${d2.status || 0}`
+        (d2) => "".concat(d2.id, "-").concat(d2.status || 0)
       );
       header.exit().remove();
       const headerEnter = header.enter().append("div").attr("class", "qa-header");
-      const svgEnter = headerEnter.append("div").attr("class", "qa-header-icon").classed("new", (d2) => d2.id < 0).append("svg").attr("width", "20px").attr("height", "30px").attr("viewbox", "0 0 20 30").attr("class", (d2) => `preset-icon-28 qaItem ${d2.service} itemId-${d2.id} itemType-${d2.itemType}`);
+      const svgEnter = headerEnter.append("div").attr("class", "qa-header-icon").classed("new", (d2) => d2.id < 0).append("svg").attr("width", "20px").attr("height", "30px").attr("viewbox", "0 0 20 30").attr("class", (d2) => "preset-icon-28 qaItem ".concat(d2.service, " itemId-").concat(d2.id, " itemType-").concat(d2.itemType));
       svgEnter.append("polygon").attr("fill", "currentColor").attr("class", "qaItem-fill").attr("points", "16,3 4,3 1,6 1,17 4,20 7,20 10,27 13,20 16,20 19,17.033 19,6");
       svgEnter.append("use").attr("class", "icon-annotation").attr("width", "12px").attr("height", "12px").attr("transform", "translate(4, 5.5)").attr("xlink:href", (d2) => d2.icon ? "#" + d2.icon : "");
       headerEnter.append("div").attr("class", "qa-header-label").html(issueTitle);
@@ -69088,7 +69240,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       const isShown = _qaItem && (isSelected || _qaItem.newComment || _qaItem.comment);
       let saveSection = selection2.selectAll(".qa-save").data(
         isShown ? [_qaItem] : [],
-        (d2) => `${d2.id}-${d2.status || 0}`
+        (d2) => "".concat(d2.id, "-").concat(d2.status || 0)
       );
       saveSection.exit().remove();
       const saveSectionEnter = saveSection.enter().append("div").attr("class", "qa-save save-section cf");
@@ -69127,7 +69279,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       });
       buttonSection.select(".close-button").html((d2) => {
         const andComment = d2.newComment ? "_comment" : "";
-        return _t.html(`QA.keepRight.close${andComment}`);
+        return _t.html("QA.keepRight.close".concat(andComment));
       }).on("click.close", function(d3_event, d2) {
         this.blur();
         const qaService = services.improveOSM;
@@ -69138,7 +69290,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       });
       buttonSection.select(".ignore-button").html((d2) => {
         const andComment = d2.newComment ? "_comment" : "";
-        return _t.html(`QA.keepRight.ignore${andComment}`);
+        return _t.html("QA.keepRight.ignore".concat(andComment));
       }).on("click.ignore", function(d3_event, d2) {
         this.blur();
         const qaService = services.improveOSM;
@@ -69174,7 +69326,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       var direction = _mainLocalizer.textDirection() === "rtl" ? "backward" : "forward";
       messagewrap.append("button").attr("class", "preset-choose").attr("title", _entityIDs.length === 1 ? _t("inspector.edit") : _t("inspector.edit_features")).on("click", function() {
         dispatch14.call("cancel", this);
-      }).call(svgIcon(`#iD-icon-${direction}`));
+      }).call(svgIcon("#iD-icon-".concat(direction)));
       function initialKeydown(d3_event) {
         if (search.property("value").length === 0 && (d3_event.keyCode === utilKeybinding.keyCodes["\u232B"] || d3_event.keyCode === utilKeybinding.keyCodes["\u2326"])) {
           d3_event.preventDefault();
@@ -69505,7 +69657,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
   }
   function getRelativeDate(date) {
     if (typeof Intl === "undefined" || typeof Intl.RelativeTimeFormat === "undefined") {
-      return `on ${date.toLocaleDateString(preferredLanguage)}`;
+      return "on ".concat(date.toLocaleDateString(preferredLanguage));
     }
     const [number3, units] = timeSince(date);
     if (!Number.isFinite(number3))
@@ -69656,16 +69808,16 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       const unknown = { html: _t.html("inspector.unknown") };
       let replacements = d2.replacements || {};
       replacements.default = unknown;
-      if (_mainLocalizer.hasTextForStringId(`QA.keepRight.errorTypes.${itemType}.title`)) {
-        return _t.html(`QA.keepRight.errorTypes.${itemType}.description`, replacements);
+      if (_mainLocalizer.hasTextForStringId("QA.keepRight.errorTypes.".concat(itemType, ".title"))) {
+        return _t.html("QA.keepRight.errorTypes.".concat(itemType, ".description"), replacements);
       } else {
-        return _t.html(`QA.keepRight.errorTypes.${parentIssueType}.description`, replacements);
+        return _t.html("QA.keepRight.errorTypes.".concat(parentIssueType, ".description"), replacements);
       }
     }
     function keepRightDetails(selection2) {
       const details = selection2.selectAll(".error-details").data(
         _qaItem ? [_qaItem] : [],
-        (d2) => `${d2.id}-${d2.status || 0}`
+        (d2) => "".concat(d2.id, "-").concat(d2.status || 0)
       );
       details.exit().remove();
       const detailsEnter = details.enter().append("div").attr("class", "error-details qa-details-container");
@@ -69734,21 +69886,21 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       const unknown = _t.html("inspector.unknown");
       let replacements = d2.replacements || {};
       replacements.default = { html: unknown };
-      if (_mainLocalizer.hasTextForStringId(`QA.keepRight.errorTypes.${itemType}.title`)) {
-        return _t.html(`QA.keepRight.errorTypes.${itemType}.title`, replacements);
+      if (_mainLocalizer.hasTextForStringId("QA.keepRight.errorTypes.".concat(itemType, ".title"))) {
+        return _t.html("QA.keepRight.errorTypes.".concat(itemType, ".title"), replacements);
       } else {
-        return _t.html(`QA.keepRight.errorTypes.${parentIssueType}.title`, replacements);
+        return _t.html("QA.keepRight.errorTypes.".concat(parentIssueType, ".title"), replacements);
       }
     }
     function keepRightHeader(selection2) {
       const header = selection2.selectAll(".qa-header").data(
         _qaItem ? [_qaItem] : [],
-        (d2) => `${d2.id}-${d2.status || 0}`
+        (d2) => "".concat(d2.id, "-").concat(d2.status || 0)
       );
       header.exit().remove();
       const headerEnter = header.enter().append("div").attr("class", "qa-header");
       const iconEnter = headerEnter.append("div").attr("class", "qa-header-icon").classed("new", (d2) => d2.id < 0);
-      iconEnter.append("div").attr("class", (d2) => `preset-icon-28 qaItem ${d2.service} itemId-${d2.id} itemType-${d2.parentIssueType}`).call(svgIcon("#iD-icon-bolt", "qaItem-fill"));
+      iconEnter.append("div").attr("class", (d2) => "preset-icon-28 qaItem ".concat(d2.service, " itemId-").concat(d2.id, " itemType-").concat(d2.parentIssueType)).call(svgIcon("#iD-icon-bolt", "qaItem-fill"));
       headerEnter.append("div").attr("class", "qa-header-label").html(issueTitle);
     }
     keepRightHeader.issue = function(val) {
@@ -69804,7 +69956,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       const isShown = _qaItem && (isSelected || _qaItem.newComment || _qaItem.comment);
       let saveSection = selection2.selectAll(".qa-save").data(
         isShown ? [_qaItem] : [],
-        (d2) => `${d2.id}-${d2.status || 0}`
+        (d2) => "".concat(d2.id, "-").concat(d2.status || 0)
       );
       saveSection.exit().remove();
       const saveSectionEnter = saveSection.enter().append("div").attr("class", "qa-save save-section cf");
@@ -69843,7 +69995,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       });
       buttonSection.select(".close-button").html((d2) => {
         const andComment = d2.newComment ? "_comment" : "";
-        return _t.html(`QA.keepRight.close${andComment}`);
+        return _t.html("QA.keepRight.close".concat(andComment));
       }).on("click.close", function(d3_event, d2) {
         this.blur();
         const qaService = services.keepRight;
@@ -69854,7 +70006,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       });
       buttonSection.select(".ignore-button").html((d2) => {
         const andComment = d2.newComment ? "_comment" : "";
-        return _t.html(`QA.keepRight.ignore${andComment}`);
+        return _t.html("QA.keepRight.ignore".concat(andComment));
       }).on("click.ignore", function(d3_event, d2) {
         this.blur();
         const qaService = services.keepRight;
@@ -70421,13 +70573,13 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     if (localizerFn) {
       if (itemStrings.community) {
         const communityID = simplify(itemStrings.community);
-        itemStrings.community = localizerFn(`_communities.${communityID}`);
+        itemStrings.community = localizerFn("_communities.".concat(communityID));
       }
       ["name", "description", "extendedDescription"].forEach((prop) => {
         if (defaultStrings[prop])
-          defaultStrings[prop] = localizerFn(`_defaults.${item.type}.${prop}`);
+          defaultStrings[prop] = localizerFn("_defaults.".concat(item.type, ".").concat(prop));
         if (itemStrings[prop])
-          itemStrings[prop] = localizerFn(`${item.id}.${prop}`);
+          itemStrings[prop] = localizerFn("".concat(item.id, ".").concat(prop));
       });
     }
     let replacements = {
@@ -70460,12 +70612,12 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         return void 0;
       let result = s2;
       for (let key in replacements) {
-        const token = `{${key}}`;
+        const token = "{".concat(key, "}");
         const regex = new RegExp(token, "g");
         if (regex.test(result)) {
           let replacement = replacements[key];
           if (!replacement) {
-            throw new Error(`Cannot resolve token: ${token}`);
+            throw new Error("Cannot resolve token: ".concat(token));
           } else {
             if (addLinks && (key === "signupUrl" || key === "url")) {
               replacement = linkify(replacement);
@@ -70476,7 +70628,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       }
       const leftovers = result.match(anyToken);
       if (leftovers) {
-        throw new Error(`Cannot resolve tokens: ${leftovers}`);
+        throw new Error("Cannot resolve tokens: ".concat(leftovers));
       }
       if (addLinks && item.type === "reddit") {
         result = result.replace(/(\/r\/\w+\/*)/i, (match) => linkify(resolved.url, match));
@@ -70487,7 +70639,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       if (!url)
         return void 0;
       text2 = text2 || url;
-      return `<a target="_blank" href="${url}">${text2}</a>`;
+      return '<a target="_blank" href="'.concat(url, '">').concat(text2, "</a>");
     }
   }
 
@@ -70560,7 +70712,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       let summaryDetail = row.append("td").attr("class", "cell-detail summary-detail");
       summaryDetail.append("a").attr("class", "cell-detail summary-view-on-osm").attr("target", "_blank").attr("href", changesetURL).call(_t.append("success.view_on_osm"));
       summaryDetail.append("div").html(_t.html("success.changeset_id", {
-        changeset_id: { html: `<a href="${changesetURL}" target="_blank">${_changeset2.id}</a>` }
+        changeset_id: { html: '<a href="'.concat(changesetURL, '" target="_blank">').concat(_changeset2.id, "</a>") }
       }));
       ensureOSMCommunityIndex().then((oci) => {
         const loc = context.map().center();
@@ -70570,7 +70722,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           let area = validHere[resource.locationSetID];
           if (!area)
             return;
-          const localizer = (stringID) => _t.html(`community.${stringID}`);
+          const localizer = (stringID) => _t.html("community.".concat(stringID));
           resource.resolved = resolveStrings(resource, oci.defaults, localizer);
           communities.push({
             area,
@@ -70588,7 +70740,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       let table = communityLinks.append("table").attr("class", "community-table");
       let row = table.selectAll(".community-row").data(resources);
       let rowEnter = row.enter().append("tr").attr("class", "community-row");
-      rowEnter.append("td").attr("class", "cell-icon community-icon").append("a").attr("target", "_blank").attr("href", (d2) => d2.resolved.url).append("svg").attr("class", "logo-small").append("use").attr("xlink:href", (d2) => `#community-${d2.type}`);
+      rowEnter.append("td").attr("class", "cell-icon community-icon").append("a").attr("target", "_blank").attr("href", (d2) => d2.resolved.url).append("svg").attr("class", "logo-small").append("use").attr("xlink:href", (d2) => "#community-".concat(d2.type));
       let communityDetail = rowEnter.append("td").attr("class", "cell-detail community-detail");
       communityDetail.each(showCommunityDetails);
       communityLinks.append("div").attr("class", "community-missing").call(_t.append("success.missing")).append("a").attr("class", "link-out").attr("target", "_blank").call(svgIcon("#iD-icon-out-link", "inline")).attr("href", "https://github.com/osmlab/osm-community-index/issues").append("span").call(_t.append("success.tell_us"));
@@ -70600,7 +70752,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       selection2.append("div").attr("class", "community-description").html(d2.resolved.descriptionHTML);
       if (d2.resolved.extendedDescriptionHTML || d2.languageCodes && d2.languageCodes.length) {
         selection2.append("div").call(
-          uiDisclosure(context, `community-more-${d2.id}`, false).expanded(false).updatePreference(false).label(() => _t.append("success.more")).content(showMore)
+          uiDisclosure(context, "community-more-".concat(d2.id), false).expanded(false).updatePreference(false).label(() => _t.append("success.more")).content(showMore)
         );
       }
       let nextEvents = (d2.events || []).map((event) => {
@@ -70615,7 +70767,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       }).slice(0, MAXEVENTS);
       if (nextEvents.length) {
         selection2.append("div").call(
-          uiDisclosure(context, `community-events-${d2.id}`, false).expanded(false).updatePreference(false).label(_t.html("success.events")).content(showNextEvents)
+          uiDisclosure(context, "community-events-".concat(d2.id), false).expanded(false).updatePreference(false).label(_t.html("success.events")).content(showNextEvents)
         ).select(".hide-toggle").append("span").attr("class", "badge-text").text(nextEvents.length);
       }
       function showMore(selection3) {
@@ -70636,7 +70788,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         itemEnter.append("div").attr("class", "community-event-name").append("a").attr("target", "_blank").attr("href", (d4) => d4.url).text((d4) => {
           let name = d4.name;
           if (d4.i18n && d4.id) {
-            name = _t(`community.${communityID}.events.${d4.id}.name`, { default: name });
+            name = _t("community.".concat(communityID, ".events.").concat(d4.id, ".name"), { default: name });
           }
           return name;
         });
@@ -70651,14 +70803,14 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         itemEnter.append("div").attr("class", "community-event-where").text((d4) => {
           let where = d4.where;
           if (d4.i18n && d4.id) {
-            where = _t(`community.${communityID}.events.${d4.id}.where`, { default: where });
+            where = _t("community.".concat(communityID, ".events.").concat(d4.id, ".where"), { default: where });
           }
           return where;
         });
         itemEnter.append("div").attr("class", "community-event-description").text((d4) => {
           let description = d4.description;
           if (d4.i18n && d4.id) {
-            description = _t(`community.${communityID}.events.${d4.id}.description`, { default: description });
+            description = _t("community.".concat(communityID, ".events.").concat(d4.id, ".description"), { default: description });
           }
           return description;
         });
@@ -71259,7 +71411,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     function osmoseDetails(selection2) {
       const details = selection2.selectAll(".error-details").data(
         _qaItem ? [_qaItem] : [],
-        (d2) => `${d2.id}-${d2.status || 0}`
+        (d2) => "".concat(d2.id, "-").concat(d2.status || 0)
       );
       details.exit().remove();
       const detailsEnter = details.enter().append("div").attr("class", "error-details qa-details-container");
@@ -71284,7 +71436,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       services.osmose.loadIssueDetail(_qaItem).then((d2) => {
         if (!d2.elems || d2.elems.length === 0)
           return;
-        if (context.selectedErrorID() !== thisItem.id && context.container().selectAll(`.qaItem.osmose.hover.itemId-${thisItem.id}`).empty())
+        if (context.selectedErrorID() !== thisItem.id && context.container().selectAll(".qaItem.osmose.hover.itemId-".concat(thisItem.id)).empty())
           return;
         if (d2.detail) {
           detailsDiv.append("h4").call(_t.append("QA.osmose.detail_title"));
@@ -71358,11 +71510,11 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     function osmoseHeader(selection2) {
       const header = selection2.selectAll(".qa-header").data(
         _qaItem ? [_qaItem] : [],
-        (d2) => `${d2.id}-${d2.status || 0}`
+        (d2) => "".concat(d2.id, "-").concat(d2.status || 0)
       );
       header.exit().remove();
       const headerEnter = header.enter().append("div").attr("class", "qa-header");
-      const svgEnter = headerEnter.append("div").attr("class", "qa-header-icon").classed("new", (d2) => d2.id < 0).append("svg").attr("width", "20px").attr("height", "30px").attr("viewbox", "0 0 20 30").attr("class", (d2) => `preset-icon-28 qaItem ${d2.service} itemId-${d2.id} itemType-${d2.itemType}`);
+      const svgEnter = headerEnter.append("div").attr("class", "qa-header-icon").classed("new", (d2) => d2.id < 0).append("svg").attr("width", "20px").attr("height", "30px").attr("viewbox", "0 0 20 30").attr("class", (d2) => "preset-icon-28 qaItem ".concat(d2.service, " itemId-").concat(d2.id, " itemType-").concat(d2.itemType));
       svgEnter.append("polygon").attr("fill", (d2) => services.osmose.getColor(d2.item)).attr("class", "qaItem-fill").attr("points", "16,3 4,3 1,6 1,17 4,20 7,20 10,27 13,20 16,20 19,17.033 19,6");
       svgEnter.append("use").attr("class", "icon-annotation").attr("width", "12px").attr("height", "12px").attr("transform", "translate(4, 5.5)").attr("xlink:href", (d2) => d2.icon ? "#" + d2.icon : "");
       headerEnter.append("div").attr("class", "qa-header-label").text(issueTitle);
@@ -71421,7 +71573,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       const isShown = _qaItem && isSelected;
       let saveSection = selection2.selectAll(".qa-save").data(
         isShown ? [_qaItem] : [],
-        (d2) => `${d2.id}-${d2.status || 0}`
+        (d2) => "".concat(d2.id, "-").concat(d2.status || 0)
       );
       saveSection.exit().remove();
       const saveSectionEnter = saveSection.enter().append("div").attr("class", "qa-save save-section cf");
@@ -72681,12 +72833,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     function renderModalContent(selection2) {
       let headerEnter = selection2.selectAll(".modal-section-heading").data([0]).enter().append("div").attr("class", "modal-section-heading");
       headerEnter.append("h3").attr("class", "modal-heading").html("iD Beta");
-      headerEnter.append("div").attr("class", "modal-heading-desc").html(`
-        This is a beta version of iD, which contains features that are not
-        yet available in the standard version of iD.
-        <br />
-        <iframe style="width:100%;height:500px" src="https://gist.github.com/k-yle/288f5c3bba4bffb0221751900ed4c392.pibb"></iframe>
-      `);
+      headerEnter.append("div").attr("class", "modal-heading-desc").html('\n        This is a beta version of iD, which contains features that are not\n        yet available in the standard version of iD.\n        <br />\n        <iframe style="width:100%;height:500px" src="https://gist.github.com/k-yle/288f5c3bba4bffb0221751900ed4c392.pibb"></iframe>\n      ');
       let buttonsEnter = selection2.selectAll(".modal-section.buttons").data([0]).enter().append("div").attr("class", "modal-section buttons");
       buttonsEnter.append("button").attr("class", "button ok-button action").on("click", () => _modalSelection.remove()).text("Close");
     }
@@ -72954,7 +73101,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         updateValue(d2, val);
       });
       sildersControlEnter.append("button").attr("title", function(d2) {
-        return `${_t("background.reset")} ${_t("background." + d2)}`;
+        return "".concat(_t("background.reset"), " ").concat(_t("background." + d2));
       }).attr("class", function(d2) {
         return "display-option-reset display-option-reset-" + d2;
       }).on("click", function(d3_event, d2) {
@@ -73000,23 +73147,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       modal.classed("settings-modal settings-custom-background", true);
       modal.select(".modal-section.header").append("h3").call(_t.append("settings.custom_background.header"));
       var textSection = modal.select(".modal-section.message-text");
-      var instructions = `${_t.html("settings.custom_background.instructions.info")}
-
-#### ${_t.html("settings.custom_background.instructions.wms.tokens_label")}
-* ${_t.html("settings.custom_background.instructions.wms.tokens.proj")}
-* ${_t.html("settings.custom_background.instructions.wms.tokens.wkid")}
-* ${_t.html("settings.custom_background.instructions.wms.tokens.dimensions")}
-* ${_t.html("settings.custom_background.instructions.wms.tokens.bbox")}
-
-#### ${_t.html("settings.custom_background.instructions.tms.tokens_label")}
-* ${_t.html("settings.custom_background.instructions.tms.tokens.xyz")}
-* ${_t.html("settings.custom_background.instructions.tms.tokens.flipped_y")}
-* ${_t.html("settings.custom_background.instructions.tms.tokens.switch")}
-* ${_t.html("settings.custom_background.instructions.tms.tokens.quadtile")}
-* ${_t.html("settings.custom_background.instructions.tms.tokens.scale_factor")}
-
-#### ${_t.html("settings.custom_background.instructions.example")}
-\`${example}\``;
+      var instructions = "".concat(_t.html("settings.custom_background.instructions.info"), "\n") + "\n" + "#### ".concat(_t.html("settings.custom_background.instructions.wms.tokens_label"), "\n") + "* ".concat(_t.html("settings.custom_background.instructions.wms.tokens.proj"), "\n") + "* ".concat(_t.html("settings.custom_background.instructions.wms.tokens.wkid"), "\n") + "* ".concat(_t.html("settings.custom_background.instructions.wms.tokens.dimensions"), "\n") + "* ".concat(_t.html("settings.custom_background.instructions.wms.tokens.bbox"), "\n") + "\n" + "#### ".concat(_t.html("settings.custom_background.instructions.tms.tokens_label"), "\n") + "* ".concat(_t.html("settings.custom_background.instructions.tms.tokens.xyz"), "\n") + "* ".concat(_t.html("settings.custom_background.instructions.tms.tokens.flipped_y"), "\n") + "* ".concat(_t.html("settings.custom_background.instructions.tms.tokens.switch"), "\n") + "* ".concat(_t.html("settings.custom_background.instructions.tms.tokens.quadtile"), "\n") + "* ".concat(_t.html("settings.custom_background.instructions.tms.tokens.scale_factor"), "\n") + "\n" + "#### ".concat(_t.html("settings.custom_background.instructions.example"), "\n") + "`".concat(example, "`");
       textSection.append("div").attr("class", "instructions-template").html(marked(instructions));
       textSection.append("textarea").attr("class", "field-template").attr("placeholder", _t("settings.custom_background.template.placeholder")).call(utilNoAuto).property("value", _currSettings.template);
       var buttonSection = modal.select(".modal-section.buttons");
@@ -73262,7 +73393,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       var nudgeEnter = nudgeWrapEnter.append("div").attr("class", "nudge-outer-rect").on(_pointerPrefix + "down", dragOffset);
       nudgeEnter.append("div").attr("class", "nudge-inner-rect").append("input").attr("type", "text").attr("aria-label", _t("background.offset_label")).on("change", inputOffset);
       nudgeWrapEnter.append("div").selectAll("button").data(_directions).enter().append("button").attr("title", function(d2) {
-        return _t(`background.nudge.${d2[0]}`);
+        return _t("background.nudge.".concat(d2[0]));
       }).attr("class", function(d2) {
         return d2[0] + " nudge";
       }).on("click", function(d3_event, d2) {
@@ -73334,6 +73465,9 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         return !d2.isHidden() && d2.overlay;
       });
     }
+    context.background().on("change.background_list", () => {
+      _overlayList.call(updateLayerSelections);
+    });
     context.map().on(
       "move.overlay_list",
       debounce_default(function() {
@@ -74451,11 +74585,12 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       context.layers().on("change", () => updatePhotoList(photoList.select("ul")));
     }
     function updatePhotoList(container) {
+      var _a;
       function locationUnavailable(d2) {
         return !(isArray_default(d2.loc) && isNumber_default(d2.loc[0]) && isNumber_default(d2.loc[1]));
       }
       container.selectAll("li.placeholder").remove();
-      let selection2 = container.selectAll("li").data(photoLayer.getPhotos() ?? [], (d2) => d2.id);
+      let selection2 = container.selectAll("li").data((_a = photoLayer.getPhotos()) != null ? _a : [], (d2) => d2.id);
       selection2.exit().remove();
       const selectionEnter = selection2.enter().append("li");
       selectionEnter.append("span").classed("filename", true);
@@ -74512,7 +74647,8 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         return layerSupported(d2) && d2.layer.enabled();
       }
       function layerRendered(d2) {
-        return d2.layer.rendered?.(context.map().zoom()) ?? true;
+        var _a, _b, _c;
+        return (_c = (_b = (_a = d2.layer).rendered) == null ? void 0 : _b.call(_a, context.map().zoom())) != null ? _c : true;
       }
       var ul = selection2.selectAll(".layer-list-photos").data([0]);
       ul = ul.enter().append("ul").attr("class", "layer-list layer-list-photos").merge(ul);
@@ -75383,7 +75519,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       const filename = _assetPath + val;
       return _assetMap[filename] || filename;
     };
-    context.imagePath = (val) => context.asset(`img/${val}`);
+    context.imagePath = (val) => context.asset("img/".concat(val));
     context.reset = context.flush = () => {
       context.debouncedSave.cancel();
       Array.from(_deferred2).forEach((handle) => {
@@ -75466,6 +75602,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
 
   // modules/core/planar.js
   function parseDistanceWithUnit(tagValue, defaultUnit) {
+    var _a;
     if (!tagValue)
       return void 0;
     const imperialCombo = tagValue.match(/([\d.]+) *('|′|ft|foot|feet) *([\d.]+) *("|″|in|inch|inches)/);
@@ -75474,7 +75611,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       const inches = +imperialCombo[3];
       return feet / 3.281 + inches / 39.37;
     }
-    const unit2 = tagValue.match(/[^\d.]+/)?.[0].trim() || defaultUnit;
+    const unit2 = ((_a = tagValue.match(/[^\d.]+/)) == null ? void 0 : _a[0].trim()) || defaultUnit;
     const value = parseFloat(tagValue);
     if (Number.isNaN(value))
       return void 0;
@@ -76027,7 +76164,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         const t2 = parts[0];
         const k3 = parts[1];
         const v2 = parts[2];
-        const thiskv = `${k3}/${v2}`;
+        const thiskv = "".concat(k3, "/").concat(v2);
         const tree = trees[t2];
         let branch = that.matchIndex.get(thiskv);
         if (!branch) {
@@ -76051,7 +76188,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         const alternateName = new RegExp(tree.nameTags.alternate, "i");
         const notName = /:(colou?r|type|forward|backward|left|right|etymology|pronunciation|wikipedia)$/i;
         const skipGenericKV = skipGenericKVMatches(t2, k3, v2);
-        const genericKV = /* @__PURE__ */ new Set([`${k3}/yes`, `building/yes`]);
+        const genericKV = /* @__PURE__ */ new Set(["".concat(k3, "/yes"), "building/yes"]);
         const matchGroupKV = /* @__PURE__ */ new Set();
         Object.values(matchGroups).forEach((matchGroup) => {
           const inGroup = matchGroup.some((otherkv) => otherkv === thiskv);
@@ -76062,7 +76199,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
               return;
             matchGroupKV.add(otherkv);
             const otherk = otherkv.split("/", 2)[0];
-            genericKV.add(`${otherk}/yes`);
+            genericKV.add("".concat(otherk, "/yes"));
           });
         });
         items.forEach((item) => {
@@ -76073,7 +76210,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
             if (!item.matchTags.length)
               delete item.matchTags;
           }
-          let kvTags = [`${thiskv}`].concat(item.matchTags || []);
+          let kvTags = ["".concat(thiskv)].concat(item.matchTags || []);
           if (!skipGenericKV) {
             kvTags = kvTags.concat(Array.from(genericKV));
           }
@@ -76113,7 +76250,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       });
       function insertName(which, t2, kv, nsimple, itemID) {
         if (!nsimple) {
-          that.warnings.push(`Warning: skipping empty ${which} name for item ${t2}/${kv}: ${itemID}`);
+          that.warnings.push("Warning: skipping empty ".concat(which, " name for item ").concat(t2, "/").concat(kv, ": ").concat(itemID));
           return;
         }
         let branch = that.matchIndex.get(kv);
@@ -76133,11 +76270,11 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         }
         leaf.add(itemID);
         if (!/yes$/.test(kv)) {
-          const kvnsimple = `${kv}/${nsimple}`;
+          const kvnsimple = "".concat(kv, "/").concat(nsimple);
           const existing = seenTree.get(kvnsimple);
           if (existing && existing !== t2) {
             const items = Array.from(leaf);
-            that.warnings.push(`Duplicate cache key "${kvnsimple}" in trees "${t2}" and "${existing}", check items: ${items}`);
+            that.warnings.push('Duplicate cache key "'.concat(kvnsimple, '" in trees "').concat(t2, '" and "').concat(existing, '", check items: ').concat(items));
             return;
           }
           seenTree.set(kvnsimple, t2);
@@ -76178,7 +76315,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           try {
             resolved = loco.resolveLocationSet(item.locationSet);
           } catch (err) {
-            console.warn(`buildLocationIndex: ${err.message}`);
+            console.warn("buildLocationIndex: ".concat(err.message));
           }
           if (!resolved || !resolved.id)
             return;
@@ -76189,7 +76326,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           feature3.id = resolved.id;
           feature3.properties.id = resolved.id;
           if (!feature3.geometry.coordinates.length || !feature3.properties.area) {
-            console.warn(`buildLocationIndex: locationSet ${resolved.id} for ${item.id} resolves to an empty feature:`);
+            console.warn("buildLocationIndex: locationSet ".concat(resolved.id, " for ").concat(item.id, " resolves to an empty feature:"));
             console.warn(JSON.stringify(feature3));
             return;
           }
@@ -76268,7 +76405,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       gatherResults("exclude");
       return results.length ? results : null;
       function gatherResults(which) {
-        const kv = `${k3}/${v2}`;
+        const kv = "".concat(k3, "/").concat(v2);
         let didMatch = tryMatch(which, kv);
         if (didMatch)
           return;
@@ -76377,7 +76514,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
   function setNsiSources() {
     const nsiVersion = package_default.dependencies["name-suggestion-index"] || package_default.devDependencies["name-suggestion-index"];
     const v2 = (0, import_vparse2.default)(nsiVersion);
-    const vMinor = `${v2.major}.${v2.minor}`;
+    const vMinor = "".concat(v2.major, ".").concat(v2.minor);
     const cdn = nsiCdnUrl.replace("{version}", vMinor);
     const sources = {
       "nsi_data": cdn + "dist/nsi.min.json",
@@ -76502,9 +76639,9 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       if (!vmap)
         return;
       if (vmap.get(osmvalue)) {
-        primary.add(`${osmkey}/${osmvalue}`);
+        primary.add("".concat(osmkey, "/").concat(osmvalue));
       } else if (osmvalue === "yes") {
-        alternate.add(`${osmkey}/${osmvalue}`);
+        alternate.add("".concat(osmkey, "/").concat(osmvalue));
       }
     });
     const preset = _mainPresetIndex.matchTags(tags, "area");
@@ -76656,7 +76793,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         }
         if (replace && replace.wikipedia !== void 0) {
           changed = true;
-          const wpkey = `${prefix}wikipedia`;
+          const wpkey = "".concat(prefix, "wikipedia");
           if (replace.wikipedia) {
             newTags[wpkey] = replace.wikipedia;
           } else {
@@ -76696,7 +76833,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           continue;
         const mainTag = item.mainTag;
         const itemQID = item.tags[mainTag];
-        const notQID = newTags[`not:${mainTag}`];
+        const notQID = newTags["not:".concat(mainTag)];
         if (
           // Exceptions, skip this hit
           !itemQID || itemQID === notQID || // No `*:wikidata` or matched a `not:*:wikidata`
@@ -76720,7 +76857,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       let preserveTags = item.preserveTags || properties.preserveTags || [];
       ["building", "emergency", "internet_access", "takeaway"].forEach((osmkey) => {
         if (k3 !== osmkey)
-          preserveTags.push(`^${osmkey}$`);
+          preserveTags.push("^".concat(osmkey, "$"));
       });
       const regexes = preserveTags.map((s2) => new RegExp(s2, "i"));
       let keepTags = {};
@@ -77340,6 +77477,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
   var _loadViewerPromise3;
   var _vegbilderCache;
   async function fetchAvailableLayers() {
+    var _a, _b, _c;
     const params = {
       service: "WFS",
       request: "GetCapabilities",
@@ -77348,7 +77486,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     const urlForRequest = owsEndpoint + utilQsString(params);
     const response = await xml_default(urlForRequest);
     const xPathSelector = "/wfs:WFS_Capabilities/wfs:FeatureTypeList/wfs:FeatureType/wfs:Name";
-    const regexMatcher = /^vegbilder_1_0:Vegbilder(?<image_type>_360)?_(?<year>\d{4})$/;
+    const regexMatcher = new RegExp("^vegbilder_1_0:Vegbilder(?<image_type>_360)?_(?<year>\\d{4})$");
     const NSResolver = response.createNSResolver(response);
     const l2 = response.evaluate(
       xPathSelector,
@@ -77359,12 +77497,12 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     let node;
     const availableLayers = [];
     while ((node = l2.iterateNext()) !== null) {
-      const match = node.textContent?.match(regexMatcher);
+      const match = (_a = node.textContent) == null ? void 0 : _a.match(regexMatcher);
       if (match) {
         availableLayers.push({
           name: match[0],
-          is_sphere: !!match.groups?.image_type,
-          year: parseInt(match.groups?.year, 10)
+          is_sphere: !!((_b = match.groups) == null ? void 0 : _b.image_type),
+          year: parseInt((_c = match.groups) == null ? void 0 : _c.year, 10)
         });
       }
     }
@@ -77420,7 +77558,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     let featureCollection;
     try {
       featureCollection = await json_default(urlForRequest, options2);
-    } catch {
+    } catch (e3) {
       cache.loaded.set(tileid, false);
       return;
     } finally {
@@ -77551,14 +77689,14 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     } = properties;
     let reference;
     if (year >= 2020) {
-      reference = `${road_class}${road_status}${road_number} S${section}D${subsection}`;
+      reference = "".concat(road_class).concat(road_status).concat(road_number, " S").concat(section, "D").concat(subsection);
       if (junction_part) {
-        reference = `${reference} M${anker_point} KD${junction_part}`;
+        reference = "".concat(reference, " M").concat(anker_point, " KD").concat(junction_part);
       } else if (services_part) {
-        reference = `${reference} M${anker_point} SD${services_part}`;
+        reference = "".concat(reference, " M").concat(anker_point, " SD").concat(services_part);
       }
     } else {
-      reference = `${county_number}${road_class}${road_status}${road_number} HP${parcel}`;
+      reference = "".concat(county_number).concat(road_class).concat(road_status).concat(road_number, " HP").concat(parcel);
     }
     return reference;
   }
@@ -77580,7 +77718,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     return tiler9.getTiles(projection2).map((tile) => tile.extent);
   }
   function searchLimited3(limit, projection2, rtree) {
-    limit ??= 5;
+    limit != null ? limit : limit = 5;
     return partitionViewport3(projection2).reduce((result, extent) => {
       const found = rtree.search(extent.bbox()).slice(0, limit).map((d2) => d2.data);
       return result.concat(found);
@@ -77652,13 +77790,13 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       }
     },
     getSequenceForImage: function(image) {
-      return _vegbilderCache?.image2sequence_map.get(image?.key);
+      return _vegbilderCache == null ? void 0 : _vegbilderCache.image2sequence_map.get(image == null ? void 0 : image.key);
     },
     loadImages: async function(context, margin) {
       if (!_vegbilderCache) {
         await this.reset();
       }
-      margin ??= 1;
+      margin != null ? margin : margin = 1;
       const wfslayers = filterAvailableLayers(context.photos());
       loadWFSLayers(context.projection, margin, wfslayers);
     },
@@ -77714,7 +77852,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         attribution.append("span").attr("class", "captured_at").text(localeTimestamp(d2.captured_at));
       }
       attribution.append("a").attr("target", "_blank").attr("href", "https://vegvesen.no").call(_t.append("vegbilder.publisher"));
-      attribution.append("a").attr("target", "_blank").attr("href", `https://vegbilder.atlas.vegvesen.no/?year=${d2.captured_at.getFullYear()}&lat=${d2.loc[1]}&lng=${d2.loc[0]}&view=image&imageId=${d2.key}`).call(_t.append("vegbilder.view_on"));
+      attribution.append("a").attr("target", "_blank").attr("href", "https://vegbilder.atlas.vegvesen.no/?year=".concat(d2.captured_at.getFullYear(), "&lat=").concat(d2.loc[1], "&lng=").concat(d2.loc[0], "&view=image&imageId=").concat(d2.key)).call(_t.append("vegbilder.view_on"));
       _currentFrame = d2.is_sphere ? _pannellumFrame : _planeFrame;
       _currentFrame.selectPhoto(d2, keepOrientation).showPhotoFrame(wrap2);
       return this;
@@ -77741,20 +77879,21 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     // Reset is only necessary when interacting with the viewport because
     // this implicitly changes the currently selected bubble/sequence
     setStyles: function(context, hovered, reset) {
+      var _a, _b;
       if (reset) {
         context.container().selectAll(".viewfield-group").classed("highlighted", false).classed("hovered", false).classed("currentView", false);
         context.container().selectAll(".sequence").classed("highlighted", false).classed("currentView", false);
       }
-      const hoveredImageKey = hovered?.key;
+      const hoveredImageKey = hovered == null ? void 0 : hovered.key;
       const hoveredSequence = this.getSequenceForImage(hovered);
-      const hoveredSequenceKey = hoveredSequence?.key;
-      const hoveredImageKeys = hoveredSequence?.images.map((d2) => d2.key) ?? [];
+      const hoveredSequenceKey = hoveredSequence == null ? void 0 : hoveredSequence.key;
+      const hoveredImageKeys = (_a = hoveredSequence == null ? void 0 : hoveredSequence.images.map((d2) => d2.key)) != null ? _a : [];
       const viewer = context.container().select(".photoviewer");
       const selected = viewer.empty() ? void 0 : viewer.datum();
-      const selectedImageKey = selected?.key;
+      const selectedImageKey = selected == null ? void 0 : selected.key;
       const selectedSequence = this.getSequenceForImage(selected);
-      const selectedSequenceKey = selectedSequence?.key;
-      const selectedImageKeys = selectedSequence?.images.map((d2) => d2.key) ?? [];
+      const selectedSequenceKey = selectedSequence == null ? void 0 : selectedSequence.key;
+      const selectedImageKeys = (_b = selectedSequence == null ? void 0 : selectedSequence.images.map((d2) => d2.key)) != null ? _b : [];
       const highlightedImageKeys = utilArrayUnion(hoveredImageKeys, selectedImageKeys);
       context.container().selectAll(".layer-vegbilder .viewfield-group").classed("highlighted", (d2) => highlightedImageKeys.indexOf(d2.key) !== -1).classed("hovered", (d2) => d2.key === hoveredImageKey).classed("currentView", (d2) => d2.key === selectedImageKey);
       context.container().selectAll(".layer-vegbilder .sequence").classed("highlighted", (d2) => d2.key === hoveredSequenceKey).classed("currentView", (d2) => d2.key === selectedSequenceKey);
@@ -78133,6 +78272,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
   var tiler6 = utilTiler();
   var dispatch10 = dispatch_default("apiStatusChange", "authLoading", "authDone", "change", "loading", "loaded", "loadedNotes");
   var urlroot = osmApiConnections[0].url;
+  var apiUrlroot = osmApiConnections[0].apiUrl || urlroot;
   var redirectPath = window.location.origin + window.location.pathname;
   var oauth = osmAuth({
     url: urlroot,
@@ -78663,9 +78803,13 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         }
       }
       if (this.authenticated()) {
-        return oauth.xhr({ method: "GET", path }, done);
+        return oauth.xhr({
+          method: "GET",
+          prefix: false,
+          path: apiUrlroot + path
+        }, done);
       } else {
-        var url = urlroot + path;
+        var url = apiUrlroot + path;
         var controller = new AbortController();
         var fn;
         if (path.indexOf(".json") !== -1) {
@@ -78773,7 +78917,8 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       } else {
         var options2 = {
           method: "PUT",
-          path: "/api/0.6/changeset/create",
+          prefix: false,
+          path: apiUrlroot + "/api/0.6/changeset/create",
           headers: { "Content-Type": "text/xml" },
           content: JXON.stringify(changeset.asJXON())
         };
@@ -78791,7 +78936,8 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         changeset = changeset.update({ id: changesetID });
         var options3 = {
           method: "POST",
-          path: "/api/0.6/changeset/" + changesetID + "/upload",
+          prefix: false,
+          path: apiUrlroot + "/api/0.6/changeset/" + changesetID + "/upload",
           headers: { "Content-Type": "text/xml" },
           content: JXON.stringify(changeset.osmChangeJXON(changes))
         };
@@ -78811,7 +78957,8 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         if (this.getConnectionId() === cid) {
           oauth.xhr({
             method: "PUT",
-            path: "/api/0.6/changeset/" + changeset.id + "/close",
+            prefix: false,
+            path: apiUrlroot + "/api/0.6/changeset/" + changeset.id + "/close",
             headers: { "Content-Type": "text/xml" }
           }, function() {
             return true;
@@ -78824,7 +78971,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     updateChangesetTags: (changeset) => {
       oauth.xhr({
         method: "PUT",
-        path: `/api/0.6/changeset/${changeset.id}`,
+        path: "/api/0.6/changeset/".concat(changeset.id),
         headers: { "Content-Type": "text/xml" },
         content: JXON.stringify(changeset.asJXON())
       }, () => {
@@ -78849,12 +78996,13 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         if (!this.authenticated())
           return;
       }
-      utilArrayChunk(toLoad, 150).forEach(function(arr) {
-        oauth.xhr(
-          { method: "GET", path: "/api/0.6/users.json?users=" + arr.join() },
-          wrapcb(this, done, _connectionID)
-        );
-      }.bind(this));
+      utilArrayChunk(toLoad, 150).forEach((function(arr) {
+        oauth.xhr({
+          method: "GET",
+          prefix: false,
+          path: apiUrlroot + "/api/0.6/users.json?users=" + arr.join()
+        }, wrapcb(this, done, _connectionID));
+      }).bind(this));
       function done(err, payload) {
         if (err)
           return callback(err);
@@ -78873,10 +79021,11 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         delete _userCache.toLoad[uid];
         return callback(void 0, _userCache.user[uid]);
       }
-      oauth.xhr(
-        { method: "GET", path: "/api/0.6/user/" + uid + ".json" },
-        wrapcb(this, done, _connectionID)
-      );
+      oauth.xhr({
+        method: "GET",
+        prefix: false,
+        path: apiUrlroot + "/api/0.6/user/" + uid + ".json"
+      }, wrapcb(this, done, _connectionID));
       function done(err, payload) {
         if (err)
           return callback(err);
@@ -78894,10 +79043,11 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       if (_userDetails) {
         return callback(void 0, _userDetails);
       }
-      oauth.xhr(
-        { method: "GET", path: "/api/0.6/user/details.json" },
-        wrapcb(this, done, _connectionID)
-      );
+      oauth.xhr({
+        method: "GET",
+        prefix: false,
+        path: apiUrlroot + "/api/0.6/user/details.json"
+      }, wrapcb(this, done, _connectionID));
       function done(err, payload) {
         if (err)
           return callback(err);
@@ -78923,10 +79073,11 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         if (err) {
           return callback(err);
         }
-        oauth.xhr(
-          { method: "GET", path: "/api/0.6/changesets?user=" + user.id },
-          wrapcb(this, done, _connectionID)
-        );
+        oauth.xhr({
+          method: "GET",
+          prefix: false,
+          path: apiUrlroot + "/api/0.6/changesets?user=" + user.id
+        }, wrapcb(this, done, _connectionID));
       }
       function done(err, xml) {
         if (err) {
@@ -78947,7 +79098,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     // Fetch the status of the OSM API
     // GET /api/capabilities
     status: function(callback) {
-      var url = urlroot + "/api/capabilities";
+      var url = apiUrlroot + "/api/capabilities";
       var errback = wrapcb(this, done, _connectionID);
       xml_default(url).then(function(data) {
         errback(null, data);
@@ -79125,10 +79276,11 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         comment += " #" + note.newCategory;
       }
       var path = "/api/0.6/notes?" + utilQsString({ lon: note.loc[0], lat: note.loc[1], text: comment });
-      _noteCache.inflightPost[note.id] = oauth.xhr(
-        { method: "POST", path },
-        wrapcb(this, done, _connectionID)
-      );
+      _noteCache.inflightPost[note.id] = oauth.xhr({
+        method: "POST",
+        prefix: false,
+        path: urlroot + path
+      }, wrapcb(this, done, _connectionID));
       function done(err, xml) {
         delete _noteCache.inflightPost[note.id];
         if (err) {
@@ -79170,10 +79322,11 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       if (note.newComment) {
         path += "?" + utilQsString({ text: note.newComment });
       }
-      _noteCache.inflightPost[note.id] = oauth.xhr(
-        { method: "POST", path },
-        wrapcb(this, done, _connectionID)
-      );
+      _noteCache.inflightPost[note.id] = oauth.xhr({
+        method: "POST",
+        prefix: false,
+        path: urlroot + path
+      }, wrapcb(this, done, _connectionID));
       function done(err, xml) {
         delete _noteCache.inflightPost[note.id];
         if (err) {
@@ -79204,6 +79357,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     },
     switch: function(newOptions) {
       urlroot = newOptions.url;
+      apiUrlroot = newOptions.apiUrl || urlroot;
       var oldOptions = utilObjectOmit(oauth.options(), "access_token");
       oauth.options(Object.assign(oldOptions, newOptions));
       this.reset();
@@ -81439,7 +81593,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
   }
   function loadTile4(which, url, tile) {
     const cache = _cache4.requests;
-    const tileId = `${tile.id}-${which}`;
+    const tileId = "".concat(tile.id, "-").concat(which);
     if (cache.loaded[tileId] || cache.inflight[tileId])
       return;
     const controller = new AbortController();
@@ -81520,7 +81674,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     }
   }
   function getImageData(imageId, sequenceId) {
-    return fetch(apiUrl2 + `/api/sequence-detail?sequence_uuid=${sequenceId}`, { method: "GET" }).then(function(response) {
+    return fetch(apiUrl2 + "/api/sequence-detail?sequence_uuid=".concat(sequenceId), { method: "GET" }).then(function(response) {
       if (!response.ok) {
         throw new Error(response.status + " " + response.statusText);
       }
@@ -81666,7 +81820,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         attribution.append("span").attr("class", "captured_at").text(localeDateString2(d2.capture_time));
         attribution.append("span").text("|");
       }
-      attribution.append("a").attr("class", "image-link").attr("target", "_blank").attr("href", `https://mapilio.com/app?lat=${d2.loc[1]}&lng=${d2.loc[0]}&zoom=17&pId=${d2.id}`).text("mapilio.com");
+      attribution.append("a").attr("class", "image-link").attr("target", "_blank").attr("href", "https://mapilio.com/app?lat=".concat(d2.loc[1], "&lng=").concat(d2.loc[0], "&zoom=17&pId=").concat(d2.id)).text("mapilio.com");
       wrap2.transition().duration(100).call(imgZoom3.transform, identity2);
       wrap2.selectAll("img").remove();
       getImageData(d2.id, d2.sequence_id).then(function() {
@@ -82281,7 +82435,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       }
       if (_vertex.tags.fixme === "continue" || _vertex.tags.noexit === "yes") {
         context.perform((graph) => {
-          const newTags = { ..._vertex.tags };
+          const newTags = __spreadValues({}, _vertex.tags);
           delete newTags.fixme;
           delete newTags.noexit;
           return actionChangeTags(_vertex.id, newTags)(graph);
@@ -82725,7 +82879,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       return actionExtract(entityID, context.projection);
     }).filter(Boolean);
     var operation = function(d3_event) {
-      const shiftKeyPressed = d3_event?.shiftKey || false;
+      const shiftKeyPressed = (d3_event == null ? void 0 : d3_event.shiftKey) || false;
       var combinedAction = function(graph) {
         _actions.forEach(function(action) {
           graph = action(graph, shiftKeyPressed);
