@@ -9,6 +9,8 @@ const wmfSitematrixCdnUrl = ENV__ID_WMF_SITEMATRIX_CDN_URL
   || 'https://cdn.jsdelivr.net/npm/wmf-sitematrix@{version}/';
 const nsiCdnUrl = ENV__ID_NSI_CDN_URL
   || 'https://cdn.jsdelivr.net/npm/name-suggestion-index@{version}/';
+const tag2LinkUrl = ENV__ID_TAG2LINK_URL
+  || 'https://cdn.jsdelivr.net/gh/JOSM/tag2link@master/index.json';
 
 // api urls and settings
 const defaultOsmApiConnections = {
@@ -64,5 +66,6 @@ export {
   osmApiConnections,
   taginfoApiUrl,
   nominatimApiUrl,
+  tag2LinkUrl,
   showDonationMessage
 };
