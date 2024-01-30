@@ -269,6 +269,10 @@ export function utilDisplayName(entity: iD.OsmEntity, flags: {
         return entity.tags.name;
     }
 
+    if (name && entity.tags.local_ref && !name.endsWith(entity.tags.local_ref)) {
+        return `${name} ${entity.tags.local_ref}`;
+    }
+
     // Non-routes tend to be labeled in many places besides the relation lists, such as the map, where brevity is important.
     if (!entity.tags.route && name) {
         return name;
