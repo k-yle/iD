@@ -647,3 +647,25 @@ g.midpoint.tag-highway-bridleway .fill {
     stroke-opacity: .8;
     opacity: .8;
 }
+
+/**
+ * override for expressways - looks ugly af but at least they're
+ * visually distinguishable.
+ */
+path.line.stroke.tag-highway-primary.tag-expressway-yes,
+path.line.stroke.tag-highway-primary_link.tag-expressway-yes {
+    stroke: #d188ea;
+}
+path.line.casing.tag-highway-primary.tag-expressway-yes,
+path.line.casing.tag-highway-primary_link.tag-expressway-yes {
+    stroke: #a44fc1;
+}
+
+path.line.stroke.tag-highway-trunk.tag-expressway-yes,
+path.line.stroke.tag-highway-trunk_link.tag-expressway-yes {
+    stroke: #a44fc1;
+}
+path.line.casing.tag-highway-trunk.tag-expressway-yes,
+path.line.casing.tag-highway-trunk_link.tag-expressway-yes {
+    stroke: #77408b;
+}
