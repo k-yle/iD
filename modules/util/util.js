@@ -210,11 +210,16 @@ export function utilDisplayName(entity, hideNetwork) {
 
     // for routes, prefer `network+ref+name` or `ref+name` over `name`
     if (name && tags.ref && entity.tags.route) {
+        if (tags.from && tags.to) {
+            return tags.network
+                ? t('inspector.display_name.network_ref_name_from_to', tags)
+                : t('inspector.display_name.ref_name_from_to', tags);
+        }
         return tags.network
             ? t('inspector.display_name.network_ref_name', tags)
             : t('inspector.display_name.ref_name', tags);
     }
-    if (name) return name;
+    if (name) return name + (entity.tags.local_ref ? ` ${entity.tags.local_ref}` : "");
 
     var keyComponents = [];
 

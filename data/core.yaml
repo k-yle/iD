@@ -799,6 +799,8 @@ en:
     display_name_addr_housenumber_only: "{housenumber}"
     display_name:
       network_ref_name: "{network} {ref}: {name}"
+      network_ref_name_from_to: "{network} {ref} from {from} to {to}: {name}"
+      ref_name_from_to: "{ref} from {from} to {to}: {name}"
       ref_name: "{ref}: {name}"
       direction: "{direction}"
       network: "{network}"
