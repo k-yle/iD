@@ -15501,6 +15501,7 @@
   var ociCdnUrl = "https://cdn.jsdelivr.net/npm/osm-community-index@{version}/";
   var wmfSitematrixCdnUrl = "https://cdn.jsdelivr.net/npm/wmf-sitematrix@{version}/";
   var nsiCdnUrl = "https://cdn.jsdelivr.net/npm/name-suggestion-index@{version}/";
+  var tag2LinkUrl = "https://cdn.jsdelivr.net/gh/JOSM/tag2link@master/index.json";
   var defaultOsmApiConnections = {
     live: {
       url: "https://www.openstreetmap.org",
@@ -15697,6 +15698,7 @@
       "preset_defaults": presetsCdnUrl + "dist/preset_defaults.min.json",
       "preset_fields": presetsCdnUrl + "dist/fields.min.json",
       "preset_presets": presetsCdnUrl + "dist/presets.min.json",
+      "tag2link": tag2LinkUrl,
       "wmf_sitematrix": wmfSitematrixCdnUrl.replace("{version}", "0.1") + "wikipedia.min.json"
     };
     let _cachedData = {};
@@ -22673,7 +22675,7 @@
       return tags.network ? _t("inspector.display_name.network_ref_name", tags) : _t("inspector.display_name.ref_name", tags);
     }
     if (name)
-      return name;
+      return name + (entity.tags.local_ref ? " ".concat(entity.tags.local_ref) : "");
     var keyComponents = [];
     if (tags.network) {
       keyComponents.push("network");
@@ -74166,7 +74168,34 @@
     };
   }
 
+  // modules/services/tag2Link.js
+  var RANKS = ["deprecated", "normal", "preferred"];
+  async function loadTag2Link() {
+    const array2 = await _mainFileFetcher.get("tag2link");
+    const map2 = /* @__PURE__ */ new Map();
+    const allKeys = new Set(array2.map((item) => item.key));
+    for (const key of allKeys) {
+      const bestDefinition = array2.filter((item) => item.key === key).sort((a2, b2) => RANKS.indexOf(b2.rank) - RANKS.indexOf(a2.rank))[0];
+      map2.set(key.replace("Key:", ""), bestDefinition.url);
+    }
+    return map2;
+  }
+
   // modules/ui/sections/raw_tag_editor.js
+  var tag2Link;
+  loadTag2Link().then((result) => {
+    tag2Link = result;
+  }).catch(() => void 0);
+  function getUrlHost(key) {
+    const url = tag2Link == null ? void 0 : tag2Link.get(key);
+    if (!url)
+      return void 0;
+    try {
+      return new URL(url).host.replace(/^www\./, "");
+    } catch {
+      return void 0;
+    }
+  }
   function uiSectionRawTagEditor(id2, context) {
     var section = uiSection(id2, context).classes("raw-tag-editor").label(function() {
       var count = Object.keys(_tags).filter(function(d2) {
@@ -74257,6 +74286,7 @@
       var innerWrap = itemsEnter.append("div").attr("class", "inner-wrap");
       innerWrap.append("div").attr("class", "key-wrap").append("input").property("type", "text").attr("class", "key").call(utilNoAuto).on("focus", interacted).on("blur", keyChange).on("change", keyChange);
       innerWrap.append("div").attr("class", "value-wrap").append("input").property("type", "text").attr("class", "value").call(utilNoAuto).on("focus", interacted).on("blur", valueChange).on("change", valueChange).on("keydown.push-more", pushMore);
+      innerWrap.append("button").attr("class", "form-field-button foreignKey").attr("title", (d2) => _t("icons.view_on", { domain: getUrlHost(d2.key) })).style("display", (d2) => (tag2Link == null ? void 0 : tag2Link.get(d2.key)) ? "block" : "none").call(svgIcon("#iD-icon-out-link"));
       innerWrap.append("button").attr("class", "form-field-button remove").attr("title", _t("icons.remove")).call(svgIcon("#iD-operation-delete"));
       items = items.merge(itemsEnter).sort(function(a2, b2) {
         return a2.index - b2.index;
@@ -74278,6 +74308,7 @@
         }
         row.select(".inner-wrap").call(reference.button);
         row.call(reference.body);
+        row.select("button.foreignKey");
         row.select("button.remove");
       });
       items.selectAll("input.key").attr("title", function(d2) {
@@ -74298,6 +74329,19 @@
       }).attr("readonly", function(d2) {
         return isReadOnly(d2) || null;
       });
+      items.selectAll("button.foreignKey").on(
+        ("PointerEvent" in window ? "pointer" : "mouse") + "down",
+        // 'click' fires too late - #5878
+        (d3_event, d2) => {
+          var _a3;
+          if (d3_event.button !== 0)
+            return;
+          const url = (_a3 = tag2Link == null ? void 0 : tag2Link.get(d2.key)) == null ? void 0 : _a3.replace(/\$1/g, d2.value);
+          if (!url)
+            return;
+          window.open(url, "_blank");
+        }
+      );
       items.selectAll("button.remove").on(
         ("PointerEvent" in window ? "pointer" : "mouse") + "down",
         // 'click' fires too late - #5878
