@@ -225,6 +225,8 @@ export function rendererFeatures(context) {
         const [key, value] = prefs('map-features-custom')?.split('=') || [];
         if (key) {
             if (value === '*') return tags[key];
+            if (value.startsWith("~")) return tags[key]?.includes(value.slice(1));
+            if (value === "!") return !tags[key];
             return tags[key] === value;
         }
     });
