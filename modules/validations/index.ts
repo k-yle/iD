@@ -12,6 +12,7 @@ export { validationMissingRole } from './missing_role';
 export { validationMissingTag } from './missing_tag';
 export { validationMutuallyExclusiveTags } from './mutually_exclusive_tags';
 export { validationOsmApiLimits } from './osm_api_limits';
+export { validationOneLaneWithNoOneway } from './oneway_onelane';
 export { validationOutdatedTags } from './outdated_tags';
 export { validationPrivateData } from './private_data';
 export { validationSuspiciousName } from './suspicious_name';

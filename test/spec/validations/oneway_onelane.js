@@ -1,0 +1,88 @@
+import { setTimeout } from 'node:timers/promises';
+
+describe('iD.validations.oneway_onelane', () => {
+    let context;
+
+    beforeEach(() => {
+        context = iD.coreContext().init();
+    });
+
+
+    function createWay(tags) {
+        const n1 = new iD.osmNode({ id: 'n-1', loc: [4,4] });
+        const n2 = new iD.osmNode({ id: 'n-2', loc: [4,5] });
+        const w1 = new iD.osmWay({ id: 'w-1', nodes: ['n-1', 'n-2'], tags: tags });
+
+        context.perform(
+            iD.actionAddEntity(n1),
+            iD.actionAddEntity(n2),
+            iD.actionAddEntity(w1)
+        );
+    }
+
+
+    function validate(validator) {
+        const changes = context.history().changes();
+        const entities = changes.modified.concat(changes.created);
+        return entities.flatMap((entity) => validator(entity, context.graph()));
+    }
+
+    it('has no errors on init', async () => {
+        const validator = iD.validationOneLaneWithNoOneway();
+        await setTimeout(20);   // async, so data will be available
+        const issues = validate(validator);
+        expect(issues).toHaveLength(0);
+    });
+
+    it('has no errors for properly tagged one-lane roads', async () => {
+        createWay({ lanes: '1', 'oneway': 'yes' });
+        const validator = iD.validationOneLaneWithNoOneway();
+        await setTimeout(20);   // async, so data will be available
+        const issues = validate(validator);
+        expect(issues).toHaveLength(0);
+    });
+
+    it('has no errors for roads that are implicitly oneway', async () => {
+        createWay({ lanes: '1', 'junction': 'roundabout' });
+        const validator = iD.validationOneLaneWithNoOneway();
+        await setTimeout(20);   // async, so data will be available
+        const issues = validate(validator);
+        expect(issues).toHaveLength(0);
+    });
+
+    it('has no errors for multi-lane roads', async () => {
+        createWay({ lanes: '2' });
+        const validator = iD.validationOneLaneWithNoOneway();
+        await setTimeout(20);   // async, so data will be available
+        const issues = validate(validator);
+        expect(issues).toHaveLength(0);
+    });
+
+    it('flags roads with lanes=1 + oneway=no', async () => {
+        createWay({ lanes: '1', 'oneway': 'no' });
+        const validator = iD.validationOneLaneWithNoOneway();
+        await setTimeout(20);   // async, so data will be available
+        const issues = validate(validator);
+        expect(issues).toHaveLength(1);
+        const issue = issues[0];
+        expect(issue.type).toEqual('oneway_onelane');
+        expect(issue.subtype).toEqual('oneway_onelane');
+        expect(issue.severity).toEqual('warning');
+        expect(issue.entityIds).toHaveLength(1);
+        expect(issue.entityIds[0]).toEqual('w-1');
+    });
+
+    it('flags roads with lanes=1 no oneway tag', async () => {
+        createWay({ lanes: '1' });
+        const validator = iD.validationOneLaneWithNoOneway();
+        await setTimeout(20);   // async, so data will be available
+        const issues = validate(validator);
+        expect(issues).toHaveLength(1);
+        const issue = issues[0];
+        expect(issue.type).toEqual('oneway_onelane');
+        expect(issue.subtype).toEqual('oneway_onelane');
+        expect(issue.severity).toEqual('warning');
+        expect(issue.entityIds).toHaveLength(1);
+        expect(issue.entityIds[0]).toEqual('w-1');
+    });
+});
