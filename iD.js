@@ -11967,27 +11967,96 @@
         typeof exports2 === "object" && typeof module2 !== "undefined" ? module2.exports = factory() : typeof define === "function" && define.amd ? define(factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, global2.polygonClipping = factory());
       })(exports2, function() {
         "use strict";
-        function _classCallCheck(instance, Constructor) {
-          if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
+        function __generator(thisArg, body) {
+          var _2 = {
+            label: 0,
+            sent: function() {
+              if (t2[0] & 1)
+                throw t2[1];
+              return t2[1];
+            },
+            trys: [],
+            ops: []
+          }, f2, y2, t2, g3;
+          return g3 = {
+            next: verb(0),
+            "throw": verb(1),
+            "return": verb(2)
+          }, typeof Symbol === "function" && (g3[Symbol.iterator] = function() {
+            return this;
+          }), g3;
+          function verb(n3) {
+            return function(v2) {
+              return step([n3, v2]);
+            };
           }
-        }
-        function _defineProperties(target, props) {
-          for (var i3 = 0; i3 < props.length; i3++) {
-            var descriptor = props[i3];
-            descriptor.enumerable = descriptor.enumerable || false;
-            descriptor.configurable = true;
-            if ("value" in descriptor)
-              descriptor.writable = true;
-            Object.defineProperty(target, descriptor.key, descriptor);
+          function step(op) {
+            if (f2)
+              throw new TypeError("Generator is already executing.");
+            while (_2)
+              try {
+                if (f2 = 1, y2 && (t2 = op[0] & 2 ? y2["return"] : op[0] ? y2["throw"] || ((t2 = y2["return"]) && t2.call(y2), 0) : y2.next) && !(t2 = t2.call(y2, op[1])).done)
+                  return t2;
+                if (y2 = 0, t2)
+                  op = [op[0] & 2, t2.value];
+                switch (op[0]) {
+                  case 0:
+                  case 1:
+                    t2 = op;
+                    break;
+                  case 4:
+                    _2.label++;
+                    return {
+                      value: op[1],
+                      done: false
+                    };
+                  case 5:
+                    _2.label++;
+                    y2 = op[1];
+                    op = [0];
+                    continue;
+                  case 7:
+                    op = _2.ops.pop();
+                    _2.trys.pop();
+                    continue;
+                  default:
+                    if (!(t2 = _2.trys, t2 = t2.length > 0 && t2[t2.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+                      _2 = 0;
+                      continue;
+                    }
+                    if (op[0] === 3 && (!t2 || op[1] > t2[0] && op[1] < t2[3])) {
+                      _2.label = op[1];
+                      break;
+                    }
+                    if (op[0] === 6 && _2.label < t2[1]) {
+                      _2.label = t2[1];
+                      t2 = op;
+                      break;
+                    }
+                    if (t2 && _2.label < t2[2]) {
+                      _2.label = t2[2];
+                      _2.ops.push(op);
+                      break;
+                    }
+                    if (t2[2])
+                      _2.ops.pop();
+                    _2.trys.pop();
+                    continue;
+                }
+                op = body.call(thisArg, _2);
+              } catch (e3) {
+                op = [6, e3];
+                y2 = 0;
+              } finally {
+                f2 = t2 = 0;
+              }
+            if (op[0] & 5)
+              throw op[1];
+            return {
+              value: op[0] ? op[1] : void 0,
+              done: true
+            };
           }
-        }
-        function _createClass(Constructor, protoProps, staticProps) {
-          if (protoProps)
-            _defineProperties(Constructor.prototype, protoProps);
-          if (staticProps)
-            _defineProperties(Constructor, staticProps);
-          return Constructor;
         }
         var Node = (
           /** @class */
@@ -12176,9 +12245,8 @@
             Tree2.prototype.pop = function() {
               var node = this._root;
               if (node) {
-                while (node.left) {
+                while (node.left)
                   node = node.left;
-                }
                 this._root = splay(node.key, this._root, this._comparator);
                 this._root = this._remove(node.key, this._root, this._comparator);
                 return {
@@ -12268,16 +12336,16 @@
             };
             Tree2.prototype.keys = function() {
               var keys2 = [];
-              this.forEach(function(_a3) {
-                var key = _a3.key;
+              this.forEach(function(_a2) {
+                var key = _a2.key;
                 return keys2.push(key);
               });
               return keys2;
             };
             Tree2.prototype.values = function() {
               var values = [];
-              this.forEach(function(_a3) {
-                var data = _a3.data;
+              this.forEach(function(_a2) {
+                var data = _a2.data;
                 return values.push(data);
               });
               return values;
@@ -12297,9 +12365,8 @@
                 t2 = this._root;
               }
               if (t2)
-                while (t2.left) {
+                while (t2.left)
                   t2 = t2.left;
-                }
               return t2;
             };
             Tree2.prototype.maxNode = function(t2) {
@@ -12307,9 +12374,8 @@
                 t2 = this._root;
               }
               if (t2)
-                while (t2.right) {
+                while (t2.right)
                   t2 = t2.right;
-                }
               return t2;
             };
             Tree2.prototype.at = function(index2) {
@@ -12339,9 +12405,8 @@
               var successor = null;
               if (d2.right) {
                 successor = d2.right;
-                while (successor.left) {
+                while (successor.left)
                   successor = successor.left;
-                }
                 return successor;
               }
               var comparator = this._comparator;
@@ -12362,9 +12427,8 @@
               var predecessor = null;
               if (d2.left !== null) {
                 predecessor = d2.left;
-                while (predecessor.right) {
+                while (predecessor.right)
                   predecessor = predecessor.right;
-                }
                 return predecessor;
               }
               var comparator = this._comparator;
@@ -12416,14 +12480,14 @@
               return this._root === null;
             };
             Object.defineProperty(Tree2.prototype, "size", {
-              get: function get4() {
+              get: function() {
                 return this._size;
               },
               enumerable: true,
               configurable: true
             });
             Object.defineProperty(Tree2.prototype, "root", {
-              get: function get4() {
+              get: function() {
                 return this._root;
               },
               enumerable: true,
@@ -12431,7 +12495,7 @@
             });
             Tree2.prototype.toString = function(printNode) {
               if (printNode === void 0) {
-                printNode = function printNode2(n3) {
+                printNode = function(n3) {
                   return String(n3.key);
                 };
               }
@@ -12443,7 +12507,7 @@
             };
             Tree2.prototype.update = function(key, newKey, newData) {
               var comparator = this._comparator;
-              var _a3 = split(key, this._root, comparator), left = _a3.left, right = _a3.right;
+              var _a2 = split(key, this._root, comparator), left = _a2.left, right = _a2.right;
               if (comparator(key, newKey) < 0) {
                 right = insert(newKey, newData, right, comparator);
               } else {
@@ -12453,6 +12517,45 @@
             };
             Tree2.prototype.split = function(key) {
               return split(key, this._root, this._comparator);
+            };
+            Tree2.prototype[Symbol.iterator] = function() {
+              var current, Q2, done;
+              return __generator(this, function(_a2) {
+                switch (_a2.label) {
+                  case 0:
+                    current = this._root;
+                    Q2 = [];
+                    done = false;
+                    _a2.label = 1;
+                  case 1:
+                    if (!!done)
+                      return [3, 6];
+                    if (!(current !== null))
+                      return [3, 2];
+                    Q2.push(current);
+                    current = current.left;
+                    return [3, 5];
+                  case 2:
+                    if (!(Q2.length !== 0))
+                      return [3, 4];
+                    current = Q2.pop();
+                    return [4, current];
+                  case 3:
+                    _a2.sent();
+                    current = current.right;
+                    return [3, 5];
+                  case 4:
+                    done = true;
+                    _a2.label = 5;
+                  case 5:
+                    return [3, 1];
+                  case 6:
+                    return [
+                      2
+                      /*return*/
+                    ];
+                }
+              });
             };
             return Tree2;
           }()
@@ -12542,12 +12645,12 @@
           var i3 = left - 1;
           var j2 = right + 1;
           while (true) {
-            do {
+            do
               i3++;
-            } while (compare2(keys2[i3], pivot) < 0);
-            do {
+            while (compare2(keys2[i3], pivot) < 0);
+            do
               j2--;
-            } while (compare2(keys2[j2], pivot) > 0);
+            while (compare2(keys2[j2], pivot) > 0);
             if (i3 >= j2)
               break;
             var tmp = keys2[i3];
@@ -12560,16 +12663,16 @@
           sort(keys2, values, left, j2, compare2);
           sort(keys2, values, j2 + 1, right, compare2);
         }
-        var isInBbox2 = function isInBbox3(bbox2, point2) {
+        const isInBbox2 = (bbox2, point2) => {
           return bbox2.ll.x <= point2.x && point2.x <= bbox2.ur.x && bbox2.ll.y <= point2.y && point2.y <= bbox2.ur.y;
         };
-        var getBboxOverlap2 = function getBboxOverlap3(b1, b2) {
+        const getBboxOverlap2 = (b1, b2) => {
           if (b2.ur.x < b1.ll.x || b1.ur.x < b2.ll.x || b2.ur.y < b1.ll.y || b1.ur.y < b2.ll.y)
             return null;
-          var lowerX = b1.ll.x < b2.ll.x ? b2.ll.x : b1.ll.x;
-          var upperX = b1.ur.x < b2.ur.x ? b1.ur.x : b2.ur.x;
-          var lowerY = b1.ll.y < b2.ll.y ? b2.ll.y : b1.ll.y;
-          var upperY = b1.ur.y < b2.ur.y ? b1.ur.y : b2.ur.y;
+          const lowerX = b1.ll.x < b2.ll.x ? b2.ll.x : b1.ll.x;
+          const upperX = b1.ur.x < b2.ur.x ? b1.ur.x : b2.ur.x;
+          const lowerY = b1.ll.y < b2.ll.y ? b2.ll.y : b1.ll.y;
+          const upperY = b1.ur.y < b2.ur.y ? b1.ur.y : b2.ur.y;
           return {
             ll: {
               x: lowerX,
@@ -12581,114 +12684,347 @@
             }
           };
         };
-        var epsilon3 = Number.EPSILON;
-        if (epsilon3 === void 0)
-          epsilon3 = Math.pow(2, -52);
-        var EPSILON_SQ = epsilon3 * epsilon3;
-        var cmp = function cmp2(a2, b2) {
-          if (-epsilon3 < a2 && a2 < epsilon3) {
-            if (-epsilon3 < b2 && b2 < epsilon3) {
+        let epsilon$1 = Number.EPSILON;
+        if (epsilon$1 === void 0)
+          epsilon$1 = Math.pow(2, -52);
+        const EPSILON_SQ = epsilon$1 * epsilon$1;
+        const cmp = (a2, b2) => {
+          if (-epsilon$1 < a2 && a2 < epsilon$1) {
+            if (-epsilon$1 < b2 && b2 < epsilon$1) {
               return 0;
             }
           }
-          var ab = a2 - b2;
+          const ab = a2 - b2;
           if (ab * ab < EPSILON_SQ * a2 * b2) {
             return 0;
           }
           return a2 < b2 ? -1 : 1;
         };
-        var PtRounder = /* @__PURE__ */ function() {
-          function PtRounder2() {
-            _classCallCheck(this, PtRounder2);
+        class PtRounder {
+          constructor() {
             this.reset();
           }
-          _createClass(PtRounder2, [{
-            key: "reset",
-            value: function reset() {
-              this.xRounder = new CoordRounder();
-              this.yRounder = new CoordRounder();
-            }
-          }, {
-            key: "round",
-            value: function round(x2, y2) {
-              return {
-                x: this.xRounder.round(x2),
-                y: this.yRounder.round(y2)
-              };
-            }
-          }]);
-          return PtRounder2;
-        }();
-        var CoordRounder = /* @__PURE__ */ function() {
-          function CoordRounder2() {
-            _classCallCheck(this, CoordRounder2);
+          reset() {
+            this.xRounder = new CoordRounder();
+            this.yRounder = new CoordRounder();
+          }
+          round(x2, y2) {
+            return {
+              x: this.xRounder.round(x2),
+              y: this.yRounder.round(y2)
+            };
+          }
+        }
+        class CoordRounder {
+          constructor() {
             this.tree = new Tree();
             this.round(0);
           }
-          _createClass(CoordRounder2, [{
-            key: "round",
-            value: function round(coord2) {
-              var node = this.tree.add(coord2);
-              var prevNode = this.tree.prev(node);
-              if (prevNode !== null && cmp(node.key, prevNode.key) === 0) {
-                this.tree.remove(coord2);
-                return prevNode.key;
-              }
-              var nextNode = this.tree.next(node);
-              if (nextNode !== null && cmp(node.key, nextNode.key) === 0) {
-                this.tree.remove(coord2);
-                return nextNode.key;
-              }
-              return coord2;
+          // Note: this can rounds input values backwards or forwards.
+          //       You might ask, why not restrict this to just rounding
+          //       forwards? Wouldn't that allow left endpoints to always
+          //       remain left endpoints during splitting (never change to
+          //       right). No - it wouldn't, because we snap intersections
+          //       to endpoints (to establish independence from the segment
+          //       angle for t-intersections).
+          round(coord2) {
+            const node = this.tree.add(coord2);
+            const prevNode = this.tree.prev(node);
+            if (prevNode !== null && cmp(node.key, prevNode.key) === 0) {
+              this.tree.remove(coord2);
+              return prevNode.key;
             }
-          }]);
-          return CoordRounder2;
-        }();
-        var rounder = new PtRounder();
-        var crossProduct2 = function crossProduct3(a2, b2) {
-          return a2.x * b2.y - a2.y * b2.x;
+            const nextNode = this.tree.next(node);
+            if (nextNode !== null && cmp(node.key, nextNode.key) === 0) {
+              this.tree.remove(coord2);
+              return nextNode.key;
+            }
+            return coord2;
+          }
+        }
+        const rounder = new PtRounder();
+        const epsilon3 = 11102230246251565e-32;
+        const splitter = 134217729;
+        const resulterrbound = (3 + 8 * epsilon3) * epsilon3;
+        function sum(elen, e3, flen, f2, h2) {
+          let Q2, Qnew, hh, bvirt;
+          let enow = e3[0];
+          let fnow = f2[0];
+          let eindex = 0;
+          let findex = 0;
+          if (fnow > enow === fnow > -enow) {
+            Q2 = enow;
+            enow = e3[++eindex];
+          } else {
+            Q2 = fnow;
+            fnow = f2[++findex];
+          }
+          let hindex = 0;
+          if (eindex < elen && findex < flen) {
+            if (fnow > enow === fnow > -enow) {
+              Qnew = enow + Q2;
+              hh = Q2 - (Qnew - enow);
+              enow = e3[++eindex];
+            } else {
+              Qnew = fnow + Q2;
+              hh = Q2 - (Qnew - fnow);
+              fnow = f2[++findex];
+            }
+            Q2 = Qnew;
+            if (hh !== 0) {
+              h2[hindex++] = hh;
+            }
+            while (eindex < elen && findex < flen) {
+              if (fnow > enow === fnow > -enow) {
+                Qnew = Q2 + enow;
+                bvirt = Qnew - Q2;
+                hh = Q2 - (Qnew - bvirt) + (enow - bvirt);
+                enow = e3[++eindex];
+              } else {
+                Qnew = Q2 + fnow;
+                bvirt = Qnew - Q2;
+                hh = Q2 - (Qnew - bvirt) + (fnow - bvirt);
+                fnow = f2[++findex];
+              }
+              Q2 = Qnew;
+              if (hh !== 0) {
+                h2[hindex++] = hh;
+              }
+            }
+          }
+          while (eindex < elen) {
+            Qnew = Q2 + enow;
+            bvirt = Qnew - Q2;
+            hh = Q2 - (Qnew - bvirt) + (enow - bvirt);
+            enow = e3[++eindex];
+            Q2 = Qnew;
+            if (hh !== 0) {
+              h2[hindex++] = hh;
+            }
+          }
+          while (findex < flen) {
+            Qnew = Q2 + fnow;
+            bvirt = Qnew - Q2;
+            hh = Q2 - (Qnew - bvirt) + (fnow - bvirt);
+            fnow = f2[++findex];
+            Q2 = Qnew;
+            if (hh !== 0) {
+              h2[hindex++] = hh;
+            }
+          }
+          if (Q2 !== 0 || hindex === 0) {
+            h2[hindex++] = Q2;
+          }
+          return hindex;
+        }
+        function estimate(elen, e3) {
+          let Q2 = e3[0];
+          for (let i3 = 1; i3 < elen; i3++)
+            Q2 += e3[i3];
+          return Q2;
+        }
+        function vec(n3) {
+          return new Float64Array(n3);
+        }
+        const ccwerrboundA = (3 + 16 * epsilon3) * epsilon3;
+        const ccwerrboundB = (2 + 12 * epsilon3) * epsilon3;
+        const ccwerrboundC = (9 + 64 * epsilon3) * epsilon3 * epsilon3;
+        const B3 = vec(4);
+        const C1 = vec(8);
+        const C22 = vec(12);
+        const D3 = vec(16);
+        const u2 = vec(4);
+        function orient2dadapt(ax, ay, bx, by, cx, cy, detsum) {
+          let acxtail, acytail, bcxtail, bcytail;
+          let bvirt, c2, ahi, alo, bhi, blo, _i, _j, _0, s1, s0, t1, t0, u3;
+          const acx = ax - cx;
+          const bcx = bx - cx;
+          const acy = ay - cy;
+          const bcy = by - cy;
+          s1 = acx * bcy;
+          c2 = splitter * acx;
+          ahi = c2 - (c2 - acx);
+          alo = acx - ahi;
+          c2 = splitter * bcy;
+          bhi = c2 - (c2 - bcy);
+          blo = bcy - bhi;
+          s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+          t1 = acy * bcx;
+          c2 = splitter * acy;
+          ahi = c2 - (c2 - acy);
+          alo = acy - ahi;
+          c2 = splitter * bcx;
+          bhi = c2 - (c2 - bcx);
+          blo = bcx - bhi;
+          t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+          _i = s0 - t0;
+          bvirt = s0 - _i;
+          B3[0] = s0 - (_i + bvirt) + (bvirt - t0);
+          _j = s1 + _i;
+          bvirt = _j - s1;
+          _0 = s1 - (_j - bvirt) + (_i - bvirt);
+          _i = _0 - t1;
+          bvirt = _0 - _i;
+          B3[1] = _0 - (_i + bvirt) + (bvirt - t1);
+          u3 = _j + _i;
+          bvirt = u3 - _j;
+          B3[2] = _j - (u3 - bvirt) + (_i - bvirt);
+          B3[3] = u3;
+          let det = estimate(4, B3);
+          let errbound = ccwerrboundB * detsum;
+          if (det >= errbound || -det >= errbound) {
+            return det;
+          }
+          bvirt = ax - acx;
+          acxtail = ax - (acx + bvirt) + (bvirt - cx);
+          bvirt = bx - bcx;
+          bcxtail = bx - (bcx + bvirt) + (bvirt - cx);
+          bvirt = ay - acy;
+          acytail = ay - (acy + bvirt) + (bvirt - cy);
+          bvirt = by - bcy;
+          bcytail = by - (bcy + bvirt) + (bvirt - cy);
+          if (acxtail === 0 && acytail === 0 && bcxtail === 0 && bcytail === 0) {
+            return det;
+          }
+          errbound = ccwerrboundC * detsum + resulterrbound * Math.abs(det);
+          det += acx * bcytail + bcy * acxtail - (acy * bcxtail + bcx * acytail);
+          if (det >= errbound || -det >= errbound)
+            return det;
+          s1 = acxtail * bcy;
+          c2 = splitter * acxtail;
+          ahi = c2 - (c2 - acxtail);
+          alo = acxtail - ahi;
+          c2 = splitter * bcy;
+          bhi = c2 - (c2 - bcy);
+          blo = bcy - bhi;
+          s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+          t1 = acytail * bcx;
+          c2 = splitter * acytail;
+          ahi = c2 - (c2 - acytail);
+          alo = acytail - ahi;
+          c2 = splitter * bcx;
+          bhi = c2 - (c2 - bcx);
+          blo = bcx - bhi;
+          t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+          _i = s0 - t0;
+          bvirt = s0 - _i;
+          u2[0] = s0 - (_i + bvirt) + (bvirt - t0);
+          _j = s1 + _i;
+          bvirt = _j - s1;
+          _0 = s1 - (_j - bvirt) + (_i - bvirt);
+          _i = _0 - t1;
+          bvirt = _0 - _i;
+          u2[1] = _0 - (_i + bvirt) + (bvirt - t1);
+          u3 = _j + _i;
+          bvirt = u3 - _j;
+          u2[2] = _j - (u3 - bvirt) + (_i - bvirt);
+          u2[3] = u3;
+          const C1len = sum(4, B3, 4, u2, C1);
+          s1 = acx * bcytail;
+          c2 = splitter * acx;
+          ahi = c2 - (c2 - acx);
+          alo = acx - ahi;
+          c2 = splitter * bcytail;
+          bhi = c2 - (c2 - bcytail);
+          blo = bcytail - bhi;
+          s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+          t1 = acy * bcxtail;
+          c2 = splitter * acy;
+          ahi = c2 - (c2 - acy);
+          alo = acy - ahi;
+          c2 = splitter * bcxtail;
+          bhi = c2 - (c2 - bcxtail);
+          blo = bcxtail - bhi;
+          t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+          _i = s0 - t0;
+          bvirt = s0 - _i;
+          u2[0] = s0 - (_i + bvirt) + (bvirt - t0);
+          _j = s1 + _i;
+          bvirt = _j - s1;
+          _0 = s1 - (_j - bvirt) + (_i - bvirt);
+          _i = _0 - t1;
+          bvirt = _0 - _i;
+          u2[1] = _0 - (_i + bvirt) + (bvirt - t1);
+          u3 = _j + _i;
+          bvirt = u3 - _j;
+          u2[2] = _j - (u3 - bvirt) + (_i - bvirt);
+          u2[3] = u3;
+          const C2len = sum(C1len, C1, 4, u2, C22);
+          s1 = acxtail * bcytail;
+          c2 = splitter * acxtail;
+          ahi = c2 - (c2 - acxtail);
+          alo = acxtail - ahi;
+          c2 = splitter * bcytail;
+          bhi = c2 - (c2 - bcytail);
+          blo = bcytail - bhi;
+          s0 = alo * blo - (s1 - ahi * bhi - alo * bhi - ahi * blo);
+          t1 = acytail * bcxtail;
+          c2 = splitter * acytail;
+          ahi = c2 - (c2 - acytail);
+          alo = acytail - ahi;
+          c2 = splitter * bcxtail;
+          bhi = c2 - (c2 - bcxtail);
+          blo = bcxtail - bhi;
+          t0 = alo * blo - (t1 - ahi * bhi - alo * bhi - ahi * blo);
+          _i = s0 - t0;
+          bvirt = s0 - _i;
+          u2[0] = s0 - (_i + bvirt) + (bvirt - t0);
+          _j = s1 + _i;
+          bvirt = _j - s1;
+          _0 = s1 - (_j - bvirt) + (_i - bvirt);
+          _i = _0 - t1;
+          bvirt = _0 - _i;
+          u2[1] = _0 - (_i + bvirt) + (bvirt - t1);
+          u3 = _j + _i;
+          bvirt = u3 - _j;
+          u2[2] = _j - (u3 - bvirt) + (_i - bvirt);
+          u2[3] = u3;
+          const Dlen = sum(C2len, C22, 4, u2, D3);
+          return D3[Dlen - 1];
+        }
+        function orient2d(ax, ay, bx, by, cx, cy) {
+          const detleft = (ay - cy) * (bx - cx);
+          const detright = (ax - cx) * (by - cy);
+          const det = detleft - detright;
+          const detsum = Math.abs(detleft + detright);
+          if (Math.abs(det) >= ccwerrboundA * detsum)
+            return det;
+          return -orient2dadapt(ax, ay, bx, by, cx, cy, detsum);
+        }
+        const crossProduct2 = (a2, b2) => a2.x * b2.y - a2.y * b2.x;
+        const dotProduct2 = (a2, b2) => a2.x * b2.x + a2.y * b2.y;
+        const compareVectorAngles = (basePt, endPt1, endPt2) => {
+          const res = orient2d(basePt.x, basePt.y, endPt1.x, endPt1.y, endPt2.x, endPt2.y);
+          if (res > 0)
+            return -1;
+          if (res < 0)
+            return 1;
+          return 0;
         };
-        var dotProduct2 = function dotProduct3(a2, b2) {
-          return a2.x * b2.x + a2.y * b2.y;
-        };
-        var compareVectorAngles = function compareVectorAngles2(basePt, endPt1, endPt2) {
-          var v1 = {
-            x: endPt1.x - basePt.x,
-            y: endPt1.y - basePt.y
-          };
-          var v2 = {
-            x: endPt2.x - basePt.x,
-            y: endPt2.y - basePt.y
-          };
-          var kross = crossProduct2(v1, v2);
-          return cmp(kross, 0);
-        };
-        var length2 = function length3(v2) {
-          return Math.sqrt(dotProduct2(v2, v2));
-        };
-        var sineOfAngle2 = function sineOfAngle3(pShared, pBase, pAngle) {
-          var vBase = {
+        const length2 = (v2) => Math.sqrt(dotProduct2(v2, v2));
+        const sineOfAngle2 = (pShared, pBase, pAngle) => {
+          const vBase = {
             x: pBase.x - pShared.x,
             y: pBase.y - pShared.y
           };
-          var vAngle = {
+          const vAngle = {
             x: pAngle.x - pShared.x,
             y: pAngle.y - pShared.y
           };
           return crossProduct2(vAngle, vBase) / length2(vAngle) / length2(vBase);
         };
-        var cosineOfAngle2 = function cosineOfAngle3(pShared, pBase, pAngle) {
-          var vBase = {
+        const cosineOfAngle2 = (pShared, pBase, pAngle) => {
+          const vBase = {
             x: pBase.x - pShared.x,
             y: pBase.y - pShared.y
           };
-          var vAngle = {
+          const vAngle = {
             x: pAngle.x - pShared.x,
             y: pAngle.y - pShared.y
           };
           return dotProduct2(vAngle, vBase) / length2(vAngle) / length2(vBase);
         };
-        var horizontalIntersection2 = function horizontalIntersection3(pt2, v2, y2) {
+        const horizontalIntersection2 = (pt2, v2, y2) => {
           if (v2.y === 0)
             return null;
           return {
@@ -12696,7 +13032,7 @@
             y: y2
           };
         };
-        var verticalIntersection2 = function verticalIntersection3(pt2, v2, x2) {
+        const verticalIntersection2 = (pt2, v2, x2) => {
           if (v2.x === 0)
             return null;
           return {
@@ -12704,7 +13040,7 @@
             y: pt2.y + v2.y / v2.x * (x2 - pt2.x)
           };
         };
-        var intersection2 = function intersection3(pt1, v1, pt2, v2) {
+        const intersection$1 = (pt1, v1, pt2, v2) => {
           if (v1.x === 0)
             return verticalIntersection2(pt2, v2, pt1.x);
           if (v2.x === 0)
@@ -12713,56 +13049,50 @@
             return horizontalIntersection2(pt2, v2, pt1.y);
           if (v2.y === 0)
             return horizontalIntersection2(pt1, v1, pt2.y);
-          var kross = crossProduct2(v1, v2);
+          const kross = crossProduct2(v1, v2);
           if (kross == 0)
             return null;
-          var ve2 = {
+          const ve2 = {
             x: pt2.x - pt1.x,
             y: pt2.y - pt1.y
           };
-          var d1 = crossProduct2(ve2, v1) / kross;
-          var d2 = crossProduct2(ve2, v2) / kross;
-          var x12 = pt1.x + d2 * v1.x, x2 = pt2.x + d1 * v2.x;
-          var y12 = pt1.y + d2 * v1.y, y2 = pt2.y + d1 * v2.y;
-          var x3 = (x12 + x2) / 2;
-          var y3 = (y12 + y2) / 2;
+          const d1 = crossProduct2(ve2, v1) / kross;
+          const d2 = crossProduct2(ve2, v2) / kross;
+          const x12 = pt1.x + d2 * v1.x, x2 = pt2.x + d1 * v2.x;
+          const y12 = pt1.y + d2 * v1.y, y2 = pt2.y + d1 * v2.y;
+          const x3 = (x12 + x2) / 2;
+          const y3 = (y12 + y2) / 2;
           return {
             x: x3,
             y: y3
           };
         };
-        var SweepEvent2 = /* @__PURE__ */ function() {
-          _createClass(SweepEvent3, null, [{
-            key: "compare",
-            // for ordering sweep events in the sweep event queue
-            value: function compare2(a2, b2) {
-              var ptCmp = SweepEvent3.comparePoints(a2.point, b2.point);
-              if (ptCmp !== 0)
-                return ptCmp;
-              if (a2.point !== b2.point)
-                a2.link(b2);
-              if (a2.isLeft !== b2.isLeft)
-                return a2.isLeft ? 1 : -1;
-              return Segment2.compare(a2.segment, b2.segment);
-            }
-            // for ordering points in sweep line order
-          }, {
-            key: "comparePoints",
-            value: function comparePoints(aPt, bPt) {
-              if (aPt.x < bPt.x)
-                return -1;
-              if (aPt.x > bPt.x)
-                return 1;
-              if (aPt.y < bPt.y)
-                return -1;
-              if (aPt.y > bPt.y)
-                return 1;
-              return 0;
-            }
-            // Warning: 'point' input will be modified and re-used (for performance)
-          }]);
-          function SweepEvent3(point2, isLeft) {
-            _classCallCheck(this, SweepEvent3);
+        class SweepEvent2 {
+          // for ordering sweep events in the sweep event queue
+          static compare(a2, b2) {
+            const ptCmp = SweepEvent2.comparePoints(a2.point, b2.point);
+            if (ptCmp !== 0)
+              return ptCmp;
+            if (a2.point !== b2.point)
+              a2.link(b2);
+            if (a2.isLeft !== b2.isLeft)
+              return a2.isLeft ? 1 : -1;
+            return Segment2.compare(a2.segment, b2.segment);
+          }
+          // for ordering points in sweep line order
+          static comparePoints(aPt, bPt) {
+            if (aPt.x < bPt.x)
+              return -1;
+            if (aPt.x > bPt.x)
+              return 1;
+            if (aPt.y < bPt.y)
+              return -1;
+            if (aPt.y > bPt.y)
+              return 1;
+            return 0;
+          }
+          // Warning: 'point' input will be modified and re-used (for performance)
+          constructor(point2, isLeft) {
             if (point2.events === void 0)
               point2.events = [this];
             else
@@ -12770,210 +13100,201 @@
             this.point = point2;
             this.isLeft = isLeft;
           }
-          _createClass(SweepEvent3, [{
-            key: "link",
-            value: function link3(other) {
-              if (other.point === this.point) {
-                throw new Error("Tried to link already linked events");
-              }
-              var otherEvents = other.point.events;
-              for (var i3 = 0, iMax = otherEvents.length; i3 < iMax; i3++) {
-                var evt = otherEvents[i3];
-                this.point.events.push(evt);
-                evt.point = this.point;
-              }
-              this.checkForConsuming();
+          link(other) {
+            if (other.point === this.point) {
+              throw new Error("Tried to link already linked events");
             }
-            /* Do a pass over our linked events and check to see if any pair
-             * of segments match, and should be consumed. */
-          }, {
-            key: "checkForConsuming",
-            value: function checkForConsuming() {
-              var numEvents = this.point.events.length;
-              for (var i3 = 0; i3 < numEvents; i3++) {
-                var evt1 = this.point.events[i3];
-                if (evt1.segment.consumedBy !== void 0)
+            const otherEvents = other.point.events;
+            for (let i3 = 0, iMax = otherEvents.length; i3 < iMax; i3++) {
+              const evt = otherEvents[i3];
+              this.point.events.push(evt);
+              evt.point = this.point;
+            }
+            this.checkForConsuming();
+          }
+          /* Do a pass over our linked events and check to see if any pair
+           * of segments match, and should be consumed. */
+          checkForConsuming() {
+            const numEvents = this.point.events.length;
+            for (let i3 = 0; i3 < numEvents; i3++) {
+              const evt1 = this.point.events[i3];
+              if (evt1.segment.consumedBy !== void 0)
+                continue;
+              for (let j2 = i3 + 1; j2 < numEvents; j2++) {
+                const evt2 = this.point.events[j2];
+                if (evt2.consumedBy !== void 0)
                   continue;
-                for (var j2 = i3 + 1; j2 < numEvents; j2++) {
-                  var evt2 = this.point.events[j2];
-                  if (evt2.consumedBy !== void 0)
-                    continue;
-                  if (evt1.otherSE.point.events !== evt2.otherSE.point.events)
-                    continue;
-                  evt1.segment.consume(evt2.segment);
-                }
+                if (evt1.otherSE.point.events !== evt2.otherSE.point.events)
+                  continue;
+                evt1.segment.consume(evt2.segment);
               }
             }
-          }, {
-            key: "getAvailableLinkedEvents",
-            value: function getAvailableLinkedEvents() {
-              var events = [];
-              for (var i3 = 0, iMax = this.point.events.length; i3 < iMax; i3++) {
-                var evt = this.point.events[i3];
-                if (evt !== this && !evt.segment.ringOut && evt.segment.isInResult()) {
-                  events.push(evt);
-                }
+          }
+          getAvailableLinkedEvents() {
+            const events = [];
+            for (let i3 = 0, iMax = this.point.events.length; i3 < iMax; i3++) {
+              const evt = this.point.events[i3];
+              if (evt !== this && !evt.segment.ringOut && evt.segment.isInResult()) {
+                events.push(evt);
               }
-              return events;
             }
-            /**
-             * Returns a comparator function for sorting linked events that will
-             * favor the event that will give us the smallest left-side angle.
-             * All ring construction starts as low as possible heading to the right,
-             * so by always turning left as sharp as possible we'll get polygons
-             * without uncessary loops & holes.
-             *
-             * The comparator function has a compute cache such that it avoids
-             * re-computing already-computed values.
-             */
-          }, {
-            key: "getLeftmostComparator",
-            value: function getLeftmostComparator(baseEvent) {
-              var _this = this;
-              var cache = /* @__PURE__ */ new Map();
-              var fillCache = function fillCache2(linkedEvent) {
-                var nextEvent = linkedEvent.otherSE;
-                cache.set(linkedEvent, {
-                  sine: sineOfAngle2(_this.point, baseEvent.point, nextEvent.point),
-                  cosine: cosineOfAngle2(_this.point, baseEvent.point, nextEvent.point)
-                });
-              };
-              return function(a2, b2) {
-                if (!cache.has(a2))
-                  fillCache(a2);
-                if (!cache.has(b2))
-                  fillCache(b2);
-                var _cache$get = cache.get(a2), asine = _cache$get.sine, acosine = _cache$get.cosine;
-                var _cache$get2 = cache.get(b2), bsine = _cache$get2.sine, bcosine = _cache$get2.cosine;
-                if (asine >= 0 && bsine >= 0) {
-                  if (acosine < bcosine)
-                    return 1;
-                  if (acosine > bcosine)
-                    return -1;
-                  return 0;
-                }
-                if (asine < 0 && bsine < 0) {
-                  if (acosine < bcosine)
-                    return -1;
-                  if (acosine > bcosine)
-                    return 1;
-                  return 0;
-                }
-                if (bsine < asine)
+            return events;
+          }
+          /**
+           * Returns a comparator function for sorting linked events that will
+           * favor the event that will give us the smallest left-side angle.
+           * All ring construction starts as low as possible heading to the right,
+           * so by always turning left as sharp as possible we'll get polygons
+           * without uncessary loops & holes.
+           *
+           * The comparator function has a compute cache such that it avoids
+           * re-computing already-computed values.
+           */
+          getLeftmostComparator(baseEvent) {
+            const cache = /* @__PURE__ */ new Map();
+            const fillCache = (linkedEvent) => {
+              const nextEvent = linkedEvent.otherSE;
+              cache.set(linkedEvent, {
+                sine: sineOfAngle2(this.point, baseEvent.point, nextEvent.point),
+                cosine: cosineOfAngle2(this.point, baseEvent.point, nextEvent.point)
+              });
+            };
+            return (a2, b2) => {
+              if (!cache.has(a2))
+                fillCache(a2);
+              if (!cache.has(b2))
+                fillCache(b2);
+              const {
+                sine: asine,
+                cosine: acosine
+              } = cache.get(a2);
+              const {
+                sine: bsine,
+                cosine: bcosine
+              } = cache.get(b2);
+              if (asine >= 0 && bsine >= 0) {
+                if (acosine < bcosine)
+                  return 1;
+                if (acosine > bcosine)
                   return -1;
-                if (bsine > asine)
+                return 0;
+              }
+              if (asine < 0 && bsine < 0) {
+                if (acosine < bcosine)
+                  return -1;
+                if (acosine > bcosine)
                   return 1;
                 return 0;
-              };
-            }
-          }]);
-          return SweepEvent3;
-        }();
-        var segmentId2 = 0;
-        var Segment2 = /* @__PURE__ */ function() {
-          _createClass(Segment3, null, [{
-            key: "compare",
-            /* This compare() function is for ordering segments in the sweep
-             * line tree, and does so according to the following criteria:
-             *
-             * Consider the vertical line that lies an infinestimal step to the
-             * right of the right-more of the two left endpoints of the input
-             * segments. Imagine slowly moving a point up from negative infinity
-             * in the increasing y direction. Which of the two segments will that
-             * point intersect first? That segment comes 'before' the other one.
-             *
-             * If neither segment would be intersected by such a line, (if one
-             * or more of the segments are vertical) then the line to be considered
-             * is directly on the right-more of the two left inputs.
-             */
-            value: function compare2(a2, b2) {
-              var alx = a2.leftSE.point.x;
-              var blx = b2.leftSE.point.x;
-              var arx = a2.rightSE.point.x;
-              var brx = b2.rightSE.point.x;
-              if (brx < alx)
-                return 1;
-              if (arx < blx)
-                return -1;
-              var aly = a2.leftSE.point.y;
-              var bly = b2.leftSE.point.y;
-              var ary = a2.rightSE.point.y;
-              var bry = b2.rightSE.point.y;
-              if (alx < blx) {
-                if (bly < aly && bly < ary)
-                  return 1;
-                if (bly > aly && bly > ary)
-                  return -1;
-                var aCmpBLeft = a2.comparePoint(b2.leftSE.point);
-                if (aCmpBLeft < 0)
-                  return 1;
-                if (aCmpBLeft > 0)
-                  return -1;
-                var bCmpARight = b2.comparePoint(a2.rightSE.point);
-                if (bCmpARight !== 0)
-                  return bCmpARight;
-                return -1;
               }
-              if (alx > blx) {
-                if (aly < bly && aly < bry)
-                  return -1;
-                if (aly > bly && aly > bry)
-                  return 1;
-                var bCmpALeft = b2.comparePoint(a2.leftSE.point);
-                if (bCmpALeft !== 0)
-                  return bCmpALeft;
-                var aCmpBRight = a2.comparePoint(b2.rightSE.point);
-                if (aCmpBRight < 0)
-                  return 1;
-                if (aCmpBRight > 0)
-                  return -1;
-                return 1;
-              }
-              if (aly < bly)
+              if (bsine < asine)
                 return -1;
-              if (aly > bly)
-                return 1;
-              if (arx < brx) {
-                var _bCmpARight = b2.comparePoint(a2.rightSE.point);
-                if (_bCmpARight !== 0)
-                  return _bCmpARight;
-              }
-              if (arx > brx) {
-                var _aCmpBRight = a2.comparePoint(b2.rightSE.point);
-                if (_aCmpBRight < 0)
-                  return 1;
-                if (_aCmpBRight > 0)
-                  return -1;
-              }
-              if (arx !== brx) {
-                var ay = ary - aly;
-                var ax = arx - alx;
-                var by = bry - bly;
-                var bx = brx - blx;
-                if (ay > ax && by < bx)
-                  return 1;
-                if (ay < ax && by > bx)
-                  return -1;
-              }
-              if (arx > brx)
-                return 1;
-              if (arx < brx)
-                return -1;
-              if (ary < bry)
-                return -1;
-              if (ary > bry)
-                return 1;
-              if (a2.id < b2.id)
-                return -1;
-              if (a2.id > b2.id)
+              if (bsine > asine)
                 return 1;
               return 0;
+            };
+          }
+        }
+        let segmentId2 = 0;
+        class Segment2 {
+          /* This compare() function is for ordering segments in the sweep
+           * line tree, and does so according to the following criteria:
+           *
+           * Consider the vertical line that lies an infinestimal step to the
+           * right of the right-more of the two left endpoints of the input
+           * segments. Imagine slowly moving a point up from negative infinity
+           * in the increasing y direction. Which of the two segments will that
+           * point intersect first? That segment comes 'before' the other one.
+           *
+           * If neither segment would be intersected by such a line, (if one
+           * or more of the segments are vertical) then the line to be considered
+           * is directly on the right-more of the two left inputs.
+           */
+          static compare(a2, b2) {
+            const alx = a2.leftSE.point.x;
+            const blx = b2.leftSE.point.x;
+            const arx = a2.rightSE.point.x;
+            const brx = b2.rightSE.point.x;
+            if (brx < alx)
+              return 1;
+            if (arx < blx)
+              return -1;
+            const aly = a2.leftSE.point.y;
+            const bly = b2.leftSE.point.y;
+            const ary = a2.rightSE.point.y;
+            const bry = b2.rightSE.point.y;
+            if (alx < blx) {
+              if (bly < aly && bly < ary)
+                return 1;
+              if (bly > aly && bly > ary)
+                return -1;
+              const aCmpBLeft = a2.comparePoint(b2.leftSE.point);
+              if (aCmpBLeft < 0)
+                return 1;
+              if (aCmpBLeft > 0)
+                return -1;
+              const bCmpARight = b2.comparePoint(a2.rightSE.point);
+              if (bCmpARight !== 0)
+                return bCmpARight;
+              return -1;
             }
-            /* Warning: a reference to ringWindings input will be stored,
-             *  and possibly will be later modified */
-          }]);
-          function Segment3(leftSE, rightSE, rings, windings) {
-            _classCallCheck(this, Segment3);
+            if (alx > blx) {
+              if (aly < bly && aly < bry)
+                return -1;
+              if (aly > bly && aly > bry)
+                return 1;
+              const bCmpALeft = b2.comparePoint(a2.leftSE.point);
+              if (bCmpALeft !== 0)
+                return bCmpALeft;
+              const aCmpBRight = a2.comparePoint(b2.rightSE.point);
+              if (aCmpBRight < 0)
+                return 1;
+              if (aCmpBRight > 0)
+                return -1;
+              return 1;
+            }
+            if (aly < bly)
+              return -1;
+            if (aly > bly)
+              return 1;
+            if (arx < brx) {
+              const bCmpARight = b2.comparePoint(a2.rightSE.point);
+              if (bCmpARight !== 0)
+                return bCmpARight;
+            }
+            if (arx > brx) {
+              const aCmpBRight = a2.comparePoint(b2.rightSE.point);
+              if (aCmpBRight < 0)
+                return 1;
+              if (aCmpBRight > 0)
+                return -1;
+            }
+            if (arx !== brx) {
+              const ay = ary - aly;
+              const ax = arx - alx;
+              const by = bry - bly;
+              const bx = brx - blx;
+              if (ay > ax && by < bx)
+                return 1;
+              if (ay < ax && by > bx)
+                return -1;
+            }
+            if (arx > brx)
+              return 1;
+            if (arx < brx)
+              return -1;
+            if (ary < bry)
+              return -1;
+            if (ary > bry)
+              return 1;
+            if (a2.id < b2.id)
+              return -1;
+            if (a2.id > b2.id)
+              return 1;
+            return 0;
+          }
+          /* Warning: a reference to ringWindings input will be stored,
+           *  and possibly will be later modified */
+          constructor(leftSE, rightSE, rings, windings) {
             this.id = ++segmentId2;
             this.leftSE = leftSE;
             leftSE.segment = this;
@@ -12984,390 +13305,355 @@
             this.rings = rings;
             this.windings = windings;
           }
-          _createClass(Segment3, [{
-            key: "replaceRightSE",
-            /* When a segment is split, the rightSE is replaced with a new sweep event */
-            value: function replaceRightSE(newRightSE) {
-              this.rightSE = newRightSE;
-              this.rightSE.segment = this;
-              this.rightSE.otherSE = this.leftSE;
-              this.leftSE.otherSE = this.rightSE;
-            }
-          }, {
-            key: "bbox",
-            value: function bbox2() {
-              var y12 = this.leftSE.point.y;
-              var y2 = this.rightSE.point.y;
-              return {
-                ll: {
-                  x: this.leftSE.point.x,
-                  y: y12 < y2 ? y12 : y2
-                },
-                ur: {
-                  x: this.rightSE.point.x,
-                  y: y12 > y2 ? y12 : y2
-                }
-              };
-            }
-            /* A vector from the left point to the right */
-          }, {
-            key: "vector",
-            value: function vector() {
-              return {
-                x: this.rightSE.point.x - this.leftSE.point.x,
-                y: this.rightSE.point.y - this.leftSE.point.y
-              };
-            }
-          }, {
-            key: "isAnEndpoint",
-            value: function isAnEndpoint(pt2) {
-              return pt2.x === this.leftSE.point.x && pt2.y === this.leftSE.point.y || pt2.x === this.rightSE.point.x && pt2.y === this.rightSE.point.y;
-            }
-            /* Compare this segment with a point.
-             *
-             * A point P is considered to be colinear to a segment if there
-             * exists a distance D such that if we travel along the segment
-             * from one * endpoint towards the other a distance D, we find
-             * ourselves at point P.
-             *
-             * Return value indicates:
-             *
-             *   1: point lies above the segment (to the left of vertical)
-             *   0: point is colinear to segment
-             *  -1: point lies below the segment (to the right of vertical)
-             */
-          }, {
-            key: "comparePoint",
-            value: function comparePoint(point2) {
-              if (this.isAnEndpoint(point2))
+          static fromRing(pt1, pt2, ring) {
+            let leftPt, rightPt, winding;
+            const cmpPts = SweepEvent2.comparePoints(pt1, pt2);
+            if (cmpPts < 0) {
+              leftPt = pt1;
+              rightPt = pt2;
+              winding = 1;
+            } else if (cmpPts > 0) {
+              leftPt = pt2;
+              rightPt = pt1;
+              winding = -1;
+            } else
+              throw new Error("Tried to create degenerate segment at [".concat(pt1.x, ", ").concat(pt1.y, "]"));
+            const leftSE = new SweepEvent2(leftPt, true);
+            const rightSE = new SweepEvent2(rightPt, false);
+            return new Segment2(leftSE, rightSE, [ring], [winding]);
+          }
+          /* When a segment is split, the rightSE is replaced with a new sweep event */
+          replaceRightSE(newRightSE) {
+            this.rightSE = newRightSE;
+            this.rightSE.segment = this;
+            this.rightSE.otherSE = this.leftSE;
+            this.leftSE.otherSE = this.rightSE;
+          }
+          bbox() {
+            const y12 = this.leftSE.point.y;
+            const y2 = this.rightSE.point.y;
+            return {
+              ll: {
+                x: this.leftSE.point.x,
+                y: y12 < y2 ? y12 : y2
+              },
+              ur: {
+                x: this.rightSE.point.x,
+                y: y12 > y2 ? y12 : y2
+              }
+            };
+          }
+          /* A vector from the left point to the right */
+          vector() {
+            return {
+              x: this.rightSE.point.x - this.leftSE.point.x,
+              y: this.rightSE.point.y - this.leftSE.point.y
+            };
+          }
+          isAnEndpoint(pt2) {
+            return pt2.x === this.leftSE.point.x && pt2.y === this.leftSE.point.y || pt2.x === this.rightSE.point.x && pt2.y === this.rightSE.point.y;
+          }
+          /* Compare this segment with a point.
+           *
+           * A point P is considered to be colinear to a segment if there
+           * exists a distance D such that if we travel along the segment
+           * from one * endpoint towards the other a distance D, we find
+           * ourselves at point P.
+           *
+           * Return value indicates:
+           *
+           *   1: point lies above the segment (to the left of vertical)
+           *   0: point is colinear to segment
+           *  -1: point lies below the segment (to the right of vertical)
+           */
+          comparePoint(point2) {
+            if (this.isAnEndpoint(point2))
+              return 0;
+            const lPt = this.leftSE.point;
+            const rPt = this.rightSE.point;
+            const v2 = this.vector();
+            if (lPt.x === rPt.x) {
+              if (point2.x === lPt.x)
                 return 0;
-              var lPt = this.leftSE.point;
-              var rPt = this.rightSE.point;
-              var v2 = this.vector();
-              if (lPt.x === rPt.x) {
-                if (point2.x === lPt.x)
-                  return 0;
-                return point2.x < lPt.x ? 1 : -1;
-              }
-              var yDist = (point2.y - lPt.y) / v2.y;
-              var xFromYDist = lPt.x + yDist * v2.x;
-              if (point2.x === xFromYDist)
-                return 0;
-              var xDist = (point2.x - lPt.x) / v2.x;
-              var yFromXDist = lPt.y + xDist * v2.y;
-              if (point2.y === yFromXDist)
-                return 0;
-              return point2.y < yFromXDist ? -1 : 1;
+              return point2.x < lPt.x ? 1 : -1;
             }
-            /**
-             * Given another segment, returns the first non-trivial intersection
-             * between the two segments (in terms of sweep line ordering), if it exists.
-             *
-             * A 'non-trivial' intersection is one that will cause one or both of the
-             * segments to be split(). As such, 'trivial' vs. 'non-trivial' intersection:
-             *
-             *   * endpoint of segA with endpoint of segB --> trivial
-             *   * endpoint of segA with point along segB --> non-trivial
-             *   * endpoint of segB with point along segA --> non-trivial
-             *   * point along segA with point along segB --> non-trivial
-             *
-             * If no non-trivial intersection exists, return null
-             * Else, return null.
-             */
-          }, {
-            key: "getIntersection",
-            value: function getIntersection(other) {
-              var tBbox = this.bbox();
-              var oBbox = other.bbox();
-              var bboxOverlap = getBboxOverlap2(tBbox, oBbox);
-              if (bboxOverlap === null)
-                return null;
-              var tlp = this.leftSE.point;
-              var trp = this.rightSE.point;
-              var olp = other.leftSE.point;
-              var orp = other.rightSE.point;
-              var touchesOtherLSE = isInBbox2(tBbox, olp) && this.comparePoint(olp) === 0;
-              var touchesThisLSE = isInBbox2(oBbox, tlp) && other.comparePoint(tlp) === 0;
-              var touchesOtherRSE = isInBbox2(tBbox, orp) && this.comparePoint(orp) === 0;
-              var touchesThisRSE = isInBbox2(oBbox, trp) && other.comparePoint(trp) === 0;
-              if (touchesThisLSE && touchesOtherLSE) {
-                if (touchesThisRSE && !touchesOtherRSE)
-                  return trp;
-                if (!touchesThisRSE && touchesOtherRSE)
-                  return orp;
-                return null;
-              }
-              if (touchesThisLSE) {
-                if (touchesOtherRSE) {
-                  if (tlp.x === orp.x && tlp.y === orp.y)
-                    return null;
-                }
-                return tlp;
-              }
-              if (touchesOtherLSE) {
-                if (touchesThisRSE) {
-                  if (trp.x === olp.x && trp.y === olp.y)
-                    return null;
-                }
-                return olp;
-              }
-              if (touchesThisRSE && touchesOtherRSE)
-                return null;
-              if (touchesThisRSE)
+            const yDist = (point2.y - lPt.y) / v2.y;
+            const xFromYDist = lPt.x + yDist * v2.x;
+            if (point2.x === xFromYDist)
+              return 0;
+            const xDist = (point2.x - lPt.x) / v2.x;
+            const yFromXDist = lPt.y + xDist * v2.y;
+            if (point2.y === yFromXDist)
+              return 0;
+            return point2.y < yFromXDist ? -1 : 1;
+          }
+          /**
+           * Given another segment, returns the first non-trivial intersection
+           * between the two segments (in terms of sweep line ordering), if it exists.
+           *
+           * A 'non-trivial' intersection is one that will cause one or both of the
+           * segments to be split(). As such, 'trivial' vs. 'non-trivial' intersection:
+           *
+           *   * endpoint of segA with endpoint of segB --> trivial
+           *   * endpoint of segA with point along segB --> non-trivial
+           *   * endpoint of segB with point along segA --> non-trivial
+           *   * point along segA with point along segB --> non-trivial
+           *
+           * If no non-trivial intersection exists, return null
+           * Else, return null.
+           */
+          getIntersection(other) {
+            const tBbox = this.bbox();
+            const oBbox = other.bbox();
+            const bboxOverlap = getBboxOverlap2(tBbox, oBbox);
+            if (bboxOverlap === null)
+              return null;
+            const tlp = this.leftSE.point;
+            const trp = this.rightSE.point;
+            const olp = other.leftSE.point;
+            const orp = other.rightSE.point;
+            const touchesOtherLSE = isInBbox2(tBbox, olp) && this.comparePoint(olp) === 0;
+            const touchesThisLSE = isInBbox2(oBbox, tlp) && other.comparePoint(tlp) === 0;
+            const touchesOtherRSE = isInBbox2(tBbox, orp) && this.comparePoint(orp) === 0;
+            const touchesThisRSE = isInBbox2(oBbox, trp) && other.comparePoint(trp) === 0;
+            if (touchesThisLSE && touchesOtherLSE) {
+              if (touchesThisRSE && !touchesOtherRSE)
                 return trp;
-              if (touchesOtherRSE)
+              if (!touchesThisRSE && touchesOtherRSE)
                 return orp;
-              var pt2 = intersection2(tlp, this.vector(), olp, other.vector());
-              if (pt2 === null)
-                return null;
-              if (!isInBbox2(bboxOverlap, pt2))
-                return null;
-              return rounder.round(pt2.x, pt2.y);
+              return null;
             }
-            /**
-             * Split the given segment into multiple segments on the given points.
-             *  * Each existing segment will retain its leftSE and a new rightSE will be
-             *    generated for it.
-             *  * A new segment will be generated which will adopt the original segment's
-             *    rightSE, and a new leftSE will be generated for it.
-             *  * If there are more than two points given to split on, new segments
-             *    in the middle will be generated with new leftSE and rightSE's.
-             *  * An array of the newly generated SweepEvents will be returned.
-             *
-             * Warning: input array of points is modified
-             */
-          }, {
-            key: "split",
-            value: function split2(point2) {
-              var newEvents = [];
-              var alreadyLinked = point2.events !== void 0;
-              var newLeftSE = new SweepEvent2(point2, true);
-              var newRightSE = new SweepEvent2(point2, false);
-              var oldRightSE = this.rightSE;
-              this.replaceRightSE(newRightSE);
-              newEvents.push(newRightSE);
-              newEvents.push(newLeftSE);
-              var newSeg = new Segment3(newLeftSE, oldRightSE, this.rings.slice(), this.windings.slice());
-              if (SweepEvent2.comparePoints(newSeg.leftSE.point, newSeg.rightSE.point) > 0) {
-                newSeg.swapEvents();
+            if (touchesThisLSE) {
+              if (touchesOtherRSE) {
+                if (tlp.x === orp.x && tlp.y === orp.y)
+                  return null;
               }
-              if (SweepEvent2.comparePoints(this.leftSE.point, this.rightSE.point) > 0) {
-                this.swapEvents();
-              }
-              if (alreadyLinked) {
-                newLeftSE.checkForConsuming();
-                newRightSE.checkForConsuming();
-              }
-              return newEvents;
+              return tlp;
             }
-            /* Swap which event is left and right */
-          }, {
-            key: "swapEvents",
-            value: function swapEvents() {
-              var tmpEvt = this.rightSE;
-              this.rightSE = this.leftSE;
-              this.leftSE = tmpEvt;
-              this.leftSE.isLeft = true;
-              this.rightSE.isLeft = false;
-              for (var i3 = 0, iMax = this.windings.length; i3 < iMax; i3++) {
-                this.windings[i3] *= -1;
+            if (touchesOtherLSE) {
+              if (touchesThisRSE) {
+                if (trp.x === olp.x && trp.y === olp.y)
+                  return null;
               }
+              return olp;
             }
-            /* Consume another segment. We take their rings under our wing
-             * and mark them as consumed. Use for perfectly overlapping segments */
-          }, {
-            key: "consume",
-            value: function consume(other) {
-              var consumer = this;
-              var consumee = other;
-              while (consumer.consumedBy) {
-                consumer = consumer.consumedBy;
-              }
-              while (consumee.consumedBy) {
-                consumee = consumee.consumedBy;
-              }
-              var cmp2 = Segment3.compare(consumer, consumee);
-              if (cmp2 === 0)
-                return;
-              if (cmp2 > 0) {
-                var tmp = consumer;
-                consumer = consumee;
-                consumee = tmp;
-              }
-              if (consumer.prev === consumee) {
-                var _tmp = consumer;
-                consumer = consumee;
-                consumee = _tmp;
-              }
-              for (var i3 = 0, iMax = consumee.rings.length; i3 < iMax; i3++) {
-                var ring = consumee.rings[i3];
-                var winding = consumee.windings[i3];
-                var index2 = consumer.rings.indexOf(ring);
-                if (index2 === -1) {
-                  consumer.rings.push(ring);
-                  consumer.windings.push(winding);
-                } else
-                  consumer.windings[index2] += winding;
-              }
-              consumee.rings = null;
-              consumee.windings = null;
-              consumee.consumedBy = consumer;
-              consumee.leftSE.consumedBy = consumer.leftSE;
-              consumee.rightSE.consumedBy = consumer.rightSE;
+            if (touchesThisRSE && touchesOtherRSE)
+              return null;
+            if (touchesThisRSE)
+              return trp;
+            if (touchesOtherRSE)
+              return orp;
+            const pt2 = intersection$1(tlp, this.vector(), olp, other.vector());
+            if (pt2 === null)
+              return null;
+            if (!isInBbox2(bboxOverlap, pt2))
+              return null;
+            return rounder.round(pt2.x, pt2.y);
+          }
+          /**
+           * Split the given segment into multiple segments on the given points.
+           *  * Each existing segment will retain its leftSE and a new rightSE will be
+           *    generated for it.
+           *  * A new segment will be generated which will adopt the original segment's
+           *    rightSE, and a new leftSE will be generated for it.
+           *  * If there are more than two points given to split on, new segments
+           *    in the middle will be generated with new leftSE and rightSE's.
+           *  * An array of the newly generated SweepEvents will be returned.
+           *
+           * Warning: input array of points is modified
+           */
+          split(point2) {
+            const newEvents = [];
+            const alreadyLinked = point2.events !== void 0;
+            const newLeftSE = new SweepEvent2(point2, true);
+            const newRightSE = new SweepEvent2(point2, false);
+            const oldRightSE = this.rightSE;
+            this.replaceRightSE(newRightSE);
+            newEvents.push(newRightSE);
+            newEvents.push(newLeftSE);
+            const newSeg = new Segment2(newLeftSE, oldRightSE, this.rings.slice(), this.windings.slice());
+            if (SweepEvent2.comparePoints(newSeg.leftSE.point, newSeg.rightSE.point) > 0) {
+              newSeg.swapEvents();
             }
-            /* The first segment previous segment chain that is in the result */
-          }, {
-            key: "prevInResult",
-            value: function prevInResult() {
-              if (this._prevInResult !== void 0)
-                return this._prevInResult;
-              if (!this.prev)
-                this._prevInResult = null;
-              else if (this.prev.isInResult())
-                this._prevInResult = this.prev;
-              else
-                this._prevInResult = this.prev.prevInResult();
+            if (SweepEvent2.comparePoints(this.leftSE.point, this.rightSE.point) > 0) {
+              this.swapEvents();
+            }
+            if (alreadyLinked) {
+              newLeftSE.checkForConsuming();
+              newRightSE.checkForConsuming();
+            }
+            return newEvents;
+          }
+          /* Swap which event is left and right */
+          swapEvents() {
+            const tmpEvt = this.rightSE;
+            this.rightSE = this.leftSE;
+            this.leftSE = tmpEvt;
+            this.leftSE.isLeft = true;
+            this.rightSE.isLeft = false;
+            for (let i3 = 0, iMax = this.windings.length; i3 < iMax; i3++) {
+              this.windings[i3] *= -1;
+            }
+          }
+          /* Consume another segment. We take their rings under our wing
+           * and mark them as consumed. Use for perfectly overlapping segments */
+          consume(other) {
+            let consumer = this;
+            let consumee = other;
+            while (consumer.consumedBy)
+              consumer = consumer.consumedBy;
+            while (consumee.consumedBy)
+              consumee = consumee.consumedBy;
+            const cmp2 = Segment2.compare(consumer, consumee);
+            if (cmp2 === 0)
+              return;
+            if (cmp2 > 0) {
+              const tmp = consumer;
+              consumer = consumee;
+              consumee = tmp;
+            }
+            if (consumer.prev === consumee) {
+              const tmp = consumer;
+              consumer = consumee;
+              consumee = tmp;
+            }
+            for (let i3 = 0, iMax = consumee.rings.length; i3 < iMax; i3++) {
+              const ring = consumee.rings[i3];
+              const winding = consumee.windings[i3];
+              const index2 = consumer.rings.indexOf(ring);
+              if (index2 === -1) {
+                consumer.rings.push(ring);
+                consumer.windings.push(winding);
+              } else
+                consumer.windings[index2] += winding;
+            }
+            consumee.rings = null;
+            consumee.windings = null;
+            consumee.consumedBy = consumer;
+            consumee.leftSE.consumedBy = consumer.leftSE;
+            consumee.rightSE.consumedBy = consumer.rightSE;
+          }
+          /* The first segment previous segment chain that is in the result */
+          prevInResult() {
+            if (this._prevInResult !== void 0)
               return this._prevInResult;
-            }
-          }, {
-            key: "beforeState",
-            value: function beforeState() {
-              if (this._beforeState !== void 0)
-                return this._beforeState;
-              if (!this.prev)
-                this._beforeState = {
-                  rings: [],
-                  windings: [],
-                  multiPolys: []
-                };
-              else {
-                var seg = this.prev.consumedBy || this.prev;
-                this._beforeState = seg.afterState();
-              }
+            if (!this.prev)
+              this._prevInResult = null;
+            else if (this.prev.isInResult())
+              this._prevInResult = this.prev;
+            else
+              this._prevInResult = this.prev.prevInResult();
+            return this._prevInResult;
+          }
+          beforeState() {
+            if (this._beforeState !== void 0)
               return this._beforeState;
-            }
-          }, {
-            key: "afterState",
-            value: function afterState() {
-              if (this._afterState !== void 0)
-                return this._afterState;
-              var beforeState = this.beforeState();
-              this._afterState = {
-                rings: beforeState.rings.slice(0),
-                windings: beforeState.windings.slice(0),
+            if (!this.prev)
+              this._beforeState = {
+                rings: [],
+                windings: [],
                 multiPolys: []
               };
-              var ringsAfter = this._afterState.rings;
-              var windingsAfter = this._afterState.windings;
-              var mpsAfter = this._afterState.multiPolys;
-              for (var i3 = 0, iMax = this.rings.length; i3 < iMax; i3++) {
-                var ring = this.rings[i3];
-                var winding = this.windings[i3];
-                var index2 = ringsAfter.indexOf(ring);
-                if (index2 === -1) {
-                  ringsAfter.push(ring);
-                  windingsAfter.push(winding);
-                } else
-                  windingsAfter[index2] += winding;
-              }
-              var polysAfter = [];
-              var polysExclude = [];
-              for (var _i = 0, _iMax = ringsAfter.length; _i < _iMax; _i++) {
-                if (windingsAfter[_i] === 0)
-                  continue;
-                var _ring = ringsAfter[_i];
-                var poly = _ring.poly;
-                if (polysExclude.indexOf(poly) !== -1)
-                  continue;
-                if (_ring.isExterior)
-                  polysAfter.push(poly);
-                else {
-                  if (polysExclude.indexOf(poly) === -1)
-                    polysExclude.push(poly);
-                  var _index = polysAfter.indexOf(_ring.poly);
-                  if (_index !== -1)
-                    polysAfter.splice(_index, 1);
-                }
-              }
-              for (var _i2 = 0, _iMax2 = polysAfter.length; _i2 < _iMax2; _i2++) {
-                var mp = polysAfter[_i2].multiPoly;
-                if (mpsAfter.indexOf(mp) === -1)
-                  mpsAfter.push(mp);
-              }
+            else {
+              const seg = this.prev.consumedBy || this.prev;
+              this._beforeState = seg.afterState();
+            }
+            return this._beforeState;
+          }
+          afterState() {
+            if (this._afterState !== void 0)
               return this._afterState;
-            }
-            /* Is this segment part of the final result? */
-          }, {
-            key: "isInResult",
-            value: function isInResult() {
-              if (this.consumedBy)
-                return false;
-              if (this._isInResult !== void 0)
-                return this._isInResult;
-              var mpsBefore = this.beforeState().multiPolys;
-              var mpsAfter = this.afterState().multiPolys;
-              switch (operation2.type) {
-                case "union": {
-                  var noBefores = mpsBefore.length === 0;
-                  var noAfters = mpsAfter.length === 0;
-                  this._isInResult = noBefores !== noAfters;
-                  break;
-                }
-                case "intersection": {
-                  var least;
-                  var most;
-                  if (mpsBefore.length < mpsAfter.length) {
-                    least = mpsBefore.length;
-                    most = mpsAfter.length;
-                  } else {
-                    least = mpsAfter.length;
-                    most = mpsBefore.length;
-                  }
-                  this._isInResult = most === operation2.numMultiPolys && least < most;
-                  break;
-                }
-                case "xor": {
-                  var diff = Math.abs(mpsBefore.length - mpsAfter.length);
-                  this._isInResult = diff % 2 === 1;
-                  break;
-                }
-                case "difference": {
-                  var isJustSubject = function isJustSubject2(mps) {
-                    return mps.length === 1 && mps[0].isSubject;
-                  };
-                  this._isInResult = isJustSubject(mpsBefore) !== isJustSubject(mpsAfter);
-                  break;
-                }
-                default:
-                  throw new Error("Unrecognized operation type found ".concat(operation2.type));
-              }
-              return this._isInResult;
-            }
-          }], [{
-            key: "fromRing",
-            value: function fromRing(pt1, pt2, ring) {
-              var leftPt, rightPt, winding;
-              var cmpPts = SweepEvent2.comparePoints(pt1, pt2);
-              if (cmpPts < 0) {
-                leftPt = pt1;
-                rightPt = pt2;
-                winding = 1;
-              } else if (cmpPts > 0) {
-                leftPt = pt2;
-                rightPt = pt1;
-                winding = -1;
+            const beforeState = this.beforeState();
+            this._afterState = {
+              rings: beforeState.rings.slice(0),
+              windings: beforeState.windings.slice(0),
+              multiPolys: []
+            };
+            const ringsAfter = this._afterState.rings;
+            const windingsAfter = this._afterState.windings;
+            const mpsAfter = this._afterState.multiPolys;
+            for (let i3 = 0, iMax = this.rings.length; i3 < iMax; i3++) {
+              const ring = this.rings[i3];
+              const winding = this.windings[i3];
+              const index2 = ringsAfter.indexOf(ring);
+              if (index2 === -1) {
+                ringsAfter.push(ring);
+                windingsAfter.push(winding);
               } else
-                throw new Error("Tried to create degenerate segment at [".concat(pt1.x, ", ").concat(pt1.y, "]"));
-              var leftSE = new SweepEvent2(leftPt, true);
-              var rightSE = new SweepEvent2(rightPt, false);
-              return new Segment3(leftSE, rightSE, [ring], [winding]);
+                windingsAfter[index2] += winding;
             }
-          }]);
-          return Segment3;
-        }();
-        var RingIn2 = /* @__PURE__ */ function() {
-          function RingIn3(geomRing, poly, isExterior) {
-            _classCallCheck(this, RingIn3);
+            const polysAfter = [];
+            const polysExclude = [];
+            for (let i3 = 0, iMax = ringsAfter.length; i3 < iMax; i3++) {
+              if (windingsAfter[i3] === 0)
+                continue;
+              const ring = ringsAfter[i3];
+              const poly = ring.poly;
+              if (polysExclude.indexOf(poly) !== -1)
+                continue;
+              if (ring.isExterior)
+                polysAfter.push(poly);
+              else {
+                if (polysExclude.indexOf(poly) === -1)
+                  polysExclude.push(poly);
+                const index2 = polysAfter.indexOf(ring.poly);
+                if (index2 !== -1)
+                  polysAfter.splice(index2, 1);
+              }
+            }
+            for (let i3 = 0, iMax = polysAfter.length; i3 < iMax; i3++) {
+              const mp = polysAfter[i3].multiPoly;
+              if (mpsAfter.indexOf(mp) === -1)
+                mpsAfter.push(mp);
+            }
+            return this._afterState;
+          }
+          /* Is this segment part of the final result? */
+          isInResult() {
+            if (this.consumedBy)
+              return false;
+            if (this._isInResult !== void 0)
+              return this._isInResult;
+            const mpsBefore = this.beforeState().multiPolys;
+            const mpsAfter = this.afterState().multiPolys;
+            switch (operation2.type) {
+              case "union": {
+                const noBefores = mpsBefore.length === 0;
+                const noAfters = mpsAfter.length === 0;
+                this._isInResult = noBefores !== noAfters;
+                break;
+              }
+              case "intersection": {
+                let least;
+                let most;
+                if (mpsBefore.length < mpsAfter.length) {
+                  least = mpsBefore.length;
+                  most = mpsAfter.length;
+                } else {
+                  least = mpsAfter.length;
+                  most = mpsBefore.length;
+                }
+                this._isInResult = most === operation2.numMultiPolys && least < most;
+                break;
+              }
+              case "xor": {
+                const diff = Math.abs(mpsBefore.length - mpsAfter.length);
+                this._isInResult = diff % 2 === 1;
+                break;
+              }
+              case "difference": {
+                const isJustSubject = (mps) => mps.length === 1 && mps[0].isSubject;
+                this._isInResult = isJustSubject(mpsBefore) !== isJustSubject(mpsAfter);
+                break;
+              }
+              default:
+                throw new Error("Unrecognized operation type found ".concat(operation2.type));
+            }
+            return this._isInResult;
+          }
+        }
+        class RingIn2 {
+          constructor(geomRing, poly, isExterior) {
             if (!Array.isArray(geomRing) || geomRing.length === 0) {
               throw new Error("Input geometry is not a valid Polygon or MultiPolygon");
             }
@@ -13377,7 +13663,7 @@
             if (typeof geomRing[0][0] !== "number" || typeof geomRing[0][1] !== "number") {
               throw new Error("Input geometry is not a valid Polygon or MultiPolygon");
             }
-            var firstPoint = rounder.round(geomRing[0][0], geomRing[0][1]);
+            const firstPoint = rounder.round(geomRing[0][0], geomRing[0][1]);
             this.bbox = {
               ll: {
                 x: firstPoint.x,
@@ -13388,12 +13674,12 @@
                 y: firstPoint.y
               }
             };
-            var prevPoint = firstPoint;
-            for (var i3 = 1, iMax = geomRing.length; i3 < iMax; i3++) {
+            let prevPoint = firstPoint;
+            for (let i3 = 1, iMax = geomRing.length; i3 < iMax; i3++) {
               if (typeof geomRing[i3][0] !== "number" || typeof geomRing[i3][1] !== "number") {
                 throw new Error("Input geometry is not a valid Polygon or MultiPolygon");
               }
-              var point2 = rounder.round(geomRing[i3][0], geomRing[i3][1]);
+              let point2 = rounder.round(geomRing[i3][0], geomRing[i3][1]);
               if (point2.x === prevPoint.x && point2.y === prevPoint.y)
                 continue;
               this.segments.push(Segment2.fromRing(prevPoint, point2, this));
@@ -13411,23 +13697,18 @@
               this.segments.push(Segment2.fromRing(prevPoint, firstPoint, this));
             }
           }
-          _createClass(RingIn3, [{
-            key: "getSweepEvents",
-            value: function getSweepEvents() {
-              var sweepEvents = [];
-              for (var i3 = 0, iMax = this.segments.length; i3 < iMax; i3++) {
-                var segment = this.segments[i3];
-                sweepEvents.push(segment.leftSE);
-                sweepEvents.push(segment.rightSE);
-              }
-              return sweepEvents;
+          getSweepEvents() {
+            const sweepEvents = [];
+            for (let i3 = 0, iMax = this.segments.length; i3 < iMax; i3++) {
+              const segment = this.segments[i3];
+              sweepEvents.push(segment.leftSE);
+              sweepEvents.push(segment.rightSE);
             }
-          }]);
-          return RingIn3;
-        }();
-        var PolyIn2 = /* @__PURE__ */ function() {
-          function PolyIn3(geomPoly, multiPoly) {
-            _classCallCheck(this, PolyIn3);
+            return sweepEvents;
+          }
+        }
+        class PolyIn2 {
+          constructor(geomPoly, multiPoly) {
             if (!Array.isArray(geomPoly)) {
               throw new Error("Input geometry is not a valid Polygon or MultiPolygon");
             }
@@ -13443,8 +13724,8 @@
               }
             };
             this.interiorRings = [];
-            for (var i3 = 1, iMax = geomPoly.length; i3 < iMax; i3++) {
-              var ring = new RingIn2(geomPoly[i3], this, false);
+            for (let i3 = 1, iMax = geomPoly.length; i3 < iMax; i3++) {
+              const ring = new RingIn2(geomPoly[i3], this, false);
               if (ring.bbox.ll.x < this.bbox.ll.x)
                 this.bbox.ll.x = ring.bbox.ll.x;
               if (ring.bbox.ll.y < this.bbox.ll.y)
@@ -13457,24 +13738,19 @@
             }
             this.multiPoly = multiPoly;
           }
-          _createClass(PolyIn3, [{
-            key: "getSweepEvents",
-            value: function getSweepEvents() {
-              var sweepEvents = this.exteriorRing.getSweepEvents();
-              for (var i3 = 0, iMax = this.interiorRings.length; i3 < iMax; i3++) {
-                var ringSweepEvents = this.interiorRings[i3].getSweepEvents();
-                for (var j2 = 0, jMax = ringSweepEvents.length; j2 < jMax; j2++) {
-                  sweepEvents.push(ringSweepEvents[j2]);
-                }
+          getSweepEvents() {
+            const sweepEvents = this.exteriorRing.getSweepEvents();
+            for (let i3 = 0, iMax = this.interiorRings.length; i3 < iMax; i3++) {
+              const ringSweepEvents = this.interiorRings[i3].getSweepEvents();
+              for (let j2 = 0, jMax = ringSweepEvents.length; j2 < jMax; j2++) {
+                sweepEvents.push(ringSweepEvents[j2]);
               }
-              return sweepEvents;
             }
-          }]);
-          return PolyIn3;
-        }();
-        var MultiPolyIn2 = /* @__PURE__ */ function() {
-          function MultiPolyIn3(geom, isSubject) {
-            _classCallCheck(this, MultiPolyIn3);
+            return sweepEvents;
+          }
+        }
+        class MultiPolyIn2 {
+          constructor(geom, isSubject) {
             if (!Array.isArray(geom)) {
               throw new Error("Input geometry is not a valid Polygon or MultiPolygon");
             }
@@ -13494,8 +13770,8 @@
                 y: Number.NEGATIVE_INFINITY
               }
             };
-            for (var i3 = 0, iMax = geom.length; i3 < iMax; i3++) {
-              var poly = new PolyIn2(geom[i3], this);
+            for (let i3 = 0, iMax = geom.length; i3 < iMax; i3++) {
+              const poly = new PolyIn2(geom[i3], this);
               if (poly.bbox.ll.x < this.bbox.ll.x)
                 this.bbox.ll.x = poly.bbox.ll.x;
               if (poly.bbox.ll.y < this.bbox.ll.y)
@@ -13508,467 +13784,420 @@
             }
             this.isSubject = isSubject;
           }
-          _createClass(MultiPolyIn3, [{
-            key: "getSweepEvents",
-            value: function getSweepEvents() {
-              var sweepEvents = [];
-              for (var i3 = 0, iMax = this.polys.length; i3 < iMax; i3++) {
-                var polySweepEvents = this.polys[i3].getSweepEvents();
-                for (var j2 = 0, jMax = polySweepEvents.length; j2 < jMax; j2++) {
-                  sweepEvents.push(polySweepEvents[j2]);
-                }
+          getSweepEvents() {
+            const sweepEvents = [];
+            for (let i3 = 0, iMax = this.polys.length; i3 < iMax; i3++) {
+              const polySweepEvents = this.polys[i3].getSweepEvents();
+              for (let j2 = 0, jMax = polySweepEvents.length; j2 < jMax; j2++) {
+                sweepEvents.push(polySweepEvents[j2]);
               }
-              return sweepEvents;
             }
-          }]);
-          return MultiPolyIn3;
-        }();
-        var RingOut2 = /* @__PURE__ */ function() {
-          _createClass(RingOut3, null, [{
-            key: "factory",
-            /* Given the segments from the sweep line pass, compute & return a series
-             * of closed rings from all the segments marked to be part of the result */
-            value: function factory(allSegments) {
-              var ringsOut = [];
-              for (var i3 = 0, iMax = allSegments.length; i3 < iMax; i3++) {
-                var segment = allSegments[i3];
-                if (!segment.isInResult() || segment.ringOut)
-                  continue;
-                var prevEvent = null;
-                var event = segment.leftSE;
-                var nextEvent = segment.rightSE;
-                var events = [event];
-                var startingPoint = event.point;
-                var intersectionLEs = [];
+            return sweepEvents;
+          }
+        }
+        class RingOut2 {
+          /* Given the segments from the sweep line pass, compute & return a series
+           * of closed rings from all the segments marked to be part of the result */
+          static factory(allSegments) {
+            const ringsOut = [];
+            for (let i3 = 0, iMax = allSegments.length; i3 < iMax; i3++) {
+              const segment = allSegments[i3];
+              if (!segment.isInResult() || segment.ringOut)
+                continue;
+              let prevEvent = null;
+              let event = segment.leftSE;
+              let nextEvent = segment.rightSE;
+              const events = [event];
+              const startingPoint = event.point;
+              const intersectionLEs = [];
+              while (true) {
+                prevEvent = event;
+                event = nextEvent;
+                events.push(event);
+                if (event.point === startingPoint)
+                  break;
                 while (true) {
-                  prevEvent = event;
-                  event = nextEvent;
-                  events.push(event);
-                  if (event.point === startingPoint)
-                    break;
-                  while (true) {
-                    var availableLEs = event.getAvailableLinkedEvents();
-                    if (availableLEs.length === 0) {
-                      var firstPt = events[0].point;
-                      var lastPt = events[events.length - 1].point;
-                      throw new Error("Unable to complete output ring starting at [".concat(firstPt.x, ",") + " ".concat(firstPt.y, "]. Last matching segment found ends at") + " [".concat(lastPt.x, ", ").concat(lastPt.y, "]."));
-                    }
-                    if (availableLEs.length === 1) {
-                      nextEvent = availableLEs[0].otherSE;
-                      break;
-                    }
-                    var indexLE = null;
-                    for (var j2 = 0, jMax = intersectionLEs.length; j2 < jMax; j2++) {
-                      if (intersectionLEs[j2].point === event.point) {
-                        indexLE = j2;
-                        break;
-                      }
-                    }
-                    if (indexLE !== null) {
-                      var intersectionLE = intersectionLEs.splice(indexLE)[0];
-                      var ringEvents = events.splice(intersectionLE.index);
-                      ringEvents.unshift(ringEvents[0].otherSE);
-                      ringsOut.push(new RingOut3(ringEvents.reverse()));
-                      continue;
-                    }
-                    intersectionLEs.push({
-                      index: events.length,
-                      point: event.point
-                    });
-                    var comparator = event.getLeftmostComparator(prevEvent);
-                    nextEvent = availableLEs.sort(comparator)[0].otherSE;
+                  const availableLEs = event.getAvailableLinkedEvents();
+                  if (availableLEs.length === 0) {
+                    const firstPt = events[0].point;
+                    const lastPt = events[events.length - 1].point;
+                    throw new Error("Unable to complete output ring starting at [".concat(firstPt.x, ",") + " ".concat(firstPt.y, "]. Last matching segment found ends at") + " [".concat(lastPt.x, ", ").concat(lastPt.y, "]."));
+                  }
+                  if (availableLEs.length === 1) {
+                    nextEvent = availableLEs[0].otherSE;
                     break;
                   }
+                  let indexLE = null;
+                  for (let j2 = 0, jMax = intersectionLEs.length; j2 < jMax; j2++) {
+                    if (intersectionLEs[j2].point === event.point) {
+                      indexLE = j2;
+                      break;
+                    }
+                  }
+                  if (indexLE !== null) {
+                    const intersectionLE = intersectionLEs.splice(indexLE)[0];
+                    const ringEvents = events.splice(intersectionLE.index);
+                    ringEvents.unshift(ringEvents[0].otherSE);
+                    ringsOut.push(new RingOut2(ringEvents.reverse()));
+                    continue;
+                  }
+                  intersectionLEs.push({
+                    index: events.length,
+                    point: event.point
+                  });
+                  const comparator = event.getLeftmostComparator(prevEvent);
+                  nextEvent = availableLEs.sort(comparator)[0].otherSE;
+                  break;
                 }
-                ringsOut.push(new RingOut3(events));
               }
-              return ringsOut;
+              ringsOut.push(new RingOut2(events));
             }
-          }]);
-          function RingOut3(events) {
-            _classCallCheck(this, RingOut3);
+            return ringsOut;
+          }
+          constructor(events) {
             this.events = events;
-            for (var i3 = 0, iMax = events.length; i3 < iMax; i3++) {
+            for (let i3 = 0, iMax = events.length; i3 < iMax; i3++) {
               events[i3].segment.ringOut = this;
             }
             this.poly = null;
           }
-          _createClass(RingOut3, [{
-            key: "getGeom",
-            value: function getGeom2() {
-              var prevPt = this.events[0].point;
-              var points = [prevPt];
-              for (var i3 = 1, iMax = this.events.length - 1; i3 < iMax; i3++) {
-                var _pt = this.events[i3].point;
-                var _nextPt = this.events[i3 + 1].point;
-                if (compareVectorAngles(_pt, prevPt, _nextPt) === 0)
-                  continue;
-                points.push(_pt);
-                prevPt = _pt;
-              }
-              if (points.length === 1)
+          getGeom() {
+            let prevPt = this.events[0].point;
+            const points = [prevPt];
+            for (let i3 = 1, iMax = this.events.length - 1; i3 < iMax; i3++) {
+              const pt3 = this.events[i3].point;
+              const nextPt2 = this.events[i3 + 1].point;
+              if (compareVectorAngles(pt3, prevPt, nextPt2) === 0)
+                continue;
+              points.push(pt3);
+              prevPt = pt3;
+            }
+            if (points.length === 1)
+              return null;
+            const pt2 = points[0];
+            const nextPt = points[1];
+            if (compareVectorAngles(pt2, prevPt, nextPt) === 0)
+              points.shift();
+            points.push(points[0]);
+            const step = this.isExteriorRing() ? 1 : -1;
+            const iStart = this.isExteriorRing() ? 0 : points.length - 1;
+            const iEnd = this.isExteriorRing() ? points.length : -1;
+            const orderedPoints = [];
+            for (let i3 = iStart; i3 != iEnd; i3 += step)
+              orderedPoints.push([points[i3].x, points[i3].y]);
+            return orderedPoints;
+          }
+          isExteriorRing() {
+            if (this._isExteriorRing === void 0) {
+              const enclosing = this.enclosingRing();
+              this._isExteriorRing = enclosing ? !enclosing.isExteriorRing() : true;
+            }
+            return this._isExteriorRing;
+          }
+          enclosingRing() {
+            if (this._enclosingRing === void 0) {
+              this._enclosingRing = this._calcEnclosingRing();
+            }
+            return this._enclosingRing;
+          }
+          /* Returns the ring that encloses this one, if any */
+          _calcEnclosingRing() {
+            let leftMostEvt = this.events[0];
+            for (let i3 = 1, iMax = this.events.length; i3 < iMax; i3++) {
+              const evt = this.events[i3];
+              if (SweepEvent2.compare(leftMostEvt, evt) > 0)
+                leftMostEvt = evt;
+            }
+            let prevSeg = leftMostEvt.segment.prevInResult();
+            let prevPrevSeg = prevSeg ? prevSeg.prevInResult() : null;
+            while (true) {
+              if (!prevSeg)
                 return null;
-              var pt2 = points[0];
-              var nextPt = points[1];
-              if (compareVectorAngles(pt2, prevPt, nextPt) === 0)
-                points.shift();
-              points.push(points[0]);
-              var step = this.isExteriorRing() ? 1 : -1;
-              var iStart = this.isExteriorRing() ? 0 : points.length - 1;
-              var iEnd = this.isExteriorRing() ? points.length : -1;
-              var orderedPoints = [];
-              for (var _i = iStart; _i != iEnd; _i += step) {
-                orderedPoints.push([points[_i].x, points[_i].y]);
-              }
-              return orderedPoints;
-            }
-          }, {
-            key: "isExteriorRing",
-            value: function isExteriorRing() {
-              if (this._isExteriorRing === void 0) {
-                var enclosing = this.enclosingRing();
-                this._isExteriorRing = enclosing ? !enclosing.isExteriorRing() : true;
-              }
-              return this._isExteriorRing;
-            }
-          }, {
-            key: "enclosingRing",
-            value: function enclosingRing() {
-              if (this._enclosingRing === void 0) {
-                this._enclosingRing = this._calcEnclosingRing();
-              }
-              return this._enclosingRing;
-            }
-            /* Returns the ring that encloses this one, if any */
-          }, {
-            key: "_calcEnclosingRing",
-            value: function _calcEnclosingRing() {
-              var leftMostEvt = this.events[0];
-              for (var i3 = 1, iMax = this.events.length; i3 < iMax; i3++) {
-                var evt = this.events[i3];
-                if (SweepEvent2.compare(leftMostEvt, evt) > 0)
-                  leftMostEvt = evt;
-              }
-              var prevSeg = leftMostEvt.segment.prevInResult();
-              var prevPrevSeg = prevSeg ? prevSeg.prevInResult() : null;
-              while (true) {
-                if (!prevSeg)
-                  return null;
-                if (!prevPrevSeg)
+              if (!prevPrevSeg)
+                return prevSeg.ringOut;
+              if (prevPrevSeg.ringOut !== prevSeg.ringOut) {
+                if (prevPrevSeg.ringOut.enclosingRing() !== prevSeg.ringOut) {
                   return prevSeg.ringOut;
-                if (prevPrevSeg.ringOut !== prevSeg.ringOut) {
-                  if (prevPrevSeg.ringOut.enclosingRing() !== prevSeg.ringOut) {
-                    return prevSeg.ringOut;
-                  } else
-                    return prevSeg.ringOut.enclosingRing();
-                }
-                prevSeg = prevPrevSeg.prevInResult();
-                prevPrevSeg = prevSeg ? prevSeg.prevInResult() : null;
+                } else
+                  return prevSeg.ringOut.enclosingRing();
               }
+              prevSeg = prevPrevSeg.prevInResult();
+              prevPrevSeg = prevSeg ? prevSeg.prevInResult() : null;
             }
-          }]);
-          return RingOut3;
-        }();
-        var PolyOut2 = /* @__PURE__ */ function() {
-          function PolyOut3(exteriorRing) {
-            _classCallCheck(this, PolyOut3);
+          }
+        }
+        class PolyOut2 {
+          constructor(exteriorRing) {
             this.exteriorRing = exteriorRing;
             exteriorRing.poly = this;
             this.interiorRings = [];
           }
-          _createClass(PolyOut3, [{
-            key: "addInterior",
-            value: function addInterior(ring) {
-              this.interiorRings.push(ring);
-              ring.poly = this;
+          addInterior(ring) {
+            this.interiorRings.push(ring);
+            ring.poly = this;
+          }
+          getGeom() {
+            const geom = [this.exteriorRing.getGeom()];
+            if (geom[0] === null)
+              return null;
+            for (let i3 = 0, iMax = this.interiorRings.length; i3 < iMax; i3++) {
+              const ringGeom = this.interiorRings[i3].getGeom();
+              if (ringGeom === null)
+                continue;
+              geom.push(ringGeom);
             }
-          }, {
-            key: "getGeom",
-            value: function getGeom2() {
-              var geom = [this.exteriorRing.getGeom()];
-              if (geom[0] === null)
-                return null;
-              for (var i3 = 0, iMax = this.interiorRings.length; i3 < iMax; i3++) {
-                var ringGeom = this.interiorRings[i3].getGeom();
-                if (ringGeom === null)
-                  continue;
-                geom.push(ringGeom);
-              }
-              return geom;
-            }
-          }]);
-          return PolyOut3;
-        }();
-        var MultiPolyOut2 = /* @__PURE__ */ function() {
-          function MultiPolyOut3(rings) {
-            _classCallCheck(this, MultiPolyOut3);
+            return geom;
+          }
+        }
+        class MultiPolyOut2 {
+          constructor(rings) {
             this.rings = rings;
             this.polys = this._composePolys(rings);
           }
-          _createClass(MultiPolyOut3, [{
-            key: "getGeom",
-            value: function getGeom2() {
-              var geom = [];
-              for (var i3 = 0, iMax = this.polys.length; i3 < iMax; i3++) {
-                var polyGeom = this.polys[i3].getGeom();
-                if (polyGeom === null)
-                  continue;
-                geom.push(polyGeom);
-              }
-              return geom;
+          getGeom() {
+            const geom = [];
+            for (let i3 = 0, iMax = this.polys.length; i3 < iMax; i3++) {
+              const polyGeom = this.polys[i3].getGeom();
+              if (polyGeom === null)
+                continue;
+              geom.push(polyGeom);
             }
-          }, {
-            key: "_composePolys",
-            value: function _composePolys(rings) {
-              var polys = [];
-              for (var i3 = 0, iMax = rings.length; i3 < iMax; i3++) {
-                var ring = rings[i3];
-                if (ring.poly)
-                  continue;
-                if (ring.isExteriorRing())
-                  polys.push(new PolyOut2(ring));
-                else {
-                  var enclosingRing = ring.enclosingRing();
-                  if (!enclosingRing.poly)
-                    polys.push(new PolyOut2(enclosingRing));
-                  enclosingRing.poly.addInterior(ring);
-                }
+            return geom;
+          }
+          _composePolys(rings) {
+            const polys = [];
+            for (let i3 = 0, iMax = rings.length; i3 < iMax; i3++) {
+              const ring = rings[i3];
+              if (ring.poly)
+                continue;
+              if (ring.isExteriorRing())
+                polys.push(new PolyOut2(ring));
+              else {
+                const enclosingRing = ring.enclosingRing();
+                if (!enclosingRing.poly)
+                  polys.push(new PolyOut2(enclosingRing));
+                enclosingRing.poly.addInterior(ring);
               }
-              return polys;
             }
-          }]);
-          return MultiPolyOut3;
-        }();
-        var SweepLine2 = /* @__PURE__ */ function() {
-          function SweepLine3(queue) {
-            var comparator = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : Segment2.compare;
-            _classCallCheck(this, SweepLine3);
+            return polys;
+          }
+        }
+        class SweepLine2 {
+          constructor(queue) {
+            let comparator = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : Segment2.compare;
             this.queue = queue;
             this.tree = new Tree(comparator);
             this.segments = [];
           }
-          _createClass(SweepLine3, [{
-            key: "process",
-            value: function process2(event) {
-              var segment = event.segment;
-              var newEvents = [];
-              if (event.consumedBy) {
-                if (event.isLeft)
-                  this.queue.remove(event.otherSE);
-                else
-                  this.tree.remove(segment);
-                return newEvents;
-              }
-              var node = event.isLeft ? this.tree.insert(segment) : this.tree.find(segment);
-              if (!node)
-                throw new Error("Unable to find segment #".concat(segment.id, " ") + "[".concat(segment.leftSE.point.x, ", ").concat(segment.leftSE.point.y, "] -> ") + "[".concat(segment.rightSE.point.x, ", ").concat(segment.rightSE.point.y, "] ") + "in SweepLine tree. Please submit a bug report.");
-              var prevNode = node;
-              var nextNode = node;
-              var prevSeg = void 0;
-              var nextSeg = void 0;
-              while (prevSeg === void 0) {
-                prevNode = this.tree.prev(prevNode);
-                if (prevNode === null)
-                  prevSeg = null;
-                else if (prevNode.key.consumedBy === void 0)
-                  prevSeg = prevNode.key;
-              }
-              while (nextSeg === void 0) {
-                nextNode = this.tree.next(nextNode);
-                if (nextNode === null)
-                  nextSeg = null;
-                else if (nextNode.key.consumedBy === void 0)
-                  nextSeg = nextNode.key;
-              }
-              if (event.isLeft) {
-                var prevMySplitter = null;
-                if (prevSeg) {
-                  var prevInter = prevSeg.getIntersection(segment);
-                  if (prevInter !== null) {
-                    if (!segment.isAnEndpoint(prevInter))
-                      prevMySplitter = prevInter;
-                    if (!prevSeg.isAnEndpoint(prevInter)) {
-                      var newEventsFromSplit = this._splitSafely(prevSeg, prevInter);
-                      for (var i3 = 0, iMax = newEventsFromSplit.length; i3 < iMax; i3++) {
-                        newEvents.push(newEventsFromSplit[i3]);
-                      }
-                    }
-                  }
-                }
-                var nextMySplitter = null;
-                if (nextSeg) {
-                  var nextInter = nextSeg.getIntersection(segment);
-                  if (nextInter !== null) {
-                    if (!segment.isAnEndpoint(nextInter))
-                      nextMySplitter = nextInter;
-                    if (!nextSeg.isAnEndpoint(nextInter)) {
-                      var _newEventsFromSplit = this._splitSafely(nextSeg, nextInter);
-                      for (var _i = 0, _iMax = _newEventsFromSplit.length; _i < _iMax; _i++) {
-                        newEvents.push(_newEventsFromSplit[_i]);
-                      }
-                    }
-                  }
-                }
-                if (prevMySplitter !== null || nextMySplitter !== null) {
-                  var mySplitter = null;
-                  if (prevMySplitter === null)
-                    mySplitter = nextMySplitter;
-                  else if (nextMySplitter === null)
-                    mySplitter = prevMySplitter;
-                  else {
-                    var cmpSplitters = SweepEvent2.comparePoints(prevMySplitter, nextMySplitter);
-                    mySplitter = cmpSplitters <= 0 ? prevMySplitter : nextMySplitter;
-                  }
-                  this.queue.remove(segment.rightSE);
-                  newEvents.push(segment.rightSE);
-                  var _newEventsFromSplit2 = segment.split(mySplitter);
-                  for (var _i2 = 0, _iMax2 = _newEventsFromSplit2.length; _i2 < _iMax2; _i2++) {
-                    newEvents.push(_newEventsFromSplit2[_i2]);
-                  }
-                }
-                if (newEvents.length > 0) {
-                  this.tree.remove(segment);
-                  newEvents.push(event);
-                } else {
-                  this.segments.push(segment);
-                  segment.prev = prevSeg;
-                }
-              } else {
-                if (prevSeg && nextSeg) {
-                  var inter = prevSeg.getIntersection(nextSeg);
-                  if (inter !== null) {
-                    if (!prevSeg.isAnEndpoint(inter)) {
-                      var _newEventsFromSplit3 = this._splitSafely(prevSeg, inter);
-                      for (var _i3 = 0, _iMax3 = _newEventsFromSplit3.length; _i3 < _iMax3; _i3++) {
-                        newEvents.push(_newEventsFromSplit3[_i3]);
-                      }
-                    }
-                    if (!nextSeg.isAnEndpoint(inter)) {
-                      var _newEventsFromSplit4 = this._splitSafely(nextSeg, inter);
-                      for (var _i4 = 0, _iMax4 = _newEventsFromSplit4.length; _i4 < _iMax4; _i4++) {
-                        newEvents.push(_newEventsFromSplit4[_i4]);
-                      }
-                    }
-                  }
-                }
+          process(event) {
+            const segment = event.segment;
+            const newEvents = [];
+            if (event.consumedBy) {
+              if (event.isLeft)
+                this.queue.remove(event.otherSE);
+              else
                 this.tree.remove(segment);
+              return newEvents;
+            }
+            const node = event.isLeft ? this.tree.add(segment) : this.tree.find(segment);
+            if (!node)
+              throw new Error("Unable to find segment #".concat(segment.id, " ") + "[".concat(segment.leftSE.point.x, ", ").concat(segment.leftSE.point.y, "] -> ") + "[".concat(segment.rightSE.point.x, ", ").concat(segment.rightSE.point.y, "] ") + "in SweepLine tree.");
+            let prevNode = node;
+            let nextNode = node;
+            let prevSeg = void 0;
+            let nextSeg = void 0;
+            while (prevSeg === void 0) {
+              prevNode = this.tree.prev(prevNode);
+              if (prevNode === null)
+                prevSeg = null;
+              else if (prevNode.key.consumedBy === void 0)
+                prevSeg = prevNode.key;
+            }
+            while (nextSeg === void 0) {
+              nextNode = this.tree.next(nextNode);
+              if (nextNode === null)
+                nextSeg = null;
+              else if (nextNode.key.consumedBy === void 0)
+                nextSeg = nextNode.key;
+            }
+            if (event.isLeft) {
+              let prevMySplitter = null;
+              if (prevSeg) {
+                const prevInter = prevSeg.getIntersection(segment);
+                if (prevInter !== null) {
+                  if (!segment.isAnEndpoint(prevInter))
+                    prevMySplitter = prevInter;
+                  if (!prevSeg.isAnEndpoint(prevInter)) {
+                    const newEventsFromSplit = this._splitSafely(prevSeg, prevInter);
+                    for (let i3 = 0, iMax = newEventsFromSplit.length; i3 < iMax; i3++) {
+                      newEvents.push(newEventsFromSplit[i3]);
+                    }
+                  }
+                }
               }
-              return newEvents;
+              let nextMySplitter = null;
+              if (nextSeg) {
+                const nextInter = nextSeg.getIntersection(segment);
+                if (nextInter !== null) {
+                  if (!segment.isAnEndpoint(nextInter))
+                    nextMySplitter = nextInter;
+                  if (!nextSeg.isAnEndpoint(nextInter)) {
+                    const newEventsFromSplit = this._splitSafely(nextSeg, nextInter);
+                    for (let i3 = 0, iMax = newEventsFromSplit.length; i3 < iMax; i3++) {
+                      newEvents.push(newEventsFromSplit[i3]);
+                    }
+                  }
+                }
+              }
+              if (prevMySplitter !== null || nextMySplitter !== null) {
+                let mySplitter = null;
+                if (prevMySplitter === null)
+                  mySplitter = nextMySplitter;
+                else if (nextMySplitter === null)
+                  mySplitter = prevMySplitter;
+                else {
+                  const cmpSplitters = SweepEvent2.comparePoints(prevMySplitter, nextMySplitter);
+                  mySplitter = cmpSplitters <= 0 ? prevMySplitter : nextMySplitter;
+                }
+                this.queue.remove(segment.rightSE);
+                newEvents.push(segment.rightSE);
+                const newEventsFromSplit = segment.split(mySplitter);
+                for (let i3 = 0, iMax = newEventsFromSplit.length; i3 < iMax; i3++) {
+                  newEvents.push(newEventsFromSplit[i3]);
+                }
+              }
+              if (newEvents.length > 0) {
+                this.tree.remove(segment);
+                newEvents.push(event);
+              } else {
+                this.segments.push(segment);
+                segment.prev = prevSeg;
+              }
+            } else {
+              if (prevSeg && nextSeg) {
+                const inter = prevSeg.getIntersection(nextSeg);
+                if (inter !== null) {
+                  if (!prevSeg.isAnEndpoint(inter)) {
+                    const newEventsFromSplit = this._splitSafely(prevSeg, inter);
+                    for (let i3 = 0, iMax = newEventsFromSplit.length; i3 < iMax; i3++) {
+                      newEvents.push(newEventsFromSplit[i3]);
+                    }
+                  }
+                  if (!nextSeg.isAnEndpoint(inter)) {
+                    const newEventsFromSplit = this._splitSafely(nextSeg, inter);
+                    for (let i3 = 0, iMax = newEventsFromSplit.length; i3 < iMax; i3++) {
+                      newEvents.push(newEventsFromSplit[i3]);
+                    }
+                  }
+                }
+              }
+              this.tree.remove(segment);
             }
-            /* Safely split a segment that is currently in the datastructures
-             * IE - a segment other than the one that is currently being processed. */
-          }, {
-            key: "_splitSafely",
-            value: function _splitSafely(seg, pt2) {
-              this.tree.remove(seg);
-              var rightSE = seg.rightSE;
-              this.queue.remove(rightSE);
-              var newEvents = seg.split(pt2);
-              newEvents.push(rightSE);
-              if (seg.consumedBy === void 0)
-                this.tree.insert(seg);
-              return newEvents;
-            }
-          }]);
-          return SweepLine3;
-        }();
-        var POLYGON_CLIPPING_MAX_QUEUE_SIZE = typeof process !== "undefined" && process.env.POLYGON_CLIPPING_MAX_QUEUE_SIZE || 1e6;
-        var POLYGON_CLIPPING_MAX_SWEEPLINE_SEGMENTS = typeof process !== "undefined" && process.env.POLYGON_CLIPPING_MAX_SWEEPLINE_SEGMENTS || 1e6;
-        var Operation2 = /* @__PURE__ */ function() {
-          function Operation3() {
-            _classCallCheck(this, Operation3);
+            return newEvents;
           }
-          _createClass(Operation3, [{
-            key: "run",
-            value: function run(type2, geom, moreGeoms) {
-              operation2.type = type2;
-              rounder.reset();
-              var multipolys = [new MultiPolyIn2(geom, true)];
-              for (var i3 = 0, iMax = moreGeoms.length; i3 < iMax; i3++) {
-                multipolys.push(new MultiPolyIn2(moreGeoms[i3], false));
-              }
-              operation2.numMultiPolys = multipolys.length;
-              if (operation2.type === "difference") {
-                var subject = multipolys[0];
-                var _i = 1;
-                while (_i < multipolys.length) {
-                  if (getBboxOverlap2(multipolys[_i].bbox, subject.bbox) !== null)
-                    _i++;
-                  else
-                    multipolys.splice(_i, 1);
-                }
-              }
-              if (operation2.type === "intersection") {
-                for (var _i2 = 0, _iMax = multipolys.length; _i2 < _iMax; _i2++) {
-                  var mpA = multipolys[_i2];
-                  for (var j2 = _i2 + 1, jMax = multipolys.length; j2 < jMax; j2++) {
-                    if (getBboxOverlap2(mpA.bbox, multipolys[j2].bbox) === null)
-                      return [];
-                  }
-                }
-              }
-              var queue = new Tree(SweepEvent2.compare);
-              for (var _i3 = 0, _iMax2 = multipolys.length; _i3 < _iMax2; _i3++) {
-                var sweepEvents = multipolys[_i3].getSweepEvents();
-                for (var _j = 0, _jMax = sweepEvents.length; _j < _jMax; _j++) {
-                  queue.insert(sweepEvents[_j]);
-                  if (queue.size > POLYGON_CLIPPING_MAX_QUEUE_SIZE) {
-                    throw new Error("Infinite loop when putting segment endpoints in a priority queue (queue size too big). Please file a bug report.");
-                  }
-                }
-              }
-              var sweepLine = new SweepLine2(queue);
-              var prevQueueSize = queue.size;
-              var node = queue.pop();
-              while (node) {
-                var evt = node.key;
-                if (queue.size === prevQueueSize) {
-                  var seg = evt.segment;
-                  throw new Error("Unable to pop() ".concat(evt.isLeft ? "left" : "right", " SweepEvent ") + "[".concat(evt.point.x, ", ").concat(evt.point.y, "] from segment #").concat(seg.id, " ") + "[".concat(seg.leftSE.point.x, ", ").concat(seg.leftSE.point.y, "] -> ") + "[".concat(seg.rightSE.point.x, ", ").concat(seg.rightSE.point.y, "] from queue. ") + "Please file a bug report.");
-                }
-                if (queue.size > POLYGON_CLIPPING_MAX_QUEUE_SIZE) {
-                  throw new Error("Infinite loop when passing sweep line over endpoints (queue size too big). Please file a bug report.");
-                }
-                if (sweepLine.segments.length > POLYGON_CLIPPING_MAX_SWEEPLINE_SEGMENTS) {
-                  throw new Error("Infinite loop when passing sweep line over endpoints (too many sweep line segments). Please file a bug report.");
-                }
-                var newEvents = sweepLine.process(evt);
-                for (var _i4 = 0, _iMax3 = newEvents.length; _i4 < _iMax3; _i4++) {
-                  var _evt = newEvents[_i4];
-                  if (_evt.consumedBy === void 0)
-                    queue.insert(_evt);
-                }
-                prevQueueSize = queue.size;
-                node = queue.pop();
-              }
-              rounder.reset();
-              var ringsOut = RingOut2.factory(sweepLine.segments);
-              var result = new MultiPolyOut2(ringsOut);
-              return result.getGeom();
+          /* Safely split a segment that is currently in the datastructures
+           * IE - a segment other than the one that is currently being processed. */
+          _splitSafely(seg, pt2) {
+            this.tree.remove(seg);
+            const rightSE = seg.rightSE;
+            this.queue.remove(rightSE);
+            const newEvents = seg.split(pt2);
+            newEvents.push(rightSE);
+            if (seg.consumedBy === void 0)
+              this.tree.add(seg);
+            return newEvents;
+          }
+        }
+        const POLYGON_CLIPPING_MAX_QUEUE_SIZE = typeof process !== "undefined" && process.env.POLYGON_CLIPPING_MAX_QUEUE_SIZE || 1e6;
+        const POLYGON_CLIPPING_MAX_SWEEPLINE_SEGMENTS = typeof process !== "undefined" && process.env.POLYGON_CLIPPING_MAX_SWEEPLINE_SEGMENTS || 1e6;
+        class Operation2 {
+          run(type2, geom, moreGeoms) {
+            operation2.type = type2;
+            rounder.reset();
+            const multipolys = [new MultiPolyIn2(geom, true)];
+            for (let i3 = 0, iMax = moreGeoms.length; i3 < iMax; i3++) {
+              multipolys.push(new MultiPolyIn2(moreGeoms[i3], false));
             }
-          }]);
-          return Operation3;
-        }();
-        var operation2 = new Operation2();
-        var union2 = function union3(geom) {
+            operation2.numMultiPolys = multipolys.length;
+            if (operation2.type === "difference") {
+              const subject = multipolys[0];
+              let i3 = 1;
+              while (i3 < multipolys.length) {
+                if (getBboxOverlap2(multipolys[i3].bbox, subject.bbox) !== null)
+                  i3++;
+                else
+                  multipolys.splice(i3, 1);
+              }
+            }
+            if (operation2.type === "intersection") {
+              for (let i3 = 0, iMax = multipolys.length; i3 < iMax; i3++) {
+                const mpA = multipolys[i3];
+                for (let j2 = i3 + 1, jMax = multipolys.length; j2 < jMax; j2++) {
+                  if (getBboxOverlap2(mpA.bbox, multipolys[j2].bbox) === null)
+                    return [];
+                }
+              }
+            }
+            const queue = new Tree(SweepEvent2.compare);
+            for (let i3 = 0, iMax = multipolys.length; i3 < iMax; i3++) {
+              const sweepEvents = multipolys[i3].getSweepEvents();
+              for (let j2 = 0, jMax = sweepEvents.length; j2 < jMax; j2++) {
+                queue.insert(sweepEvents[j2]);
+                if (queue.size > POLYGON_CLIPPING_MAX_QUEUE_SIZE) {
+                  throw new Error("Infinite loop when putting segment endpoints in a priority queue (queue size too big).");
+                }
+              }
+            }
+            const sweepLine = new SweepLine2(queue);
+            let prevQueueSize = queue.size;
+            let node = queue.pop();
+            while (node) {
+              const evt = node.key;
+              if (queue.size === prevQueueSize) {
+                const seg = evt.segment;
+                throw new Error("Unable to pop() ".concat(evt.isLeft ? "left" : "right", " SweepEvent ") + "[".concat(evt.point.x, ", ").concat(evt.point.y, "] from segment #").concat(seg.id, " ") + "[".concat(seg.leftSE.point.x, ", ").concat(seg.leftSE.point.y, "] -> ") + "[".concat(seg.rightSE.point.x, ", ").concat(seg.rightSE.point.y, "] from queue."));
+              }
+              if (queue.size > POLYGON_CLIPPING_MAX_QUEUE_SIZE) {
+                throw new Error("Infinite loop when passing sweep line over endpoints (queue size too big).");
+              }
+              if (sweepLine.segments.length > POLYGON_CLIPPING_MAX_SWEEPLINE_SEGMENTS) {
+                throw new Error("Infinite loop when passing sweep line over endpoints (too many sweep line segments).");
+              }
+              const newEvents = sweepLine.process(evt);
+              for (let i3 = 0, iMax = newEvents.length; i3 < iMax; i3++) {
+                const evt2 = newEvents[i3];
+                if (evt2.consumedBy === void 0)
+                  queue.insert(evt2);
+              }
+              prevQueueSize = queue.size;
+              node = queue.pop();
+            }
+            rounder.reset();
+            const ringsOut = RingOut2.factory(sweepLine.segments);
+            const result = new MultiPolyOut2(ringsOut);
+            return result.getGeom();
+          }
+        }
+        const operation2 = new Operation2();
+        const union2 = function(geom) {
           for (var _len = arguments.length, moreGeoms = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
             moreGeoms[_key - 1] = arguments[_key];
           }
           return operation2.run("union", geom, moreGeoms);
         };
-        var intersection$1 = function intersection3(geom) {
+        const intersection2 = function(geom) {
           for (var _len2 = arguments.length, moreGeoms = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
             moreGeoms[_key2 - 1] = arguments[_key2];
           }
           return operation2.run("intersection", geom, moreGeoms);
         };
-        var xor = function xor2(geom) {
+        const xor = function(geom) {
           for (var _len3 = arguments.length, moreGeoms = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
             moreGeoms[_key3 - 1] = arguments[_key3];
           }
           return operation2.run("xor", geom, moreGeoms);
         };
-        var difference2 = function difference3(subjectGeom) {
+        const difference2 = function(subjectGeom) {
           for (var _len4 = arguments.length, clippingGeoms = new Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
             clippingGeoms[_key4 - 1] = arguments[_key4];
           }
@@ -13976,7 +14205,7 @@
         };
         var index = {
           union: union2,
-          intersection: intersection$1,
+          intersection: intersection2,
           xor,
           difference: difference2
         };
@@ -14390,6 +14619,7 @@
   };
   Response.error = function() {
     var response = new Response(null, { status: 200, statusText: "" });
+    response.ok = false;
     response.status = 0;
     response.type = "error";
     return response;
@@ -14429,7 +14659,7 @@
           statusText: xhr.statusText,
           headers: parseHeaders(xhr.getAllResponseHeaders() || "")
         };
-        if (request3.url.startsWith("file://") && (xhr.status < 200 || xhr.status > 599)) {
+        if (request3.url.indexOf("file://") === 0 && (xhr.status < 200 || xhr.status > 599)) {
           options2.status = 200;
         } else {
           options2.status = xhr.status;
@@ -14978,6 +15208,8 @@
     coreValidator: () => coreValidator,
     d3: () => d3,
     debug: () => debug,
+    dmsCoordinatePair: () => dmsCoordinatePair,
+    dmsMatcher: () => dmsMatcher,
     fileFetcher: () => _mainFileFetcher,
     geoAngle: () => geoAngle,
     geoChooseEdge: () => geoChooseEdge,
@@ -15071,15 +15303,12 @@
     osmInferRestriction: () => osmInferRestriction,
     osmIntersection: () => osmIntersection,
     osmIsInterestingTag: () => osmIsInterestingTag,
-    osmIsOldMultipolygonOuterMember: () => osmIsOldMultipolygonOuterMember,
     osmJoinWays: () => osmJoinWays,
     osmLanes: () => osmLanes,
     osmLifecyclePrefixes: () => osmLifecyclePrefixes,
     osmNode: () => osmNode,
     osmNodeGeometriesForTags: () => osmNodeGeometriesForTags,
     osmNote: () => osmNote,
-    osmOldMultipolygonOuterMember: () => osmOldMultipolygonOuterMember,
-    osmOldMultipolygonOuterMemberOfRelation: () => osmOldMultipolygonOuterMemberOfRelation,
     osmOneWayTags: () => osmOneWayTags,
     osmPavedTags: () => osmPavedTags,
     osmPointTags: () => osmPointTags,
@@ -15353,6 +15582,7 @@
     validationMismatchedGeometry: () => validationMismatchedGeometry,
     validationMissingRole: () => validationMissingRole,
     validationMissingTag: () => validationMissingTag,
+    validationMutuallyExclusiveTags: () => validationMutuallyExclusiveTags,
     validationOneLaneWithNoOneway: () => validationOneLaneWithNoOneway,
     validationOutdatedTags: () => validationOutdatedTags,
     validationPrivateData: () => validationPrivateData,
@@ -15458,7 +15688,7 @@
   var _storage;
   try {
     _storage = localStorage;
-  } catch (e3) {
+  } catch {
   }
   _storage = _storage || /* @__PURE__ */ (() => {
     let s2 = {};
@@ -15481,7 +15711,7 @@
         _listeners[k3].forEach((handler) => handler(v2));
       }
       return true;
-    } catch (e3) {
+    } catch {
       if (typeof console !== "undefined") {
         console.error("localStorage quota exceeded");
       }
@@ -15531,6 +15761,7 @@
   }
   var taginfoApiUrl = "https://taginfo.openstreetmap.org/api/4/";
   var nominatimApiUrl = "https://nominatim.openstreetmap.org/";
+  var showDonationMessage = true;
 
   // package.json
   var package_default = {
@@ -15568,8 +15799,8 @@
       "dist:svg:roentgen": 'svg-sprite --shape-id-generator "roentgen-%s" --shape-dim-width 16 --shape-dim-height 16 --symbol --symbol-dest . --symbol-sprite dist/img/roentgen-sprite.svg svg/roentgen/*.svg',
       "dist:svg:temaki": 'svg-sprite --symbol --symbol-dest . --shape-id-generator "temaki-%s" --symbol-sprite dist/img/temaki-sprite.svg node_modules/@rapideditor/temaki/icons/*.svg',
       imagery: "node scripts/update_imagery.js",
-      lint: "eslint config scripts test/spec modules --ext js,mjs",
-      "lint:fix": "eslint scripts test/spec modules --fix",
+      lint: "eslint config scripts test/spec modules -c config/eslint.config.mjs",
+      "lint:fix": "eslint scripts test/spec modules -c config/eslint.config.mjs --fix",
       start: "run-s start:watch",
       "start:single-build": "run-p build:js start:server",
       "start:watch": "run-p build:js:watch start:server",
@@ -15590,65 +15821,64 @@
       "abortcontroller-polyfill": "^1.7.5",
       "aes-js": "^3.1.2",
       "alif-toolkit": "^1.2.9",
-      "core-js-bundle": "^3.35.0",
+      "core-js-bundle": "^3.37.0",
       diacritics: "1.3.0",
       exifr: "^7.1.3",
       "fast-deep-equal": "~3.1.1",
       "fast-json-stable-stringify": "2.1.0",
       "lodash-es": "~4.17.15",
-      marked: "~11.1.1",
+      marked: "~12.0.2",
       "node-diff3": "~3.1.0",
       "osm-auth": "~2.4.0",
       pannellum: "2.5.6",
       pbf: "^3.2.1",
-      "polygon-clipping": "~0.15.1",
+      "polygon-clipping": "~0.15.7",
       rbush: "3.0.1",
-      "whatwg-fetch": "^3.6.19",
+      "whatwg-fetch": "^3.6.20",
       "which-polygon": "2.2.1"
     },
     devDependencies: {
-      "@fortawesome/fontawesome-svg-core": "~6.5.1",
-      "@fortawesome/free-brands-svg-icons": "~6.5.1",
-      "@fortawesome/free-regular-svg-icons": "~6.5.1",
-      "@fortawesome/free-solid-svg-icons": "~6.5.1",
+      "@fortawesome/fontawesome-svg-core": "~6.5.2",
+      "@fortawesome/free-brands-svg-icons": "~6.5.2",
+      "@fortawesome/free-regular-svg-icons": "~6.5.2",
+      "@fortawesome/free-solid-svg-icons": "~6.5.2",
       "@mapbox/maki": "^8.0.1",
-      "@openstreetmap/id-tagging-schema": "^6.4.1",
+      "@openstreetmap/id-tagging-schema": "^6.7.3",
       "@rapideditor/mapillary_sprite_source": "^1.8.0",
-      "@rapideditor/temaki": "^5.7.0",
-      "@transifex/api": "^6.0.1",
-      autoprefixer: "^10.4.16",
-      browserslist: "^4.22.2",
+      "@rapideditor/temaki": "^5.8.0",
+      "@transifex/api": "^7.1.0",
+      autoprefixer: "^10.4.19",
+      browserslist: "^4.23.0",
       "browserslist-to-esbuild": "^2.1.1",
       chai: "^4.4.1",
       chalk: "^4.1.2",
-      "cldr-core": "^44.0.1",
-      "cldr-localenames-full": "^44.1.0",
+      "cldr-core": "^45.0.0",
+      "cldr-localenames-full": "^45.0.0",
       "concat-files": "^0.1.1",
-      d3: "~7.8.5",
-      dotenv: "^16.3.1",
+      d3: "~7.9.0",
+      dotenv: "^16.4.5",
       "editor-layer-index": "github:osmlab/editor-layer-index#gh-pages",
-      esbuild: "^0.19.8",
-      "esbuild-visualizer": "^0.4.1",
-      eslint: "^8.56.0",
+      esbuild: "^0.20.2",
+      "esbuild-visualizer": "^0.6.0",
+      eslint: "^9.1.1",
       "fetch-mock": "^9.11.0",
       gaze: "^1.1.3",
-      glob: "^10.3.10",
+      glob: "^10.3.12",
       happen: "^0.3.2",
       "js-yaml": "^4.0.0",
       "json-stringify-pretty-compact": "^3.0.0",
-      karma: "^6.4.2",
+      karma: "^6.4.3",
       "karma-chrome-launcher": "^3.2.0",
       "karma-coverage": "2.1.1",
       "karma-mocha": "^2.0.1",
       "karma-remap-istanbul": "^0.6.0",
       "mapillary-js": "4.1.2",
       minimist: "^1.2.8",
-      mocha: "^10.2.0",
+      mocha: "^10.4.0",
       "name-suggestion-index": "~6.0",
-      "node-fetch": "^2.7.0",
       "npm-run-all": "^4.0.0",
-      "osm-community-index": "~5.6.0",
-      postcss: "^8.4.33",
+      "osm-community-index": "~5.6.2",
+      postcss: "^8.4.38",
       "postcss-selector-prepend": "^0.5.0",
       shelljs: "^0.8.0",
       shx: "^0.3.0",
@@ -15656,7 +15886,7 @@
       "sinon-chai": "^3.7.0",
       smash: "0.0",
       "static-server": "^2.2.1",
-      "svg-sprite": "2.0.2",
+      "svg-sprite": "2.0.4",
       vparse: "~1.1.0"
     },
     engines: {
@@ -15718,7 +15948,7 @@
           return getUrl(url.replace("{presets_version}", presetsVersion2), which);
         });
       } else {
-        return getUrl(url);
+        return getUrl(url, which);
       }
     };
     function getUrl(url, which) {
@@ -16569,13 +16799,13 @@
     return features;
   }
   function aggregateFeature(id2) {
-    var _a3;
+    var _a2;
     const features = featuresIn(id2, false);
     if (features.length === 0)
       return null;
     let aggregateCoordinates = [];
     for (const feature22 of features) {
-      if (((_a3 = feature22.geometry) == null ? void 0 : _a3.type) === "MultiPolygon" && feature22.geometry.coordinates) {
+      if (((_a2 = feature22.geometry) == null ? void 0 : _a2.type) === "MultiPolygon" && feature22.geometry.coordinates) {
         aggregateCoordinates = aggregateCoordinates.concat(feature22.geometry.coordinates);
       }
     }
@@ -18114,19 +18344,6 @@
       super(key);
     }
   };
-  var SplayTreeMapNode = class _SplayTreeMapNode extends SplayTreeNode {
-    constructor(key, value) {
-      super(key);
-      __publicField(this, "value");
-      this.value = value;
-    }
-    replaceValue(value) {
-      const node = new _SplayTreeMapNode(this.key, value);
-      node.left = this.left;
-      node.right = this.right;
-      return node;
-    }
-  };
   var SplayTree = class {
     constructor() {
       __publicField(this, "size", 0);
@@ -18325,205 +18542,13 @@
     }
   };
   var _a;
-  var SplayTreeMap = class extends SplayTree {
-    constructor(compare2, isValidKey) {
-      super();
-      __publicField(this, "root", null);
-      __publicField(this, "compare");
-      __publicField(this, "validKey");
-      __publicField(this, _a, "[object Map]");
-      this.compare = compare2 != null ? compare2 : this.defaultCompare();
-      this.validKey = isValidKey != null ? isValidKey : (a2) => a2 != null && a2 != void 0;
-    }
-    delete(key) {
-      if (!this.validKey(key))
-        return false;
-      return this._delete(key) != null;
-    }
-    forEach(f2) {
-      const nodes = new SplayTreeMapEntryIterableIterator(this.wrap());
-      let result;
-      while (result = nodes.next(), !result.done) {
-        f2(result.value[1], result.value[0], this);
-      }
-    }
-    get(key) {
-      if (!this.validKey(key))
-        return void 0;
-      if (this.root != null) {
-        const comp = this.splay(key);
-        if (comp == 0) {
-          return this.root.value;
-        }
-      }
-      return void 0;
-    }
-    hasValue(value) {
-      const initialSplayCount = this.splayCount;
-      const visit = (node) => {
-        while (node != null) {
-          if (node.value == value)
-            return true;
-          if (initialSplayCount != this.splayCount) {
-            throw "Concurrent modification during iteration.";
-          }
-          if (node.right != null && visit(node.right)) {
-            return true;
-          }
-          node = node.left;
-        }
-        return false;
-      };
-      return visit(this.root);
-    }
-    set(key, value) {
-      const comp = this.splay(key);
-      if (comp == 0) {
-        this.root = this.root.replaceValue(value);
-        this.splayCount += 1;
-        return this;
-      }
-      this.addNewRoot(new SplayTreeMapNode(key, value), comp);
-      return this;
-    }
-    setAll(other) {
-      other.forEach((value, key) => {
-        this.set(key, value);
-      });
-    }
-    setIfAbsent(key, ifAbsent) {
-      let comp = this.splay(key);
-      if (comp == 0) {
-        return this.root.value;
-      }
-      const modificationCount = this.modificationCount;
-      const splayCount = this.splayCount;
-      const value = ifAbsent();
-      if (modificationCount != this.modificationCount) {
-        throw "Concurrent modification during iteration.";
-      }
-      if (splayCount != this.splayCount) {
-        comp = this.splay(key);
-      }
-      this.addNewRoot(new SplayTreeMapNode(key, value), comp);
-      return value;
-    }
-    isEmpty() {
-      return this.root == null;
-    }
-    isNotEmpty() {
-      return !this.isEmpty();
-    }
-    firstKey() {
-      if (this.root == null)
-        return null;
-      return this._first().key;
-    }
-    lastKey() {
-      if (this.root == null)
-        return null;
-      return this._last().key;
-    }
-    lastKeyBefore(key) {
-      if (key == null)
-        throw "Invalid arguments(s)";
-      if (this.root == null)
-        return null;
-      const comp = this.splay(key);
-      if (comp < 0)
-        return this.root.key;
-      let node = this.root.left;
-      if (node == null)
-        return null;
-      let nodeRight = node.right;
-      while (nodeRight != null) {
-        node = nodeRight;
-        nodeRight = node.right;
-      }
-      return node.key;
-    }
-    firstKeyAfter(key) {
-      if (key == null)
-        throw "Invalid arguments(s)";
-      if (this.root == null)
-        return null;
-      const comp = this.splay(key);
-      if (comp > 0)
-        return this.root.key;
-      let node = this.root.right;
-      if (node == null)
-        return null;
-      let nodeLeft = node.left;
-      while (nodeLeft != null) {
-        node = nodeLeft;
-        nodeLeft = node.left;
-      }
-      return node.key;
-    }
-    update(key, update, ifAbsent) {
-      let comp = this.splay(key);
-      if (comp == 0) {
-        const modificationCount = this.modificationCount;
-        const splayCount = this.splayCount;
-        const newValue = update(this.root.value);
-        if (modificationCount != this.modificationCount) {
-          throw "Concurrent modification during iteration.";
-        }
-        if (splayCount != this.splayCount) {
-          this.splay(key);
-        }
-        this.root = this.root.replaceValue(newValue);
-        this.splayCount += 1;
-        return newValue;
-      }
-      if (ifAbsent != null) {
-        const modificationCount = this.modificationCount;
-        const splayCount = this.splayCount;
-        const newValue = ifAbsent();
-        if (modificationCount != this.modificationCount) {
-          throw "Concurrent modification during iteration.";
-        }
-        if (splayCount != this.splayCount) {
-          comp = this.splay(key);
-        }
-        this.addNewRoot(new SplayTreeMapNode(key, newValue), comp);
-        return newValue;
-      }
-      throw "Invalid argument (key): Key not in map.";
-    }
-    updateAll(update) {
-      const root3 = this.root;
-      if (root3 == null)
-        return;
-      const iterator = new SplayTreeMapEntryIterableIterator(this.wrap());
-      let node;
-      while (node = iterator.next(), !node.done) {
-        const newValue = update(...node.value);
-        iterator.replaceValue(newValue);
-      }
-    }
-    keys() {
-      return new SplayTreeKeyIterableIterator(this.wrap());
-    }
-    values() {
-      return new SplayTreeValueIterableIterator(this.wrap());
-    }
-    entries() {
-      return this[Symbol.iterator]();
-    }
-    [Symbol.iterator]() {
-      return new SplayTreeMapEntryIterableIterator(this.wrap());
-    }
-  };
-  _a = Symbol.toStringTag;
-  var _a2;
   var _SplayTreeSet = class _SplayTreeSet extends SplayTree {
     constructor(compare2, isValidKey) {
       super();
       __publicField(this, "root", null);
       __publicField(this, "compare");
       __publicField(this, "validKey");
-      __publicField(this, _a2, "[object Set]");
+      __publicField(this, _a, "[object Set]");
       this.compare = compare2 != null ? compare2 : this.defaultCompare();
       this.validKey = isValidKey != null ? isValidKey : (v2) => v2 != null && v2 != void 0;
     }
@@ -18714,7 +18739,7 @@
       return new SplayTreeKeyIterableIterator(this.wrap());
     }
   };
-  _a2 = Symbol.toStringTag;
+  _a = Symbol.toStringTag;
   var SplayTreeSet = _SplayTreeSet;
   var SplayTreeIterableIterator = class {
     constructor(tree) {
@@ -18793,46 +18818,6 @@
   var SplayTreeSetEntryIterableIterator = class extends SplayTreeIterableIterator {
     getValue(node) {
       return [node.key, node.key];
-    }
-  };
-  var SplayTreeValueIterableIterator = class extends SplayTreeIterableIterator {
-    constructor(map2) {
-      super(map2);
-    }
-    getValue(node) {
-      return node.value;
-    }
-  };
-  var SplayTreeMapEntryIterableIterator = class extends SplayTreeIterableIterator {
-    constructor(map2) {
-      super(map2);
-    }
-    getValue(node) {
-      return [node.key, node.value];
-    }
-    replaceValue(value) {
-      if (this.modificationCount != this.tree.getModificationCount()) {
-        throw "Concurrent modification during iteration.";
-      }
-      if (this.splayCount != this.tree.getSplayCount()) {
-        this.rebuildPath(this.path[this.path.length - 1].key);
-      }
-      const last = this.path.pop();
-      const newLast = last.replaceValue(value);
-      if (!this.path.length) {
-        this.tree.setRoot(newLast);
-      } else {
-        const parent = this.path[this.path.length - 1];
-        if (last === parent.left) {
-          parent.left = newLast;
-        } else {
-          parent.right = newLast;
-        }
-      }
-      this.path.push(newLast);
-      const count = this.tree.getSplayCount() + 1;
-      this.tree.setSplayCount(count);
-      this.splayCount = count;
     }
   };
 
@@ -19759,7 +19744,7 @@
     }
     /* Returns the ring that encloses this one, if any */
     _calcEnclosingRing() {
-      var _a3, _b;
+      var _a2, _b;
       let leftMostEvt = this.events[0];
       for (let i3 = 1, iMax = this.events.length; i3 < iMax; i3++) {
         const evt = this.events[i3];
@@ -19774,7 +19759,7 @@
         if (!prevPrevSeg)
           return prevSeg.ringOut;
         if (prevPrevSeg.ringOut !== prevSeg.ringOut) {
-          if (((_a3 = prevPrevSeg.ringOut) == null ? void 0 : _a3.enclosingRing()) !== prevSeg.ringOut) {
+          if (((_a2 = prevPrevSeg.ringOut) == null ? void 0 : _a2.enclosingRing()) !== prevSeg.ringOut) {
             return prevSeg.ringOut;
           } else
             return (_b = prevSeg.ringOut) == null ? void 0 : _b.enclosingRing();
@@ -19827,7 +19812,7 @@
       return geom;
     }
     _composePolys(rings) {
-      var _a3;
+      var _a2;
       const polys = [];
       for (let i3 = 0, iMax = rings.length; i3 < iMax; i3++) {
         const ring = rings[i3];
@@ -19839,7 +19824,7 @@
           const enclosingRing = ring.enclosingRing();
           if (!(enclosingRing == null ? void 0 : enclosingRing.poly))
             polys.push(new PolyOut(enclosingRing));
-          (_a3 = enclosingRing == null ? void 0 : enclosingRing.poly) == null ? void 0 : _a3.addInterior(ring);
+          (_a2 = enclosingRing == null ? void 0 : enclosingRing.poly) == null ? void 0 : _a2.addInterior(ring);
         }
       }
       return polys;
@@ -20387,7 +20372,7 @@
           s2.add(locationSetID);
         });
         this._knownLocationSets.set(locationSetID, area);
-      } catch (err) {
+      } catch {
         obj.locationSet = { include: ["Q2"] };
         obj.locationSetID = "+[Q2]";
       }
@@ -20416,7 +20401,7 @@
         geojson.id = locationSetID;
         geojson.properties.id = locationSetID;
         this._resolved.set(locationSetID, geojson);
-      } catch (err) {
+      } catch {
         obj.locationSet = { include: ["Q2"] };
         obj.locationSetID = "+[Q2]";
       }
@@ -20502,7 +20487,7 @@
       let locationSetID;
       try {
         locationSetID = _loco.validateLocationSet(locationSet).id;
-      } catch (err) {
+      } catch {
         locationSetID = "+[Q2]";
       }
       return locationSetID;
@@ -20643,7 +20628,11 @@
     waterway: {
       dam: true
     },
+    amenity: {
+      bicycle_parking: true
+    },
     "seamark:type": {
+      "shoreline_construction": true,
       "water_turbulence": true
     }
   };
@@ -20704,6 +20693,11 @@
       "t-bar": true,
       "zip_line": true
     },
+    "conveying": {
+      "forward": true,
+      "backward": true,
+      "reversible": true
+    },
     "highway": {
       "motorway": true
     },
@@ -20724,6 +20718,9 @@
       "forward": true,
       "backward": true,
       "both": true
+    },
+    "railway:bidirectional": {
+      "regular": true
     },
     "seamark:type": {
       "two-way_route": true,
@@ -20783,7 +20780,12 @@
       "embankment": true,
       "quay": true
     },
+    "railway": {
+      "platform_edge": "man_made"
+      // re-use rendering style for one-sided man_made=*
+    },
     "waterway": {
+      "floating_barrier": true,
       "weir": true
     },
     "seamark:shoreline_construction:category": {
@@ -20816,7 +20818,8 @@
     bridleway: true,
     pedestrian: true,
     corridor: true,
-    steps: true
+    steps: true,
+    ladder: true
   };
   var osmRoutableAerowayTags = {
     runway: true,
@@ -20829,7 +20832,8 @@
     bridleway: true,
     pedestrian: true,
     corridor: true,
-    steps: true
+    steps: true,
+    ladder: true
   };
   var osmRailwayTrackTagValues = {
     rail: true,
@@ -20862,6 +20866,15 @@
     }
     return true;
   }
+  var osmMutuallyExclusiveTagPairs = [
+    ["noname", "name"],
+    ["noref", "ref"],
+    ["nohousenumber", "addr:housenumber"],
+    ["noaddress", "addr:housenumber"],
+    ["noaddress", "addr:housename"],
+    ["noaddress", "addr:unit"],
+    ["addr:nostreet", "addr:street"]
+  ];
 
   // node_modules/lodash-es/_freeGlobal.js
   var freeGlobal = typeof global == "object" && global && global.Object === Object && global;
@@ -22512,6 +22525,15 @@
     },
     toParam: function() {
       return this.rectangle().join(",");
+    },
+    split: function() {
+      const center = this.center();
+      return [
+        geoExtent(this[0], center),
+        geoExtent([center[0], this[0][1]], [this[1][0], center[1]]),
+        geoExtent(center, this[1]),
+        geoExtent([this[0][0], center[1]], [center[0], this[1][1]])
+      ];
     }
   });
 
@@ -23040,7 +23062,7 @@
         return /_hours|_times|:conditional$/.test(k5);
       }
       function skip(k5) {
-        return /^(description|note|fixme)$/.test(k5);
+        return /^(description|note|fixme|inscription)$/.test(k5);
       }
       if (skip(k4))
         return v3;
@@ -29584,6 +29606,176 @@
     });
   }
 
+  // modules/util/units.js
+  var OSM_PRECISION = 7;
+  function displayLength(m2, isImperial) {
+    var d2 = m2 * (isImperial ? 3.28084 : 1);
+    var unit2;
+    if (isImperial) {
+      if (d2 >= 5280) {
+        d2 /= 5280;
+        unit2 = "miles";
+      } else {
+        unit2 = "feet";
+      }
+    } else {
+      if (d2 >= 1e3) {
+        d2 /= 1e3;
+        unit2 = "kilometers";
+      } else {
+        unit2 = "meters";
+      }
+    }
+    return _t("units." + unit2, {
+      quantity: d2.toLocaleString(_mainLocalizer.localeCode(), {
+        maximumSignificantDigits: 4
+      })
+    });
+  }
+  function displayArea(m2, isImperial) {
+    var locale2 = _mainLocalizer.localeCode();
+    var d2 = m2 * (isImperial ? 10.7639111056 : 1);
+    var d1, d22, area;
+    var unit1 = "";
+    var unit2 = "";
+    if (isImperial) {
+      if (d2 >= 6969600) {
+        d1 = d2 / 27878400;
+        unit1 = "square_miles";
+      } else {
+        d1 = d2;
+        unit1 = "square_feet";
+      }
+      if (d2 > 4356 && d2 < 4356e4) {
+        d22 = d2 / 43560;
+        unit2 = "acres";
+      }
+    } else {
+      if (d2 >= 25e4) {
+        d1 = d2 / 1e6;
+        unit1 = "square_kilometers";
+      } else {
+        d1 = d2;
+        unit1 = "square_meters";
+      }
+      if (d2 > 1e3 && d2 < 1e7) {
+        d22 = d2 / 1e4;
+        unit2 = "hectares";
+      }
+    }
+    area = _t("units." + unit1, {
+      quantity: d1.toLocaleString(locale2, {
+        maximumSignificantDigits: 4
+      })
+    });
+    if (d22) {
+      return _t("units.area_pair", {
+        area1: area,
+        area2: _t("units." + unit2, {
+          quantity: d22.toLocaleString(locale2, {
+            maximumSignificantDigits: 2
+          })
+        })
+      });
+    } else {
+      return area;
+    }
+  }
+  function wrap(x2, min3, max3) {
+    var d2 = max3 - min3;
+    return ((x2 - min3) % d2 + d2) % d2 + min3;
+  }
+  function clamp(x2, min3, max3) {
+    return Math.max(min3, Math.min(x2, max3));
+  }
+  function roundToDecimal(target, decimalPlace) {
+    target = Number(target);
+    decimalPlace = Number(decimalPlace);
+    const factor = Math.pow(10, decimalPlace);
+    return Math.round(target * factor) / factor;
+  }
+  function displayCoordinate(deg, pos, neg) {
+    var displayCoordinate2;
+    var locale2 = _mainLocalizer.localeCode();
+    var degreesFloor = Math.floor(Math.abs(deg));
+    var min3 = (Math.abs(deg) - degreesFloor) * 60;
+    var minFloor = Math.floor(min3);
+    var sec = (min3 - minFloor) * 60;
+    var fix = roundToDecimal(sec, 8);
+    var secRounded = roundToDecimal(fix, 0);
+    if (secRounded === 60) {
+      secRounded = 0;
+      minFloor += 1;
+      if (minFloor === 60) {
+        minFloor = 0;
+        degreesFloor += 1;
+      }
+    }
+    displayCoordinate2 = _t("units.arcdegrees", {
+      quantity: degreesFloor.toLocaleString(locale2)
+    }) + (minFloor !== 0 || secRounded !== 0 ? _t("units.arcminutes", {
+      quantity: minFloor.toLocaleString(locale2)
+    }) : "") + (secRounded !== 0 ? _t("units.arcseconds", {
+      quantity: secRounded.toLocaleString(locale2)
+    }) : "");
+    if (deg === 0) {
+      return displayCoordinate2;
+    } else {
+      return _t("units.coordinate", {
+        coordinate: displayCoordinate2,
+        direction: _t("units." + (deg > 0 ? pos : neg))
+      });
+    }
+  }
+  function dmsCoordinatePair(coord2) {
+    return _t("units.coordinate_pair", {
+      latitude: displayCoordinate(clamp(coord2[1], -90, 90), "north", "south"),
+      longitude: displayCoordinate(wrap(coord2[0], -180, 180), "east", "west")
+    });
+  }
+  function decimalCoordinatePair(coord2) {
+    return _t("units.coordinate_pair", {
+      latitude: clamp(coord2[1], -90, 90).toFixed(OSM_PRECISION),
+      longitude: wrap(coord2[0], -180, 180).toFixed(OSM_PRECISION)
+    });
+  }
+  function dmsMatcher(q2) {
+    const matchers = [
+      // D M SS , D M SS  ex: 35 11 10.1 , 136 49 53.8
+      {
+        condition: /^\s*(-?)\s*(\d+)\s+(\d+)\s+(\d+\.?\d*)\s*\,\s*(-?)\s*(\d+)\s+(\d+)\s+(\d+\.?\d*)\s*$/,
+        parser: function(q3) {
+          const match = this.condition.exec(q3);
+          const lat = +match[2] + +match[3] / 60 + +match[4] / 3600;
+          const lng = +match[6] + +match[7] / 60 + +match[8] / 3600;
+          const isNegLat = match[1] === "-" ? -lat : lat;
+          const isNegLng = match[5] === "-" ? -lng : lng;
+          const d2 = [isNegLat, isNegLng];
+          return d2;
+        }
+      },
+      // D MM , D MM ex: 35 11.1683 , 136 49.8966
+      {
+        condition: /^\s*(-?)\s*(\d+)\s+(\d+\.?\d*)\s*\,\s*(-?)\s*(\d+)\s+(\d+\.?\d*)\s*$/,
+        parser: function(q3) {
+          const match = this.condition.exec(q3);
+          const lat = +match[2] + +match[3] / 60;
+          const lng = +match[5] + +match[6] / 60;
+          const isNegLat = match[1] === "-" ? -lat : lat;
+          const isNegLng = match[4] === "-" ? -lng : lng;
+          const d2 = [isNegLat, isNegLng];
+          return d2;
+        }
+      }
+    ];
+    for (const matcher of matchers) {
+      if (matcher.condition.test(q2)) {
+        return matcher.parser(q2);
+      }
+    }
+    return null;
+  }
+
   // modules/core/localizer.js
   var _mainLocalizer = coreLocalizer();
   var _t = _mainLocalizer.t;
@@ -29833,6 +30025,16 @@
       const ret = function(selection2) {
         const info = localizer.tInfo(stringId, replacements, locale2);
         return selection2.append("span").attr("class", "localized-text").attr("lang", info.locale || "und").text((replacements && replacements.prefix || "") + info.text + (replacements && replacements.suffix || ""));
+      };
+      ret.stringId = stringId;
+      return ret;
+    };
+    localizer.t.addOrUpdate = function(stringId, replacements, locale2) {
+      const ret = function(selection2) {
+        const info = localizer.tInfo(stringId, replacements, locale2);
+        const span = selection2.selectAll("span.localized-text").data([info]);
+        const enter = span.enter().append("span").classed("localized-text", true);
+        span.merge(enter).attr("lang", info.locale || "und").text((replacements && replacements.prefix || "") + info.text + (replacements && replacements.suffix || ""));
       };
       ret.stringId = stringId;
       return ret;
@@ -30931,6 +31133,11 @@
       forwards: "backward",
       backwards: "forward"
     };
+    const valueReplacementsExceptions = {
+      "side": [
+        { highway: "cyclist_waiting_aid" }
+      ]
+    };
     var roleReplacements = {
       forward: "backward",
       backward: "forward",
@@ -30969,7 +31176,7 @@
       }
       return key;
     }
-    function reverseValue(key, value, includeAbsolute) {
+    function reverseValue(key, value, includeAbsolute, allTags) {
       if (ignoreKey.test(key))
         return value;
       if (turn_lanes.test(key)) {
@@ -30997,6 +31204,14 @@
           }
         }).join(";");
       }
+      if (valueReplacementsExceptions[key] && valueReplacementsExceptions[key].some(
+        (exceptionTags) => Object.keys(exceptionTags).every((k3) => {
+          const v2 = exceptionTags[k3];
+          return allTags[k3] && (v2 === "*" || allTags[k3] === v2);
+        })
+      )) {
+        return value;
+      }
       return valueReplacements[value] || value;
     }
     function supportsDirectionField(node, graph) {
@@ -31020,7 +31235,7 @@
         for (var key in node.tags) {
           const value = node.tags[key];
           const newKey = reverseKey(key);
-          const newValue = reverseValue(key, value, node.id === entityID);
+          const newValue = reverseValue(key, value, node.id === entityID, node.tags);
           tags[newKey] = newValue;
           if (key !== newKey || value !== newValue) {
             anyChanges = true;
@@ -31039,7 +31254,7 @@
       var tags = {};
       var role;
       for (var key in way.tags) {
-        tags[reverseKey(key)] = reverseValue(key, way.tags[key]);
+        tags[reverseKey(key)] = reverseValue(key, way.tags[key], false, way.tags);
       }
       graph.parentRelations(way).forEach(function(relation) {
         relation.members.forEach(function(member, index) {
@@ -31064,7 +31279,7 @@
         return false;
       for (var key in entity.tags) {
         var value = entity.tags[key];
-        if (reverseKey(key) !== key || reverseValue(key, value, true) !== value) {
+        if (reverseKey(key) !== key || reverseValue(key, value, true, entity.tags) !== value) {
           return false;
         }
       }
@@ -31620,7 +31835,8 @@
           corridor: 2,
           steps: 2,
           path: 1.5,
-          footway: 1.5
+          footway: 1.5,
+          ladder: 0.5
         },
         railway: {
           // width includes ties and rail bed, not just track gauge
@@ -31982,78 +32198,6 @@
   }
 
   // modules/osm/multipolygon.js
-  function osmOldMultipolygonOuterMemberOfRelation(entity, graph) {
-    if (entity.type !== "relation" || !entity.isMultipolygon() || Object.keys(entity.tags).filter(osmIsInterestingTag).length > 1) {
-      return false;
-    }
-    var outerMember;
-    for (var memberIndex in entity.members) {
-      var member = entity.members[memberIndex];
-      if (!member.role || member.role === "outer") {
-        if (outerMember)
-          return false;
-        if (member.type !== "way")
-          return false;
-        if (!graph.hasEntity(member.id))
-          return false;
-        outerMember = graph.entity(member.id);
-        if (Object.keys(outerMember.tags).filter(osmIsInterestingTag).length === 0) {
-          return false;
-        }
-      }
-    }
-    return outerMember;
-  }
-  function osmIsOldMultipolygonOuterMember(entity, graph) {
-    if (entity.type !== "way" || Object.keys(entity.tags).filter(osmIsInterestingTag).length === 0) {
-      return false;
-    }
-    var parents = graph.parentRelations(entity);
-    if (parents.length !== 1)
-      return false;
-    var parent = parents[0];
-    if (!parent.isMultipolygon() || Object.keys(parent.tags).filter(osmIsInterestingTag).length > 1) {
-      return false;
-    }
-    var members = parent.members, member;
-    for (var i3 = 0; i3 < members.length; i3++) {
-      member = members[i3];
-      if (member.id === entity.id && member.role && member.role !== "outer") {
-        return false;
-      }
-      if (member.id !== entity.id && (!member.role || member.role === "outer")) {
-        return false;
-      }
-    }
-    return parent;
-  }
-  function osmOldMultipolygonOuterMember(entity, graph) {
-    if (entity.type !== "way")
-      return false;
-    var parents = graph.parentRelations(entity);
-    if (parents.length !== 1)
-      return false;
-    var parent = parents[0];
-    if (!parent.isMultipolygon() || Object.keys(parent.tags).filter(osmIsInterestingTag).length > 1) {
-      return false;
-    }
-    var members = parent.members, member, outerMember;
-    for (var i3 = 0; i3 < members.length; i3++) {
-      member = members[i3];
-      if (!member.role || member.role === "outer") {
-        if (outerMember)
-          return false;
-        outerMember = member;
-      }
-    }
-    if (!outerMember)
-      return false;
-    var outerEntity = graph.hasEntity(outerMember.id);
-    if (!outerEntity || !Object.keys(outerEntity.tags).filter(osmIsInterestingTag).length) {
-      return false;
-    }
-    return outerEntity;
-  }
   function osmJoinWays(toJoin, graph) {
     function resolve(member) {
       return graph.childNodes(graph.entity(member.id));
@@ -32130,11 +32274,11 @@
   }
 
   // modules/actions/add_member.js
-  function actionAddMember(relationId, member, memberIndex, insertPair) {
+  function actionAddMember(relationId, member, memberIndex) {
     return function action(graph) {
       var relation = graph.entity(relationId);
       var isPTv2 = /stop|platform/.test(member.role);
-      if ((isNaN(memberIndex) || insertPair) && member.type === "way" && !isPTv2) {
+      if (member.type === "way" && !isPTv2) {
         graph = addWayMember(relation, graph);
       } else {
         if (isPTv2 && isNaN(memberIndex)) {
@@ -32145,7 +32289,7 @@
       return graph;
     };
     function addWayMember(relation, graph) {
-      var groups, tempWay, insertPairIsReversed, item, i3, j2, k3;
+      var groups, item, i3, j2, k3;
       var PTv2members = [];
       var members = [];
       for (i3 = 0; i3 < relation.members.length; i3++) {
@@ -32157,21 +32301,9 @@
         }
       }
       relation = relation.update({ members });
-      if (insertPair) {
-        tempWay = osmWay({ id: "wTemp", nodes: insertPair.nodes });
-        graph = graph.replace(tempWay);
-        var tempMember = { id: tempWay.id, type: "way", role: member.role };
-        var tempRelation = relation.replaceMember({ id: insertPair.originalID }, tempMember, true);
-        groups = utilArrayGroupBy(tempRelation.members, "type");
-        groups.way = groups.way || [];
-        var originalWay = graph.entity(insertPair.originalID);
-        var insertedWay = graph.entity(insertPair.insertedID);
-        insertPairIsReversed = originalWay.nodes.length > 0 && insertedWay.nodes.length > 0 && insertedWay.nodes[insertedWay.nodes.length - 1] === originalWay.nodes[0] && originalWay.nodes[originalWay.nodes.length - 1] !== insertedWay.nodes[0];
-      } else {
-        groups = utilArrayGroupBy(relation.members, "type");
-        groups.way = groups.way || [];
-        groups.way.push(member);
-      }
+      groups = utilArrayGroupBy(relation.members, "type");
+      groups.way = groups.way || [];
+      groups.way.push(member);
       members = withIndex(groups.way);
       var joined = osmJoinWays(members, graph);
       for (i3 = 0; i3 < joined.length; i3++) {
@@ -32186,20 +32318,6 @@
         for (k3 = 0; k3 < segment.length; k3++) {
           item = segment[k3];
           var way = graph.entity(item.id);
-          if (tempWay && item.id === tempWay.id) {
-            var reverse = nodes[0].id !== insertPair.nodes[0] ^ insertPairIsReversed;
-            if (reverse) {
-              item.pair = [
-                { id: insertPair.insertedID, type: "way", role: item.role },
-                { id: insertPair.originalID, type: "way", role: item.role }
-              ];
-            } else {
-              item.pair = [
-                { id: insertPair.originalID, type: "way", role: item.role },
-                { id: insertPair.insertedID, type: "way", role: item.role }
-              ];
-            }
-          }
           if (k3 > 0) {
             if (j2 + k3 >= members.length || item.index !== members[j2 + k3].index) {
               moveMember(members, item.index, j2 + k3);
@@ -32208,20 +32326,12 @@
           nodes.splice(0, way.nodes.length - 1);
         }
       }
-      if (tempWay) {
-        graph = graph.remove(tempWay);
-      }
       var wayMembers = [];
       for (i3 = 0; i3 < members.length; i3++) {
         item = members[i3];
         if (item.index === -1)
           continue;
-        if (item.pair) {
-          wayMembers.push(item.pair[0]);
-          wayMembers.push(item.pair[1]);
-        } else {
-          wayMembers.push(utilObjectOmit(item, ["index"]));
-        }
+        wayMembers.push(utilObjectOmit(item, ["index"]));
       }
       var newMembers = PTv2members.concat(groups.node || [], wayMembers, groups.relation || []);
       return graph.replace(relation.update({ members: newMembers }));
@@ -32234,7 +32344,7 @@
         }
         var item2 = Object.assign({}, arr[i4]);
         arr[i4].index = -1;
-        item2.index = toIndex;
+        delete item2.index;
         arr.splice(toIndex, 0, item2);
       }
       function withIndex(arr) {
@@ -34201,6 +34311,7 @@
       nodeIds = [nodeIds];
     var _wayIDs;
     var _keepHistoryOn = "longest";
+    const circularJunctions = ["roundabout", "circular"];
     var _createdWayIDs = [];
     function dist(graph, nA, nB) {
       var locA = graph.entity(nA).loc;
@@ -34247,11 +34358,9 @@
     }
     function split(graph, nodeId, wayA, newWayId) {
       var wayB = osmWay({ id: newWayId, tags: wayA.tags });
-      var origNodes = wayA.nodes.slice();
       var nodesA;
       var nodesB;
       var isArea = wayA.isArea();
-      var isOuter = osmIsOldMultipolygonOuterMember(wayA, graph);
       if (wayA.isClosed()) {
         var nodes = wayA.nodes.slice(0, -1);
         var idxA = nodes.indexOf(nodeId);
@@ -34299,7 +34408,6 @@
       graph = graph.replace(wayA);
       graph = graph.replace(wayB);
       graph.parentRelations(wayA).forEach(function(relation) {
-        var member;
         if (relation.hasFromViaTo()) {
           var f2 = relation.memberByRole("from");
           var v2 = relation.membersByRole("via");
@@ -34327,36 +34435,15 @@
           } else {
             for (i3 = 0; i3 < v2.length; i3++) {
               if (v2[i3].type === "way" && v2[i3].id === wayA.id) {
-                member = {
-                  id: wayB.id,
-                  type: "way",
-                  role: "via"
-                };
-                graph = actionAddMember(relation.id, member, v2[i3].index + 1)(graph);
-                break;
+                graph = splitWayMember(graph, relation.id, wayA, wayB);
               }
             }
           }
         } else {
-          if (relation === isOuter) {
-            graph = graph.replace(relation.mergeTags(wayA.tags));
-            graph = graph.replace(wayA.update({ tags: {} }));
-            graph = graph.replace(wayB.update({ tags: {} }));
-          }
-          member = {
-            id: wayB.id,
-            type: "way",
-            role: relation.memberById(wayA.id).role
-          };
-          var insertPair = {
-            originalID: wayA.id,
-            insertedID: wayB.id,
-            nodes: origNodes
-          };
-          graph = actionAddMember(relation.id, member, void 0, insertPair)(graph);
+          graph = splitWayMember(graph, relation.id, wayA, wayB);
         }
       });
-      if (!isOuter && isArea) {
+      if (isArea) {
         var multipolygon = osmRelation({
           tags: Object.assign({}, wayA.tags, { type: "multipolygon" }),
           members: [
@@ -34369,6 +34456,98 @@
         graph = graph.replace(wayB.update({ tags: {} }));
       }
       _createdWayIDs.push(wayB.id);
+      return graph;
+    }
+    function splitWayMember(graph, relationId, wayA, wayB) {
+      function connects(way1, way2) {
+        if (way1.nodes.length < 2 || way2.nodes.length < 2)
+          return false;
+        if (circularJunctions.includes(way1.tags.junction) && way1.isClosed()) {
+          return way1.nodes.some((nodeId) => nodeId === way2.nodes[0] || nodeId === way2.nodes[way2.nodes.length - 1]);
+        } else if (circularJunctions.includes(way2.tags.junction) && way2.isClosed()) {
+          return way2.nodes.some((nodeId) => nodeId === way1.nodes[0] || nodeId === way1.nodes[way1.nodes.length - 1]);
+        }
+        if (way1.nodes[0] === way2.nodes[0])
+          return true;
+        if (way1.nodes[0] === way2.nodes[way2.nodes.length - 1])
+          return true;
+        if (way1.nodes[way1.nodes.length - 1] === way2.nodes[way2.nodes.length - 1])
+          return true;
+        if (way1.nodes[way1.nodes.length - 1] === way2.nodes[0])
+          return true;
+        return false;
+      }
+      let relation = graph.entity(relationId);
+      const insertMembers = [];
+      const members = relation.members;
+      for (let i3 = 0; i3 < members.length; i3++) {
+        const member = members[i3];
+        if (member.id === wayA.id) {
+          let wayAconnectsPrev = false;
+          let wayAconnectsNext = false;
+          let wayBconnectsPrev = false;
+          let wayBconnectsNext = false;
+          if (i3 > 0 && graph.hasEntity(members[i3 - 1].id)) {
+            const prevEntity = graph.entity(members[i3 - 1].id);
+            if (prevEntity.type === "way") {
+              wayAconnectsPrev = connects(prevEntity, wayA);
+              wayBconnectsPrev = connects(prevEntity, wayB);
+            }
+          }
+          if (i3 < members.length - 1 && graph.hasEntity(members[i3 + 1].id)) {
+            const nextEntity = graph.entity(members[i3 + 1].id);
+            if (nextEntity.type === "way") {
+              wayAconnectsNext = connects(nextEntity, wayA);
+              wayBconnectsNext = connects(nextEntity, wayB);
+            }
+          }
+          if (wayAconnectsPrev && !wayAconnectsNext || !wayBconnectsPrev && wayBconnectsNext && !(!wayAconnectsPrev && wayAconnectsNext)) {
+            insertMembers.push({ at: i3 + 1, role: member.role });
+            continue;
+          }
+          if (!wayAconnectsPrev && wayAconnectsNext || wayBconnectsPrev && !wayBconnectsNext && !(wayAconnectsPrev && !wayAconnectsNext)) {
+            insertMembers.push({ at: i3, role: member.role });
+            continue;
+          }
+          if (wayAconnectsPrev && wayBconnectsPrev && wayAconnectsNext && wayBconnectsNext) {
+            if (i3 > 2 && graph.hasEntity(members[i3 - 2].id)) {
+              const prev2Entity = graph.entity(members[i3 - 2].id);
+              if (connects(prev2Entity, wayA) && !connects(prev2Entity, wayB)) {
+                insertMembers.push({ at: i3, role: member.role });
+                continue;
+              }
+              if (connects(prev2Entity, wayB) && !connects(prev2Entity, wayA)) {
+                insertMembers.push({ at: i3 + 1, role: member.role });
+                continue;
+              }
+            }
+            if (i3 < members.length - 2 && graph.hasEntity(members[i3 + 2].id)) {
+              const next2Entity = graph.entity(members[i3 + 2].id);
+              if (connects(next2Entity, wayA) && !connects(next2Entity, wayB)) {
+                insertMembers.push({ at: i3 + 1, role: member.role });
+                continue;
+              }
+              if (connects(next2Entity, wayB) && !connects(next2Entity, wayA)) {
+                insertMembers.push({ at: i3, role: member.role });
+                continue;
+              }
+            }
+          }
+          if (wayA.nodes[wayA.nodes.length - 1] === wayB.nodes[0]) {
+            insertMembers.push({ at: i3 + 1, role: member.role });
+          } else {
+            insertMembers.push({ at: i3, role: member.role });
+          }
+        }
+      }
+      insertMembers.reverse().forEach((item) => {
+        graph = graph.replace(relation.addMember({
+          id: wayB.id,
+          type: "way",
+          role: item.role
+        }, item.at));
+        relation = graph.entity(relation.id);
+      });
       return graph;
     }
     var action = function(graph) {
@@ -34419,11 +34598,35 @@
       })));
     };
     action.disabled = function(graph) {
-      for (var i3 = 0; i3 < nodeIds.length; i3++) {
-        var nodeId = nodeIds[i3];
-        var candidates = action.waysForNode(nodeId, graph);
+      for (const nodeId of nodeIds) {
+        const candidates = action.waysForNode(nodeId, graph);
         if (candidates.length === 0 || _wayIDs && _wayIDs.length !== candidates.length) {
           return "not_eligible";
+        }
+        for (const way of candidates) {
+          const parentRelations = graph.parentRelations(way);
+          for (const parentRelation of parentRelations) {
+            if (parentRelation.hasFromViaTo()) {
+              const vias = parentRelation.membersByRole("via");
+              if (!vias.every((via) => graph.hasEntity(via.id))) {
+                return "parent_incomplete";
+              }
+            } else {
+              for (let i3 = 0; i3 < parentRelation.members.length; i3++) {
+                if (parentRelation.members[i3].id === way.id) {
+                  const memberBeforePresent = i3 > 0 && graph.hasEntity(parentRelation.members[i3 - 1].id);
+                  const memberAfterPresent = i3 < parentRelation.members.length - 1 && graph.hasEntity(parentRelation.members[i3 + 1].id);
+                  if (!memberBeforePresent && !memberAfterPresent && parentRelation.members.length > 1) {
+                    return "parent_incomplete";
+                  }
+                }
+              }
+            }
+            const relTypesExceptions = ["junction", "enforcement"];
+            if (circularJunctions.includes(way.tags.junction) && way.isClosed() && !relTypesExceptions.includes(parentRelation.tags.type)) {
+              return "simple_roundabout";
+            }
+          }
         }
       }
     };
@@ -40187,7 +40390,8 @@
     blockquote(src) {
       const cap = this.rules.block.blockquote.exec(src);
       if (cap) {
-        const text = rtrim(cap[0].replace(/^ *>[ \t]?/gm, ""), "\n");
+        let text = cap[0].replace(/\n {0,3}((?:=+|-+) *)(?=\n|$)/g, "\n    $1");
+        text = rtrim(text.replace(/^ *>[ \t]?/gm, ""), "\n");
         const top = this.lexer.state.top;
         this.lexer.state.top = true;
         const tokens = this.lexer.blockTokens(text);
@@ -40670,7 +40874,7 @@
       }
     }
     url(src) {
-      var _a3, _b;
+      var _a2, _b;
       let cap;
       if (cap = this.rules.inline.url.exec(src)) {
         let text, href;
@@ -40681,7 +40885,7 @@
           let prevCapZero;
           do {
             prevCapZero = cap[0];
-            cap[0] = (_b = (_a3 = this.rules.inline._backpedal.exec(cap[0])) == null ? void 0 : _a3[0]) != null ? _b : "";
+            cap[0] = (_b = (_a2 = this.rules.inline._backpedal.exec(cap[0])) == null ? void 0 : _a2[0]) != null ? _b : "";
           } while (prevCapZero !== cap[0]);
           text = escape$1(cap[0]);
           if (cap[1] === "www.") {
@@ -40728,14 +40932,14 @@
   var hr = /^ {0,3}((?:-[\t ]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})(?:\n+|$)/;
   var heading = /^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/;
   var bullet = /(?:[*+-]|\d{1,9}[.)])/;
-  var lheading = edit(/^(?!bull )((?:.|\n(?!\s*?\n|bull ))+?)\n {0,3}(=+|-+) *(?:\n+|$)/).replace(/bull/g, bullet).getRegex();
+  var lheading = edit(/^(?!bull |blockCode|fences|blockquote|heading|html)((?:.|\n(?!\s*?\n|bull |blockCode|fences|blockquote|heading|html))+?)\n {0,3}(=+|-+) *(?:\n+|$)/).replace(/bull/g, bullet).replace(/blockCode/g, / {4}/).replace(/fences/g, / {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g, / {0,3}>/).replace(/heading/g, / {0,3}#{1,6}/).replace(/html/g, / {0,3}<[^\n>]+>\n/).getRegex();
   var _paragraph = /^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html|table| +\n)[^\n]+)*)/;
   var blockText = /^[^\n]+/;
   var _blockLabel = /(?!\s*\])(?:\\.|[^\[\]\\])+/;
   var def = edit(/^ {0,3}\[(label)\]: *(?:\n *)?([^<\s][^\s]*|<.*?>)(?:(?: +(?:\n *)?| *\n *)(title))? *(?:\n+|$)/).replace("label", _blockLabel).replace("title", /(?:"(?:\\"?|[^"\\])*"|'[^'\n]*(?:\n[^'\n]+)*\n?'|\([^()]*\))/).getRegex();
   var list = edit(/^( {0,3}bull)([ \t][^\n]+?)?(?:\n|$)/).replace(/bull/g, bullet).getRegex();
-  var _tag = "address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|meta|nav|noframes|ol|optgroup|option|p|param|section|source|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul";
-  var _comment = /<!--(?!-?>)[\s\S]*?(?:-->|$)/;
+  var _tag = "address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|meta|nav|noframes|ol|optgroup|option|p|param|search|section|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul";
+  var _comment = /<!--(?:-?>|[\s\S]*?(?:-->|$))/;
   var html2 = edit("^ {0,3}(?:<(script|pre|style|textarea)[\\s>][\\s\\S]*?(?:</\\1>[^\\n]*\\n+|$)|comment[^\\n]*(\\n+|$)|<\\?[\\s\\S]*?(?:\\?>\\n*|$)|<![A-Z][\\s\\S]*?(?:>\\n*|$)|<!\\[CDATA\\[[\\s\\S]*?(?:\\]\\]>\\n*|$)|</?(tag)(?: +|\\n|/?>)[\\s\\S]*?(?:(?:\\n *)+\\n|$)|<(?!script|pre|style|textarea)([a-z][\\w-]*)(?:attribute)*? */?>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n *)+\\n|$)|</(?!script|pre|style|textarea)[a-z][\\w-]*\\s*>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n *)+\\n|$))", "i").replace("comment", _comment).replace("tag", _tag).replace("attribute", / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/).getRegex();
   var paragraph = edit(_paragraph).replace("hr", hr).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("|lheading", "").replace("|table", "").replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", _tag).getRegex();
   var blockquote = edit(/^( {0,3}> ?(paragraph|[^\n]*)(?:\n|$))+/).replace("paragraph", paragraph).getRegex();
@@ -40774,7 +40978,7 @@
   var inlineCode = /^(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/;
   var br = /^( {2,}|\\)\n(?!\s*$)/;
   var inlineText = /^(`+|[^`])(?:(?= {2,}\n)|[\s\S]*?(?:(?=[\\<!\[`*_]|\b_|$)|[^ ](?= {2,}\n)))/;
-  var _punctuation = "\\p{P}$+<=>`^|~";
+  var _punctuation = "\\p{P}\\p{S}";
   var punctuation = edit(/^((?![*_])[\spunctuation])/, "u").replace(/punctuation/g, _punctuation).getRegex();
   var blockSkip = /\[[^[\]]*?\]\([^\(\)]*?\)|`[^`]*?`|<[^<>]*?>/g;
   var emStrongLDelim = edit(/^(?:\*+(?:((?!\*)[punct])|[^\s*]))|^_+(?:((?!_)[punct])|([^\s_]))/, "u").replace(/punct/g, _punctuation).getRegex();
@@ -41221,8 +41425,8 @@
       this.options = options2 || _defaults;
     }
     code(code, infostring, escaped) {
-      var _a3;
-      const lang = (_a3 = (infostring || "").match(/^\S*/)) == null ? void 0 : _a3[0];
+      var _a2;
+      const lang = (_a2 = (infostring || "").match(/^\S*/)) == null ? void 0 : _a2[0];
       code = code.replace(/\n$/, "") + "\n";
       if (!lang) {
         return "<pre><code>" + (escaped ? code : escape$1(code, true)) + "</code></pre>\n";
@@ -41627,7 +41831,7 @@
      * Run callback for every token
      */
     walkTokens(tokens, callback) {
-      var _a3, _b;
+      var _a2, _b;
       let values = [];
       for (const token of tokens) {
         values = values.concat(callback.call(this, token));
@@ -41651,9 +41855,10 @@
           }
           default: {
             const genericToken = token;
-            if ((_b = (_a3 = this.defaults.extensions) == null ? void 0 : _a3.childTokens) == null ? void 0 : _b[genericToken.type]) {
+            if ((_b = (_a2 = this.defaults.extensions) == null ? void 0 : _a2.childTokens) == null ? void 0 : _b[genericToken.type]) {
               this.defaults.extensions.childTokens[genericToken.type].forEach((childTokens) => {
-                values = values.concat(this.walkTokens(genericToken[childTokens], callback));
+                const tokens2 = genericToken[childTokens].flat(Infinity);
+                values = values.concat(this.walkTokens(tokens2, callback));
               });
             } else if (genericToken.tokens) {
               values = values.concat(this.walkTokens(genericToken.tokens, callback));
@@ -43388,6 +43593,11 @@
       selection2.selectAll("svg.icon" + (svgklass ? "." + svgklass.split(" ")[0] : "")).data([0]).enter().append("svg").attr("class", "icon " + (svgklass || "")).append("use").attr("xlink:href", name).attr("class", useklass);
     };
   }
+  function svgIconExternal(url) {
+    return function drawIcon(selection2) {
+      selection2.selectAll("img.icon").data([0]).enter().append("img").attr("class", "icon").attr("src", url);
+    };
+  }
 
   // modules/ui/modal.js
   function uiModal(selection2, blocking) {
@@ -44041,6 +44251,7 @@
     validationMismatchedGeometry: () => validationMismatchedGeometry,
     validationMissingRole: () => validationMissingRole,
     validationMissingTag: () => validationMissingTag,
+    validationMutuallyExclusiveTags: () => validationMutuallyExclusiveTags,
     validationOneLaneWithNoOneway: () => validationOneLaneWithNoOneway,
     validationOutdatedTags: () => validationOutdatedTags,
     validationPrivateData: () => validationPrivateData,
@@ -45446,7 +45657,7 @@
           id: nextNode.id,
           properties: { target: true, entity: nextNode }
         });
-      } catch (ex) {
+      } catch {
         context.ui().flash.duration(4e3).iconName("#iD-icon-no").label(_t.append("operations.follow.error.unknown"))();
       }
     }
@@ -46500,7 +46711,7 @@
   // modules/validations/missing_tag.js
   function validationMissingTag(context) {
     var type2 = "missing_tag";
-    function hasDescriptiveTags(entity, graph) {
+    function hasDescriptiveTags(entity) {
       var onlyAttributeKeys = ["description", "name", "note", "start_date"];
       var entityDescriptiveKeys = Object.keys(entity.tags).filter(function(k3) {
         if (k3 === "area" || !osmIsInterestingTag(k3))
@@ -46510,7 +46721,7 @@
         });
       });
       if (entity.type === "relation" && entityDescriptiveKeys.length === 1 && entity.tags.type === "multipolygon") {
-        return osmOldMultipolygonOuterMemberOfRelation(entity, graph);
+        return false;
       }
       return entityDescriptiveKeys.length > 0;
     }
@@ -46529,7 +46740,7 @@
       !entity.hasParentRelations(graph)) {
         if (Object.keys(entity.tags).length === 0) {
           subtype = "any";
-        } else if (!hasDescriptiveTags(entity, graph)) {
+        } else if (!hasDescriptiveTags(entity)) {
           subtype = "descriptive";
         } else if (isUntypedRelation(entity)) {
           subtype = "relation_type";
@@ -46598,6 +46809,72 @@
     return validation;
   }
 
+  // modules/validations/mutually_exclusive_tags.js
+  function validationMutuallyExclusiveTags() {
+    const type2 = "mutually_exclusive_tags";
+    const tagKeyPairs = osmMutuallyExclusiveTagPairs;
+    const validation = function checkMutuallyExclusiveTags(entity) {
+      let pairsFounds = tagKeyPairs.filter((pair3) => {
+        return pair3[0] in entity.tags && pair3[1] in entity.tags;
+      }).filter((pair3) => {
+        return !(pair3[0].match(/^(addr:)?no[a-z]/) && entity.tags[pair3[0]] === "no" || pair3[1].match(/^(addr:)?no[a-z]/) && entity.tags[pair3[1]] === "no");
+      });
+      Object.keys(entity.tags).forEach((key) => {
+        let negative_key = "not:" + key;
+        if (negative_key in entity.tags && entity.tags[negative_key].split(";").includes(entity.tags[key])) {
+          pairsFounds.push([negative_key, key, "same_value"]);
+        }
+        if (key.match(/^name:[a-z]+/)) {
+          negative_key = "not:name";
+          if (negative_key in entity.tags && entity.tags[negative_key].split(";").includes(entity.tags[key])) {
+            pairsFounds.push([negative_key, key, "same_value"]);
+          }
+        }
+      });
+      let issues = pairsFounds.map((pair3) => {
+        const subtype = pair3[2] || "default";
+        return new validationIssue({
+          type: type2,
+          subtype,
+          severity: "warning",
+          message: function(context) {
+            let entity2 = context.hasEntity(this.entityIds[0]);
+            return entity2 ? _t.append("issues.".concat(type2, ".").concat(subtype, ".message"), {
+              feature: utilDisplayLabel(entity2, context.graph()),
+              tag1: pair3[0],
+              tag2: pair3[1]
+            }) : "";
+          },
+          reference: (selection2) => showReference(selection2, pair3, subtype),
+          entityIds: [entity.id],
+          dynamicFixes: () => pair3.slice(0, 2).map((tagToRemove) => createIssueFix(tagToRemove))
+        });
+      });
+      function createIssueFix(tagToRemove) {
+        return new validationIssueFix({
+          icon: "iD-operation-delete",
+          title: _t.append("issues.fix.remove_named_tag.title", { tag: tagToRemove }),
+          onClick: function(context) {
+            const entityId = this.issue.entityIds[0];
+            const entity2 = context.entity(entityId);
+            let tags = Object.assign({}, entity2.tags);
+            delete tags[tagToRemove];
+            context.perform(
+              actionChangeTags(entityId, tags),
+              _t("issues.fix.remove_named_tag.annotation", { tag: tagToRemove })
+            );
+          }
+        });
+      }
+      function showReference(selection2, pair3, subtype) {
+        selection2.selectAll(".issue-reference").data([0]).enter().append("div").attr("class", "issue-reference").call(_t.append("issues.".concat(type2, ".").concat(subtype, ".reference"), { tag1: pair3[0], tag2: pair3[1] }));
+      }
+      return issues;
+    };
+    validation.type = type2;
+    return validation;
+  }
+
   // modules/validations/oneway_onelane.js
   function validationOneLaneWithNoOneway() {
     const type2 = "oneway_onelane";
@@ -46652,7 +46929,7 @@
     }
     const validation = (entity) => {
       const isOneLane = entity.tags.lanes === "1";
-      if (entity.type !== "way" || entity.isOneWay() || !isOneLane)
+      if (entity.type !== "way" || entity.isOneWay() || !isOneLane || entity.tags.leisure === "slipway")
         return [];
       return [makeOneLaneIssue(entity)];
     };
@@ -46687,11 +46964,22 @@
         entity = graph.entity(entity.id);
         preset = newPreset;
       }
+      const upgradeReasons = [];
       if (_dataDeprecated) {
         const deprecatedTags = entity.deprecatedTags(_dataDeprecated);
+        if (entity.type === "way" && entity.isClosed() && entity.tags.traffic_calming === "island" && !entity.tags.highway) {
+          deprecatedTags.push({
+            old: { traffic_calming: "island" },
+            replace: { "area:highway": "traffic_island" }
+          });
+        }
         if (deprecatedTags.length) {
           deprecatedTags.forEach((tag2) => {
             graph = actionUpgradeTags(entity.id, tag2.old, tag2.replace)(graph);
+            upgradeReasons.push({
+              source: "id-tagging-schema--deprecated",
+              data: tag2
+            });
           });
           entity = graph.entity(entity.id);
         }
@@ -46702,9 +46990,13 @@
           if (!newTags[k3]) {
             if (preset.addTags[k3] === "*") {
               newTags[k3] = "yes";
-            } else {
+            } else if (preset.addTags[k3]) {
               newTags[k3] = preset.addTags[k3];
             }
+            upgradeReasons.push({
+              source: "id-tagging-schema--preset-addTags",
+              data: preset
+            });
           }
         });
       }
@@ -46719,6 +47011,10 @@
           if (nsiResult) {
             newTags = nsiResult.newTags;
             subtype = "noncanonical_brand";
+            upgradeReasons.push({
+              source: "name-suggestion-index",
+              data: nsiResult
+            });
           }
         }
       }
@@ -46829,71 +47125,7 @@
         }).html((d2) => d2.display);
       }
     }
-    function oldMultipolygonIssues(entity, graph) {
-      let multipolygon, outerWay;
-      if (entity.type === "relation") {
-        outerWay = osmOldMultipolygonOuterMemberOfRelation(entity, graph);
-        multipolygon = entity;
-      } else if (entity.type === "way") {
-        multipolygon = osmIsOldMultipolygonOuterMember(entity, graph);
-        outerWay = entity;
-      } else {
-        return [];
-      }
-      if (!multipolygon || !outerWay)
-        return [];
-      return [new validationIssue({
-        type: type2,
-        subtype: "old_multipolygon",
-        severity: "warning",
-        message: showMessage,
-        reference: showReference,
-        entityIds: [outerWay.id, multipolygon.id],
-        dynamicFixes: () => {
-          return [
-            new validationIssueFix({
-              autoArgs: [doUpgrade, _t("issues.fix.move_tags.annotation")],
-              title: _t.append("issues.fix.move_tags.title"),
-              onClick: (context) => {
-                context.perform(doUpgrade, _t("issues.fix.move_tags.annotation"));
-              }
-            })
-          ];
-        }
-      })];
-      function doUpgrade(graph2) {
-        let currMultipolygon = graph2.hasEntity(multipolygon.id);
-        let currOuterWay = graph2.hasEntity(outerWay.id);
-        if (!currMultipolygon || !currOuterWay)
-          return graph2;
-        currMultipolygon = currMultipolygon.mergeTags(currOuterWay.tags);
-        graph2 = graph2.replace(currMultipolygon);
-        return actionChangeTags(currOuterWay.id, {})(graph2);
-      }
-      function showMessage(context) {
-        let currMultipolygon = context.hasEntity(multipolygon.id);
-        if (!currMultipolygon)
-          return "";
-        return _t.append(
-          "issues.old_multipolygon.message",
-          { multipolygon: utilDisplayLabel(
-            currMultipolygon,
-            context.graph(),
-            true
-            /* verbose */
-          ) }
-        );
-      }
-      function showReference(selection2) {
-        selection2.selectAll(".issue-reference").data([0]).enter().append("div").attr("class", "issue-reference").call(_t.append("issues.old_multipolygon.reference"));
-      }
-    }
-    let validation = function checkOutdatedTags(entity, graph) {
-      let issues = oldMultipolygonIssues(entity, graph);
-      if (!issues.length)
-        issues = oldTagIssues(entity, graph);
-      return issues;
-    };
+    let validation = oldTagIssues;
     validation.type = type2;
     return validation;
   }
@@ -47093,55 +47325,12 @@
         selection2.selectAll(".issue-reference").data([0]).enter().append("div").attr("class", "issue-reference").call(_t.append("issues.generic_name.reference"));
       }
     }
-    function makeIncorrectNameIssue(entityId, nameKey, incorrectName, langCode) {
-      return new validationIssue({
-        type: type2,
-        subtype: "not_name",
-        severity: "warning",
-        message: function(context2) {
-          const entity = context2.hasEntity(this.entityIds[0]);
-          if (!entity)
-            return "";
-          const preset = _mainPresetIndex.match(entity, context2.graph());
-          const langName = langCode && _mainLocalizer.languageName(langCode);
-          return _t.append(
-            "issues.incorrect_name.message" + (langName ? "_language" : ""),
-            { feature: preset.name(), name: incorrectName, language: langName }
-          );
-        },
-        reference: showReference,
-        entityIds: [entityId],
-        hash: "".concat(nameKey, "=").concat(incorrectName),
-        dynamicFixes: function() {
-          return [
-            new validationIssueFix({
-              icon: "iD-operation-delete",
-              title: _t.append("issues.fix.remove_the_name.title"),
-              onClick: function(context2) {
-                const entityId2 = this.issue.entityIds[0];
-                const entity = context2.entity(entityId2);
-                let tags = Object.assign({}, entity.tags);
-                delete tags[nameKey];
-                context2.perform(
-                  actionChangeTags(entityId2, tags),
-                  _t("issues.fix.remove_mistaken_name.annotation")
-                );
-              }
-            })
-          ];
-        }
-      });
-      function showReference(selection2) {
-        selection2.selectAll(".issue-reference").data([0]).enter().append("div").attr("class", "issue-reference").call(_t.append("issues.generic_name.reference"));
-      }
-    }
     let validation = function checkGenericName(entity) {
       const tags = entity.tags;
       const hasWikidata = !!tags.wikidata || !!tags["brand:wikidata"] || !!tags["operator:wikidata"];
       if (hasWikidata)
         return [];
       let issues = [];
-      const notNames2 = (tags["not:name"] || "").split(";");
       const presetName = _mainPresetIndex.match(entity, context.graph()).name();
       for (let key in tags) {
         const m2 = key.match(/^name(?:(?::)([a-zA-Z_-]+))?$/);
@@ -47149,15 +47338,6 @@
           continue;
         const langCode = m2.length >= 2 ? m2[1] : null;
         const value = tags[key];
-        if (notNames2.length) {
-          for (let i3 in notNames2) {
-            const notName = notNames2[i3];
-            if (notName && value === notName) {
-              issues.push(makeIncorrectNameIssue(entity.id, key, value, langCode));
-              continue;
-            }
-          }
-        }
         if (isGenericName(value, tags, presetName)) {
           issues.provisional = _waitingForNsi;
           issues.push(makeGenericNameIssue(entity.id, key, value, langCode));
@@ -49516,6 +49696,7 @@
       "cycleway": true,
       "bridleway": true,
       "steps": true,
+      "ladder": true,
       "pedestrian": true
     };
     var _cullFactor = 1;
@@ -49625,11 +49806,15 @@
       return geometry === "line" || geometry === "area";
     });
     defineRule("custom", function isCustom(tags) {
-      var _a3;
-      const [key, value] = ((_a3 = corePreferences("map-features-custom")) == null ? void 0 : _a3.split("=")) || [];
+      var _a2, _b;
+      const [key, value] = ((_a2 = corePreferences("map-features-custom")) == null ? void 0 : _a2.split("=")) || [];
       if (key) {
         if (value === "*")
           return tags[key];
+        if (value.startsWith("~"))
+          return (_b = tags[key]) == null ? void 0 : _b.includes(value.slice(1));
+        if (value === "!")
+          return !tags[key];
         return tags[key] === value;
       }
     });
@@ -50232,7 +50417,9 @@
       "indoor",
       "construction",
       "proposed",
-      "expressway"
+      "expressway",
+      "bicycle",
+      "foot"
     ];
     var _tags = function(entity) {
       return entity.tags;
@@ -50265,15 +50452,10 @@
         return klass === "line" || klass === "area" ? overrideGeometry || klass : klass;
       });
       for (i3 = 0; i3 < primaries.length; i3++) {
-        k3 = primaries[i3];
+        k3 = primaries[i3].replace(":", "_");
         v2 = t2[k3];
         if (!v2 || v2 === "no")
           continue;
-        if (k3 === "piste:type") {
-          k3 = "piste";
-        } else if (k3.includes(":")) {
-          k3 = k3.replace(":", "_");
-        }
         primary = k3;
         if (statuses.indexOf(v2) !== -1) {
           status = v2;
@@ -50532,19 +50714,12 @@
     function drawAreas(selection2, graph, entities, filter2) {
       var path = svgPath(projection2, graph, true);
       var areas = {};
-      var multipolygon;
       var base = context.history().base();
       for (var i3 = 0; i3 < entities.length; i3++) {
         var entity = entities[i3];
         if (entity.geometry(graph) !== "area")
           continue;
-        multipolygon = osmIsOldMultipolygonOuterMember(entity, graph);
-        if (multipolygon) {
-          areas[multipolygon.id] = {
-            entity: multipolygon.mergeTags(entity.tags),
-            area: Math.abs(entity.area(graph))
-          };
-        } else if (!areas[entity.id]) {
+        if (!areas[entity.id]) {
           areas[entity.id] = {
             entity,
             area: Math.abs(entity.area(graph))
@@ -50738,7 +50913,7 @@
     };
   }
   function extractProperties(node) {
-    var _a3;
+    var _a2;
     const properties = getMulti(node, [
       "name",
       "cmt",
@@ -50749,7 +50924,7 @@
     ]);
     const extensions = Array.from(node.getElementsByTagNameNS("http://www.garmin.com/xmlschemas/GpxExtensions/v3", "*"));
     for (const child of extensions) {
-      if (((_a3 = child.parentNode) == null ? void 0 : _a3.parentNode) === node) {
+      if (((_a2 = child.parentNode) == null ? void 0 : _a2.parentNode) === node) {
         properties[child.tagName.replace(":", "_")] = nodeVal(child);
       }
     }
@@ -51155,7 +51330,7 @@
     };
   }
   function getPlacemark(node, styleMap, schema, options2) {
-    var _a3;
+    var _a2;
     const { coordTimes, geometries } = getGeometry(node);
     const geometry = geometryListToGeometry(geometries);
     if (!geometry && options2.skipNullGeometry) {
@@ -51177,7 +51352,7 @@
         }
       } : {})
     };
-    if (((_a3 = feature3.properties) == null ? void 0 : _a3.visibility) !== void 0) {
+    if (((_a2 = feature3.properties) == null ? void 0 : _a2.visibility) !== void 0) {
       feature3.properties.visibility = feature3.properties.visibility !== "0";
     }
     const id2 = node.getAttribute("id");
@@ -51249,7 +51424,7 @@
     return null;
   }
   function getGroundOverlay(node, styleMap, schema, options2) {
-    var _a3;
+    var _a2;
     const box = getGroundOverlayBox(node);
     const geometry = (box == null ? void 0 : box.geometry) || null;
     if (!geometry && options2.skipNullGeometry) {
@@ -51284,7 +51459,7 @@
     if (box == null ? void 0 : box.bbox) {
       feature3.bbox = box.bbox;
     }
-    if (((_a3 = feature3.properties) == null ? void 0 : _a3.visibility) !== void 0) {
+    if (((_a2 = feature3.properties) == null ? void 0 : _a2.visibility) !== void 0) {
       feature3.properties.visibility = feature3.properties.visibility !== "0";
     }
     const id2 = node.getAttribute("id");
@@ -54416,9 +54591,9 @@
       const viewfields = markers.selectAll(".viewfield").data(showViewfields ? [0] : []);
       viewfields.exit().remove();
       viewfields.enter().insert("path", "circle").attr("class", "viewfield").attr("transform", function() {
-        var _a3;
+        var _a2;
         const d2 = this.parentNode.__data__;
-        return "rotate(".concat(Math.round((_a3 = d2.direction) != null ? _a3 : 0), ",0,0),scale(1.5,1.5),translate(-8,-13)");
+        return "rotate(".concat(Math.round((_a2 = d2.direction) != null ? _a2 : 0), ",0,0),scale(1.5,1.5),translate(-8,-13)");
       }).attr("d", "M 6,9 C 8,8.4 8,8.4 10,9 L 16,-2 C 12,-5 4,-5 0,-2 z").style("visibility", function() {
         const d2 = this.parentNode.__data__;
         return isNumber_default(d2.direction) ? "visible" : "hidden";
@@ -54467,7 +54642,7 @@
               _photos.push(photo);
             }
           }
-        } catch (err) {
+        } catch {
         }
       }
       if (typeof callback === "function")
@@ -56567,11 +56742,7 @@
       var oldMultiPolygonOuters = {};
       for (var i3 = 0; i3 < entities.length; i3++) {
         var entity = entities[i3];
-        var outer = osmOldMultipolygonOuterMember(entity, graph);
-        if (outer) {
-          ways.push(entity.mergeTags(outer.tags));
-          oldMultiPolygonOuters[outer.id] = true;
-        } else if (entity.geometry(graph) === "line" || entity.geometry(graph) === "area" && entity.sidednessIdentifier && entity.sidednessIdentifier() === "coastline") {
+        if (entity.geometry(graph) === "line" || entity.geometry(graph) === "area" && entity.sidednessIdentifier && entity.sidednessIdentifier() === "coastline") {
           ways.push(entity);
         }
       }
@@ -56589,10 +56760,10 @@
           graph,
           35,
           function shouldReverse(entity2) {
-            return entity2.tags.oneway === "-1" || entity2.tags["railway:preferred_direction"] === "backward";
+            return entity2.tags.oneway === "-1" || entity2.tags.conveying === "backward" || entity2.tags["railway:preferred_direction"] === "backward";
           },
           function bothDirections(entity2) {
-            return entity2.tags.oneway === "reversible" || entity2.tags.oneway === "alternating" || entity2.tags["railway:preferred_direction"] === "both";
+            return entity2.tags.conveying === "reversible" || entity2.tags.oneway === "reversible" || entity2.tags.oneway === "alternating" || entity2.tags["railway:bidirectional"] === "regular" || entity2.tags["railway:preferred_direction"] === "both";
           }
         );
         onewaydata[k3] = utilArrayFlatten(onewayArr.map(onewaySegments));
@@ -57019,7 +57190,7 @@
         return base.entities[d2.id] && !(0, import_fast_deep_equal8.default)(graph.entities[d2.id].loc, base.entities[d2.id].loc);
       }).classed("retagged", function(d2) {
         return base.entities[d2.id] && !(0, import_fast_deep_equal8.default)(graph.entities[d2.id].tags, base.entities[d2.id].tags);
-      }).call(updateAttributes);
+      }).call(svgTagClasses()).call(updateAttributes);
       var iconUse = groups.selectAll(".icon").data(function data(d2) {
         return zoom >= 17 && getIcon(d2) ? [d2] : [];
       }, fastEntityKey);
@@ -57593,7 +57764,7 @@
   var maxZoom = 24;
   var kMin = geoZoomToScale(minZoom2, TILESIZE);
   var kMax = geoZoomToScale(maxZoom, TILESIZE);
-  function clamp(num, min3, max3) {
+  function clamp2(num, min3, max3) {
     return Math.max(min3, Math.min(num, max3));
   }
   function rendererMap(context) {
@@ -57907,7 +58078,7 @@
         if (source.deltaMode === 1) {
           var lines = Math.abs(source.deltaY);
           var sign2 = source.deltaY > 0 ? 1 : -1;
-          dY = sign2 * clamp(
+          dY = sign2 * clamp2(
             Math.exp((lines - 1) * 0.75) * 4.000244140625,
             4.000244140625,
             // min
@@ -57921,7 +58092,7 @@
           p02 = _getMouseCoords(source);
           p1 = t0.invert(p02);
           k22 = t0.k * Math.pow(2, -dY / 500);
-          k22 = clamp(k22, kMin, kMax);
+          k22 = clamp2(k22, kMin, kMax);
           x22 = p02[0] - p1[0] * k22;
           y22 = p02[1] - p1[1] * k22;
         } else if (source._scale) {
@@ -57929,7 +58100,7 @@
           p02 = _getMouseCoords(source);
           p1 = t0.invert(p02);
           k22 = t0.k * source._scale;
-          k22 = clamp(k22, kMin, kMax);
+          k22 = clamp2(k22, kMin, kMax);
           x22 = p02[0] - p1[0] * k22;
           y22 = p02[1] - p1[1] * k22;
         } else if (source.ctrlKey && !isInteger(dY)) {
@@ -57938,7 +58109,7 @@
           p02 = _getMouseCoords(source);
           p1 = t0.invert(p02);
           k22 = t0.k * Math.pow(2, -dY / 500);
-          k22 = clamp(k22, kMin, kMax);
+          k22 = clamp2(k22, kMin, kMax);
           x22 = p02[0] - p1[0] * k22;
           y22 = p02[1] - p1[1] * k22;
         } else if ((source.altKey || source.shiftKey) && isInteger(dY)) {
@@ -57946,7 +58117,7 @@
           p02 = _getMouseCoords(source);
           p1 = t0.invert(p02);
           k22 = t0.k * Math.pow(2, -dY / 500);
-          k22 = clamp(k22, kMin, kMax);
+          k22 = clamp2(k22, kMin, kMax);
           x22 = p02[0] - p1[0] * k22;
           y22 = p02[1] - p1[1] * k22;
         } else if (detected.os === "mac" && detected.browser !== "Firefox" && !source.ctrlKey && isInteger(dX) && isInteger(dY)) {
@@ -57954,7 +58125,7 @@
           x22 = p1[0] - dX;
           y22 = p1[1] - dY;
           k22 = projection2.scale();
-          k22 = clamp(k22, kMin, kMax);
+          k22 = clamp2(k22, kMin, kMax);
         }
         if (x22 !== x2 || y22 !== y2 || k22 !== k3) {
           x2 = x22;
@@ -58105,7 +58276,7 @@
       if (loc2[0] === c2[0] && loc2[1] === c2[1] && z2 === z3 && !force)
         return false;
       var proj = geoRawMercator().transform(projection2.transform());
-      var k22 = clamp(geoZoomToScale(z2, TILESIZE), kMin, kMax);
+      var k22 = clamp2(geoZoomToScale(z2, TILESIZE), kMin, kMax);
       proj.scale(k22);
       var t2 = proj.translate();
       var point2 = proj(loc2);
@@ -58219,7 +58390,7 @@
       var extent = entity.extent(context.graph());
       if (!isFinite(extent.area()))
         return map2;
-      var z2 = clamp(map2.trimmedExtentZoom(extent), 0, 20);
+      var z2 = clamp2(map2.trimmedExtentZoom(extent), 0, 20);
       return map2.centerZoom(extent.center(), z2);
     };
     map2.centerEase = function(loc2, duration) {
@@ -58263,7 +58434,7 @@
       }
       if (!isFinite(extent.area()))
         return map2;
-      var z2 = clamp(map2.trimmedExtentZoom(extent), 0, 20);
+      var z2 = clamp2(map2.trimmedExtentZoom(extent), 0, 20);
       return map2.centerZoomEase(extent.center(), z2, duration);
     };
     map2.startEase = function() {
@@ -59706,133 +59877,6 @@
     return panel;
   }
 
-  // modules/util/units.js
-  var OSM_PRECISION = 7;
-  function displayLength(m2, isImperial) {
-    var d2 = m2 * (isImperial ? 3.28084 : 1);
-    var unit2;
-    if (isImperial) {
-      if (d2 >= 5280) {
-        d2 /= 5280;
-        unit2 = "miles";
-      } else {
-        unit2 = "feet";
-      }
-    } else {
-      if (d2 >= 1e3) {
-        d2 /= 1e3;
-        unit2 = "kilometers";
-      } else {
-        unit2 = "meters";
-      }
-    }
-    return _t("units." + unit2, {
-      quantity: d2.toLocaleString(_mainLocalizer.localeCode(), {
-        maximumSignificantDigits: 4
-      })
-    });
-  }
-  function displayArea(m2, isImperial) {
-    var locale2 = _mainLocalizer.localeCode();
-    var d2 = m2 * (isImperial ? 10.7639111056 : 1);
-    var d1, d22, area;
-    var unit1 = "";
-    var unit2 = "";
-    if (isImperial) {
-      if (d2 >= 6969600) {
-        d1 = d2 / 27878400;
-        unit1 = "square_miles";
-      } else {
-        d1 = d2;
-        unit1 = "square_feet";
-      }
-      if (d2 > 4356 && d2 < 4356e4) {
-        d22 = d2 / 43560;
-        unit2 = "acres";
-      }
-    } else {
-      if (d2 >= 25e4) {
-        d1 = d2 / 1e6;
-        unit1 = "square_kilometers";
-      } else {
-        d1 = d2;
-        unit1 = "square_meters";
-      }
-      if (d2 > 1e3 && d2 < 1e7) {
-        d22 = d2 / 1e4;
-        unit2 = "hectares";
-      }
-    }
-    area = _t("units." + unit1, {
-      quantity: d1.toLocaleString(locale2, {
-        maximumSignificantDigits: 4
-      })
-    });
-    if (d22) {
-      return _t("units.area_pair", {
-        area1: area,
-        area2: _t("units." + unit2, {
-          quantity: d22.toLocaleString(locale2, {
-            maximumSignificantDigits: 2
-          })
-        })
-      });
-    } else {
-      return area;
-    }
-  }
-  function wrap(x2, min3, max3) {
-    var d2 = max3 - min3;
-    return ((x2 - min3) % d2 + d2) % d2 + min3;
-  }
-  function clamp2(x2, min3, max3) {
-    return Math.max(min3, Math.min(x2, max3));
-  }
-  function displayCoordinate(deg, pos, neg) {
-    var locale2 = _mainLocalizer.localeCode();
-    var min3 = (Math.abs(deg) - Math.floor(Math.abs(deg))) * 60;
-    var sec = (min3 - Math.floor(min3)) * 60;
-    var displayDegrees = _t("units.arcdegrees", {
-      quantity: Math.floor(Math.abs(deg)).toLocaleString(locale2)
-    });
-    var displayCoordinate2;
-    if (Math.floor(sec) > 0) {
-      displayCoordinate2 = displayDegrees + _t("units.arcminutes", {
-        quantity: Math.floor(min3).toLocaleString(locale2)
-      }) + _t("units.arcseconds", {
-        quantity: Math.round(sec).toLocaleString(locale2)
-      });
-    } else if (Math.floor(min3) > 0) {
-      displayCoordinate2 = displayDegrees + _t("units.arcminutes", {
-        quantity: Math.round(min3).toLocaleString(locale2)
-      });
-    } else {
-      displayCoordinate2 = _t("units.arcdegrees", {
-        quantity: Math.round(Math.abs(deg)).toLocaleString(locale2)
-      });
-    }
-    if (deg === 0) {
-      return displayCoordinate2;
-    } else {
-      return _t("units.coordinate", {
-        coordinate: displayCoordinate2,
-        direction: _t("units." + (deg > 0 ? pos : neg))
-      });
-    }
-  }
-  function dmsCoordinatePair(coord2) {
-    return _t("units.coordinate_pair", {
-      latitude: displayCoordinate(clamp2(coord2[1], -90, 90), "north", "south"),
-      longitude: displayCoordinate(wrap(coord2[0], -180, 180), "east", "west")
-    });
-  }
-  function decimalCoordinatePair(coord2) {
-    return _t("units.coordinate_pair", {
-      latitude: clamp2(coord2[1], -90, 90).toFixed(OSM_PRECISION),
-      longitude: wrap(coord2[0], -180, 180).toFixed(OSM_PRECISION)
-    });
-  }
-
   // modules/ui/panels/location.js
   function uiPanelLocation(context) {
     var currLocation = "";
@@ -61108,7 +61152,18 @@
         if (mode.id !== "select")
           return chapter.restart();
         _pointID = context.mode().selectedIDs()[0];
-        continueTo(searchPreset);
+        if (context.graph().geometry(_pointID) === "vertex") {
+          context.map().on("move.intro drawn.intro", null);
+          context.on("enter.intro", null);
+          reveal(pointBox2, helpHtml("intro.points.place_point_error"), {
+            buttonText: _t.html("intro.ok"),
+            buttonCallback: function() {
+              return chapter.restart();
+            }
+          });
+        } else {
+          continueTo(searchPreset);
+        }
       });
       function continueTo(nextStep) {
         context.map().on("move.intro drawn.intro", null);
@@ -65190,6 +65245,7 @@
   }
 
   // modules/ui/fields/combo.js
+  var showThirdPartyIcons = corePreferences("preferences.privacy.thirdpartyicons") || "true";
   function uiFieldCombo(field, context) {
     var dispatch14 = dispatch_default("change");
     var _isMulti = field.type === "multiCombo" || field.type === "manyCombo";
@@ -65395,7 +65451,10 @@
         return function(selection2) {
           var span = selection2.insert("span", ":first-child").attr("class", "tag-value-icon");
           if (iconsField.icons[value]) {
-            span.call(svgIcon("#".concat(iconsField.icons[value])));
+            const isExternal = iconsField.icons[value].startsWith("https://") && showThirdPartyIcons === "true";
+            span.call(
+              isExternal ? svgIconExternal(iconsField.icons[value]) : svgIcon("#".concat(iconsField.icons[value]))
+            );
           }
           disp.call(this, selection2);
         };
@@ -65486,8 +65545,8 @@
       trafficSignsPromise.then((trafficSignsDB) => {
         const signIds = values.split(/[;,]+/).map((signId) => signId.split("[")[0]);
         const URLs = signIds.map((signId) => {
-          var _a3, _b;
-          return (_b = (_a3 = trafficSignsDB[countryCode]) == null ? void 0 : _a3[signId]) == null ? void 0 : _b[0];
+          var _a2, _b;
+          return (_b = (_a2 = trafficSignsDB[countryCode]) == null ? void 0 : _a2[signId]) == null ? void 0 : _b[0];
         }).filter(Boolean);
         trafficPreview.selectAll("img").remove();
         trafficPreview.selectAll("img").data(URLs, (d2) => d2).enter().append("img").attr("src", (d2) => d2);
@@ -65598,7 +65657,10 @@
       if (iconsField.icons) {
         container.selectAll(".tag-value-icon").remove();
         if (iconsField.icons[value]) {
-          container.selectAll(".tag-value-icon").data([value]).enter().insert("div", "input").attr("class", "tag-value-icon").call(svgIcon("#".concat(iconsField.icons[value])));
+          const isExternal = iconsField.icons[value].startsWith("https://") && showThirdPartyIcons === "true";
+          container.selectAll(".tag-value-icon").data([value]).enter().insert("div", "input").attr("class", "tag-value-icon").call(
+            isExternal ? svgIconExternal(iconsField.icons[value]) : svgIcon("#".concat(iconsField.icons[value]))
+          );
         }
       }
     }
@@ -65709,9 +65771,11 @@
           const field_buttons2 = selection2.select(".field_buttons");
           const clean_value = d2.value.trim();
           text_span.text("");
+          if (!field_buttons2.select("button").empty()) {
+            field_buttons2.select("button").remove();
+          }
           if (clean_value.startsWith("https://")) {
             text_span.text(clean_value);
-            field_buttons2.select("button").remove();
             field_buttons2.append("button").call(svgIcon("#iD-icon-out-link")).attr("class", "form-field-button foreign-id-permalink").attr("title", () => _t("icons.visit_website")).attr("aria-label", () => _t("icons.visit_website")).on("click", function(d3_event) {
               d3_event.preventDefault();
               window.open(clean_value, "_blank");
@@ -66062,17 +66126,17 @@
         input.attr("placeholder", format2);
     }
     function validIdentifierValueForLink() {
-      var _a3;
+      var _a2;
       const value = utilGetSetValue(input).trim();
       if (field.type === "url" && value) {
         try {
           return new URL(value).href;
-        } catch (e3) {
+        } catch {
           return null;
         }
       }
       if (field.type === "identifier" && field.pattern) {
-        return value && ((_a3 = value.match(new RegExp(field.pattern))) == null ? void 0 : _a3[0]);
+        return value && ((_a2 = value.match(new RegExp(field.pattern))) == null ? void 0 : _a2[0]);
       }
       if (field.type === "schedule") {
         return value;
@@ -66144,11 +66208,11 @@
       return i3;
     };
     i3.tags = function(tags) {
-      var _a3;
+      var _a2;
       _tags = tags;
       const vals = getVals(tags);
       const isMixed = vals.size > 1;
-      var val = vals.size === 1 ? (_a3 = [...vals][0]) != null ? _a3 : "" : "";
+      var val = vals.size === 1 ? (_a2 = [...vals][0]) != null ? _a2 : "" : "";
       var shouldUpdate;
       if (field.type === "number" && val) {
         var numbers2 = val.split(";");
@@ -66222,7 +66286,7 @@
       var enter = items.enter().append("li").attr("class", function(d2) {
         return "labeled-input preset-access-" + d2;
       });
-      enter.append("span").attr("class", "label preset-label-access").attr("for", function(d2) {
+      enter.append("div").attr("class", "label preset-label-access").attr("for", function(d2) {
         return "preset-input-access-" + d2;
       }).html(function(d2) {
         return field.t.html("types." + d2);
@@ -66278,6 +66342,12 @@
           motor_vehicle: "no"
         },
         steps: {
+          foot: "yes",
+          motor_vehicle: "no",
+          bicycle: "no",
+          horse: "no"
+        },
+        ladder: {
           foot: "yes",
           motor_vehicle: "no",
           bicycle: "no",
@@ -66807,12 +66877,12 @@
       wrap2 = selection2.selectAll(".form-field-input-wrap").data([0]);
       wrap2 = wrap2.enter().append("div").attr("class", "form-field-input-wrap form-field-input-" + field.type).merge(wrap2);
       var div = wrap2.selectAll("ul").data([0]);
-      div = div.enter().append("ul").attr("class", "rows").merge(div);
+      div = div.enter().append("ul").attr("class", "rows rows-table").merge(div);
       items = div.selectAll("li").data(field.keys);
       var enter = items.enter().append("li").attr("class", function(d2) {
         return "labeled-input preset-directionalcombo-" + stripcolon(d2);
       });
-      enter.append("span").attr("class", "label preset-label-directionalcombo").attr("for", function(d2) {
+      enter.append("div").attr("class", "label preset-label-directionalcombo").attr("for", function(d2) {
         return "preset-input-directionalcombo-" + stripcolon(d2);
       }).html(function(d2) {
         return field.t.html("types." + d2);
@@ -67516,7 +67586,7 @@
       });
       typeItem.exit().remove();
       var typeEnter = typeItem.enter().insert("li", ":first-child").attr("class", "labeled-input structure-type-item");
-      typeEnter.append("span").attr("class", "label structure-label-type").attr("for", "preset-input-" + selected).call(_t.append("inspector.radio.structure.type"));
+      typeEnter.append("div").attr("class", "label structure-label-type").attr("for", "preset-input-" + selected).call(_t.append("inspector.radio.structure.type"));
       typeEnter.append("div").attr("class", "structure-input-type-wrap");
       typeItem = typeItem.merge(typeEnter);
       if (typeField) {
@@ -67537,7 +67607,7 @@
       var layerItem = list2.selectAll(".structure-layer-item").data(layerField ? [layerField] : []);
       layerItem.exit().remove();
       var layerEnter = layerItem.enter().append("li").attr("class", "labeled-input structure-layer-item");
-      layerEnter.append("span").attr("class", "label structure-label-layer").attr("for", "preset-input-layer").call(_t.append("inspector.radio.structure.layer"));
+      layerEnter.append("div").attr("class", "label structure-label-layer").attr("for", "preset-input-layer").call(_t.append("inspector.radio.structure.layer"));
       layerEnter.append("div").attr("class", "structure-input-layer-wrap");
       layerItem = layerItem.merge(layerEnter);
       if (layerField) {
@@ -68123,7 +68193,7 @@
       var enter = items.enter().append("li").attr("class", function(d2) {
         return "labeled-input preset-wikidata-" + d2;
       });
-      enter.append("span").attr("class", "label").html(function(d2) {
+      enter.append("div").attr("class", "label").html(function(d2) {
         return _t.html("wikidata." + d2);
       });
       enter.append("input").attr("type", "text").call(utilNoAuto).classed("disabled", "true").attr("readonly", "true");
@@ -68322,6 +68392,8 @@
 
   // modules/ui/fields/wikipedia.js
   function uiFieldWikipedia(field, context) {
+    const scheme = "https://";
+    const domain = "wikipedia.org";
     const dispatch14 = dispatch_default("change");
     const wikipedia = services.wikipedia;
     const wikidata = services.wikidata;
@@ -68379,7 +68451,7 @@
         change(false);
       });
       let link3 = titleContainer.selectAll(".wiki-link").data([0]);
-      link3 = link3.enter().append("button").attr("class", "form-field-button wiki-link").attr("title", _t("icons.view_on", { domain: "wikipedia.org" })).call(svgIcon("#iD-icon-out-link")).merge(link3);
+      link3 = link3.enter().append("button").attr("class", "form-field-button wiki-link").attr("title", _t("icons.view_on", { domain })).call(svgIcon("#iD-icon-out-link")).merge(link3);
       link3.on("click", (d3_event) => {
         d3_event.preventDefault();
         if (_wikiURL)
@@ -68479,20 +68551,13 @@
         const nativeLangName = tagLangInfo[1];
         utilGetSetValue(_langInput, nativeLangName);
         utilGetSetValue(_titleInput, tagArticleTitle + (anchor ? "#" + anchor : ""));
-        if (anchor) {
-          try {
-            anchor = encodeURIComponent(anchor.replace(/ /g, "_")).replace(/%/g, ".");
-          } catch (e3) {
-            anchor = anchor.replace(/ /g, "_");
-          }
-        }
-        _wikiURL = "https://" + tagLang + ".wikipedia.org/wiki/" + tagArticleTitle.replace(/ /g, "_") + (anchor ? "#" + anchor : "");
+        _wikiURL = "".concat(scheme).concat(tagLang, ".").concat(domain, "/wiki/").concat(wiki.encodePath(tagArticleTitle, anchor));
       } else {
         utilGetSetValue(_titleInput, value);
         if (value && value !== "") {
           utilGetSetValue(_langInput, "");
           const defaultLangInfo = defaultLanguageInfo();
-          _wikiURL = "https://".concat(defaultLangInfo[2], ".wikipedia.org/w/index.php?fulltext=1&search=").concat(value);
+          _wikiURL = "".concat(scheme).concat(defaultLangInfo[2], ".").concat(domain, "/w/index.php?fulltext=1&search=").concat(value);
         } else {
           const shownOrDefaultLangInfo = language(
             true
@@ -68503,6 +68568,18 @@
         }
       }
     }
+    wiki.encodePath = (tagArticleTitle, anchor) => {
+      const underscoredTitle = tagArticleTitle.replace(/ /g, "_");
+      const uriEncodedUnderscoredTitle = encodeURIComponent(underscoredTitle);
+      const uriEncodedAnchorFragment = wiki.encodeURIAnchorFragment(anchor);
+      return "".concat(uriEncodedUnderscoredTitle).concat(uriEncodedAnchorFragment);
+    };
+    wiki.encodeURIAnchorFragment = (anchor) => {
+      if (!anchor)
+        return "";
+      const underscoredAnchor = anchor.replace(/ /g, "_");
+      return "#" + encodeURIComponent(underscoredAnchor);
+    };
     wiki.entityIDs = (val) => {
       if (!arguments.length)
         return _entityIDs;
@@ -68807,6 +68884,8 @@
       });
       var notShown = allowedFields.filter(function(field) {
         return !field.isShown();
+      }).sort(function(a2, b2) {
+        return a2.universal === b2.universal ? 0 : a2.universal ? 1 : -1;
       });
       var container = selection2.selectAll(".form-fields-container").data([0]);
       container = container.enter().append("div").attr("class", "form-fields-container " + (_klass || "")).merge(container);
@@ -70132,9 +70211,9 @@
       if (geom === "relation" && p2.tags && (p2.tags.type === "route" && p2.tags.route && routeSegments[p2.tags.route] || p2.tags.type === "waterway")) {
         geom = "route";
       }
-      const showThirdPartyIcons = corePreferences("preferences.privacy.thirdpartyicons") || "true";
+      const showThirdPartyIcons2 = corePreferences("preferences.privacy.thirdpartyicons") || "true";
       const isFallback = p2.isFallback && p2.isFallback();
-      const imageURL = showThirdPartyIcons === "true" && p2.imageURL;
+      const imageURL = showThirdPartyIcons2 === "true" && p2.imageURL;
       const picon = getIcon(p2, geom);
       const isCategory = !p2.setTags;
       const drawPoint = false;
@@ -70391,7 +70470,7 @@
     var _maxMembers = 1e3;
     function downloadMember(d3_event, d2) {
       d3_event.preventDefault();
-      select_default2(this.parentNode).classed("tag-reference-loading", true);
+      select_default2(this).classed("loading", true);
       context.loadEntity(d2.id, function() {
         section.reRender();
       });
@@ -70769,6 +70848,14 @@
         context.enter(modeSelect(context, [relation.id]).newFeature(true));
       }
     }
+    function downloadMembers(d3_event, d2) {
+      d3_event.preventDefault();
+      const button = select_default2(this);
+      button.classed("loading", true);
+      context.loadEntity(d2.relation.id, function() {
+        section.reRender();
+      });
+    }
     function deleteMembership(d3_event, d2) {
       this.blur();
       if (d2 === 0)
@@ -70873,8 +70960,14 @@
         const matched = _mainPresetIndex.match(d2.relation, context.graph());
         return utilDisplayName(d2.relation, matched.suggestion);
       });
+      labelEnter.append("button").attr("class", "members-download").attr("title", _t("icons.download")).call(svgIcon("#iD-icon-load")).on("click", downloadMembers);
       labelEnter.append("button").attr("class", "remove member-delete").attr("title", _t("icons.remove")).call(svgIcon("#iD-operation-delete")).on("click", deleteMembership);
       labelEnter.append("button").attr("class", "member-zoom").attr("title", _t("icons.zoom_to")).call(svgIcon("#iD-icon-framed-dot", "monochrome")).on("click", zoomToRelation);
+      items = items.merge(itemsEnter);
+      items.selectAll("button.members-download").classed("hide", (d2) => {
+        const graph = context.graph();
+        return d2.relation.members.every((m2) => graph.hasEntity(m2.id));
+      });
       var wrapEnter = itemsEnter.append("div").attr("class", "form-field-input-wrap form-field-input-member");
       wrapEnter.append("input").attr("class", "member-role").attr("id", function(d2) {
         return d2.domId;
@@ -71515,9 +71608,9 @@
       comments.call(replaceAvatars);
     }
     function replaceAvatars(selection2) {
-      var showThirdPartyIcons = corePreferences("preferences.privacy.thirdpartyicons") || "true";
+      var showThirdPartyIcons2 = corePreferences("preferences.privacy.thirdpartyicons") || "true";
       var osm = services.osm;
-      if (showThirdPartyIcons !== "true" || !osm)
+      if (showThirdPartyIcons2 !== "true" || !osm)
         return;
       var uids = {};
       _note.comments.forEach(function(d2) {
@@ -71707,8 +71800,12 @@
       });
       noteSave.exit().remove();
       var noteSaveEnter = noteSave.enter().append("div").attr("class", "note-save save-section cf");
-      noteSaveEnter.append("h4").attr("class", ".note-save-header").html(function() {
-        return _note.isNew() ? _t.html("note.newDescription") : _t.html("note.newComment");
+      noteSaveEnter.append("h4").attr("class", ".note-save-header").text("").each(function() {
+        if (_note.isNew()) {
+          _t.append("note.newDescription")(select_default2(this));
+        } else {
+          _t.append("note.newComment")(select_default2(this));
+        }
       });
       var commentTextarea = noteSaveEnter.append("textarea").attr("class", "new-comment-input").attr("placeholder", _t("note.inputPlaceholder")).attr("maxlength", 1e3).property("value", function(d2) {
         return d2.newComment;
@@ -71802,10 +71899,10 @@
       buttonSection = buttonSection.merge(buttonEnter);
       buttonSection.select(".cancel-button").on("click.cancel", clickCancel);
       buttonSection.select(".save-button").attr("disabled", isSaveDisabled).on("click.save", clickSave);
-      buttonSection.select(".status-button").attr("disabled", hasAuth ? null : true).html(function(d2) {
+      buttonSection.select(".status-button").attr("disabled", hasAuth ? null : true).each(function(d2) {
         var action = d2.status === "open" ? "close" : "open";
         var andComment = d2.newComment ? "_comment" : "";
-        return _t.html("note." + action + andComment);
+        _t.addOrUpdate("note." + action + andComment)(select_default2(this));
       }).on("click.status", clickStatus);
       buttonSection.select(".comment-button").attr("disabled", isSaveDisabled).on("click.comment", clickComment);
       function isSaveDisabled(d2) {
@@ -72142,6 +72239,18 @@
       summaryDetail.append("div").html(_t.html("success.changeset_id", {
         changeset_id: { html: '<a href="'.concat(changesetURL, '" target="_blank">').concat(_changeset2.id, "</a>") }
       }));
+      if (showDonationMessage !== false) {
+        const donationUrl = "https://supporting.openstreetmap.org/";
+        let supporting = body.append("div").attr("class", "save-supporting");
+        supporting.append("h3").call(_t.append("success.supporting.title"));
+        supporting.append("p").call(_t.append("success.supporting.details"));
+        table = supporting.append("table").attr("class", "supporting-table");
+        row = table.append("tr").attr("class", "supporting-row");
+        row.append("td").attr("class", "cell-icon supporting-icon").append("a").attr("target", "_blank").attr("href", donationUrl).append("svg").attr("class", "logo-small").append("use").attr("xlink:href", "#iD-donation");
+        let supportingDetail = row.append("td").attr("class", "cell-detail supporting-detail");
+        supportingDetail.append("a").attr("class", "cell-detail support-the-map").attr("target", "_blank").attr("href", donationUrl).call(_t.append("success.supporting.donation.title"));
+        supportingDetail.append("div").call(_t.append("success.supporting.donation.details"));
+      }
       ensureOSMCommunityIndex().then((oci) => {
         const loc = context.map().center();
         const validHere = _sharedLocationManager.locationSetsAt(loc);
@@ -73228,7 +73337,7 @@
         var q2 = search.property("value").toLowerCase();
         if (!q2)
           return result;
-        var locationMatch = sexagesimal.pair(q2.toUpperCase()) || q2.match(/^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)$/);
+        var locationMatch = sexagesimal.pair(q2.toUpperCase()) || dmsMatcher(q2);
         if (locationMatch) {
           var loc = [Number(locationMatch[0]), Number(locationMatch[1])];
           result.push({
@@ -74333,10 +74442,10 @@
         ("PointerEvent" in window ? "pointer" : "mouse") + "down",
         // 'click' fires too late - #5878
         (d3_event, d2) => {
-          var _a3;
+          var _a2;
           if (d3_event.button !== 0)
             return;
-          const url = (_a3 = tag2Link == null ? void 0 : tag2Link.get(d2.key)) == null ? void 0 : _a3.replace(/\$1/g, d2.value);
+          const url = (_a2 = tag2Link == null ? void 0 : tag2Link.get(d2.key)) == null ? void 0 : _a2.replace(/\$1/g, d2.value);
           if (!url)
             return;
           window.open(url, "_blank");
@@ -74551,8 +74660,6 @@
         return;
       if (typeof d2.value !== "string" && !this.value)
         return;
-      if (!this.value.trim())
-        return removeTag(d3_event, d2);
       if (_pendingChange && _pendingChange.hasOwnProperty(d2.key) && _pendingChange[d2.key] === void 0)
         return;
       _pendingChange = _pendingChange || {};
@@ -75397,7 +75504,7 @@
         if (notesEnabled()) {
           tools = tools.concat([notes, "spacer"]);
         }
-        tools = tools.concat([betaInfo, undoRedo, save]);
+        tools = tools.concat([undoRedo, save, betaInfo]);
         var toolbarItems = bar.selectAll(".toolbar-item").data(tools, function(d2) {
           return d2.id || d2;
         });
@@ -77147,12 +77254,12 @@
       context.layers().on("change", () => updatePhotoList(photoList.select("ul")));
     }
     function updatePhotoList(container) {
-      var _a3;
+      var _a2;
       function locationUnavailable(d2) {
         return !(isArray_default(d2.loc) && isNumber_default(d2.loc[0]) && isNumber_default(d2.loc[1]));
       }
       container.selectAll("li.placeholder").remove();
-      let selection2 = container.selectAll("li").data((_a3 = photoLayer.getPhotos()) != null ? _a3 : [], (d2) => d2.id);
+      let selection2 = container.selectAll("li").data((_a2 = photoLayer.getPhotos()) != null ? _a2 : [], (d2) => d2.id);
       selection2.exit().remove();
       const selectionEnter = selection2.enter().append("li");
       selectionEnter.append("span").classed("filename", true);
@@ -77209,8 +77316,8 @@
         return layerSupported(d2) && d2.layer.enabled();
       }
       function layerRendered(d2) {
-        var _a3, _b, _c;
-        return (_c = (_b = (_a3 = d2.layer).rendered) == null ? void 0 : _b.call(_a3, context.map().zoom())) != null ? _c : true;
+        var _a2, _b, _c;
+        return (_c = (_b = (_a2 = d2.layer).rendered) == null ? void 0 : _b.call(_a2, context.map().zoom())) != null ? _c : true;
       }
       var ul = selection2.selectAll(".layer-list-photos").data([0]);
       ul = ul.enter().append("ul").attr("class", "layer-list layer-list-photos").merge(ul);
@@ -78170,7 +78277,7 @@
 
   // modules/core/planar.js
   function parseDistanceWithUnit(tagValue, defaultUnit) {
-    var _a3;
+    var _a2;
     if (!tagValue)
       return void 0;
     const imperialCombo = tagValue.match(/([\d.]+) *('|′|ft|foot|feet) *([\d.]+) *("|″|in|inch|inches)/);
@@ -78179,7 +78286,7 @@
       const inches = +imperialCombo[3];
       return feet / 3.281 + inches / 39.37;
     }
-    const unit2 = ((_a3 = tagValue.match(/[^\d.]+/)) == null ? void 0 : _a3[0].trim()) || defaultUnit;
+    const unit2 = ((_a2 = tagValue.match(/[^\d.]+/)) == null ? void 0 : _a2[0].trim()) || defaultUnit;
     const value = parseFloat(tagValue);
     if (Number.isNaN(value))
       return void 0;
@@ -79105,6 +79212,17 @@
       _mainFileFetcher.get("nsi_features")
     ]).then((vals) => {
       Object.values(vals[0].presets).forEach((preset) => preset.suggestion = true);
+      Object.values(vals[0].presets).forEach((preset) => {
+        if (preset.tags["brand:wikidata"]) {
+          preset.removeTags = { "brand:wikipedia": "*", ...preset.removeTags || preset.addTags || preset.tags };
+        }
+        if (preset.tags["operator:wikidata"]) {
+          preset.removeTags = { "operator:wikipedia": "*", ...preset.removeTags || preset.addTags || preset.tags };
+        }
+        if (preset.tags["network:wikidata"]) {
+          preset.removeTags = { "network:wikipedia": "*", ...preset.removeTags || preset.addTags || preset.tags };
+        }
+      });
       _mainPresetIndex.merge({
         presets: vals[0].presets,
         featureCollection: vals[1]
@@ -80045,7 +80163,7 @@
   var _loadViewerPromise3;
   var _vegbilderCache;
   async function fetchAvailableLayers() {
-    var _a3, _b, _c;
+    var _a2, _b, _c;
     const params = {
       service: "WFS",
       request: "GetCapabilities",
@@ -80065,7 +80183,7 @@
     let node;
     const availableLayers = [];
     while ((node = l2.iterateNext()) !== null) {
-      const match = (_a3 = node.textContent) == null ? void 0 : _a3.match(regexMatcher);
+      const match = (_a2 = node.textContent) == null ? void 0 : _a2.match(regexMatcher);
       if (match) {
         availableLayers.push({
           name: match[0],
@@ -80447,7 +80565,7 @@
     // Reset is only necessary when interacting with the viewport because
     // this implicitly changes the currently selected bubble/sequence
     setStyles: function(context, hovered, reset) {
-      var _a3, _b;
+      var _a2, _b;
       if (reset) {
         context.container().selectAll(".viewfield-group").classed("highlighted", false).classed("hovered", false).classed("currentView", false);
         context.container().selectAll(".sequence").classed("highlighted", false).classed("currentView", false);
@@ -80455,7 +80573,7 @@
       const hoveredImageKey = hovered == null ? void 0 : hovered.key;
       const hoveredSequence = this.getSequenceForImage(hovered);
       const hoveredSequenceKey = hoveredSequence == null ? void 0 : hoveredSequence.key;
-      const hoveredImageKeys = (_a3 = hoveredSequence == null ? void 0 : hoveredSequence.images.map((d2) => d2.key)) != null ? _a3 : [];
+      const hoveredImageKeys = (_a2 = hoveredSequence == null ? void 0 : hoveredSequence.images.map((d2) => d2.key)) != null ? _a2 : [];
       const viewer = context.container().select(".photoviewer");
       const selected = viewer.empty() ? void 0 : viewer.datum();
       const selectedImageKey = selected == null ? void 0 : selected.key;
@@ -81721,7 +81839,7 @@
             try {
               var regex = new RegExp(regexString);
               regexes.push(regex);
-            } catch (e3) {
+            } catch {
             }
           }
         }
@@ -82396,64 +82514,11 @@
 
   // modules/services/streetside.js
   var import_rbush11 = __toESM(require_rbush_min());
-
-  // modules/util/jsonp_request.js
-  var jsonpCache = {};
-  window.jsonpCache = jsonpCache;
-  function jsonpRequest(url, callback) {
-    var request3 = {
-      abort: function() {
-      }
-    };
-    if (window.JSONP_FIX) {
-      if (window.JSONP_DELAY === 0) {
-        callback(window.JSONP_FIX);
-      } else {
-        var t2 = window.setTimeout(function() {
-          callback(window.JSONP_FIX);
-        }, window.JSONP_DELAY || 0);
-        request3.abort = function() {
-          window.clearTimeout(t2);
-        };
-      }
-      return request3;
-    }
-    function rand() {
-      var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-      var c2 = "";
-      var i3 = -1;
-      while (++i3 < 15)
-        c2 += chars.charAt(Math.floor(Math.random() * 52));
-      return c2;
-    }
-    function create2(url2) {
-      var e3 = url2.match(/callback=(\w+)/);
-      var c2 = e3 ? e3[1] : rand();
-      jsonpCache[c2] = function(data) {
-        if (jsonpCache[c2]) {
-          callback(data);
-        }
-        finalize();
-      };
-      function finalize() {
-        delete jsonpCache[c2];
-        script.remove();
-      }
-      request3.abort = finalize;
-      return "jsonpCache." + c2;
-    }
-    var cb = create2(url);
-    var script = select_default2("head").append("script").attr("type", "text/javascript").attr("src", url.replace(/(\{|%7B)callback(\}|%7D)/, cb));
-    return request3;
-  }
-
-  // modules/services/streetside.js
-  var bubbleApi = "https://dev.virtualearth.net/mapcontrol/HumanScaleServices/GetBubbles.ashx?";
-  var streetsideImagesApi = "https://t.ssl.ak.tiles.virtualearth.net/tiles/";
-  var bubbleAppKey = "AuftgJsO0Xs8Ts4M1xZUQJQXJNsvmh3IV8DkNieCiy3tCwCUMq76-WpkrBtNAuEm";
+  var streetsideApi = "https://dev.virtualearth.net/REST/v1/Imagery/MetaData/Streetside?mapArea={bbox}&key={key}&count={count}";
+  var maxResults2 = 500;
+  var bubbleAppKey = utilAesDecrypt("5c875730b09c6b422433e807e1ff060b6536c791dbfffcffc4c6b18a1bdba1f14593d151adb50e19e1be1ab19aef813bf135d0f103475e5c724dec94389e45d0");
   var pannellumViewerCSS2 = "pannellum/pannellum.css";
   var pannellumViewerJS2 = "pannellum/pannellum.js";
-  var maxResults2 = 2e3;
   var tileZoom3 = 16.5;
   var tiler7 = utilTiler().zoomExtent([tileZoom3, tileZoom3]).skipNullIsland(true);
   var dispatch11 = dispatch_default("loadedImages", "viewerChanged");
@@ -82507,37 +82572,37 @@
     const id2 = tile.id + "," + String(nextPage);
     if (cache.loaded[id2] || cache.inflight[id2])
       return;
-    cache.inflight[id2] = getBubbles(url, tile, (bubbles) => {
+    cache.inflight[id2] = getBubbles(url, tile, (response) => {
       cache.loaded[id2] = true;
       delete cache.inflight[id2];
-      if (!bubbles)
+      if (!response)
         return;
-      bubbles.shift();
-      const features = bubbles.map((bubble) => {
-        if (cache.points[bubble.id])
+      if (response.resourceSets[0].resources.length === maxResults2) {
+        const split = tile.extent.split();
+        loadNextTilePage2(which, url, { id: tile.id + ",a", extent: split[0] });
+        loadNextTilePage2(which, url, { id: tile.id + ",b", extent: split[1] });
+        loadNextTilePage2(which, url, { id: tile.id + ",c", extent: split[2] });
+        loadNextTilePage2(which, url, { id: tile.id + ",d", extent: split[3] });
+      }
+      const features = response.resourceSets[0].resources.map((bubble) => {
+        const bubbleId = bubble.imageUrl;
+        if (cache.points[bubbleId])
           return null;
-        const loc = [bubble.lo, bubble.la];
+        const loc = [bubble.lon, bubble.lat];
         const d2 = {
           loc,
-          key: bubble.id,
+          key: bubbleId,
+          imageUrl: bubble.imageUrl.replace(
+            "{subdomain}",
+            bubble.imageUrlSubdomains[0]
+          ),
           ca: bubble.he,
-          captured_at: bubble.cd,
+          captured_at: bubble.vintageEnd,
           captured_by: "microsoft",
-          // nbn: bubble.nbn,
-          // pbn: bubble.pbn,
-          // ad: bubble.ad,
-          // rn: bubble.rn,
-          pr: bubble.pr,
-          // previous
-          ne: bubble.ne,
-          // next
           pano: true,
           sequenceKey: null
         };
-        cache.points[bubble.id] = d2;
-        if (bubble.pr === void 0) {
-          cache.leaders.push(bubble.id);
-        }
+        cache.points[bubbleId] = d2;
         return {
           minX: loc[0],
           minY: loc[1],
@@ -82547,67 +82612,32 @@
         };
       }).filter(Boolean);
       cache.rtree.load(features);
-      connectSequences();
       if (which === "bubbles") {
         dispatch11.call("loadedImages");
       }
     });
   }
-  function connectSequences() {
-    let cache = _ssCache.bubbles;
-    let keepLeaders = [];
-    for (let i3 = 0; i3 < cache.leaders.length; i3++) {
-      let bubble = cache.points[cache.leaders[i3]];
-      let seen = {};
-      let sequence = { key: bubble.key, bubbles: [] };
-      let complete = false;
-      do {
-        sequence.bubbles.push(bubble);
-        seen[bubble.key] = true;
-        if (bubble.ne === void 0) {
-          complete = true;
-        } else {
-          bubble = cache.points[bubble.ne];
-        }
-      } while (bubble && !seen[bubble.key] && !complete);
-      if (complete) {
-        _ssCache.sequences[sequence.key] = sequence;
-        for (let j2 = 0; j2 < sequence.bubbles.length; j2++) {
-          sequence.bubbles[j2].sequenceKey = sequence.key;
-        }
-        sequence.geojson = {
-          type: "LineString",
-          properties: {
-            captured_at: sequence.bubbles[0] ? sequence.bubbles[0].captured_at : null,
-            captured_by: sequence.bubbles[0] ? sequence.bubbles[0].captured_by : null,
-            key: sequence.key
-          },
-          coordinates: sequence.bubbles.map((d2) => d2.loc)
-        };
-      } else {
-        keepLeaders.push(cache.leaders[i3]);
-      }
-    }
-    cache.leaders = keepLeaders;
-  }
   function getBubbles(url, tile, callback) {
     let rect = tile.extent.rectangle();
-    let urlForRequest = url + utilQsString({
-      n: rect[3],
-      s: rect[1],
-      e: rect[2],
-      w: rect[0],
-      c: maxResults2,
-      appkey: bubbleAppKey,
-      jsCallback: "{callback}"
-    });
-    return jsonpRequest(urlForRequest, (data) => {
-      if (!data || data.error) {
+    let urlForRequest = url.replace("{key}", bubbleAppKey).replace("{bbox}", [rect[1], rect[0], rect[3], rect[2]].join(",")).replace("{count}", maxResults2);
+    const controller = new AbortController();
+    fetch(urlForRequest, { signal: controller.signal }).then(function(response) {
+      if (!response.ok) {
+        throw new Error(response.status + " " + response.statusText);
+      }
+      return response.json();
+    }).then(function(result) {
+      if (!result) {
         callback(null);
+      }
+      return callback(result || []);
+    }).catch(function(err) {
+      if (err.name === "AbortError") {
       } else {
-        callback(data);
+        throw new Error(err);
       }
     });
+    return controller;
   }
   function partitionViewport4(projection2) {
     let z2 = geoScaleToZoom(projection2.scale());
@@ -83046,7 +83076,7 @@
         Object.values(_ssCache.bubbles.inflight).forEach(abortRequest6);
       }
       _ssCache = {
-        bubbles: { inflight: {}, loaded: {}, nextPage: {}, rtree: new import_rbush11.default(), points: {}, leaders: [] },
+        bubbles: { inflight: {}, loaded: {}, nextPage: {}, rtree: new import_rbush11.default(), points: {} },
         sequences: {}
       };
     },
@@ -83082,7 +83112,7 @@
     loadBubbles: function(projection2, margin) {
       if (margin === void 0)
         margin = 2;
-      loadTiles3("bubbles", bubbleApi, projection2, margin);
+      loadTiles3("bubbles", streetsideApi, projection2, margin);
     },
     viewer: function() {
       return _pannellumViewer2;
@@ -83282,13 +83312,6 @@
       let line2 = attribution.append("div").attr("class", "attribution-row");
       line2.append("a").attr("class", "image-view-link").attr("target", "_blank").attr("href", "https://www.bing.com/maps?cp=" + d2.loc[1] + "~" + d2.loc[0] + "&lvl=17&dir=" + d2.ca + "&style=x&v=2&sV=1").call(_t.append("streetside.view_on_bing"));
       line2.append("a").attr("class", "image-report-link").attr("target", "_blank").attr("href", "https://www.bing.com/maps/privacyreport/streetsideprivacyreport?bubbleid=" + encodeURIComponent(d2.key) + "&focus=photo&lat=" + d2.loc[1] + "&lng=" + d2.loc[0] + "&z=17").call(_t.append("streetside.report"));
-      let bubbleIdQuadKey = d2.key.toString(4);
-      const paddingNeeded = 16 - bubbleIdQuadKey.length;
-      for (let i3 = 0; i3 < paddingNeeded; i3++) {
-        bubbleIdQuadKey = "0" + bubbleIdQuadKey;
-      }
-      const imgUrlPrefix = streetsideImagesApi + "hs" + bubbleIdQuadKey;
-      const imgUrlSuffix = ".jpg?g=13515&n=z";
       const faceKeys = ["01", "02", "03", "10", "11", "12"];
       let quadKeys = getQuadKeys();
       let faces = faceKeys.map((faceKey) => {
@@ -83296,7 +83319,7 @@
           const xy = qkToXY(quadKey);
           return {
             face: faceKey,
-            url: imgUrlPrefix + faceKey + quadKey + imgUrlSuffix,
+            url: d2.imageUrl.replace("{faceId}", faceKey).replace("{tileId}", quadKey),
             x: xy[0],
             y: xy[1]
           };
@@ -84431,6 +84454,8 @@
       attribution.append("a").attr("class", "image-link").attr("target", "_blank").attr("href", "https://mapilio.com/app?lat=".concat(d2.loc[1], "&lng=").concat(d2.loc[0], "&zoom=17&pId=").concat(d2.id)).text("mapilio.com");
       wrap2.transition().duration(100).call(imgZoom3.transform, identity2);
       wrap2.selectAll("img").remove();
+      wrap2.selectAll("button.back").classed("hide", !_cache4.images.forImageId.hasOwnProperty(+id2 - 1));
+      wrap2.selectAll("button.forward").classed("hide", !_cache4.images.forImageId.hasOwnProperty(+id2 + 1));
       getImageData(d2.id, d2.sequence_id).then(function() {
         if (d2.isPano) {
           if (!_pannellumViewer3) {
@@ -84484,8 +84509,8 @@
       let wrapEnter = wrap2.enter().append("div").attr("class", "photo-wrapper mapilio-wrapper").classed("hide", true).on("dblclick.zoom", null);
       wrapEnter.append("div").attr("class", "photo-attribution fillD");
       const controlsEnter = wrapEnter.append("div").attr("class", "photo-controls-wrap").append("div").attr("class", "photo-controls-mapilio");
-      controlsEnter.append("button").on("click.back", step(-1)).text("\u25C4");
-      controlsEnter.append("button").on("click.forward", step(1)).text("\u25BA");
+      controlsEnter.append("button").classed("back", true).on("click.back", step(-1)).text("\u25C4");
+      controlsEnter.append("button").classed("forward", true).on("click.forward", step(1)).text("\u25BA");
       wrapEnter.append("div").attr("id", "ideditor-viewer-mapilio-pnlm");
       wrapEnter.append("div").attr("id", "ideditor-viewer-mapilio-simple-wrap").call(imgZoom3.on("zoom", zoomPan2)).append("div").attr("id", "ideditor-viewer-mapilio-simple");
       context.ui().photoviewer.on("resize.mapilio", () => {

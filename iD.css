@@ -451,12 +451,14 @@
 
 
 /* Wikidata-tagged */
-.ideditor g.point.tag-wikidata path.stroke {
+.ideditor g.point.tag-wikidata path.stroke,
+.ideditor g.vertex.tag-wikidata circle.stroke {
     stroke-width: 2px;
     stroke: #666;
     fill: #eee;
 }
-.ideditor g.point.tag-wikidata .icon {
+.ideditor g.point.tag-wikidata .icon,
+.ideditor g.vertex.tag-wikidata .icon {
     color: #666;
 }
 
@@ -1202,6 +1204,7 @@
 .ideditor path.line.shadow.tag-highway-cycleway,
 .ideditor path.line.shadow.tag-highway-bridleway,
 .ideditor path.line.shadow.tag-highway-corridor,
+.ideditor path.line.shadow.tag-highway-ladder,
 .ideditor path.line.shadow.tag-highway-steps {
     stroke-width: 16;
 }
@@ -1210,6 +1213,7 @@
 .ideditor path.line.casing.tag-highway-cycleway,
 .ideditor path.line.casing.tag-highway-bridleway,
 .ideditor path.line.casing.tag-highway-corridor,
+.ideditor path.line.casing.tag-highway-ladder,
 .ideditor path.line.casing.tag-highway-steps {
     stroke-width: 5;
 }
@@ -1218,6 +1222,7 @@
 .ideditor path.line.stroke.tag-highway-cycleway,
 .ideditor path.line.stroke.tag-highway-bridleway,
 .ideditor path.line.stroke.tag-highway-corridor,
+.ideditor path.line.stroke.tag-highway-ladder,
 .ideditor path.line.stroke.tag-highway-steps {
     stroke-width: 3;
 }
@@ -1255,6 +1260,7 @@
 .ideditor .low-zoom path.line.shadow.tag-highway-cycleway,
 .ideditor .low-zoom path.line.shadow.tag-highway-bridleway,
 .ideditor .low-zoom path.line.shadow.tag-highway-corridor,
+.ideditor .low-zoom path.line.shadow.tag-highway-ladder,
 .ideditor .low-zoom path.line.shadow.tag-highway-steps {
     stroke-width: 12;
 }
@@ -1263,6 +1269,7 @@
 .ideditor .low-zoom path.line.casing.tag-highway-cycleway,
 .ideditor .low-zoom path.line.casing.tag-highway-bridleway,
 .ideditor .low-zoom path.line.casing.tag-highway-corridor,
+.ideditor .low-zoom path.line.casing.tag-highway-ladder,
 .ideditor .low-zoom path.line.casing.tag-highway-steps {
     stroke-width: 3;
 }
@@ -1271,6 +1278,7 @@
 .ideditor .low-zoom path.line.stroke.tag-highway-cycleway,
 .ideditor .low-zoom path.line.stroke.tag-highway-bridleway,
 .ideditor .low-zoom path.line.stroke.tag-highway-corridor,
+.ideditor .low-zoom path.line.stroke.tag-highway-ladder,
 .ideditor .low-zoom path.line.stroke.tag-highway-steps {
     stroke-width: 1;
 }
@@ -1487,6 +1495,27 @@
     stroke: #fff;
 }
 
+/* shared paths */
+.ideditor path.line.casing.tag-highway-cycleway.tag-bicycle-designated.tag-foot-designated:not(.tag-crossing),
+.ideditor path.line.casing.tag-highway-path.tag-bicycle-designated.tag-foot-designated:not(.tag-crossing) {
+    stroke: #fff;
+}
+.ideditor .preset-icon .icon.tag-highway-cycleway.tag-bicycle-designated.tag-foot-designated,
+.ideditor .preset-icon .icon.tag-highway-path.tag-bicycle-designated.tag-foot-designated {
+    color: #b458ed;
+    fill: #fff;
+}
+.ideditor path.line.stroke.tag-highway-cycleway.tag-bicycle-designated.tag-foot-designated,
+.ideditor path.line.stroke.tag-highway-path.tag-bicycle-designated.tag-foot-designated,
+.ideditor .preset-icon-container path.casing.tag-highway-cycleway.tag-bicycle-designated.tag-foot-designated,
+.ideditor .preset-icon-container path.casing.tag-highway-path.tag-bicycle-designated.tag-foot-designated {
+    stroke: #b458ed;
+}
+.ideditor .preset-icon-container path.stroke.tag-highway-cycleway.tag-bicycle-designated.tag-foot-designated:not(.tag-crossing),
+.ideditor .preset-icon-container path.stroke.tag-highway-path.tag-bicycle-designated.tag-foot-designated:not(.tag-crossing) {
+    stroke: #fff;
+}
+
 /* bridleways */
 .ideditor .preset-icon .icon.tag-route-horse,
 .ideditor .preset-icon .icon.tag-highway-bridleway {
@@ -1514,27 +1543,34 @@
 }
 
 /* steps */
-.ideditor .preset-icon .icon.tag-highway-steps {
+.ideditor .preset-icon .icon.tag-highway-steps,
+.ideditor .preset-icon .icon.tag-highway-ladder {
     color: #81d25c;
     fill: #fff;
 }
-.ideditor path.line.stroke.tag-highway-steps {
+.ideditor path.line.stroke.tag-highway-steps,
+.ideditor path.line.stroke.tag-highway-ladder {
     stroke-linecap: butt;
     stroke-dasharray: 3, 3;
 }
-.ideditor .low-zoom path.line.stroke.tag-highway-steps {
+.ideditor .low-zoom path.line.stroke.tag-highway-steps,
+.ideditor .low-zoom path.line.stroke.tag-highway-ladder {
     stroke-dasharray: 2, 2;
 }
-.ideditor path.line.casing.tag-highway-steps {
+.ideditor path.line.casing.tag-highway-steps,
+.ideditor path.line.casing.tag-highway-ladder {
     stroke: #fff;
     stroke-linecap: round;
     stroke-dasharray: none;
 }
 .ideditor path.line.stroke.tag-highway-steps,
-.ideditor .preset-icon-container path.line.casing.tag-highway-steps {
+.ideditor path.line.stroke.tag-highway-ladder,
+.ideditor .preset-icon-container path.line.casing.tag-highway-steps,
+.ideditor .preset-icon-container path.line.casing.tag-highway-ladder {
     stroke: #81d25c;
 }
-.ideditor .preset-icon-container path.line.stroke.tag-highway-steps {
+.ideditor .preset-icon-container path.line.stroke.tag-highway-steps,
+.ideditor .preset-icon-container path.line.stroke.tag-highway-ladder {
     stroke: #fff;
 }
 
@@ -1587,6 +1623,7 @@
 /* highway midpoints */
 .ideditor g.midpoint.tag-highway-corridor .fill,
 .ideditor g.midpoint.tag-highway-steps .fill,
+.ideditor g.midpoint.tag-highway-ladder .fill,
 .ideditor g.midpoint.tag-highway-path .fill,
 .ideditor g.midpoint.tag-highway-footway .fill,
 .ideditor g.midpoint.tag-highway-cycleway .fill,
@@ -2187,6 +2224,7 @@
 .ideditor path.line.shadow.tag-highway-service.tag-bridge,
 .ideditor path.line.shadow.tag-highway-track.tag-bridge,
 .ideditor path.line.shadow.tag-highway-steps.tag-bridge,
+.ideditor path.line.shadow.tag-highway-ladder.tag-bridge,
 .ideditor path.line.shadow.tag-highway-footway.tag-bridge,
 .ideditor path.line.shadow.tag-highway-cycleway.tag-bridge,
 .ideditor path.line.shadow.tag-highway-bridleway.tag-bridge {
@@ -2200,6 +2238,7 @@
 .ideditor path.line.casing.tag-highway-service.tag-bridge,
 .ideditor path.line.casing.tag-highway-track.tag-bridge,
 .ideditor path.line.casing.tag-highway-steps.tag-bridge,
+.ideditor path.line.casing.tag-highway-ladder.tag-bridge,
 .ideditor path.line.casing.tag-highway-footway.tag-bridge,
 .ideditor path.line.casing.tag-highway-cycleway.tag-bridge,
 .ideditor path.line.casing.tag-highway-bridleway.tag-bridge {
@@ -2214,6 +2253,7 @@
 .ideditor .low-zoom path.line.shadow.tag-highway-service.tag-bridge,
 .ideditor .low-zoom path.line.shadow.tag-highway-track.tag-bridge,
 .ideditor .low-zoom path.line.shadow.tag-highway-steps.tag-bridge,
+.ideditor .low-zoom path.line.shadow.tag-highway-ladder.tag-bridge,
 .ideditor .low-zoom path.line.shadow.tag-highway-footway.tag-bridge,
 .ideditor .low-zoom path.line.shadow.tag-highway-cycleway.tag-bridge,
 .ideditor .low-zoom path.line.shadow.tag-highway-bridleway.tag-bridge {
@@ -2227,6 +2267,7 @@
 .ideditor .low-zoom path.line.casing.tag-highway-service.tag-bridge,
 .ideditor .low-zoom path.line.casing.tag-highway-track.tag-bridge,
 .ideditor .low-zoom path.line.casing.tag-highway-steps.tag-bridge,
+.ideditor .low-zoom path.line.casing.tag-highway-ladder.tag-bridge,
 .ideditor .low-zoom path.line.casing.tag-highway-footway.tag-bridge,
 .ideditor .low-zoom path.line.casing.tag-highway-cycleway.tag-bridge,
 .ideditor .low-zoom path.line.casing.tag-highway-bridleway.tag-bridge {
@@ -2355,14 +2396,18 @@
 .ideditor path.line.shadow.tag-highway.tag-status.tag-status-construction.tag-construction-footway,
 .ideditor path.line.shadow.tag-highway.tag-status.tag-status-construction.tag-construction-cycleway,
 .ideditor path.line.shadow.tag-highway.tag-status.tag-status-construction.tag-construction-bridleway,
-.ideditor path.line.shadow.tag-highway.tag-status.tag-status-construction.tag-construction-steps {
+.ideditor path.line.shadow.tag-highway.tag-status.tag-status-construction.tag-construction-corridor,
+.ideditor path.line.shadow.tag-highway.tag-status.tag-status-construction.tag-construction-steps,
+.ideditor path.line.shadow.tag-highway.tag-status.tag-status-construction.tag-construction-ladder {
     stroke-width: 15;
 }
 .ideditor path.line.casing.tag-highway.tag-status.tag-status-construction.tag-construction-path,
 .ideditor path.line.casing.tag-highway.tag-status.tag-status-construction.tag-construction-footway,
 .ideditor path.line.casing.tag-highway.tag-status.tag-status-construction.tag-construction-cycleway,
 .ideditor path.line.casing.tag-highway.tag-status.tag-status-construction.tag-construction-bridleway,
-.ideditor path.line.casing.tag-highway.tag-status.tag-status-construction.tag-construction-steps {
+.ideditor path.line.casing.tag-highway.tag-status.tag-status-construction.tag-construction-corridor,
+.ideditor path.line.casing.tag-highway.tag-status.tag-status-construction.tag-construction-steps,
+.ideditor path.line.casing.tag-highway.tag-status.tag-status-construction.tag-construction-ladder {
     stroke-width: 5;
     stroke-linecap: butt;
     stroke-dasharray: none
@@ -2371,7 +2416,9 @@
 .ideditor path.line.stroke.tag-highway.tag-status.tag-status-construction.tag-construction-footway,
 .ideditor path.line.stroke.tag-highway.tag-status.tag-status-construction.tag-construction-cycleway,
 .ideditor path.line.stroke.tag-highway.tag-status.tag-status-construction.tag-construction-bridleway,
-.ideditor path.line.stroke.tag-highway.tag-status.tag-status-construction.tag-construction-steps {
+.ideditor path.line.stroke.tag-highway.tag-status.tag-status-construction.tag-construction-corridor,
+.ideditor path.line.stroke.tag-highway.tag-status.tag-status-construction.tag-construction-steps,
+.ideditor path.line.stroke.tag-highway.tag-status.tag-status-construction.tag-construction-ladder {
     stroke-width: 4;
     stroke-linecap: butt;
     stroke-dasharray: 10, 10;
@@ -2382,28 +2429,32 @@
 .ideditor path.line.shadow.tag-highway.tag-status.tag-status-proposed.tag-proposed-footway,
 .ideditor path.line.shadow.tag-highway.tag-status.tag-status-proposed.tag-proposed-cycleway,
 .ideditor path.line.shadow.tag-highway.tag-status.tag-status-proposed.tag-proposed-bridleway,
-.ideditor path.line.shadow.tag-highway.tag-status.tag-status-proposed.tag-proposed-steps {
+.ideditor path.line.shadow.tag-highway.tag-status.tag-status-proposed.tag-proposed-steps,
+.ideditor path.line.shadow.tag-highway.tag-status.tag-status-proposed.tag-proposed-ladder {
     stroke-width: 15;
 }
 .ideditor path.line.casing.tag-highway.tag-status.tag-status-proposed.tag-proposed-path,
 .ideditor path.line.casing.tag-highway.tag-status.tag-status-proposed.tag-proposed-footway,
 .ideditor path.line.casing.tag-highway.tag-status.tag-status-proposed.tag-proposed-cycleway,
 .ideditor path.line.casing.tag-highway.tag-status.tag-status-proposed.tag-proposed-bridleway,
-.ideditor path.line.casing.tag-highway.tag-status.tag-status-proposed.tag-proposed-steps {
+.ideditor path.line.casing.tag-highway.tag-status.tag-status-proposed.tag-proposed-steps,
+.ideditor path.line.casing.tag-highway.tag-status.tag-status-proposed.tag-proposed-ladder {
     stroke-width: 4.5;
 }
 .ideditor path.line.casing.tag-highway.tag-bridge.tag-status.tag-status-proposed.tag-proposed-path,
 .ideditor path.line.casing.tag-highway.tag-bridge.tag-status.tag-status-proposed.tag-proposed-footway,
 .ideditor path.line.casing.tag-highway.tag-bridge.tag-status.tag-status-proposed.tag-proposed-cycleway,
 .ideditor path.line.casing.tag-highway.tag-bridge.tag-status.tag-status-proposed.tag-proposed-bridleway,
-.ideditor path.line.casing.tag-highway.tag-bridge.tag-status.tag-status-proposed.tag-proposed-steps {
+.ideditor path.line.casing.tag-highway.tag-bridge.tag-status.tag-status-proposed.tag-proposed-steps,
+.ideditor path.line.casing.tag-highway.tag-bridge.tag-status.tag-status-proposed.tag-proposed-ladder {
     stroke-width: 10;
 }
 .ideditor path.line.stroke.tag-highway.tag-status.tag-status-proposed.tag-proposed-path,
 .ideditor path.line.stroke.tag-highway.tag-status.tag-status-proposed.tag-proposed-footway,
 .ideditor path.line.stroke.tag-highway.tag-status.tag-status-proposed.tag-proposed-cycleway,
 .ideditor path.line.stroke.tag-highway.tag-status.tag-status-proposed.tag-proposed-bridleway,
-.ideditor path.line.stroke.tag-highway.tag-status.tag-status-proposed.tag-proposed-steps {
+.ideditor path.line.stroke.tag-highway.tag-status.tag-status-proposed.tag-proposed-steps,
+.ideditor path.line.stroke.tag-highway.tag-status.tag-status-proposed.tag-proposed-ladder {
     stroke-width: 3;
 }
 
@@ -2933,8 +2984,12 @@
     align-items: center;
 }
 
+.ideditor .mapillary-attribution-image-container {
+  height: auto;
+}
+
 .ideditor .mly-wrapper .mapillary-attribution-container .mapillary-attribution-username {
-    display: none;
+    padding: 0px 8px 0 6px;
 }
 
 .ideditor .mly-wrapper .mapillary-attribution-container .mapillary-attribution-date {
@@ -3409,6 +3464,11 @@
 .ideditor .preset-category-barrier svg.preset-icon-category-border path {
     stroke: rgb(200, 144, 144);
     fill: rgba(200, 144, 144, 0.3);
+}
+
+.ideditor .preset-category-seamark svg.preset-icon-category-border path {
+    stroke: rgb(198, 95, 224);
+    fill: rgba(198, 95, 224, 0.3);
 }
 
 .ideditor .preset-category-building svg.preset-icon-category-border path {
@@ -3965,6 +4025,12 @@
 .ideditor .icon-annotation {
     color: #333;
     vertical-align: baseline;
+}
+
+.ideditor button.loading .icon {
+    background-image: url(img/mini-loader.gif);
+    background-position: 0 0;
+    background-size: auto;
 }
 
 
@@ -5053,11 +5119,11 @@
     display: flex;
     flex-flow: row nowrap;
 }
-.ideditor .form-field ul.rows li.labeled-input > span,
 .ideditor .form-field ul.rows li.labeled-input > div {
     flex: 1 1 auto;
     width: 100%;
     border-radius: 0;
+    line-height: 0.95rem;
 }
 .ideditor .form-field ul.rows li input {
     border-radius: 0;
@@ -5087,6 +5153,27 @@
     max-width: 100%; */
     width: 100%;
     max-height: 100px;
+}
+/* Field - lists with labeled input items as table
+------------------------------------------------------- */
+.ideditor .form-field ul.rows.rows-table {
+    display: table;
+    width: 100%;
+}
+.ideditor .form-field ul.rows.rows-table li.labeled-input {
+    display: table-row;
+}
+.ideditor .form-field ul.rows.rows-table li.labeled-input > div:first-child {
+    display: table-cell;
+    width: auto;
+    max-width: 170px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.ideditor .form-field ul.rows.rows-table li.labeled-input > div:nth-child(2) {
+    display: table-cell;
+    width: auto;
 }
 
 
@@ -5508,6 +5595,7 @@
 .ideditor .form-field-input-roadheight input.roadheight-secondary-number,
 .ideditor .form-field-input-roadspeed input.roadspeed-number {
     flex-basis: 0;
+    width: 0;
 }
 .ideditor .form-field-input-roadheight input.roadheight-unit,
 .ideditor .form-field-input-roadheight input.roadheight-secondary-unit {
@@ -5839,9 +5927,8 @@
     display: block;
     padding: 5px 10px;
     border-top: 1px solid #ccc;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+    line-height: 0.95rem;
+    break: all;
 }
 
 .ideditor .combobox a.selected,
@@ -7912,6 +7999,7 @@
     z-index: 2;
     background: #000;
     border: #aaa 1px solid;
+    border-radius: 4px;
     box-shadow: 0 0 2em black;
 }
 .ideditor[dir='ltr'] .map-in-map {
@@ -8590,10 +8678,12 @@
 }
 
 .ideditor .save-summary,
+.ideditor .save-supporting,
 .ideditor .save-communityLinks {
     padding: 0px 20px 15px 20px;
 }
 
+.ideditor .save-supporting,
 .ideditor .save-communityLinks {
     border-top: 1px solid #ccc;
 }
@@ -8625,6 +8715,7 @@
 }
 
 .ideditor .summary-view-on-osm,
+.ideditor .support-the-map,
 .ideditor .community-name {
     font-size: 14px;
     font-weight: bold;
