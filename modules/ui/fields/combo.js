@@ -4,10 +4,11 @@ import { drag as d3_drag } from 'd3-drag';
 import * as countryCoder from '@rapideditor/country-coder';
 
 import { fileFetcher } from '../../core/file_fetcher';
+import { prefs } from '../../core/preferences';
 import { localizer, t } from '../../core/localizer';
 import { services } from '../../services';
 import { fuzzyMatch, uiCombobox } from '../combobox';
-import { svgIcon } from '../../svg/icon';
+import { svgIcon, svgIconExternal } from '../../svg/icon';
 
 import { utilKeybinding } from '../../util/keybinding';
 import { utilArrayUniq, utilDetect, utilGetSetValue, utilNoAuto, utilRebind, utilTotalExtent, utilUnicodeCharsCount } from '../../util';
@@ -23,6 +24,8 @@ export {
     uiFieldCombo as uiFieldSemiCombo,
     uiFieldCombo as uiFieldTypeCombo
 };
+
+const showThirdPartyIcons = prefs('preferences.privacy.thirdpartyicons') || 'true';
 
 export function uiFieldCombo(field, context) {
     var dispatch = d3_dispatch('change');
@@ -517,7 +520,15 @@ export function uiFieldCombo(field, context) {
                     .insert('span', ':first-child')
                     .attr('class', 'tag-value-icon');
                 if (field.icons[value]) {
-                    span.call(svgIcon(`#${field.icons[value]}`));
+                    const isExternal = (
+                        field.icons[value].startsWith('https://') &&
+                        showThirdPartyIcons === 'true'
+                    );
+                    span.call(
+                        isExternal
+                            ? svgIconExternal(field.icons[value])
+                            : svgIcon(`#${field.icons[value]}`)
+                    );
                 }
                 disp.call(this, selection);
             };
@@ -851,12 +862,20 @@ export function uiFieldCombo(field, context) {
         if (field.icons) {
             container.selectAll('.tag-value-icon').remove();
             if (field.icons[value]) {
+                const isExternal = (
+                    field.icons[value].startsWith('https://') &&
+                    showThirdPartyIcons === 'true'
+                );
                 container.selectAll('.tag-value-icon')
                     .data([value])
                     .enter()
                     .insert('div', 'input')
                     .attr('class', 'tag-value-icon')
-                    .call(svgIcon(`#${field.icons[value]}`));
+                    .call(
+                        isExternal
+                            ? svgIconExternal(field.icons[value])
+                            : svgIcon(`#${field.icons[value]}`)
+                    );
             }
         }
     }
