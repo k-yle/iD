@@ -271,11 +271,13 @@ export function svgLines(projection, context) {
                 function shouldReverse(entity) {
                     return (
                         entity.tags.oneway === '-1' ||
+                        entity.tags.conveying === 'backward' ||
                         entity.tags['railway:preferred_direction'] === 'backward'
                     );
                 },
                 function bothDirections(entity) {
                     return (
+                        entity.tags.conveying === 'reversible' ||
                         entity.tags.oneway === 'reversible' ||
                         entity.tags.oneway === 'alternating' ||
                         entity.tags['railway:bidirectional'] === 'regular' ||
