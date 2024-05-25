@@ -12,3 +12,14 @@ export function svgIcon<T extends BaseType = HTMLElement>(name: string, svgklass
             .attr('class', useklass!);
     };
 }
+
+export function svgIconExternal(url: string) {
+    return function drawIcon(selection: d3.Selection) {
+        selection.selectAll('img.icon')
+            .data([0])
+            .enter()
+            .append('img')
+            .attr('class', 'icon')
+            .attr('src', url);
+    };
+}
