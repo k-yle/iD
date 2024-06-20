@@ -65539,14 +65539,24 @@
     function updateTrafficSignPreview(newValue) {
       if (typeof newValue !== "string")
         return;
-      const [countryCode, values] = (newValue == null ? void 0 : newValue.split(":")) || [];
-      if (!countryCode || !values || !trafficSignsPromise)
+      let defaultCountryCode = newValue == null ? void 0 : newValue.split(":")[0].toUpperCase();
+      if (!defaultCountryCode || !trafficSignsPromise)
         return;
       trafficSignsPromise.then((trafficSignsDB) => {
-        const signIds = values.split(/[;,]+/).map((signId) => signId.split("[")[0]);
-        const URLs = signIds.map((signId) => {
+        const signs = newValue.split(/[;,]+/).map((_signId) => {
+          var _a2;
+          const signId = _signId.trim();
+          const countryCode = signId.includes(":") ? signId.split(":")[0].toUpperCase() : defaultCountryCode;
+          const code = signId.split(":").at(-1).split("[")[0].toUpperCase();
+          const variant = (_a2 = signId.split("[")[1]) == null ? void 0 : _a2.split("]")[0].toUpperCase();
+          return { countryCode, code, variant };
+        });
+        const URLs = signs.map((sign2) => {
           var _a2, _b;
-          return (_b = (_a2 = trafficSignsDB[countryCode]) == null ? void 0 : _a2[signId]) == null ? void 0 : _b[0];
+          const def2 = (_b = (_a2 = trafficSignsDB[sign2.countryCode]) == null ? void 0 : _a2[sign2.code]) == null ? void 0 : _b.urls;
+          if (!def2)
+            return void 0;
+          return def2[sign2.variant] || def2[""] || Object.values(def2)[0];
         }).filter(Boolean);
         trafficPreview.selectAll("img").remove();
         trafficPreview.selectAll("img").data(URLs, (d2) => d2).enter().append("img").attr("src", (d2) => d2);

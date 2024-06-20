@@ -5144,14 +5144,11 @@
 
 .ideditor .form-field-input-traffic-preview {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 8px;
     margin: 8px 0;
 }
 .ideditor .form-field-input-traffic-preview img {
-    /* min-width: 50px;
-    max-width: 100%; */
-    width: 100%;
     max-height: 100px;
 }
 /* Field - lists with labeled input items as table
