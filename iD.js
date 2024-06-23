@@ -65547,8 +65547,9 @@
           var _a2;
           const signId = _signId.trim();
           const countryCode = signId.includes(":") ? signId.split(":")[0].toUpperCase() : defaultCountryCode;
-          const code = signId.split(":").at(-1).split("[")[0].toUpperCase();
-          const variant = (_a2 = signId.split("[")[1]) == null ? void 0 : _a2.split("]")[0].toUpperCase();
+          const mainCode = signId.includes(":") ? signId.split(":").slice(1).join(":") : signId;
+          const code = mainCode.split("[")[0].toUpperCase();
+          const variant = (_a2 = mainCode.split("[")[1]) == null ? void 0 : _a2.split("]")[0].toUpperCase();
           return { countryCode, code, variant };
         });
         const URLs = signs.map((sign2) => {
