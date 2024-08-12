@@ -3655,19 +3655,29 @@
 .ideditor strong {
     font-weight: bold;
 }
+
+.ideditor .button-link,
 .ideditor a,
 .ideditor a:visited,
 .ideditor a:active {
     color: #7092ff;
 }
+.ideditor .button-link:focus,
 .ideditor a:focus {
     color: #597be7;
 }
 @media (hover: hover) {
+    .ideditor .button-link:hover,
     .ideditor a:hover {
         color: #597be7;
     }
 }
+
+.ideditor .button-link {
+    display: flex;
+    align-items: center;
+}
+
 .ideditor kbd {
     display: inline-block;
     text-align: center;
@@ -3927,6 +3937,9 @@
 .ideditor button.secondary-action:focus,
 .ideditor button.secondary-action:active {
     background: #cccccc;
+}
+.ideditor button.secondary-action.small {
+    padding: 2px 5px;
 }
 
 .ideditor button.action.disabled,

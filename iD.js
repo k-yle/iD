@@ -1124,17 +1124,17 @@
           obj.forEach(cb);
         } else if (isObject3(obj)) {
           Object.keys(obj).forEach(function(key) {
-            var val = obj[key];
-            cb(val, key);
+            var val2 = obj[key];
+            cb(val2, key);
           });
         }
       }
       function getTreeDepth(obj) {
         var depth = 0;
         if (Array.isArray(obj) || isObject3(obj)) {
-          forEach(obj, function(val) {
-            if (Array.isArray(val) || isObject3(val)) {
-              var tmpDepth = getTreeDepth(val);
+          forEach(obj, function(val2) {
+            if (Array.isArray(val2) || isObject3(val2)) {
+              var tmpDepth = getTreeDepth(val2);
               if (tmpDepth > depth) {
                 depth = tmpDepth;
               }
@@ -10638,11 +10638,11 @@
         readFields: function(readField, result, end) {
           end = end || this.length;
           while (this.pos < end) {
-            var val = this.readVarint(), tag2 = val >> 3, startPos = this.pos;
-            this.type = val & 7;
+            var val2 = this.readVarint(), tag2 = val2 >> 3, startPos = this.pos;
+            this.type = val2 & 7;
             readField(tag2, result, this);
             if (this.pos === startPos)
-              this.skip(val);
+              this.skip(val2);
           }
           return result;
         },
@@ -10650,57 +10650,57 @@
           return this.readFields(readField, result, this.readVarint() + this.pos);
         },
         readFixed32: function() {
-          var val = readUInt32(this.buf, this.pos);
+          var val2 = readUInt32(this.buf, this.pos);
           this.pos += 4;
-          return val;
+          return val2;
         },
         readSFixed32: function() {
-          var val = readInt32(this.buf, this.pos);
+          var val2 = readInt32(this.buf, this.pos);
           this.pos += 4;
-          return val;
+          return val2;
         },
         // 64-bit int handling is based on github.com/dpw/node-buffer-more-ints (MIT-licensed)
         readFixed64: function() {
-          var val = readUInt32(this.buf, this.pos) + readUInt32(this.buf, this.pos + 4) * SHIFT_LEFT_32;
+          var val2 = readUInt32(this.buf, this.pos) + readUInt32(this.buf, this.pos + 4) * SHIFT_LEFT_32;
           this.pos += 8;
-          return val;
+          return val2;
         },
         readSFixed64: function() {
-          var val = readUInt32(this.buf, this.pos) + readInt32(this.buf, this.pos + 4) * SHIFT_LEFT_32;
+          var val2 = readUInt32(this.buf, this.pos) + readInt32(this.buf, this.pos + 4) * SHIFT_LEFT_32;
           this.pos += 8;
-          return val;
+          return val2;
         },
         readFloat: function() {
-          var val = ieee754.read(this.buf, this.pos, true, 23, 4);
+          var val2 = ieee754.read(this.buf, this.pos, true, 23, 4);
           this.pos += 4;
-          return val;
+          return val2;
         },
         readDouble: function() {
-          var val = ieee754.read(this.buf, this.pos, true, 52, 8);
+          var val2 = ieee754.read(this.buf, this.pos, true, 52, 8);
           this.pos += 8;
-          return val;
+          return val2;
         },
         readVarint: function(isSigned) {
-          var buf = this.buf, val, b2;
+          var buf = this.buf, val2, b2;
           b2 = buf[this.pos++];
-          val = b2 & 127;
+          val2 = b2 & 127;
           if (b2 < 128)
-            return val;
+            return val2;
           b2 = buf[this.pos++];
-          val |= (b2 & 127) << 7;
+          val2 |= (b2 & 127) << 7;
           if (b2 < 128)
-            return val;
+            return val2;
           b2 = buf[this.pos++];
-          val |= (b2 & 127) << 14;
+          val2 |= (b2 & 127) << 14;
           if (b2 < 128)
-            return val;
+            return val2;
           b2 = buf[this.pos++];
-          val |= (b2 & 127) << 21;
+          val2 |= (b2 & 127) << 21;
           if (b2 < 128)
-            return val;
+            return val2;
           b2 = buf[this.pos];
-          val |= (b2 & 15) << 28;
-          return readVarintRemainder(val, isSigned, this);
+          val2 |= (b2 & 15) << 28;
+          return readVarintRemainder(val2, isSigned, this);
         },
         readVarint64: function() {
           return this.readVarint(true);
@@ -10808,8 +10808,8 @@
             arr.push(this.readSFixed64());
           return arr;
         },
-        skip: function(val) {
-          var type2 = val & 7;
+        skip: function(val2) {
+          var type2 = val2 & 7;
           if (type2 === Pbf.Varint)
             while (this.buf[this.pos++] > 127) {
             }
@@ -10842,51 +10842,51 @@
           this.pos = 0;
           return this.buf.subarray(0, this.length);
         },
-        writeFixed32: function(val) {
+        writeFixed32: function(val2) {
           this.realloc(4);
-          writeInt32(this.buf, val, this.pos);
+          writeInt32(this.buf, val2, this.pos);
           this.pos += 4;
         },
-        writeSFixed32: function(val) {
+        writeSFixed32: function(val2) {
           this.realloc(4);
-          writeInt32(this.buf, val, this.pos);
+          writeInt32(this.buf, val2, this.pos);
           this.pos += 4;
         },
-        writeFixed64: function(val) {
+        writeFixed64: function(val2) {
           this.realloc(8);
-          writeInt32(this.buf, val & -1, this.pos);
-          writeInt32(this.buf, Math.floor(val * SHIFT_RIGHT_32), this.pos + 4);
+          writeInt32(this.buf, val2 & -1, this.pos);
+          writeInt32(this.buf, Math.floor(val2 * SHIFT_RIGHT_32), this.pos + 4);
           this.pos += 8;
         },
-        writeSFixed64: function(val) {
+        writeSFixed64: function(val2) {
           this.realloc(8);
-          writeInt32(this.buf, val & -1, this.pos);
-          writeInt32(this.buf, Math.floor(val * SHIFT_RIGHT_32), this.pos + 4);
+          writeInt32(this.buf, val2 & -1, this.pos);
+          writeInt32(this.buf, Math.floor(val2 * SHIFT_RIGHT_32), this.pos + 4);
           this.pos += 8;
         },
-        writeVarint: function(val) {
-          val = +val || 0;
-          if (val > 268435455 || val < 0) {
-            writeBigVarint(val, this);
+        writeVarint: function(val2) {
+          val2 = +val2 || 0;
+          if (val2 > 268435455 || val2 < 0) {
+            writeBigVarint(val2, this);
             return;
           }
           this.realloc(4);
-          this.buf[this.pos++] = val & 127 | (val > 127 ? 128 : 0);
-          if (val <= 127)
+          this.buf[this.pos++] = val2 & 127 | (val2 > 127 ? 128 : 0);
+          if (val2 <= 127)
             return;
-          this.buf[this.pos++] = (val >>>= 7) & 127 | (val > 127 ? 128 : 0);
-          if (val <= 127)
+          this.buf[this.pos++] = (val2 >>>= 7) & 127 | (val2 > 127 ? 128 : 0);
+          if (val2 <= 127)
             return;
-          this.buf[this.pos++] = (val >>>= 7) & 127 | (val > 127 ? 128 : 0);
-          if (val <= 127)
+          this.buf[this.pos++] = (val2 >>>= 7) & 127 | (val2 > 127 ? 128 : 0);
+          if (val2 <= 127)
             return;
-          this.buf[this.pos++] = val >>> 7 & 127;
+          this.buf[this.pos++] = val2 >>> 7 & 127;
         },
-        writeSVarint: function(val) {
-          this.writeVarint(val < 0 ? -val * 2 - 1 : val * 2);
+        writeSVarint: function(val2) {
+          this.writeVarint(val2 < 0 ? -val2 * 2 - 1 : val2 * 2);
         },
-        writeBoolean: function(val) {
-          this.writeVarint(Boolean(val));
+        writeBoolean: function(val2) {
+          this.writeVarint(Boolean(val2));
         },
         writeString: function(str) {
           str = String(str);
@@ -10901,14 +10901,14 @@
           this.writeVarint(len);
           this.pos += len;
         },
-        writeFloat: function(val) {
+        writeFloat: function(val2) {
           this.realloc(4);
-          ieee754.write(this.buf, val, this.pos, true, 23, 4);
+          ieee754.write(this.buf, val2, this.pos, true, 23, 4);
           this.pos += 4;
         },
-        writeDouble: function(val) {
+        writeDouble: function(val2) {
           this.realloc(8);
-          ieee754.write(this.buf, val, this.pos, true, 52, 8);
+          ieee754.write(this.buf, val2, this.pos, true, 52, 8);
           this.pos += 8;
         },
         writeBytes: function(buffer) {
@@ -10973,44 +10973,44 @@
           this.writeTag(tag2, Pbf.Bytes);
           this.writeBytes(buffer);
         },
-        writeFixed32Field: function(tag2, val) {
+        writeFixed32Field: function(tag2, val2) {
           this.writeTag(tag2, Pbf.Fixed32);
-          this.writeFixed32(val);
+          this.writeFixed32(val2);
         },
-        writeSFixed32Field: function(tag2, val) {
+        writeSFixed32Field: function(tag2, val2) {
           this.writeTag(tag2, Pbf.Fixed32);
-          this.writeSFixed32(val);
+          this.writeSFixed32(val2);
         },
-        writeFixed64Field: function(tag2, val) {
+        writeFixed64Field: function(tag2, val2) {
           this.writeTag(tag2, Pbf.Fixed64);
-          this.writeFixed64(val);
+          this.writeFixed64(val2);
         },
-        writeSFixed64Field: function(tag2, val) {
+        writeSFixed64Field: function(tag2, val2) {
           this.writeTag(tag2, Pbf.Fixed64);
-          this.writeSFixed64(val);
+          this.writeSFixed64(val2);
         },
-        writeVarintField: function(tag2, val) {
+        writeVarintField: function(tag2, val2) {
           this.writeTag(tag2, Pbf.Varint);
-          this.writeVarint(val);
+          this.writeVarint(val2);
         },
-        writeSVarintField: function(tag2, val) {
+        writeSVarintField: function(tag2, val2) {
           this.writeTag(tag2, Pbf.Varint);
-          this.writeSVarint(val);
+          this.writeSVarint(val2);
         },
         writeStringField: function(tag2, str) {
           this.writeTag(tag2, Pbf.Bytes);
           this.writeString(str);
         },
-        writeFloatField: function(tag2, val) {
+        writeFloatField: function(tag2, val2) {
           this.writeTag(tag2, Pbf.Fixed32);
-          this.writeFloat(val);
+          this.writeFloat(val2);
         },
-        writeDoubleField: function(tag2, val) {
+        writeDoubleField: function(tag2, val2) {
           this.writeTag(tag2, Pbf.Fixed64);
-          this.writeDouble(val);
+          this.writeDouble(val2);
         },
-        writeBooleanField: function(tag2, val) {
-          this.writeVarintField(tag2, Boolean(val));
+        writeBooleanField: function(tag2, val2) {
+          this.writeVarintField(tag2, Boolean(val2));
         }
       };
       function readVarintRemainder(l2, s2, p2) {
@@ -11050,14 +11050,14 @@
         }
         return (high >>> 0) * 4294967296 + (low >>> 0);
       }
-      function writeBigVarint(val, pbf) {
+      function writeBigVarint(val2, pbf) {
         var low, high;
-        if (val >= 0) {
-          low = val % 4294967296 | 0;
-          high = val / 4294967296 | 0;
+        if (val2 >= 0) {
+          low = val2 % 4294967296 | 0;
+          high = val2 / 4294967296 | 0;
         } else {
-          low = ~(-val % 4294967296);
-          high = ~(-val / 4294967296);
+          low = ~(-val2 % 4294967296);
+          high = ~(-val2 / 4294967296);
           if (low ^ 4294967295) {
             low = low + 1 | 0;
           } else {
@@ -11065,7 +11065,7 @@
             high = high + 1 | 0;
           }
         }
-        if (val >= 18446744073709552e3 || val < -18446744073709552e3) {
+        if (val2 >= 18446744073709552e3 || val2 < -18446744073709552e3) {
           throw new Error("Given varint doesn't fit into 10 bytes");
         }
         pbf.realloc(10);
@@ -11147,11 +11147,11 @@
       function readUInt32(buf, pos) {
         return (buf[pos] | buf[pos + 1] << 8 | buf[pos + 2] << 16) + buf[pos + 3] * 16777216;
       }
-      function writeInt32(buf, val, pos) {
-        buf[pos] = val;
-        buf[pos + 1] = val >>> 8;
-        buf[pos + 2] = val >>> 16;
-        buf[pos + 3] = val >>> 24;
+      function writeInt32(buf, val2, pos) {
+        buf[pos] = val2;
+        buf[pos + 1] = val2 >>> 8;
+        buf[pos + 2] = val2 >>> 16;
+        buf[pos + 3] = val2 >>> 24;
       }
       function readInt32(buf, pos) {
         return (buf[pos] | buf[pos + 1] << 8 | buf[pos + 2] << 16) + (buf[pos + 3] << 24);
@@ -11957,6 +11957,4631 @@
         if (dim === "W" || dim === "E")
           return [b2, a2];
       }
+    }
+  });
+
+  // node_modules/osm-api/dist/index.js
+  var require_dist = __commonJS({
+    "node_modules/osm-api/dist/index.js"(exports2, module2) {
+      (function(f2) {
+        if (typeof exports2 === "object" && typeof module2 !== "undefined") {
+          module2.exports = f2();
+        } else if (typeof define === "function" && define.amd) {
+          define([], f2);
+        } else {
+          var g3;
+          if (typeof window !== "undefined") {
+            g3 = window;
+          } else if (typeof global !== "undefined") {
+            g3 = global;
+          } else if (typeof self !== "undefined") {
+            g3 = self;
+          } else {
+            g3 = this;
+          }
+          g3.OSM = f2();
+        }
+      })(function() {
+        var define2, module3, exports3;
+        return (/* @__PURE__ */ function() {
+          function r2(e3, n3, t2) {
+            function o2(i4, f2) {
+              if (!n3[i4]) {
+                if (!e3[i4]) {
+                  var c2 = "function" == typeof __require && __require;
+                  if (!f2 && c2)
+                    return c2(i4, true);
+                  if (u2)
+                    return u2(i4, true);
+                  var a2 = new Error("Cannot find module '" + i4 + "'");
+                  throw a2.code = "MODULE_NOT_FOUND", a2;
+                }
+                var p2 = n3[i4] = { exports: {} };
+                e3[i4][0].call(p2.exports, function(r3) {
+                  var n4 = e3[i4][1][r3];
+                  return o2(n4 || r3);
+                }, p2, p2.exports, r2, e3, n3, t2);
+              }
+              return n3[i4].exports;
+            }
+            for (var u2 = "function" == typeof __require && __require, i3 = 0; i3 < t2.length; i3++)
+              o2(t2[i3]);
+            return o2;
+          }
+          return r2;
+        }())({ 1: [function(require2, module4, exports4) {
+          "use strict";
+          exports4.byteLength = byteLength;
+          exports4.toByteArray = toByteArray;
+          exports4.fromByteArray = fromByteArray;
+          var lookup = [];
+          var revLookup = [];
+          var Arr = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
+          var code = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+          for (var i3 = 0, len = code.length; i3 < len; ++i3) {
+            lookup[i3] = code[i3];
+            revLookup[code.charCodeAt(i3)] = i3;
+          }
+          revLookup["-".charCodeAt(0)] = 62;
+          revLookup["_".charCodeAt(0)] = 63;
+          function getLens(b64) {
+            var len2 = b64.length;
+            if (len2 % 4 > 0) {
+              throw new Error("Invalid string. Length must be a multiple of 4");
+            }
+            var validLen = b64.indexOf("=");
+            if (validLen === -1)
+              validLen = len2;
+            var placeHoldersLen = validLen === len2 ? 0 : 4 - validLen % 4;
+            return [validLen, placeHoldersLen];
+          }
+          function byteLength(b64) {
+            var lens = getLens(b64);
+            var validLen = lens[0];
+            var placeHoldersLen = lens[1];
+            return (validLen + placeHoldersLen) * 3 / 4 - placeHoldersLen;
+          }
+          function _byteLength(b64, validLen, placeHoldersLen) {
+            return (validLen + placeHoldersLen) * 3 / 4 - placeHoldersLen;
+          }
+          function toByteArray(b64) {
+            var tmp;
+            var lens = getLens(b64);
+            var validLen = lens[0];
+            var placeHoldersLen = lens[1];
+            var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen));
+            var curByte = 0;
+            var len2 = placeHoldersLen > 0 ? validLen - 4 : validLen;
+            var i4;
+            for (i4 = 0; i4 < len2; i4 += 4) {
+              tmp = revLookup[b64.charCodeAt(i4)] << 18 | revLookup[b64.charCodeAt(i4 + 1)] << 12 | revLookup[b64.charCodeAt(i4 + 2)] << 6 | revLookup[b64.charCodeAt(i4 + 3)];
+              arr[curByte++] = tmp >> 16 & 255;
+              arr[curByte++] = tmp >> 8 & 255;
+              arr[curByte++] = tmp & 255;
+            }
+            if (placeHoldersLen === 2) {
+              tmp = revLookup[b64.charCodeAt(i4)] << 2 | revLookup[b64.charCodeAt(i4 + 1)] >> 4;
+              arr[curByte++] = tmp & 255;
+            }
+            if (placeHoldersLen === 1) {
+              tmp = revLookup[b64.charCodeAt(i4)] << 10 | revLookup[b64.charCodeAt(i4 + 1)] << 4 | revLookup[b64.charCodeAt(i4 + 2)] >> 2;
+              arr[curByte++] = tmp >> 8 & 255;
+              arr[curByte++] = tmp & 255;
+            }
+            return arr;
+          }
+          function tripletToBase64(num) {
+            return lookup[num >> 18 & 63] + lookup[num >> 12 & 63] + lookup[num >> 6 & 63] + lookup[num & 63];
+          }
+          function encodeChunk(uint8, start2, end) {
+            var tmp;
+            var output = [];
+            for (var i4 = start2; i4 < end; i4 += 3) {
+              tmp = (uint8[i4] << 16 & 16711680) + (uint8[i4 + 1] << 8 & 65280) + (uint8[i4 + 2] & 255);
+              output.push(tripletToBase64(tmp));
+            }
+            return output.join("");
+          }
+          function fromByteArray(uint8) {
+            var tmp;
+            var len2 = uint8.length;
+            var extraBytes = len2 % 3;
+            var parts = [];
+            var maxChunkLength = 16383;
+            for (var i4 = 0, len22 = len2 - extraBytes; i4 < len22; i4 += maxChunkLength) {
+              parts.push(encodeChunk(uint8, i4, i4 + maxChunkLength > len22 ? len22 : i4 + maxChunkLength));
+            }
+            if (extraBytes === 1) {
+              tmp = uint8[len2 - 1];
+              parts.push(
+                lookup[tmp >> 2] + lookup[tmp << 4 & 63] + "=="
+              );
+            } else if (extraBytes === 2) {
+              tmp = (uint8[len2 - 2] << 8) + uint8[len2 - 1];
+              parts.push(
+                lookup[tmp >> 10] + lookup[tmp >> 4 & 63] + lookup[tmp << 2 & 63] + "="
+              );
+            }
+            return parts.join("");
+          }
+        }, {}], 2: [function(require2, module4, exports4) {
+          (function(Buffer3) {
+            (function() {
+              "use strict";
+              var base642 = require2("base64-js");
+              var ieee754 = require2("ieee754");
+              exports4.Buffer = Buffer4;
+              exports4.SlowBuffer = SlowBuffer;
+              exports4.INSPECT_MAX_BYTES = 50;
+              var K_MAX_LENGTH = 2147483647;
+              exports4.kMaxLength = K_MAX_LENGTH;
+              Buffer4.TYPED_ARRAY_SUPPORT = typedArraySupport();
+              if (!Buffer4.TYPED_ARRAY_SUPPORT && typeof console !== "undefined" && typeof console.error === "function") {
+                console.error(
+                  "This browser lacks typed array (Uint8Array) support which is required by `buffer` v5.x. Use `buffer` v4.x if you require old browser support."
+                );
+              }
+              function typedArraySupport() {
+                try {
+                  var arr = new Uint8Array(1);
+                  arr.__proto__ = { __proto__: Uint8Array.prototype, foo: function() {
+                    return 42;
+                  } };
+                  return arr.foo() === 42;
+                } catch (e3) {
+                  return false;
+                }
+              }
+              Object.defineProperty(Buffer4.prototype, "parent", {
+                enumerable: true,
+                get: function() {
+                  if (!Buffer4.isBuffer(this))
+                    return void 0;
+                  return this.buffer;
+                }
+              });
+              Object.defineProperty(Buffer4.prototype, "offset", {
+                enumerable: true,
+                get: function() {
+                  if (!Buffer4.isBuffer(this))
+                    return void 0;
+                  return this.byteOffset;
+                }
+              });
+              function createBuffer(length2) {
+                if (length2 > K_MAX_LENGTH) {
+                  throw new RangeError('The value "' + length2 + '" is invalid for option "size"');
+                }
+                var buf = new Uint8Array(length2);
+                buf.__proto__ = Buffer4.prototype;
+                return buf;
+              }
+              function Buffer4(arg, encodingOrOffset, length2) {
+                if (typeof arg === "number") {
+                  if (typeof encodingOrOffset === "string") {
+                    throw new TypeError(
+                      'The "string" argument must be of type string. Received type number'
+                    );
+                  }
+                  return allocUnsafe(arg);
+                }
+                return from(arg, encodingOrOffset, length2);
+              }
+              if (typeof Symbol !== "undefined" && Symbol.species != null && Buffer4[Symbol.species] === Buffer4) {
+                Object.defineProperty(Buffer4, Symbol.species, {
+                  value: null,
+                  configurable: true,
+                  enumerable: false,
+                  writable: false
+                });
+              }
+              Buffer4.poolSize = 8192;
+              function from(value, encodingOrOffset, length2) {
+                if (typeof value === "string") {
+                  return fromString(value, encodingOrOffset);
+                }
+                if (ArrayBuffer.isView(value)) {
+                  return fromArrayLike(value);
+                }
+                if (value == null) {
+                  throw TypeError(
+                    "The first argument must be one of type string, Buffer, ArrayBuffer, Array, or Array-like Object. Received type " + typeof value
+                  );
+                }
+                if (isInstance(value, ArrayBuffer) || value && isInstance(value.buffer, ArrayBuffer)) {
+                  return fromArrayBuffer(value, encodingOrOffset, length2);
+                }
+                if (typeof value === "number") {
+                  throw new TypeError(
+                    'The "value" argument must not be of type number. Received type number'
+                  );
+                }
+                var valueOf = value.valueOf && value.valueOf();
+                if (valueOf != null && valueOf !== value) {
+                  return Buffer4.from(valueOf, encodingOrOffset, length2);
+                }
+                var b2 = fromObject(value);
+                if (b2)
+                  return b2;
+                if (typeof Symbol !== "undefined" && Symbol.toPrimitive != null && typeof value[Symbol.toPrimitive] === "function") {
+                  return Buffer4.from(
+                    value[Symbol.toPrimitive]("string"),
+                    encodingOrOffset,
+                    length2
+                  );
+                }
+                throw new TypeError(
+                  "The first argument must be one of type string, Buffer, ArrayBuffer, Array, or Array-like Object. Received type " + typeof value
+                );
+              }
+              Buffer4.from = function(value, encodingOrOffset, length2) {
+                return from(value, encodingOrOffset, length2);
+              };
+              Buffer4.prototype.__proto__ = Uint8Array.prototype;
+              Buffer4.__proto__ = Uint8Array;
+              function assertSize(size) {
+                if (typeof size !== "number") {
+                  throw new TypeError('"size" argument must be of type number');
+                } else if (size < 0) {
+                  throw new RangeError('The value "' + size + '" is invalid for option "size"');
+                }
+              }
+              function alloc(size, fill, encoding) {
+                assertSize(size);
+                if (size <= 0) {
+                  return createBuffer(size);
+                }
+                if (fill !== void 0) {
+                  return typeof encoding === "string" ? createBuffer(size).fill(fill, encoding) : createBuffer(size).fill(fill);
+                }
+                return createBuffer(size);
+              }
+              Buffer4.alloc = function(size, fill, encoding) {
+                return alloc(size, fill, encoding);
+              };
+              function allocUnsafe(size) {
+                assertSize(size);
+                return createBuffer(size < 0 ? 0 : checked(size) | 0);
+              }
+              Buffer4.allocUnsafe = function(size) {
+                return allocUnsafe(size);
+              };
+              Buffer4.allocUnsafeSlow = function(size) {
+                return allocUnsafe(size);
+              };
+              function fromString(string, encoding) {
+                if (typeof encoding !== "string" || encoding === "") {
+                  encoding = "utf8";
+                }
+                if (!Buffer4.isEncoding(encoding)) {
+                  throw new TypeError("Unknown encoding: " + encoding);
+                }
+                var length2 = byteLength(string, encoding) | 0;
+                var buf = createBuffer(length2);
+                var actual = buf.write(string, encoding);
+                if (actual !== length2) {
+                  buf = buf.slice(0, actual);
+                }
+                return buf;
+              }
+              function fromArrayLike(array2) {
+                var length2 = array2.length < 0 ? 0 : checked(array2.length) | 0;
+                var buf = createBuffer(length2);
+                for (var i3 = 0; i3 < length2; i3 += 1) {
+                  buf[i3] = array2[i3] & 255;
+                }
+                return buf;
+              }
+              function fromArrayBuffer(array2, byteOffset, length2) {
+                if (byteOffset < 0 || array2.byteLength < byteOffset) {
+                  throw new RangeError('"offset" is outside of buffer bounds');
+                }
+                if (array2.byteLength < byteOffset + (length2 || 0)) {
+                  throw new RangeError('"length" is outside of buffer bounds');
+                }
+                var buf;
+                if (byteOffset === void 0 && length2 === void 0) {
+                  buf = new Uint8Array(array2);
+                } else if (length2 === void 0) {
+                  buf = new Uint8Array(array2, byteOffset);
+                } else {
+                  buf = new Uint8Array(array2, byteOffset, length2);
+                }
+                buf.__proto__ = Buffer4.prototype;
+                return buf;
+              }
+              function fromObject(obj) {
+                if (Buffer4.isBuffer(obj)) {
+                  var len = checked(obj.length) | 0;
+                  var buf = createBuffer(len);
+                  if (buf.length === 0) {
+                    return buf;
+                  }
+                  obj.copy(buf, 0, 0, len);
+                  return buf;
+                }
+                if (obj.length !== void 0) {
+                  if (typeof obj.length !== "number" || numberIsNaN(obj.length)) {
+                    return createBuffer(0);
+                  }
+                  return fromArrayLike(obj);
+                }
+                if (obj.type === "Buffer" && Array.isArray(obj.data)) {
+                  return fromArrayLike(obj.data);
+                }
+              }
+              function checked(length2) {
+                if (length2 >= K_MAX_LENGTH) {
+                  throw new RangeError("Attempt to allocate Buffer larger than maximum size: 0x" + K_MAX_LENGTH.toString(16) + " bytes");
+                }
+                return length2 | 0;
+              }
+              function SlowBuffer(length2) {
+                if (+length2 != length2) {
+                  length2 = 0;
+                }
+                return Buffer4.alloc(+length2);
+              }
+              Buffer4.isBuffer = function isBuffer2(b2) {
+                return b2 != null && b2._isBuffer === true && b2 !== Buffer4.prototype;
+              };
+              Buffer4.compare = function compare2(a2, b2) {
+                if (isInstance(a2, Uint8Array))
+                  a2 = Buffer4.from(a2, a2.offset, a2.byteLength);
+                if (isInstance(b2, Uint8Array))
+                  b2 = Buffer4.from(b2, b2.offset, b2.byteLength);
+                if (!Buffer4.isBuffer(a2) || !Buffer4.isBuffer(b2)) {
+                  throw new TypeError(
+                    'The "buf1", "buf2" arguments must be one of type Buffer or Uint8Array'
+                  );
+                }
+                if (a2 === b2)
+                  return 0;
+                var x2 = a2.length;
+                var y2 = b2.length;
+                for (var i3 = 0, len = Math.min(x2, y2); i3 < len; ++i3) {
+                  if (a2[i3] !== b2[i3]) {
+                    x2 = a2[i3];
+                    y2 = b2[i3];
+                    break;
+                  }
+                }
+                if (x2 < y2)
+                  return -1;
+                if (y2 < x2)
+                  return 1;
+                return 0;
+              };
+              Buffer4.isEncoding = function isEncoding(encoding) {
+                switch (String(encoding).toLowerCase()) {
+                  case "hex":
+                  case "utf8":
+                  case "utf-8":
+                  case "ascii":
+                  case "latin1":
+                  case "binary":
+                  case "base64":
+                  case "ucs2":
+                  case "ucs-2":
+                  case "utf16le":
+                  case "utf-16le":
+                    return true;
+                  default:
+                    return false;
+                }
+              };
+              Buffer4.concat = function concat(list2, length2) {
+                if (!Array.isArray(list2)) {
+                  throw new TypeError('"list" argument must be an Array of Buffers');
+                }
+                if (list2.length === 0) {
+                  return Buffer4.alloc(0);
+                }
+                var i3;
+                if (length2 === void 0) {
+                  length2 = 0;
+                  for (i3 = 0; i3 < list2.length; ++i3) {
+                    length2 += list2[i3].length;
+                  }
+                }
+                var buffer = Buffer4.allocUnsafe(length2);
+                var pos = 0;
+                for (i3 = 0; i3 < list2.length; ++i3) {
+                  var buf = list2[i3];
+                  if (isInstance(buf, Uint8Array)) {
+                    buf = Buffer4.from(buf);
+                  }
+                  if (!Buffer4.isBuffer(buf)) {
+                    throw new TypeError('"list" argument must be an Array of Buffers');
+                  }
+                  buf.copy(buffer, pos);
+                  pos += buf.length;
+                }
+                return buffer;
+              };
+              function byteLength(string, encoding) {
+                if (Buffer4.isBuffer(string)) {
+                  return string.length;
+                }
+                if (ArrayBuffer.isView(string) || isInstance(string, ArrayBuffer)) {
+                  return string.byteLength;
+                }
+                if (typeof string !== "string") {
+                  throw new TypeError(
+                    'The "string" argument must be one of type string, Buffer, or ArrayBuffer. Received type ' + typeof string
+                  );
+                }
+                var len = string.length;
+                var mustMatch = arguments.length > 2 && arguments[2] === true;
+                if (!mustMatch && len === 0)
+                  return 0;
+                var loweredCase = false;
+                for (; ; ) {
+                  switch (encoding) {
+                    case "ascii":
+                    case "latin1":
+                    case "binary":
+                      return len;
+                    case "utf8":
+                    case "utf-8":
+                      return utf8ToBytes(string).length;
+                    case "ucs2":
+                    case "ucs-2":
+                    case "utf16le":
+                    case "utf-16le":
+                      return len * 2;
+                    case "hex":
+                      return len >>> 1;
+                    case "base64":
+                      return base64ToBytes(string).length;
+                    default:
+                      if (loweredCase) {
+                        return mustMatch ? -1 : utf8ToBytes(string).length;
+                      }
+                      encoding = ("" + encoding).toLowerCase();
+                      loweredCase = true;
+                  }
+                }
+              }
+              Buffer4.byteLength = byteLength;
+              function slowToString(encoding, start2, end) {
+                var loweredCase = false;
+                if (start2 === void 0 || start2 < 0) {
+                  start2 = 0;
+                }
+                if (start2 > this.length) {
+                  return "";
+                }
+                if (end === void 0 || end > this.length) {
+                  end = this.length;
+                }
+                if (end <= 0) {
+                  return "";
+                }
+                end >>>= 0;
+                start2 >>>= 0;
+                if (end <= start2) {
+                  return "";
+                }
+                if (!encoding)
+                  encoding = "utf8";
+                while (true) {
+                  switch (encoding) {
+                    case "hex":
+                      return hexSlice(this, start2, end);
+                    case "utf8":
+                    case "utf-8":
+                      return utf8Slice(this, start2, end);
+                    case "ascii":
+                      return asciiSlice(this, start2, end);
+                    case "latin1":
+                    case "binary":
+                      return latin1Slice(this, start2, end);
+                    case "base64":
+                      return base64Slice(this, start2, end);
+                    case "ucs2":
+                    case "ucs-2":
+                    case "utf16le":
+                    case "utf-16le":
+                      return utf16leSlice(this, start2, end);
+                    default:
+                      if (loweredCase)
+                        throw new TypeError("Unknown encoding: " + encoding);
+                      encoding = (encoding + "").toLowerCase();
+                      loweredCase = true;
+                  }
+                }
+              }
+              Buffer4.prototype._isBuffer = true;
+              function swap2(b2, n3, m2) {
+                var i3 = b2[n3];
+                b2[n3] = b2[m2];
+                b2[m2] = i3;
+              }
+              Buffer4.prototype.swap16 = function swap16() {
+                var len = this.length;
+                if (len % 2 !== 0) {
+                  throw new RangeError("Buffer size must be a multiple of 16-bits");
+                }
+                for (var i3 = 0; i3 < len; i3 += 2) {
+                  swap2(this, i3, i3 + 1);
+                }
+                return this;
+              };
+              Buffer4.prototype.swap32 = function swap32() {
+                var len = this.length;
+                if (len % 4 !== 0) {
+                  throw new RangeError("Buffer size must be a multiple of 32-bits");
+                }
+                for (var i3 = 0; i3 < len; i3 += 4) {
+                  swap2(this, i3, i3 + 3);
+                  swap2(this, i3 + 1, i3 + 2);
+                }
+                return this;
+              };
+              Buffer4.prototype.swap64 = function swap64() {
+                var len = this.length;
+                if (len % 8 !== 0) {
+                  throw new RangeError("Buffer size must be a multiple of 64-bits");
+                }
+                for (var i3 = 0; i3 < len; i3 += 8) {
+                  swap2(this, i3, i3 + 7);
+                  swap2(this, i3 + 1, i3 + 6);
+                  swap2(this, i3 + 2, i3 + 5);
+                  swap2(this, i3 + 3, i3 + 4);
+                }
+                return this;
+              };
+              Buffer4.prototype.toString = function toString2() {
+                var length2 = this.length;
+                if (length2 === 0)
+                  return "";
+                if (arguments.length === 0)
+                  return utf8Slice(this, 0, length2);
+                return slowToString.apply(this, arguments);
+              };
+              Buffer4.prototype.toLocaleString = Buffer4.prototype.toString;
+              Buffer4.prototype.equals = function equals(b2) {
+                if (!Buffer4.isBuffer(b2))
+                  throw new TypeError("Argument must be a Buffer");
+                if (this === b2)
+                  return true;
+                return Buffer4.compare(this, b2) === 0;
+              };
+              Buffer4.prototype.inspect = function inspect() {
+                var str = "";
+                var max3 = exports4.INSPECT_MAX_BYTES;
+                str = this.toString("hex", 0, max3).replace(/(.{2})/g, "$1 ").trim();
+                if (this.length > max3)
+                  str += " ... ";
+                return "<Buffer " + str + ">";
+              };
+              Buffer4.prototype.compare = function compare2(target, start2, end, thisStart, thisEnd) {
+                if (isInstance(target, Uint8Array)) {
+                  target = Buffer4.from(target, target.offset, target.byteLength);
+                }
+                if (!Buffer4.isBuffer(target)) {
+                  throw new TypeError(
+                    'The "target" argument must be one of type Buffer or Uint8Array. Received type ' + typeof target
+                  );
+                }
+                if (start2 === void 0) {
+                  start2 = 0;
+                }
+                if (end === void 0) {
+                  end = target ? target.length : 0;
+                }
+                if (thisStart === void 0) {
+                  thisStart = 0;
+                }
+                if (thisEnd === void 0) {
+                  thisEnd = this.length;
+                }
+                if (start2 < 0 || end > target.length || thisStart < 0 || thisEnd > this.length) {
+                  throw new RangeError("out of range index");
+                }
+                if (thisStart >= thisEnd && start2 >= end) {
+                  return 0;
+                }
+                if (thisStart >= thisEnd) {
+                  return -1;
+                }
+                if (start2 >= end) {
+                  return 1;
+                }
+                start2 >>>= 0;
+                end >>>= 0;
+                thisStart >>>= 0;
+                thisEnd >>>= 0;
+                if (this === target)
+                  return 0;
+                var x2 = thisEnd - thisStart;
+                var y2 = end - start2;
+                var len = Math.min(x2, y2);
+                var thisCopy = this.slice(thisStart, thisEnd);
+                var targetCopy = target.slice(start2, end);
+                for (var i3 = 0; i3 < len; ++i3) {
+                  if (thisCopy[i3] !== targetCopy[i3]) {
+                    x2 = thisCopy[i3];
+                    y2 = targetCopy[i3];
+                    break;
+                  }
+                }
+                if (x2 < y2)
+                  return -1;
+                if (y2 < x2)
+                  return 1;
+                return 0;
+              };
+              function bidirectionalIndexOf(buffer, val2, byteOffset, encoding, dir) {
+                if (buffer.length === 0)
+                  return -1;
+                if (typeof byteOffset === "string") {
+                  encoding = byteOffset;
+                  byteOffset = 0;
+                } else if (byteOffset > 2147483647) {
+                  byteOffset = 2147483647;
+                } else if (byteOffset < -2147483648) {
+                  byteOffset = -2147483648;
+                }
+                byteOffset = +byteOffset;
+                if (numberIsNaN(byteOffset)) {
+                  byteOffset = dir ? 0 : buffer.length - 1;
+                }
+                if (byteOffset < 0)
+                  byteOffset = buffer.length + byteOffset;
+                if (byteOffset >= buffer.length) {
+                  if (dir)
+                    return -1;
+                  else
+                    byteOffset = buffer.length - 1;
+                } else if (byteOffset < 0) {
+                  if (dir)
+                    byteOffset = 0;
+                  else
+                    return -1;
+                }
+                if (typeof val2 === "string") {
+                  val2 = Buffer4.from(val2, encoding);
+                }
+                if (Buffer4.isBuffer(val2)) {
+                  if (val2.length === 0) {
+                    return -1;
+                  }
+                  return arrayIndexOf(buffer, val2, byteOffset, encoding, dir);
+                } else if (typeof val2 === "number") {
+                  val2 = val2 & 255;
+                  if (typeof Uint8Array.prototype.indexOf === "function") {
+                    if (dir) {
+                      return Uint8Array.prototype.indexOf.call(buffer, val2, byteOffset);
+                    } else {
+                      return Uint8Array.prototype.lastIndexOf.call(buffer, val2, byteOffset);
+                    }
+                  }
+                  return arrayIndexOf(buffer, [val2], byteOffset, encoding, dir);
+                }
+                throw new TypeError("val must be string, number or Buffer");
+              }
+              function arrayIndexOf(arr, val2, byteOffset, encoding, dir) {
+                var indexSize = 1;
+                var arrLength = arr.length;
+                var valLength = val2.length;
+                if (encoding !== void 0) {
+                  encoding = String(encoding).toLowerCase();
+                  if (encoding === "ucs2" || encoding === "ucs-2" || encoding === "utf16le" || encoding === "utf-16le") {
+                    if (arr.length < 2 || val2.length < 2) {
+                      return -1;
+                    }
+                    indexSize = 2;
+                    arrLength /= 2;
+                    valLength /= 2;
+                    byteOffset /= 2;
+                  }
+                }
+                function read(buf, i4) {
+                  if (indexSize === 1) {
+                    return buf[i4];
+                  } else {
+                    return buf.readUInt16BE(i4 * indexSize);
+                  }
+                }
+                var i3;
+                if (dir) {
+                  var foundIndex = -1;
+                  for (i3 = byteOffset; i3 < arrLength; i3++) {
+                    if (read(arr, i3) === read(val2, foundIndex === -1 ? 0 : i3 - foundIndex)) {
+                      if (foundIndex === -1)
+                        foundIndex = i3;
+                      if (i3 - foundIndex + 1 === valLength)
+                        return foundIndex * indexSize;
+                    } else {
+                      if (foundIndex !== -1)
+                        i3 -= i3 - foundIndex;
+                      foundIndex = -1;
+                    }
+                  }
+                } else {
+                  if (byteOffset + valLength > arrLength)
+                    byteOffset = arrLength - valLength;
+                  for (i3 = byteOffset; i3 >= 0; i3--) {
+                    var found = true;
+                    for (var j2 = 0; j2 < valLength; j2++) {
+                      if (read(arr, i3 + j2) !== read(val2, j2)) {
+                        found = false;
+                        break;
+                      }
+                    }
+                    if (found)
+                      return i3;
+                  }
+                }
+                return -1;
+              }
+              Buffer4.prototype.includes = function includes(val2, byteOffset, encoding) {
+                return this.indexOf(val2, byteOffset, encoding) !== -1;
+              };
+              Buffer4.prototype.indexOf = function indexOf(val2, byteOffset, encoding) {
+                return bidirectionalIndexOf(this, val2, byteOffset, encoding, true);
+              };
+              Buffer4.prototype.lastIndexOf = function lastIndexOf(val2, byteOffset, encoding) {
+                return bidirectionalIndexOf(this, val2, byteOffset, encoding, false);
+              };
+              function hexWrite(buf, string, offset, length2) {
+                offset = Number(offset) || 0;
+                var remaining = buf.length - offset;
+                if (!length2) {
+                  length2 = remaining;
+                } else {
+                  length2 = Number(length2);
+                  if (length2 > remaining) {
+                    length2 = remaining;
+                  }
+                }
+                var strLen = string.length;
+                if (length2 > strLen / 2) {
+                  length2 = strLen / 2;
+                }
+                for (var i3 = 0; i3 < length2; ++i3) {
+                  var parsed = parseInt(string.substr(i3 * 2, 2), 16);
+                  if (numberIsNaN(parsed))
+                    return i3;
+                  buf[offset + i3] = parsed;
+                }
+                return i3;
+              }
+              function utf8Write(buf, string, offset, length2) {
+                return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length2);
+              }
+              function asciiWrite(buf, string, offset, length2) {
+                return blitBuffer(asciiToBytes(string), buf, offset, length2);
+              }
+              function latin1Write(buf, string, offset, length2) {
+                return asciiWrite(buf, string, offset, length2);
+              }
+              function base64Write(buf, string, offset, length2) {
+                return blitBuffer(base64ToBytes(string), buf, offset, length2);
+              }
+              function ucs2Write(buf, string, offset, length2) {
+                return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length2);
+              }
+              Buffer4.prototype.write = function write(string, offset, length2, encoding) {
+                if (offset === void 0) {
+                  encoding = "utf8";
+                  length2 = this.length;
+                  offset = 0;
+                } else if (length2 === void 0 && typeof offset === "string") {
+                  encoding = offset;
+                  length2 = this.length;
+                  offset = 0;
+                } else if (isFinite(offset)) {
+                  offset = offset >>> 0;
+                  if (isFinite(length2)) {
+                    length2 = length2 >>> 0;
+                    if (encoding === void 0)
+                      encoding = "utf8";
+                  } else {
+                    encoding = length2;
+                    length2 = void 0;
+                  }
+                } else {
+                  throw new Error(
+                    "Buffer.write(string, encoding, offset[, length]) is no longer supported"
+                  );
+                }
+                var remaining = this.length - offset;
+                if (length2 === void 0 || length2 > remaining)
+                  length2 = remaining;
+                if (string.length > 0 && (length2 < 0 || offset < 0) || offset > this.length) {
+                  throw new RangeError("Attempt to write outside buffer bounds");
+                }
+                if (!encoding)
+                  encoding = "utf8";
+                var loweredCase = false;
+                for (; ; ) {
+                  switch (encoding) {
+                    case "hex":
+                      return hexWrite(this, string, offset, length2);
+                    case "utf8":
+                    case "utf-8":
+                      return utf8Write(this, string, offset, length2);
+                    case "ascii":
+                      return asciiWrite(this, string, offset, length2);
+                    case "latin1":
+                    case "binary":
+                      return latin1Write(this, string, offset, length2);
+                    case "base64":
+                      return base64Write(this, string, offset, length2);
+                    case "ucs2":
+                    case "ucs-2":
+                    case "utf16le":
+                    case "utf-16le":
+                      return ucs2Write(this, string, offset, length2);
+                    default:
+                      if (loweredCase)
+                        throw new TypeError("Unknown encoding: " + encoding);
+                      encoding = ("" + encoding).toLowerCase();
+                      loweredCase = true;
+                  }
+                }
+              };
+              Buffer4.prototype.toJSON = function toJSON() {
+                return {
+                  type: "Buffer",
+                  data: Array.prototype.slice.call(this._arr || this, 0)
+                };
+              };
+              function base64Slice(buf, start2, end) {
+                if (start2 === 0 && end === buf.length) {
+                  return base642.fromByteArray(buf);
+                } else {
+                  return base642.fromByteArray(buf.slice(start2, end));
+                }
+              }
+              function utf8Slice(buf, start2, end) {
+                end = Math.min(buf.length, end);
+                var res = [];
+                var i3 = start2;
+                while (i3 < end) {
+                  var firstByte = buf[i3];
+                  var codePoint = null;
+                  var bytesPerSequence = firstByte > 239 ? 4 : firstByte > 223 ? 3 : firstByte > 191 ? 2 : 1;
+                  if (i3 + bytesPerSequence <= end) {
+                    var secondByte, thirdByte, fourthByte, tempCodePoint;
+                    switch (bytesPerSequence) {
+                      case 1:
+                        if (firstByte < 128) {
+                          codePoint = firstByte;
+                        }
+                        break;
+                      case 2:
+                        secondByte = buf[i3 + 1];
+                        if ((secondByte & 192) === 128) {
+                          tempCodePoint = (firstByte & 31) << 6 | secondByte & 63;
+                          if (tempCodePoint > 127) {
+                            codePoint = tempCodePoint;
+                          }
+                        }
+                        break;
+                      case 3:
+                        secondByte = buf[i3 + 1];
+                        thirdByte = buf[i3 + 2];
+                        if ((secondByte & 192) === 128 && (thirdByte & 192) === 128) {
+                          tempCodePoint = (firstByte & 15) << 12 | (secondByte & 63) << 6 | thirdByte & 63;
+                          if (tempCodePoint > 2047 && (tempCodePoint < 55296 || tempCodePoint > 57343)) {
+                            codePoint = tempCodePoint;
+                          }
+                        }
+                        break;
+                      case 4:
+                        secondByte = buf[i3 + 1];
+                        thirdByte = buf[i3 + 2];
+                        fourthByte = buf[i3 + 3];
+                        if ((secondByte & 192) === 128 && (thirdByte & 192) === 128 && (fourthByte & 192) === 128) {
+                          tempCodePoint = (firstByte & 15) << 18 | (secondByte & 63) << 12 | (thirdByte & 63) << 6 | fourthByte & 63;
+                          if (tempCodePoint > 65535 && tempCodePoint < 1114112) {
+                            codePoint = tempCodePoint;
+                          }
+                        }
+                    }
+                  }
+                  if (codePoint === null) {
+                    codePoint = 65533;
+                    bytesPerSequence = 1;
+                  } else if (codePoint > 65535) {
+                    codePoint -= 65536;
+                    res.push(codePoint >>> 10 & 1023 | 55296);
+                    codePoint = 56320 | codePoint & 1023;
+                  }
+                  res.push(codePoint);
+                  i3 += bytesPerSequence;
+                }
+                return decodeCodePointsArray(res);
+              }
+              var MAX_ARGUMENTS_LENGTH = 4096;
+              function decodeCodePointsArray(codePoints) {
+                var len = codePoints.length;
+                if (len <= MAX_ARGUMENTS_LENGTH) {
+                  return String.fromCharCode.apply(String, codePoints);
+                }
+                var res = "";
+                var i3 = 0;
+                while (i3 < len) {
+                  res += String.fromCharCode.apply(
+                    String,
+                    codePoints.slice(i3, i3 += MAX_ARGUMENTS_LENGTH)
+                  );
+                }
+                return res;
+              }
+              function asciiSlice(buf, start2, end) {
+                var ret = "";
+                end = Math.min(buf.length, end);
+                for (var i3 = start2; i3 < end; ++i3) {
+                  ret += String.fromCharCode(buf[i3] & 127);
+                }
+                return ret;
+              }
+              function latin1Slice(buf, start2, end) {
+                var ret = "";
+                end = Math.min(buf.length, end);
+                for (var i3 = start2; i3 < end; ++i3) {
+                  ret += String.fromCharCode(buf[i3]);
+                }
+                return ret;
+              }
+              function hexSlice(buf, start2, end) {
+                var len = buf.length;
+                if (!start2 || start2 < 0)
+                  start2 = 0;
+                if (!end || end < 0 || end > len)
+                  end = len;
+                var out = "";
+                for (var i3 = start2; i3 < end; ++i3) {
+                  out += toHex(buf[i3]);
+                }
+                return out;
+              }
+              function utf16leSlice(buf, start2, end) {
+                var bytes = buf.slice(start2, end);
+                var res = "";
+                for (var i3 = 0; i3 < bytes.length; i3 += 2) {
+                  res += String.fromCharCode(bytes[i3] + bytes[i3 + 1] * 256);
+                }
+                return res;
+              }
+              Buffer4.prototype.slice = function slice(start2, end) {
+                var len = this.length;
+                start2 = ~~start2;
+                end = end === void 0 ? len : ~~end;
+                if (start2 < 0) {
+                  start2 += len;
+                  if (start2 < 0)
+                    start2 = 0;
+                } else if (start2 > len) {
+                  start2 = len;
+                }
+                if (end < 0) {
+                  end += len;
+                  if (end < 0)
+                    end = 0;
+                } else if (end > len) {
+                  end = len;
+                }
+                if (end < start2)
+                  end = start2;
+                var newBuf = this.subarray(start2, end);
+                newBuf.__proto__ = Buffer4.prototype;
+                return newBuf;
+              };
+              function checkOffset(offset, ext, length2) {
+                if (offset % 1 !== 0 || offset < 0)
+                  throw new RangeError("offset is not uint");
+                if (offset + ext > length2)
+                  throw new RangeError("Trying to access beyond buffer length");
+              }
+              Buffer4.prototype.readUIntLE = function readUIntLE(offset, byteLength2, noAssert) {
+                offset = offset >>> 0;
+                byteLength2 = byteLength2 >>> 0;
+                if (!noAssert)
+                  checkOffset(offset, byteLength2, this.length);
+                var val2 = this[offset];
+                var mul = 1;
+                var i3 = 0;
+                while (++i3 < byteLength2 && (mul *= 256)) {
+                  val2 += this[offset + i3] * mul;
+                }
+                return val2;
+              };
+              Buffer4.prototype.readUIntBE = function readUIntBE(offset, byteLength2, noAssert) {
+                offset = offset >>> 0;
+                byteLength2 = byteLength2 >>> 0;
+                if (!noAssert) {
+                  checkOffset(offset, byteLength2, this.length);
+                }
+                var val2 = this[offset + --byteLength2];
+                var mul = 1;
+                while (byteLength2 > 0 && (mul *= 256)) {
+                  val2 += this[offset + --byteLength2] * mul;
+                }
+                return val2;
+              };
+              Buffer4.prototype.readUInt8 = function readUInt8(offset, noAssert) {
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkOffset(offset, 1, this.length);
+                return this[offset];
+              };
+              Buffer4.prototype.readUInt16LE = function readUInt16LE(offset, noAssert) {
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkOffset(offset, 2, this.length);
+                return this[offset] | this[offset + 1] << 8;
+              };
+              Buffer4.prototype.readUInt16BE = function readUInt16BE(offset, noAssert) {
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkOffset(offset, 2, this.length);
+                return this[offset] << 8 | this[offset + 1];
+              };
+              Buffer4.prototype.readUInt32LE = function readUInt32LE(offset, noAssert) {
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkOffset(offset, 4, this.length);
+                return (this[offset] | this[offset + 1] << 8 | this[offset + 2] << 16) + this[offset + 3] * 16777216;
+              };
+              Buffer4.prototype.readUInt32BE = function readUInt32BE(offset, noAssert) {
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkOffset(offset, 4, this.length);
+                return this[offset] * 16777216 + (this[offset + 1] << 16 | this[offset + 2] << 8 | this[offset + 3]);
+              };
+              Buffer4.prototype.readIntLE = function readIntLE(offset, byteLength2, noAssert) {
+                offset = offset >>> 0;
+                byteLength2 = byteLength2 >>> 0;
+                if (!noAssert)
+                  checkOffset(offset, byteLength2, this.length);
+                var val2 = this[offset];
+                var mul = 1;
+                var i3 = 0;
+                while (++i3 < byteLength2 && (mul *= 256)) {
+                  val2 += this[offset + i3] * mul;
+                }
+                mul *= 128;
+                if (val2 >= mul)
+                  val2 -= Math.pow(2, 8 * byteLength2);
+                return val2;
+              };
+              Buffer4.prototype.readIntBE = function readIntBE(offset, byteLength2, noAssert) {
+                offset = offset >>> 0;
+                byteLength2 = byteLength2 >>> 0;
+                if (!noAssert)
+                  checkOffset(offset, byteLength2, this.length);
+                var i3 = byteLength2;
+                var mul = 1;
+                var val2 = this[offset + --i3];
+                while (i3 > 0 && (mul *= 256)) {
+                  val2 += this[offset + --i3] * mul;
+                }
+                mul *= 128;
+                if (val2 >= mul)
+                  val2 -= Math.pow(2, 8 * byteLength2);
+                return val2;
+              };
+              Buffer4.prototype.readInt8 = function readInt8(offset, noAssert) {
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkOffset(offset, 1, this.length);
+                if (!(this[offset] & 128))
+                  return this[offset];
+                return (255 - this[offset] + 1) * -1;
+              };
+              Buffer4.prototype.readInt16LE = function readInt16LE(offset, noAssert) {
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkOffset(offset, 2, this.length);
+                var val2 = this[offset] | this[offset + 1] << 8;
+                return val2 & 32768 ? val2 | 4294901760 : val2;
+              };
+              Buffer4.prototype.readInt16BE = function readInt16BE(offset, noAssert) {
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkOffset(offset, 2, this.length);
+                var val2 = this[offset + 1] | this[offset] << 8;
+                return val2 & 32768 ? val2 | 4294901760 : val2;
+              };
+              Buffer4.prototype.readInt32LE = function readInt32LE(offset, noAssert) {
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkOffset(offset, 4, this.length);
+                return this[offset] | this[offset + 1] << 8 | this[offset + 2] << 16 | this[offset + 3] << 24;
+              };
+              Buffer4.prototype.readInt32BE = function readInt32BE(offset, noAssert) {
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkOffset(offset, 4, this.length);
+                return this[offset] << 24 | this[offset + 1] << 16 | this[offset + 2] << 8 | this[offset + 3];
+              };
+              Buffer4.prototype.readFloatLE = function readFloatLE(offset, noAssert) {
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkOffset(offset, 4, this.length);
+                return ieee754.read(this, offset, true, 23, 4);
+              };
+              Buffer4.prototype.readFloatBE = function readFloatBE(offset, noAssert) {
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkOffset(offset, 4, this.length);
+                return ieee754.read(this, offset, false, 23, 4);
+              };
+              Buffer4.prototype.readDoubleLE = function readDoubleLE(offset, noAssert) {
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkOffset(offset, 8, this.length);
+                return ieee754.read(this, offset, true, 52, 8);
+              };
+              Buffer4.prototype.readDoubleBE = function readDoubleBE(offset, noAssert) {
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkOffset(offset, 8, this.length);
+                return ieee754.read(this, offset, false, 52, 8);
+              };
+              function checkInt(buf, value, offset, ext, max3, min3) {
+                if (!Buffer4.isBuffer(buf))
+                  throw new TypeError('"buffer" argument must be a Buffer instance');
+                if (value > max3 || value < min3)
+                  throw new RangeError('"value" argument is out of bounds');
+                if (offset + ext > buf.length)
+                  throw new RangeError("Index out of range");
+              }
+              Buffer4.prototype.writeUIntLE = function writeUIntLE(value, offset, byteLength2, noAssert) {
+                value = +value;
+                offset = offset >>> 0;
+                byteLength2 = byteLength2 >>> 0;
+                if (!noAssert) {
+                  var maxBytes = Math.pow(2, 8 * byteLength2) - 1;
+                  checkInt(this, value, offset, byteLength2, maxBytes, 0);
+                }
+                var mul = 1;
+                var i3 = 0;
+                this[offset] = value & 255;
+                while (++i3 < byteLength2 && (mul *= 256)) {
+                  this[offset + i3] = value / mul & 255;
+                }
+                return offset + byteLength2;
+              };
+              Buffer4.prototype.writeUIntBE = function writeUIntBE(value, offset, byteLength2, noAssert) {
+                value = +value;
+                offset = offset >>> 0;
+                byteLength2 = byteLength2 >>> 0;
+                if (!noAssert) {
+                  var maxBytes = Math.pow(2, 8 * byteLength2) - 1;
+                  checkInt(this, value, offset, byteLength2, maxBytes, 0);
+                }
+                var i3 = byteLength2 - 1;
+                var mul = 1;
+                this[offset + i3] = value & 255;
+                while (--i3 >= 0 && (mul *= 256)) {
+                  this[offset + i3] = value / mul & 255;
+                }
+                return offset + byteLength2;
+              };
+              Buffer4.prototype.writeUInt8 = function writeUInt8(value, offset, noAssert) {
+                value = +value;
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkInt(this, value, offset, 1, 255, 0);
+                this[offset] = value & 255;
+                return offset + 1;
+              };
+              Buffer4.prototype.writeUInt16LE = function writeUInt16LE(value, offset, noAssert) {
+                value = +value;
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkInt(this, value, offset, 2, 65535, 0);
+                this[offset] = value & 255;
+                this[offset + 1] = value >>> 8;
+                return offset + 2;
+              };
+              Buffer4.prototype.writeUInt16BE = function writeUInt16BE(value, offset, noAssert) {
+                value = +value;
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkInt(this, value, offset, 2, 65535, 0);
+                this[offset] = value >>> 8;
+                this[offset + 1] = value & 255;
+                return offset + 2;
+              };
+              Buffer4.prototype.writeUInt32LE = function writeUInt32LE(value, offset, noAssert) {
+                value = +value;
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkInt(this, value, offset, 4, 4294967295, 0);
+                this[offset + 3] = value >>> 24;
+                this[offset + 2] = value >>> 16;
+                this[offset + 1] = value >>> 8;
+                this[offset] = value & 255;
+                return offset + 4;
+              };
+              Buffer4.prototype.writeUInt32BE = function writeUInt32BE(value, offset, noAssert) {
+                value = +value;
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkInt(this, value, offset, 4, 4294967295, 0);
+                this[offset] = value >>> 24;
+                this[offset + 1] = value >>> 16;
+                this[offset + 2] = value >>> 8;
+                this[offset + 3] = value & 255;
+                return offset + 4;
+              };
+              Buffer4.prototype.writeIntLE = function writeIntLE(value, offset, byteLength2, noAssert) {
+                value = +value;
+                offset = offset >>> 0;
+                if (!noAssert) {
+                  var limit = Math.pow(2, 8 * byteLength2 - 1);
+                  checkInt(this, value, offset, byteLength2, limit - 1, -limit);
+                }
+                var i3 = 0;
+                var mul = 1;
+                var sub = 0;
+                this[offset] = value & 255;
+                while (++i3 < byteLength2 && (mul *= 256)) {
+                  if (value < 0 && sub === 0 && this[offset + i3 - 1] !== 0) {
+                    sub = 1;
+                  }
+                  this[offset + i3] = (value / mul >> 0) - sub & 255;
+                }
+                return offset + byteLength2;
+              };
+              Buffer4.prototype.writeIntBE = function writeIntBE(value, offset, byteLength2, noAssert) {
+                value = +value;
+                offset = offset >>> 0;
+                if (!noAssert) {
+                  var limit = Math.pow(2, 8 * byteLength2 - 1);
+                  checkInt(this, value, offset, byteLength2, limit - 1, -limit);
+                }
+                var i3 = byteLength2 - 1;
+                var mul = 1;
+                var sub = 0;
+                this[offset + i3] = value & 255;
+                while (--i3 >= 0 && (mul *= 256)) {
+                  if (value < 0 && sub === 0 && this[offset + i3 + 1] !== 0) {
+                    sub = 1;
+                  }
+                  this[offset + i3] = (value / mul >> 0) - sub & 255;
+                }
+                return offset + byteLength2;
+              };
+              Buffer4.prototype.writeInt8 = function writeInt8(value, offset, noAssert) {
+                value = +value;
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkInt(this, value, offset, 1, 127, -128);
+                if (value < 0)
+                  value = 255 + value + 1;
+                this[offset] = value & 255;
+                return offset + 1;
+              };
+              Buffer4.prototype.writeInt16LE = function writeInt16LE(value, offset, noAssert) {
+                value = +value;
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkInt(this, value, offset, 2, 32767, -32768);
+                this[offset] = value & 255;
+                this[offset + 1] = value >>> 8;
+                return offset + 2;
+              };
+              Buffer4.prototype.writeInt16BE = function writeInt16BE(value, offset, noAssert) {
+                value = +value;
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkInt(this, value, offset, 2, 32767, -32768);
+                this[offset] = value >>> 8;
+                this[offset + 1] = value & 255;
+                return offset + 2;
+              };
+              Buffer4.prototype.writeInt32LE = function writeInt32LE(value, offset, noAssert) {
+                value = +value;
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkInt(this, value, offset, 4, 2147483647, -2147483648);
+                this[offset] = value & 255;
+                this[offset + 1] = value >>> 8;
+                this[offset + 2] = value >>> 16;
+                this[offset + 3] = value >>> 24;
+                return offset + 4;
+              };
+              Buffer4.prototype.writeInt32BE = function writeInt32BE(value, offset, noAssert) {
+                value = +value;
+                offset = offset >>> 0;
+                if (!noAssert)
+                  checkInt(this, value, offset, 4, 2147483647, -2147483648);
+                if (value < 0)
+                  value = 4294967295 + value + 1;
+                this[offset] = value >>> 24;
+                this[offset + 1] = value >>> 16;
+                this[offset + 2] = value >>> 8;
+                this[offset + 3] = value & 255;
+                return offset + 4;
+              };
+              function checkIEEE754(buf, value, offset, ext, max3, min3) {
+                if (offset + ext > buf.length)
+                  throw new RangeError("Index out of range");
+                if (offset < 0)
+                  throw new RangeError("Index out of range");
+              }
+              function writeFloat(buf, value, offset, littleEndian, noAssert) {
+                value = +value;
+                offset = offset >>> 0;
+                if (!noAssert) {
+                  checkIEEE754(buf, value, offset, 4, 34028234663852886e22, -34028234663852886e22);
+                }
+                ieee754.write(buf, value, offset, littleEndian, 23, 4);
+                return offset + 4;
+              }
+              Buffer4.prototype.writeFloatLE = function writeFloatLE(value, offset, noAssert) {
+                return writeFloat(this, value, offset, true, noAssert);
+              };
+              Buffer4.prototype.writeFloatBE = function writeFloatBE(value, offset, noAssert) {
+                return writeFloat(this, value, offset, false, noAssert);
+              };
+              function writeDouble(buf, value, offset, littleEndian, noAssert) {
+                value = +value;
+                offset = offset >>> 0;
+                if (!noAssert) {
+                  checkIEEE754(buf, value, offset, 8, 17976931348623157e292, -17976931348623157e292);
+                }
+                ieee754.write(buf, value, offset, littleEndian, 52, 8);
+                return offset + 8;
+              }
+              Buffer4.prototype.writeDoubleLE = function writeDoubleLE(value, offset, noAssert) {
+                return writeDouble(this, value, offset, true, noAssert);
+              };
+              Buffer4.prototype.writeDoubleBE = function writeDoubleBE(value, offset, noAssert) {
+                return writeDouble(this, value, offset, false, noAssert);
+              };
+              Buffer4.prototype.copy = function copy2(target, targetStart, start2, end) {
+                if (!Buffer4.isBuffer(target))
+                  throw new TypeError("argument should be a Buffer");
+                if (!start2)
+                  start2 = 0;
+                if (!end && end !== 0)
+                  end = this.length;
+                if (targetStart >= target.length)
+                  targetStart = target.length;
+                if (!targetStart)
+                  targetStart = 0;
+                if (end > 0 && end < start2)
+                  end = start2;
+                if (end === start2)
+                  return 0;
+                if (target.length === 0 || this.length === 0)
+                  return 0;
+                if (targetStart < 0) {
+                  throw new RangeError("targetStart out of bounds");
+                }
+                if (start2 < 0 || start2 >= this.length)
+                  throw new RangeError("Index out of range");
+                if (end < 0)
+                  throw new RangeError("sourceEnd out of bounds");
+                if (end > this.length)
+                  end = this.length;
+                if (target.length - targetStart < end - start2) {
+                  end = target.length - targetStart + start2;
+                }
+                var len = end - start2;
+                if (this === target && typeof Uint8Array.prototype.copyWithin === "function") {
+                  this.copyWithin(targetStart, start2, end);
+                } else if (this === target && start2 < targetStart && targetStart < end) {
+                  for (var i3 = len - 1; i3 >= 0; --i3) {
+                    target[i3 + targetStart] = this[i3 + start2];
+                  }
+                } else {
+                  Uint8Array.prototype.set.call(
+                    target,
+                    this.subarray(start2, end),
+                    targetStart
+                  );
+                }
+                return len;
+              };
+              Buffer4.prototype.fill = function fill(val2, start2, end, encoding) {
+                if (typeof val2 === "string") {
+                  if (typeof start2 === "string") {
+                    encoding = start2;
+                    start2 = 0;
+                    end = this.length;
+                  } else if (typeof end === "string") {
+                    encoding = end;
+                    end = this.length;
+                  }
+                  if (encoding !== void 0 && typeof encoding !== "string") {
+                    throw new TypeError("encoding must be a string");
+                  }
+                  if (typeof encoding === "string" && !Buffer4.isEncoding(encoding)) {
+                    throw new TypeError("Unknown encoding: " + encoding);
+                  }
+                  if (val2.length === 1) {
+                    var code = val2.charCodeAt(0);
+                    if (encoding === "utf8" && code < 128 || encoding === "latin1") {
+                      val2 = code;
+                    }
+                  }
+                } else if (typeof val2 === "number") {
+                  val2 = val2 & 255;
+                }
+                if (start2 < 0 || this.length < start2 || this.length < end) {
+                  throw new RangeError("Out of range index");
+                }
+                if (end <= start2) {
+                  return this;
+                }
+                start2 = start2 >>> 0;
+                end = end === void 0 ? this.length : end >>> 0;
+                if (!val2)
+                  val2 = 0;
+                var i3;
+                if (typeof val2 === "number") {
+                  for (i3 = start2; i3 < end; ++i3) {
+                    this[i3] = val2;
+                  }
+                } else {
+                  var bytes = Buffer4.isBuffer(val2) ? val2 : Buffer4.from(val2, encoding);
+                  var len = bytes.length;
+                  if (len === 0) {
+                    throw new TypeError('The value "' + val2 + '" is invalid for argument "value"');
+                  }
+                  for (i3 = 0; i3 < end - start2; ++i3) {
+                    this[i3 + start2] = bytes[i3 % len];
+                  }
+                }
+                return this;
+              };
+              var INVALID_BASE64_RE = /[^+/0-9A-Za-z-_]/g;
+              function base64clean(str) {
+                str = str.split("=")[0];
+                str = str.trim().replace(INVALID_BASE64_RE, "");
+                if (str.length < 2)
+                  return "";
+                while (str.length % 4 !== 0) {
+                  str = str + "=";
+                }
+                return str;
+              }
+              function toHex(n3) {
+                if (n3 < 16)
+                  return "0" + n3.toString(16);
+                return n3.toString(16);
+              }
+              function utf8ToBytes(string, units) {
+                units = units || Infinity;
+                var codePoint;
+                var length2 = string.length;
+                var leadSurrogate = null;
+                var bytes = [];
+                for (var i3 = 0; i3 < length2; ++i3) {
+                  codePoint = string.charCodeAt(i3);
+                  if (codePoint > 55295 && codePoint < 57344) {
+                    if (!leadSurrogate) {
+                      if (codePoint > 56319) {
+                        if ((units -= 3) > -1)
+                          bytes.push(239, 191, 189);
+                        continue;
+                      } else if (i3 + 1 === length2) {
+                        if ((units -= 3) > -1)
+                          bytes.push(239, 191, 189);
+                        continue;
+                      }
+                      leadSurrogate = codePoint;
+                      continue;
+                    }
+                    if (codePoint < 56320) {
+                      if ((units -= 3) > -1)
+                        bytes.push(239, 191, 189);
+                      leadSurrogate = codePoint;
+                      continue;
+                    }
+                    codePoint = (leadSurrogate - 55296 << 10 | codePoint - 56320) + 65536;
+                  } else if (leadSurrogate) {
+                    if ((units -= 3) > -1)
+                      bytes.push(239, 191, 189);
+                  }
+                  leadSurrogate = null;
+                  if (codePoint < 128) {
+                    if ((units -= 1) < 0)
+                      break;
+                    bytes.push(codePoint);
+                  } else if (codePoint < 2048) {
+                    if ((units -= 2) < 0)
+                      break;
+                    bytes.push(
+                      codePoint >> 6 | 192,
+                      codePoint & 63 | 128
+                    );
+                  } else if (codePoint < 65536) {
+                    if ((units -= 3) < 0)
+                      break;
+                    bytes.push(
+                      codePoint >> 12 | 224,
+                      codePoint >> 6 & 63 | 128,
+                      codePoint & 63 | 128
+                    );
+                  } else if (codePoint < 1114112) {
+                    if ((units -= 4) < 0)
+                      break;
+                    bytes.push(
+                      codePoint >> 18 | 240,
+                      codePoint >> 12 & 63 | 128,
+                      codePoint >> 6 & 63 | 128,
+                      codePoint & 63 | 128
+                    );
+                  } else {
+                    throw new Error("Invalid code point");
+                  }
+                }
+                return bytes;
+              }
+              function asciiToBytes(str) {
+                var byteArray = [];
+                for (var i3 = 0; i3 < str.length; ++i3) {
+                  byteArray.push(str.charCodeAt(i3) & 255);
+                }
+                return byteArray;
+              }
+              function utf16leToBytes(str, units) {
+                var c2, hi, lo;
+                var byteArray = [];
+                for (var i3 = 0; i3 < str.length; ++i3) {
+                  if ((units -= 2) < 0)
+                    break;
+                  c2 = str.charCodeAt(i3);
+                  hi = c2 >> 8;
+                  lo = c2 % 256;
+                  byteArray.push(lo);
+                  byteArray.push(hi);
+                }
+                return byteArray;
+              }
+              function base64ToBytes(str) {
+                return base642.toByteArray(base64clean(str));
+              }
+              function blitBuffer(src, dst, offset, length2) {
+                for (var i3 = 0; i3 < length2; ++i3) {
+                  if (i3 + offset >= dst.length || i3 >= src.length)
+                    break;
+                  dst[i3 + offset] = src[i3];
+                }
+                return i3;
+              }
+              function isInstance(obj, type2) {
+                return obj instanceof type2 || obj != null && obj.constructor != null && obj.constructor.name != null && obj.constructor.name === type2.name;
+              }
+              function numberIsNaN(obj) {
+                return obj !== obj;
+              }
+            }).call(this);
+          }).call(this, require2("buffer").Buffer);
+        }, { "base64-js": 1, "buffer": 2, "ieee754": 14 }], 3: [function(require2, module4, exports4) {
+          "use strict";
+          const validator = require2("./validator");
+          const XMLParser = require2("./xmlparser/XMLParser");
+          const XMLBuilder = require2("./xmlbuilder/json2xml");
+          module4.exports = {
+            XMLParser,
+            XMLValidator: validator,
+            XMLBuilder
+          };
+        }, { "./validator": 5, "./xmlbuilder/json2xml": 6, "./xmlparser/XMLParser": 11 }], 4: [function(require2, module4, exports4) {
+          "use strict";
+          const nameStartChar = ":A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD";
+          const nameChar = nameStartChar + "\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040";
+          const nameRegexp = "[" + nameStartChar + "][" + nameChar + "]*";
+          const regexName = new RegExp("^" + nameRegexp + "$");
+          const getAllMatches = function(string, regex) {
+            const matches = [];
+            let match = regex.exec(string);
+            while (match) {
+              const allmatches = [];
+              allmatches.startIndex = regex.lastIndex - match[0].length;
+              const len = match.length;
+              for (let index = 0; index < len; index++) {
+                allmatches.push(match[index]);
+              }
+              matches.push(allmatches);
+              match = regex.exec(string);
+            }
+            return matches;
+          };
+          const isName = function(string) {
+            const match = regexName.exec(string);
+            return !(match === null || typeof match === "undefined");
+          };
+          exports4.isExist = function(v2) {
+            return typeof v2 !== "undefined";
+          };
+          exports4.isEmptyObject = function(obj) {
+            return Object.keys(obj).length === 0;
+          };
+          exports4.merge = function(target, a2, arrayMode) {
+            if (a2) {
+              const keys2 = Object.keys(a2);
+              const len = keys2.length;
+              for (let i3 = 0; i3 < len; i3++) {
+                if (arrayMode === "strict") {
+                  target[keys2[i3]] = [a2[keys2[i3]]];
+                } else {
+                  target[keys2[i3]] = a2[keys2[i3]];
+                }
+              }
+            }
+          };
+          exports4.getValue = function(v2) {
+            if (exports4.isExist(v2)) {
+              return v2;
+            } else {
+              return "";
+            }
+          };
+          exports4.isName = isName;
+          exports4.getAllMatches = getAllMatches;
+          exports4.nameRegexp = nameRegexp;
+        }, {}], 5: [function(require2, module4, exports4) {
+          "use strict";
+          const util = require2("./util");
+          const defaultOptions = {
+            allowBooleanAttributes: false,
+            //A tag can have attributes without any value
+            unpairedTags: []
+          };
+          exports4.validate = function(xmlData, options2) {
+            options2 = Object.assign({}, defaultOptions, options2);
+            const tags = [];
+            let tagFound = false;
+            let reachedRoot = false;
+            if (xmlData[0] === "\uFEFF") {
+              xmlData = xmlData.substr(1);
+            }
+            for (let i3 = 0; i3 < xmlData.length; i3++) {
+              if (xmlData[i3] === "<" && xmlData[i3 + 1] === "?") {
+                i3 += 2;
+                i3 = readPI(xmlData, i3);
+                if (i3.err)
+                  return i3;
+              } else if (xmlData[i3] === "<") {
+                let tagStartPos = i3;
+                i3++;
+                if (xmlData[i3] === "!") {
+                  i3 = readCommentAndCDATA(xmlData, i3);
+                  continue;
+                } else {
+                  let closingTag = false;
+                  if (xmlData[i3] === "/") {
+                    closingTag = true;
+                    i3++;
+                  }
+                  let tagName = "";
+                  for (; i3 < xmlData.length && xmlData[i3] !== ">" && xmlData[i3] !== " " && xmlData[i3] !== "	" && xmlData[i3] !== "\n" && xmlData[i3] !== "\r"; i3++) {
+                    tagName += xmlData[i3];
+                  }
+                  tagName = tagName.trim();
+                  if (tagName[tagName.length - 1] === "/") {
+                    tagName = tagName.substring(0, tagName.length - 1);
+                    i3--;
+                  }
+                  if (!validateTagName(tagName)) {
+                    let msg;
+                    if (tagName.trim().length === 0) {
+                      msg = "Invalid space after '<'.";
+                    } else {
+                      msg = "Tag '" + tagName + "' is an invalid name.";
+                    }
+                    return getErrorObject("InvalidTag", msg, getLineNumberForPosition(xmlData, i3));
+                  }
+                  const result = readAttributeStr(xmlData, i3);
+                  if (result === false) {
+                    return getErrorObject("InvalidAttr", "Attributes for '" + tagName + "' have open quote.", getLineNumberForPosition(xmlData, i3));
+                  }
+                  let attrStr = result.value;
+                  i3 = result.index;
+                  if (attrStr[attrStr.length - 1] === "/") {
+                    const attrStrStart = i3 - attrStr.length;
+                    attrStr = attrStr.substring(0, attrStr.length - 1);
+                    const isValid = validateAttributeString(attrStr, options2);
+                    if (isValid === true) {
+                      tagFound = true;
+                    } else {
+                      return getErrorObject(isValid.err.code, isValid.err.msg, getLineNumberForPosition(xmlData, attrStrStart + isValid.err.line));
+                    }
+                  } else if (closingTag) {
+                    if (!result.tagClosed) {
+                      return getErrorObject("InvalidTag", "Closing tag '" + tagName + "' doesn't have proper closing.", getLineNumberForPosition(xmlData, i3));
+                    } else if (attrStr.trim().length > 0) {
+                      return getErrorObject("InvalidTag", "Closing tag '" + tagName + "' can't have attributes or invalid starting.", getLineNumberForPosition(xmlData, tagStartPos));
+                    } else if (tags.length === 0) {
+                      return getErrorObject("InvalidTag", "Closing tag '" + tagName + "' has not been opened.", getLineNumberForPosition(xmlData, tagStartPos));
+                    } else {
+                      const otg = tags.pop();
+                      if (tagName !== otg.tagName) {
+                        let openPos = getLineNumberForPosition(xmlData, otg.tagStartPos);
+                        return getErrorObject(
+                          "InvalidTag",
+                          "Expected closing tag '" + otg.tagName + "' (opened in line " + openPos.line + ", col " + openPos.col + ") instead of closing tag '" + tagName + "'.",
+                          getLineNumberForPosition(xmlData, tagStartPos)
+                        );
+                      }
+                      if (tags.length == 0) {
+                        reachedRoot = true;
+                      }
+                    }
+                  } else {
+                    const isValid = validateAttributeString(attrStr, options2);
+                    if (isValid !== true) {
+                      return getErrorObject(isValid.err.code, isValid.err.msg, getLineNumberForPosition(xmlData, i3 - attrStr.length + isValid.err.line));
+                    }
+                    if (reachedRoot === true) {
+                      return getErrorObject("InvalidXml", "Multiple possible root nodes found.", getLineNumberForPosition(xmlData, i3));
+                    } else if (options2.unpairedTags.indexOf(tagName) !== -1) {
+                    } else {
+                      tags.push({ tagName, tagStartPos });
+                    }
+                    tagFound = true;
+                  }
+                  for (i3++; i3 < xmlData.length; i3++) {
+                    if (xmlData[i3] === "<") {
+                      if (xmlData[i3 + 1] === "!") {
+                        i3++;
+                        i3 = readCommentAndCDATA(xmlData, i3);
+                        continue;
+                      } else if (xmlData[i3 + 1] === "?") {
+                        i3 = readPI(xmlData, ++i3);
+                        if (i3.err)
+                          return i3;
+                      } else {
+                        break;
+                      }
+                    } else if (xmlData[i3] === "&") {
+                      const afterAmp = validateAmpersand(xmlData, i3);
+                      if (afterAmp == -1)
+                        return getErrorObject("InvalidChar", "char '&' is not expected.", getLineNumberForPosition(xmlData, i3));
+                      i3 = afterAmp;
+                    } else {
+                      if (reachedRoot === true && !isWhiteSpace(xmlData[i3])) {
+                        return getErrorObject("InvalidXml", "Extra text at the end", getLineNumberForPosition(xmlData, i3));
+                      }
+                    }
+                  }
+                  if (xmlData[i3] === "<") {
+                    i3--;
+                  }
+                }
+              } else {
+                if (isWhiteSpace(xmlData[i3])) {
+                  continue;
+                }
+                return getErrorObject("InvalidChar", "char '" + xmlData[i3] + "' is not expected.", getLineNumberForPosition(xmlData, i3));
+              }
+            }
+            if (!tagFound) {
+              return getErrorObject("InvalidXml", "Start tag expected.", 1);
+            } else if (tags.length == 1) {
+              return getErrorObject("InvalidTag", "Unclosed tag '" + tags[0].tagName + "'.", getLineNumberForPosition(xmlData, tags[0].tagStartPos));
+            } else if (tags.length > 0) {
+              return getErrorObject("InvalidXml", "Invalid '" + JSON.stringify(tags.map((t2) => t2.tagName), null, 4).replace(/\r?\n/g, "") + "' found.", { line: 1, col: 1 });
+            }
+            return true;
+          };
+          function isWhiteSpace(char) {
+            return char === " " || char === "	" || char === "\n" || char === "\r";
+          }
+          function readPI(xmlData, i3) {
+            const start2 = i3;
+            for (; i3 < xmlData.length; i3++) {
+              if (xmlData[i3] == "?" || xmlData[i3] == " ") {
+                const tagname = xmlData.substr(start2, i3 - start2);
+                if (i3 > 5 && tagname === "xml") {
+                  return getErrorObject("InvalidXml", "XML declaration allowed only at the start of the document.", getLineNumberForPosition(xmlData, i3));
+                } else if (xmlData[i3] == "?" && xmlData[i3 + 1] == ">") {
+                  i3++;
+                  break;
+                } else {
+                  continue;
+                }
+              }
+            }
+            return i3;
+          }
+          function readCommentAndCDATA(xmlData, i3) {
+            if (xmlData.length > i3 + 5 && xmlData[i3 + 1] === "-" && xmlData[i3 + 2] === "-") {
+              for (i3 += 3; i3 < xmlData.length; i3++) {
+                if (xmlData[i3] === "-" && xmlData[i3 + 1] === "-" && xmlData[i3 + 2] === ">") {
+                  i3 += 2;
+                  break;
+                }
+              }
+            } else if (xmlData.length > i3 + 8 && xmlData[i3 + 1] === "D" && xmlData[i3 + 2] === "O" && xmlData[i3 + 3] === "C" && xmlData[i3 + 4] === "T" && xmlData[i3 + 5] === "Y" && xmlData[i3 + 6] === "P" && xmlData[i3 + 7] === "E") {
+              let angleBracketsCount = 1;
+              for (i3 += 8; i3 < xmlData.length; i3++) {
+                if (xmlData[i3] === "<") {
+                  angleBracketsCount++;
+                } else if (xmlData[i3] === ">") {
+                  angleBracketsCount--;
+                  if (angleBracketsCount === 0) {
+                    break;
+                  }
+                }
+              }
+            } else if (xmlData.length > i3 + 9 && xmlData[i3 + 1] === "[" && xmlData[i3 + 2] === "C" && xmlData[i3 + 3] === "D" && xmlData[i3 + 4] === "A" && xmlData[i3 + 5] === "T" && xmlData[i3 + 6] === "A" && xmlData[i3 + 7] === "[") {
+              for (i3 += 8; i3 < xmlData.length; i3++) {
+                if (xmlData[i3] === "]" && xmlData[i3 + 1] === "]" && xmlData[i3 + 2] === ">") {
+                  i3 += 2;
+                  break;
+                }
+              }
+            }
+            return i3;
+          }
+          const doubleQuote = '"';
+          const singleQuote = "'";
+          function readAttributeStr(xmlData, i3) {
+            let attrStr = "";
+            let startChar = "";
+            let tagClosed = false;
+            for (; i3 < xmlData.length; i3++) {
+              if (xmlData[i3] === doubleQuote || xmlData[i3] === singleQuote) {
+                if (startChar === "") {
+                  startChar = xmlData[i3];
+                } else if (startChar !== xmlData[i3]) {
+                } else {
+                  startChar = "";
+                }
+              } else if (xmlData[i3] === ">") {
+                if (startChar === "") {
+                  tagClosed = true;
+                  break;
+                }
+              }
+              attrStr += xmlData[i3];
+            }
+            if (startChar !== "") {
+              return false;
+            }
+            return {
+              value: attrStr,
+              index: i3,
+              tagClosed
+            };
+          }
+          const validAttrStrRegxp = new RegExp("(\\s*)([^\\s=]+)(\\s*=)?(\\s*(['\"])(([\\s\\S])*?)\\5)?", "g");
+          function validateAttributeString(attrStr, options2) {
+            const matches = util.getAllMatches(attrStr, validAttrStrRegxp);
+            const attrNames = {};
+            for (let i3 = 0; i3 < matches.length; i3++) {
+              if (matches[i3][1].length === 0) {
+                return getErrorObject("InvalidAttr", "Attribute '" + matches[i3][2] + "' has no space in starting.", getPositionFromMatch(matches[i3]));
+              } else if (matches[i3][3] !== void 0 && matches[i3][4] === void 0) {
+                return getErrorObject("InvalidAttr", "Attribute '" + matches[i3][2] + "' is without value.", getPositionFromMatch(matches[i3]));
+              } else if (matches[i3][3] === void 0 && !options2.allowBooleanAttributes) {
+                return getErrorObject("InvalidAttr", "boolean attribute '" + matches[i3][2] + "' is not allowed.", getPositionFromMatch(matches[i3]));
+              }
+              const attrName = matches[i3][2];
+              if (!validateAttrName(attrName)) {
+                return getErrorObject("InvalidAttr", "Attribute '" + attrName + "' is an invalid name.", getPositionFromMatch(matches[i3]));
+              }
+              if (!attrNames.hasOwnProperty(attrName)) {
+                attrNames[attrName] = 1;
+              } else {
+                return getErrorObject("InvalidAttr", "Attribute '" + attrName + "' is repeated.", getPositionFromMatch(matches[i3]));
+              }
+            }
+            return true;
+          }
+          function validateNumberAmpersand(xmlData, i3) {
+            let re3 = /\d/;
+            if (xmlData[i3] === "x") {
+              i3++;
+              re3 = /[\da-fA-F]/;
+            }
+            for (; i3 < xmlData.length; i3++) {
+              if (xmlData[i3] === ";")
+                return i3;
+              if (!xmlData[i3].match(re3))
+                break;
+            }
+            return -1;
+          }
+          function validateAmpersand(xmlData, i3) {
+            i3++;
+            if (xmlData[i3] === ";")
+              return -1;
+            if (xmlData[i3] === "#") {
+              i3++;
+              return validateNumberAmpersand(xmlData, i3);
+            }
+            let count = 0;
+            for (; i3 < xmlData.length; i3++, count++) {
+              if (xmlData[i3].match(/\w/) && count < 20)
+                continue;
+              if (xmlData[i3] === ";")
+                break;
+              return -1;
+            }
+            return i3;
+          }
+          function getErrorObject(code, message, lineNumber) {
+            return {
+              err: {
+                code,
+                msg: message,
+                line: lineNumber.line || lineNumber,
+                col: lineNumber.col
+              }
+            };
+          }
+          function validateAttrName(attrName) {
+            return util.isName(attrName);
+          }
+          function validateTagName(tagname) {
+            return util.isName(tagname);
+          }
+          function getLineNumberForPosition(xmlData, index) {
+            const lines = xmlData.substring(0, index).split(/\r?\n/);
+            return {
+              line: lines.length,
+              // column number is last line's length + 1, because column numbering starts at 1:
+              col: lines[lines.length - 1].length + 1
+            };
+          }
+          function getPositionFromMatch(match) {
+            return match.startIndex + match[1].length;
+          }
+        }, { "./util": 4 }], 6: [function(require2, module4, exports4) {
+          "use strict";
+          const buildFromOrderedJs = require2("./orderedJs2Xml");
+          const defaultOptions = {
+            attributeNamePrefix: "@_",
+            attributesGroupName: false,
+            textNodeName: "#text",
+            ignoreAttributes: true,
+            cdataPropName: false,
+            format: false,
+            indentBy: "  ",
+            suppressEmptyNode: false,
+            suppressUnpairedNode: true,
+            suppressBooleanAttributes: true,
+            tagValueProcessor: function(key, a2) {
+              return a2;
+            },
+            attributeValueProcessor: function(attrName, a2) {
+              return a2;
+            },
+            preserveOrder: false,
+            commentPropName: false,
+            unpairedTags: [],
+            entities: [
+              { regex: new RegExp("&", "g"), val: "&amp;" },
+              //it must be on top
+              { regex: new RegExp(">", "g"), val: "&gt;" },
+              { regex: new RegExp("<", "g"), val: "&lt;" },
+              { regex: new RegExp("'", "g"), val: "&apos;" },
+              { regex: new RegExp('"', "g"), val: "&quot;" }
+            ],
+            processEntities: true,
+            stopNodes: [],
+            // transformTagName: false,
+            // transformAttributeName: false,
+            oneListGroup: false
+          };
+          function Builder(options2) {
+            this.options = Object.assign({}, defaultOptions, options2);
+            if (this.options.ignoreAttributes || this.options.attributesGroupName) {
+              this.isAttribute = function() {
+                return false;
+              };
+            } else {
+              this.attrPrefixLen = this.options.attributeNamePrefix.length;
+              this.isAttribute = isAttribute;
+            }
+            this.processTextOrObjNode = processTextOrObjNode;
+            if (this.options.format) {
+              this.indentate = indentate;
+              this.tagEndChar = ">\n";
+              this.newLine = "\n";
+            } else {
+              this.indentate = function() {
+                return "";
+              };
+              this.tagEndChar = ">";
+              this.newLine = "";
+            }
+          }
+          Builder.prototype.build = function(jObj) {
+            if (this.options.preserveOrder) {
+              return buildFromOrderedJs(jObj, this.options);
+            } else {
+              if (Array.isArray(jObj) && this.options.arrayNodeName && this.options.arrayNodeName.length > 1) {
+                jObj = {
+                  [this.options.arrayNodeName]: jObj
+                };
+              }
+              return this.j2x(jObj, 0).val;
+            }
+          };
+          Builder.prototype.j2x = function(jObj, level) {
+            let attrStr = "";
+            let val2 = "";
+            for (let key in jObj) {
+              if (!Object.prototype.hasOwnProperty.call(jObj, key))
+                continue;
+              if (typeof jObj[key] === "undefined") {
+                if (this.isAttribute(key)) {
+                  val2 += "";
+                }
+              } else if (jObj[key] === null) {
+                if (this.isAttribute(key)) {
+                  val2 += "";
+                } else if (key[0] === "?") {
+                  val2 += this.indentate(level) + "<" + key + "?" + this.tagEndChar;
+                } else {
+                  val2 += this.indentate(level) + "<" + key + "/" + this.tagEndChar;
+                }
+              } else if (jObj[key] instanceof Date) {
+                val2 += this.buildTextValNode(jObj[key], key, "", level);
+              } else if (typeof jObj[key] !== "object") {
+                const attr = this.isAttribute(key);
+                if (attr) {
+                  attrStr += this.buildAttrPairStr(attr, "" + jObj[key]);
+                } else {
+                  if (key === this.options.textNodeName) {
+                    let newval = this.options.tagValueProcessor(key, "" + jObj[key]);
+                    val2 += this.replaceEntitiesValue(newval);
+                  } else {
+                    val2 += this.buildTextValNode(jObj[key], key, "", level);
+                  }
+                }
+              } else if (Array.isArray(jObj[key])) {
+                const arrLen = jObj[key].length;
+                let listTagVal = "";
+                let listTagAttr = "";
+                for (let j2 = 0; j2 < arrLen; j2++) {
+                  const item = jObj[key][j2];
+                  if (typeof item === "undefined") {
+                  } else if (item === null) {
+                    if (key[0] === "?")
+                      val2 += this.indentate(level) + "<" + key + "?" + this.tagEndChar;
+                    else
+                      val2 += this.indentate(level) + "<" + key + "/" + this.tagEndChar;
+                  } else if (typeof item === "object") {
+                    if (this.options.oneListGroup) {
+                      const result = this.j2x(item, level + 1);
+                      listTagVal += result.val;
+                      if (this.options.attributesGroupName && item.hasOwnProperty(this.options.attributesGroupName)) {
+                        listTagAttr += result.attrStr;
+                      }
+                    } else {
+                      listTagVal += this.processTextOrObjNode(item, key, level);
+                    }
+                  } else {
+                    if (this.options.oneListGroup) {
+                      let textValue = this.options.tagValueProcessor(key, item);
+                      textValue = this.replaceEntitiesValue(textValue);
+                      listTagVal += textValue;
+                    } else {
+                      listTagVal += this.buildTextValNode(item, key, "", level);
+                    }
+                  }
+                }
+                if (this.options.oneListGroup) {
+                  listTagVal = this.buildObjectNode(listTagVal, key, listTagAttr, level);
+                }
+                val2 += listTagVal;
+              } else {
+                if (this.options.attributesGroupName && key === this.options.attributesGroupName) {
+                  const Ks = Object.keys(jObj[key]);
+                  const L2 = Ks.length;
+                  for (let j2 = 0; j2 < L2; j2++) {
+                    attrStr += this.buildAttrPairStr(Ks[j2], "" + jObj[key][Ks[j2]]);
+                  }
+                } else {
+                  val2 += this.processTextOrObjNode(jObj[key], key, level);
+                }
+              }
+            }
+            return { attrStr, val: val2 };
+          };
+          Builder.prototype.buildAttrPairStr = function(attrName, val2) {
+            val2 = this.options.attributeValueProcessor(attrName, "" + val2);
+            val2 = this.replaceEntitiesValue(val2);
+            if (this.options.suppressBooleanAttributes && val2 === "true") {
+              return " " + attrName;
+            } else
+              return " " + attrName + '="' + val2 + '"';
+          };
+          function processTextOrObjNode(object, key, level) {
+            const result = this.j2x(object, level + 1);
+            if (object[this.options.textNodeName] !== void 0 && Object.keys(object).length === 1) {
+              return this.buildTextValNode(object[this.options.textNodeName], key, result.attrStr, level);
+            } else {
+              return this.buildObjectNode(result.val, key, result.attrStr, level);
+            }
+          }
+          Builder.prototype.buildObjectNode = function(val2, key, attrStr, level) {
+            if (val2 === "") {
+              if (key[0] === "?")
+                return this.indentate(level) + "<" + key + attrStr + "?" + this.tagEndChar;
+              else {
+                return this.indentate(level) + "<" + key + attrStr + this.closeTag(key) + this.tagEndChar;
+              }
+            } else {
+              let tagEndExp = "</" + key + this.tagEndChar;
+              let piClosingChar = "";
+              if (key[0] === "?") {
+                piClosingChar = "?";
+                tagEndExp = "";
+              }
+              if ((attrStr || attrStr === "") && val2.indexOf("<") === -1) {
+                return this.indentate(level) + "<" + key + attrStr + piClosingChar + ">" + val2 + tagEndExp;
+              } else if (this.options.commentPropName !== false && key === this.options.commentPropName && piClosingChar.length === 0) {
+                return this.indentate(level) + "<!--".concat(val2, "-->") + this.newLine;
+              } else {
+                return this.indentate(level) + "<" + key + attrStr + piClosingChar + this.tagEndChar + val2 + this.indentate(level) + tagEndExp;
+              }
+            }
+          };
+          Builder.prototype.closeTag = function(key) {
+            let closeTag = "";
+            if (this.options.unpairedTags.indexOf(key) !== -1) {
+              if (!this.options.suppressUnpairedNode)
+                closeTag = "/";
+            } else if (this.options.suppressEmptyNode) {
+              closeTag = "/";
+            } else {
+              closeTag = "></".concat(key);
+            }
+            return closeTag;
+          };
+          function buildEmptyObjNode(val2, key, attrStr, level) {
+            if (val2 !== "") {
+              return this.buildObjectNode(val2, key, attrStr, level);
+            } else {
+              if (key[0] === "?")
+                return this.indentate(level) + "<" + key + attrStr + "?" + this.tagEndChar;
+              else {
+                return this.indentate(level) + "<" + key + attrStr + "/" + this.tagEndChar;
+              }
+            }
+          }
+          Builder.prototype.buildTextValNode = function(val2, key, attrStr, level) {
+            if (this.options.cdataPropName !== false && key === this.options.cdataPropName) {
+              return this.indentate(level) + "<![CDATA[".concat(val2, "]]>") + this.newLine;
+            } else if (this.options.commentPropName !== false && key === this.options.commentPropName) {
+              return this.indentate(level) + "<!--".concat(val2, "-->") + this.newLine;
+            } else if (key[0] === "?") {
+              return this.indentate(level) + "<" + key + attrStr + "?" + this.tagEndChar;
+            } else {
+              let textValue = this.options.tagValueProcessor(key, val2);
+              textValue = this.replaceEntitiesValue(textValue);
+              if (textValue === "") {
+                return this.indentate(level) + "<" + key + attrStr + this.closeTag(key) + this.tagEndChar;
+              } else {
+                return this.indentate(level) + "<" + key + attrStr + ">" + textValue + "</" + key + this.tagEndChar;
+              }
+            }
+          };
+          Builder.prototype.replaceEntitiesValue = function(textValue) {
+            if (textValue && textValue.length > 0 && this.options.processEntities) {
+              for (let i3 = 0; i3 < this.options.entities.length; i3++) {
+                const entity = this.options.entities[i3];
+                textValue = textValue.replace(entity.regex, entity.val);
+              }
+            }
+            return textValue;
+          };
+          function indentate(level) {
+            return this.options.indentBy.repeat(level);
+          }
+          function isAttribute(name) {
+            if (name.startsWith(this.options.attributeNamePrefix) && name !== this.options.textNodeName) {
+              return name.substr(this.attrPrefixLen);
+            } else {
+              return false;
+            }
+          }
+          module4.exports = Builder;
+        }, { "./orderedJs2Xml": 7 }], 7: [function(require2, module4, exports4) {
+          const EOL = "\n";
+          function toXml(jArray, options2) {
+            let indentation = "";
+            if (options2.format && options2.indentBy.length > 0) {
+              indentation = EOL;
+            }
+            return arrToStr(jArray, options2, "", indentation);
+          }
+          function arrToStr(arr, options2, jPath, indentation) {
+            let xmlStr = "";
+            let isPreviousElementTag = false;
+            for (let i3 = 0; i3 < arr.length; i3++) {
+              const tagObj = arr[i3];
+              const tagName = propName(tagObj);
+              if (tagName === void 0)
+                continue;
+              let newJPath = "";
+              if (jPath.length === 0)
+                newJPath = tagName;
+              else
+                newJPath = "".concat(jPath, ".").concat(tagName);
+              if (tagName === options2.textNodeName) {
+                let tagText = tagObj[tagName];
+                if (!isStopNode(newJPath, options2)) {
+                  tagText = options2.tagValueProcessor(tagName, tagText);
+                  tagText = replaceEntitiesValue(tagText, options2);
+                }
+                if (isPreviousElementTag) {
+                  xmlStr += indentation;
+                }
+                xmlStr += tagText;
+                isPreviousElementTag = false;
+                continue;
+              } else if (tagName === options2.cdataPropName) {
+                if (isPreviousElementTag) {
+                  xmlStr += indentation;
+                }
+                xmlStr += "<![CDATA[".concat(tagObj[tagName][0][options2.textNodeName], "]]>");
+                isPreviousElementTag = false;
+                continue;
+              } else if (tagName === options2.commentPropName) {
+                xmlStr += indentation + "<!--".concat(tagObj[tagName][0][options2.textNodeName], "-->");
+                isPreviousElementTag = true;
+                continue;
+              } else if (tagName[0] === "?") {
+                const attStr2 = attr_to_str(tagObj[":@"], options2);
+                const tempInd = tagName === "?xml" ? "" : indentation;
+                let piTextNodeName = tagObj[tagName][0][options2.textNodeName];
+                piTextNodeName = piTextNodeName.length !== 0 ? " " + piTextNodeName : "";
+                xmlStr += tempInd + "<".concat(tagName).concat(piTextNodeName).concat(attStr2, "?>");
+                isPreviousElementTag = true;
+                continue;
+              }
+              let newIdentation = indentation;
+              if (newIdentation !== "") {
+                newIdentation += options2.indentBy;
+              }
+              const attStr = attr_to_str(tagObj[":@"], options2);
+              const tagStart = indentation + "<".concat(tagName).concat(attStr);
+              const tagValue = arrToStr(tagObj[tagName], options2, newJPath, newIdentation);
+              if (options2.unpairedTags.indexOf(tagName) !== -1) {
+                if (options2.suppressUnpairedNode)
+                  xmlStr += tagStart + ">";
+                else
+                  xmlStr += tagStart + "/>";
+              } else if ((!tagValue || tagValue.length === 0) && options2.suppressEmptyNode) {
+                xmlStr += tagStart + "/>";
+              } else if (tagValue && tagValue.endsWith(">")) {
+                xmlStr += tagStart + ">".concat(tagValue).concat(indentation, "</").concat(tagName, ">");
+              } else {
+                xmlStr += tagStart + ">";
+                if (tagValue && indentation !== "" && (tagValue.includes("/>") || tagValue.includes("</"))) {
+                  xmlStr += indentation + options2.indentBy + tagValue + indentation;
+                } else {
+                  xmlStr += tagValue;
+                }
+                xmlStr += "</".concat(tagName, ">");
+              }
+              isPreviousElementTag = true;
+            }
+            return xmlStr;
+          }
+          function propName(obj) {
+            const keys2 = Object.keys(obj);
+            for (let i3 = 0; i3 < keys2.length; i3++) {
+              const key = keys2[i3];
+              if (!obj.hasOwnProperty(key))
+                continue;
+              if (key !== ":@")
+                return key;
+            }
+          }
+          function attr_to_str(attrMap, options2) {
+            let attrStr = "";
+            if (attrMap && !options2.ignoreAttributes) {
+              for (let attr in attrMap) {
+                if (!attrMap.hasOwnProperty(attr))
+                  continue;
+                let attrVal = options2.attributeValueProcessor(attr, attrMap[attr]);
+                attrVal = replaceEntitiesValue(attrVal, options2);
+                if (attrVal === true && options2.suppressBooleanAttributes) {
+                  attrStr += " ".concat(attr.substr(options2.attributeNamePrefix.length));
+                } else {
+                  attrStr += " ".concat(attr.substr(options2.attributeNamePrefix.length), '="').concat(attrVal, '"');
+                }
+              }
+            }
+            return attrStr;
+          }
+          function isStopNode(jPath, options2) {
+            jPath = jPath.substr(0, jPath.length - options2.textNodeName.length - 1);
+            let tagName = jPath.substr(jPath.lastIndexOf(".") + 1);
+            for (let index in options2.stopNodes) {
+              if (options2.stopNodes[index] === jPath || options2.stopNodes[index] === "*." + tagName)
+                return true;
+            }
+            return false;
+          }
+          function replaceEntitiesValue(textValue, options2) {
+            if (textValue && textValue.length > 0 && options2.processEntities) {
+              for (let i3 = 0; i3 < options2.entities.length; i3++) {
+                const entity = options2.entities[i3];
+                textValue = textValue.replace(entity.regex, entity.val);
+              }
+            }
+            return textValue;
+          }
+          module4.exports = toXml;
+        }, {}], 8: [function(require2, module4, exports4) {
+          const util = require2("../util");
+          function readDocType(xmlData, i3) {
+            const entities = {};
+            if (xmlData[i3 + 3] === "O" && xmlData[i3 + 4] === "C" && xmlData[i3 + 5] === "T" && xmlData[i3 + 6] === "Y" && xmlData[i3 + 7] === "P" && xmlData[i3 + 8] === "E") {
+              i3 = i3 + 9;
+              let angleBracketsCount = 1;
+              let hasBody = false, comment = false;
+              let exp2 = "";
+              for (; i3 < xmlData.length; i3++) {
+                if (xmlData[i3] === "<" && !comment) {
+                  if (hasBody && isEntity(xmlData, i3)) {
+                    i3 += 7;
+                    [entityName, val, i3] = readEntityExp(xmlData, i3 + 1);
+                    if (val.indexOf("&") === -1)
+                      entities[validateEntityName(entityName)] = {
+                        regx: RegExp("&".concat(entityName, ";"), "g"),
+                        val
+                      };
+                  } else if (hasBody && isElement2(xmlData, i3))
+                    i3 += 8;
+                  else if (hasBody && isAttlist(xmlData, i3))
+                    i3 += 8;
+                  else if (hasBody && isNotation(xmlData, i3))
+                    i3 += 9;
+                  else if (isComment)
+                    comment = true;
+                  else
+                    throw new Error("Invalid DOCTYPE");
+                  angleBracketsCount++;
+                  exp2 = "";
+                } else if (xmlData[i3] === ">") {
+                  if (comment) {
+                    if (xmlData[i3 - 1] === "-" && xmlData[i3 - 2] === "-") {
+                      comment = false;
+                      angleBracketsCount--;
+                    }
+                  } else {
+                    angleBracketsCount--;
+                  }
+                  if (angleBracketsCount === 0) {
+                    break;
+                  }
+                } else if (xmlData[i3] === "[") {
+                  hasBody = true;
+                } else {
+                  exp2 += xmlData[i3];
+                }
+              }
+              if (angleBracketsCount !== 0) {
+                throw new Error("Unclosed DOCTYPE");
+              }
+            } else {
+              throw new Error("Invalid Tag instead of DOCTYPE");
+            }
+            return { entities, i: i3 };
+          }
+          function readEntityExp(xmlData, i3) {
+            let entityName2 = "";
+            for (; i3 < xmlData.length && (xmlData[i3] !== "'" && xmlData[i3] !== '"'); i3++) {
+              entityName2 += xmlData[i3];
+            }
+            entityName2 = entityName2.trim();
+            if (entityName2.indexOf(" ") !== -1)
+              throw new Error("External entites are not supported");
+            const startChar = xmlData[i3++];
+            let val2 = "";
+            for (; i3 < xmlData.length && xmlData[i3] !== startChar; i3++) {
+              val2 += xmlData[i3];
+            }
+            return [entityName2, val2, i3];
+          }
+          function isComment(xmlData, i3) {
+            if (xmlData[i3 + 1] === "!" && xmlData[i3 + 2] === "-" && xmlData[i3 + 3] === "-")
+              return true;
+            return false;
+          }
+          function isEntity(xmlData, i3) {
+            if (xmlData[i3 + 1] === "!" && xmlData[i3 + 2] === "E" && xmlData[i3 + 3] === "N" && xmlData[i3 + 4] === "T" && xmlData[i3 + 5] === "I" && xmlData[i3 + 6] === "T" && xmlData[i3 + 7] === "Y")
+              return true;
+            return false;
+          }
+          function isElement2(xmlData, i3) {
+            if (xmlData[i3 + 1] === "!" && xmlData[i3 + 2] === "E" && xmlData[i3 + 3] === "L" && xmlData[i3 + 4] === "E" && xmlData[i3 + 5] === "M" && xmlData[i3 + 6] === "E" && xmlData[i3 + 7] === "N" && xmlData[i3 + 8] === "T")
+              return true;
+            return false;
+          }
+          function isAttlist(xmlData, i3) {
+            if (xmlData[i3 + 1] === "!" && xmlData[i3 + 2] === "A" && xmlData[i3 + 3] === "T" && xmlData[i3 + 4] === "T" && xmlData[i3 + 5] === "L" && xmlData[i3 + 6] === "I" && xmlData[i3 + 7] === "S" && xmlData[i3 + 8] === "T")
+              return true;
+            return false;
+          }
+          function isNotation(xmlData, i3) {
+            if (xmlData[i3 + 1] === "!" && xmlData[i3 + 2] === "N" && xmlData[i3 + 3] === "O" && xmlData[i3 + 4] === "T" && xmlData[i3 + 5] === "A" && xmlData[i3 + 6] === "T" && xmlData[i3 + 7] === "I" && xmlData[i3 + 8] === "O" && xmlData[i3 + 9] === "N")
+              return true;
+            return false;
+          }
+          function validateEntityName(name) {
+            if (util.isName(name))
+              return name;
+            else
+              throw new Error("Invalid entity name ".concat(name));
+          }
+          module4.exports = readDocType;
+        }, { "../util": 4 }], 9: [function(require2, module4, exports4) {
+          const defaultOptions = {
+            preserveOrder: false,
+            attributeNamePrefix: "@_",
+            attributesGroupName: false,
+            textNodeName: "#text",
+            ignoreAttributes: true,
+            removeNSPrefix: false,
+            // remove NS from tag name or attribute name if true
+            allowBooleanAttributes: false,
+            //a tag can have attributes without any value
+            //ignoreRootElement : false,
+            parseTagValue: true,
+            parseAttributeValue: false,
+            trimValues: true,
+            //Trim string values of tag and attributes
+            cdataPropName: false,
+            numberParseOptions: {
+              hex: true,
+              leadingZeros: true,
+              eNotation: true
+            },
+            tagValueProcessor: function(tagName, val2) {
+              return val2;
+            },
+            attributeValueProcessor: function(attrName, val2) {
+              return val2;
+            },
+            stopNodes: [],
+            //nested tags will not be parsed even for errors
+            alwaysCreateTextNode: false,
+            isArray: () => false,
+            commentPropName: false,
+            unpairedTags: [],
+            processEntities: true,
+            htmlEntities: false,
+            ignoreDeclaration: false,
+            ignorePiTags: false,
+            transformTagName: false,
+            transformAttributeName: false,
+            updateTag: function(tagName, jPath, attrs) {
+              return tagName;
+            }
+            // skipEmptyListItem: false
+          };
+          const buildOptions = function(options2) {
+            return Object.assign({}, defaultOptions, options2);
+          };
+          exports4.buildOptions = buildOptions;
+          exports4.defaultOptions = defaultOptions;
+        }, {}], 10: [function(require2, module4, exports4) {
+          "use strict";
+          const util = require2("../util");
+          const xmlNode = require2("./xmlNode");
+          const readDocType = require2("./DocTypeReader");
+          const toNumber3 = require2("strnum");
+          class OrderedObjParser {
+            constructor(options2) {
+              this.options = options2;
+              this.currentNode = null;
+              this.tagsNodeStack = [];
+              this.docTypeEntities = {};
+              this.lastEntities = {
+                "apos": { regex: /&(apos|#39|#x27);/g, val: "'" },
+                "gt": { regex: /&(gt|#62|#x3E);/g, val: ">" },
+                "lt": { regex: /&(lt|#60|#x3C);/g, val: "<" },
+                "quot": { regex: /&(quot|#34|#x22);/g, val: '"' }
+              };
+              this.ampEntity = { regex: /&(amp|#38|#x26);/g, val: "&" };
+              this.htmlEntities = {
+                "space": { regex: /&(nbsp|#160);/g, val: " " },
+                // "lt" : { regex: /&(lt|#60);/g, val: "<" },
+                // "gt" : { regex: /&(gt|#62);/g, val: ">" },
+                // "amp" : { regex: /&(amp|#38);/g, val: "&" },
+                // "quot" : { regex: /&(quot|#34);/g, val: "\"" },
+                // "apos" : { regex: /&(apos|#39);/g, val: "'" },
+                "cent": { regex: /&(cent|#162);/g, val: "\xA2" },
+                "pound": { regex: /&(pound|#163);/g, val: "\xA3" },
+                "yen": { regex: /&(yen|#165);/g, val: "\xA5" },
+                "euro": { regex: /&(euro|#8364);/g, val: "\u20AC" },
+                "copyright": { regex: /&(copy|#169);/g, val: "\xA9" },
+                "reg": { regex: /&(reg|#174);/g, val: "\xAE" },
+                "inr": { regex: /&(inr|#8377);/g, val: "\u20B9" },
+                "num_dec": { regex: /&#([0-9]{1,7});/g, val: (_2, str) => String.fromCharCode(Number.parseInt(str, 10)) },
+                "num_hex": { regex: /&#x([0-9a-fA-F]{1,6});/g, val: (_2, str) => String.fromCharCode(Number.parseInt(str, 16)) }
+              };
+              this.addExternalEntities = addExternalEntities;
+              this.parseXml = parseXml;
+              this.parseTextData = parseTextData;
+              this.resolveNameSpace = resolveNameSpace;
+              this.buildAttributesMap = buildAttributesMap;
+              this.isItStopNode = isItStopNode;
+              this.replaceEntitiesValue = replaceEntitiesValue;
+              this.readStopNodeData = readStopNodeData;
+              this.saveTextToParentTag = saveTextToParentTag;
+              this.addChild = addChild;
+            }
+          }
+          function addExternalEntities(externalEntities) {
+            const entKeys = Object.keys(externalEntities);
+            for (let i3 = 0; i3 < entKeys.length; i3++) {
+              const ent = entKeys[i3];
+              this.lastEntities[ent] = {
+                regex: new RegExp("&" + ent + ";", "g"),
+                val: externalEntities[ent]
+              };
+            }
+          }
+          function parseTextData(val2, tagName, jPath, dontTrim, hasAttributes, isLeafNode, escapeEntities) {
+            if (val2 !== void 0) {
+              if (this.options.trimValues && !dontTrim) {
+                val2 = val2.trim();
+              }
+              if (val2.length > 0) {
+                if (!escapeEntities)
+                  val2 = this.replaceEntitiesValue(val2);
+                const newval = this.options.tagValueProcessor(tagName, val2, jPath, hasAttributes, isLeafNode);
+                if (newval === null || newval === void 0) {
+                  return val2;
+                } else if (typeof newval !== typeof val2 || newval !== val2) {
+                  return newval;
+                } else if (this.options.trimValues) {
+                  return parseValue(val2, this.options.parseTagValue, this.options.numberParseOptions);
+                } else {
+                  const trimmedVal = val2.trim();
+                  if (trimmedVal === val2) {
+                    return parseValue(val2, this.options.parseTagValue, this.options.numberParseOptions);
+                  } else {
+                    return val2;
+                  }
+                }
+              }
+            }
+          }
+          function resolveNameSpace(tagname) {
+            if (this.options.removeNSPrefix) {
+              const tags = tagname.split(":");
+              const prefix = tagname.charAt(0) === "/" ? "/" : "";
+              if (tags[0] === "xmlns") {
+                return "";
+              }
+              if (tags.length === 2) {
+                tagname = prefix + tags[1];
+              }
+            }
+            return tagname;
+          }
+          const attrsRegx = new RegExp("([^\\s=]+)\\s*(=\\s*(['\"])([\\s\\S]*?)\\3)?", "gm");
+          function buildAttributesMap(attrStr, jPath, tagName) {
+            if (!this.options.ignoreAttributes && typeof attrStr === "string") {
+              const matches = util.getAllMatches(attrStr, attrsRegx);
+              const len = matches.length;
+              const attrs = {};
+              for (let i3 = 0; i3 < len; i3++) {
+                const attrName = this.resolveNameSpace(matches[i3][1]);
+                let oldVal = matches[i3][4];
+                let aName = this.options.attributeNamePrefix + attrName;
+                if (attrName.length) {
+                  if (this.options.transformAttributeName) {
+                    aName = this.options.transformAttributeName(aName);
+                  }
+                  if (aName === "__proto__")
+                    aName = "#__proto__";
+                  if (oldVal !== void 0) {
+                    if (this.options.trimValues) {
+                      oldVal = oldVal.trim();
+                    }
+                    oldVal = this.replaceEntitiesValue(oldVal);
+                    const newVal = this.options.attributeValueProcessor(attrName, oldVal, jPath);
+                    if (newVal === null || newVal === void 0) {
+                      attrs[aName] = oldVal;
+                    } else if (typeof newVal !== typeof oldVal || newVal !== oldVal) {
+                      attrs[aName] = newVal;
+                    } else {
+                      attrs[aName] = parseValue(
+                        oldVal,
+                        this.options.parseAttributeValue,
+                        this.options.numberParseOptions
+                      );
+                    }
+                  } else if (this.options.allowBooleanAttributes) {
+                    attrs[aName] = true;
+                  }
+                }
+              }
+              if (!Object.keys(attrs).length) {
+                return;
+              }
+              if (this.options.attributesGroupName) {
+                const attrCollection = {};
+                attrCollection[this.options.attributesGroupName] = attrs;
+                return attrCollection;
+              }
+              return attrs;
+            }
+          }
+          const parseXml = function(xmlData) {
+            xmlData = xmlData.replace(/\r\n?/g, "\n");
+            const xmlObj = new xmlNode("!xml");
+            let currentNode = xmlObj;
+            let textData = "";
+            let jPath = "";
+            for (let i3 = 0; i3 < xmlData.length; i3++) {
+              const ch = xmlData[i3];
+              if (ch === "<") {
+                if (xmlData[i3 + 1] === "/") {
+                  const closeIndex = findClosingIndex(xmlData, ">", i3, "Closing Tag is not closed.");
+                  let tagName = xmlData.substring(i3 + 2, closeIndex).trim();
+                  if (this.options.removeNSPrefix) {
+                    const colonIndex = tagName.indexOf(":");
+                    if (colonIndex !== -1) {
+                      tagName = tagName.substr(colonIndex + 1);
+                    }
+                  }
+                  if (this.options.transformTagName) {
+                    tagName = this.options.transformTagName(tagName);
+                  }
+                  if (currentNode) {
+                    textData = this.saveTextToParentTag(textData, currentNode, jPath);
+                  }
+                  const lastTagName = jPath.substring(jPath.lastIndexOf(".") + 1);
+                  if (tagName && this.options.unpairedTags.indexOf(tagName) !== -1) {
+                    throw new Error("Unpaired tag can not be used as closing tag: </".concat(tagName, ">"));
+                  }
+                  let propIndex = 0;
+                  if (lastTagName && this.options.unpairedTags.indexOf(lastTagName) !== -1) {
+                    propIndex = jPath.lastIndexOf(".", jPath.lastIndexOf(".") - 1);
+                    this.tagsNodeStack.pop();
+                  } else {
+                    propIndex = jPath.lastIndexOf(".");
+                  }
+                  jPath = jPath.substring(0, propIndex);
+                  currentNode = this.tagsNodeStack.pop();
+                  textData = "";
+                  i3 = closeIndex;
+                } else if (xmlData[i3 + 1] === "?") {
+                  let tagData = readTagExp(xmlData, i3, false, "?>");
+                  if (!tagData)
+                    throw new Error("Pi Tag is not closed.");
+                  textData = this.saveTextToParentTag(textData, currentNode, jPath);
+                  if (this.options.ignoreDeclaration && tagData.tagName === "?xml" || this.options.ignorePiTags) {
+                  } else {
+                    const childNode = new xmlNode(tagData.tagName);
+                    childNode.add(this.options.textNodeName, "");
+                    if (tagData.tagName !== tagData.tagExp && tagData.attrExpPresent) {
+                      childNode[":@"] = this.buildAttributesMap(tagData.tagExp, jPath, tagData.tagName);
+                    }
+                    this.addChild(currentNode, childNode, jPath);
+                  }
+                  i3 = tagData.closeIndex + 1;
+                } else if (xmlData.substr(i3 + 1, 3) === "!--") {
+                  const endIndex = findClosingIndex(xmlData, "-->", i3 + 4, "Comment is not closed.");
+                  if (this.options.commentPropName) {
+                    const comment = xmlData.substring(i3 + 4, endIndex - 2);
+                    textData = this.saveTextToParentTag(textData, currentNode, jPath);
+                    currentNode.add(this.options.commentPropName, [{ [this.options.textNodeName]: comment }]);
+                  }
+                  i3 = endIndex;
+                } else if (xmlData.substr(i3 + 1, 2) === "!D") {
+                  const result = readDocType(xmlData, i3);
+                  this.docTypeEntities = result.entities;
+                  i3 = result.i;
+                } else if (xmlData.substr(i3 + 1, 2) === "![") {
+                  const closeIndex = findClosingIndex(xmlData, "]]>", i3, "CDATA is not closed.") - 2;
+                  const tagExp = xmlData.substring(i3 + 9, closeIndex);
+                  textData = this.saveTextToParentTag(textData, currentNode, jPath);
+                  let val2 = this.parseTextData(tagExp, currentNode.tagname, jPath, true, false, true, true);
+                  if (val2 == void 0)
+                    val2 = "";
+                  if (this.options.cdataPropName) {
+                    currentNode.add(this.options.cdataPropName, [{ [this.options.textNodeName]: tagExp }]);
+                  } else {
+                    currentNode.add(this.options.textNodeName, val2);
+                  }
+                  i3 = closeIndex + 2;
+                } else {
+                  let result = readTagExp(xmlData, i3, this.options.removeNSPrefix);
+                  let tagName = result.tagName;
+                  const rawTagName = result.rawTagName;
+                  let tagExp = result.tagExp;
+                  let attrExpPresent = result.attrExpPresent;
+                  let closeIndex = result.closeIndex;
+                  if (this.options.transformTagName) {
+                    tagName = this.options.transformTagName(tagName);
+                  }
+                  if (currentNode && textData) {
+                    if (currentNode.tagname !== "!xml") {
+                      textData = this.saveTextToParentTag(textData, currentNode, jPath, false);
+                    }
+                  }
+                  const lastTag = currentNode;
+                  if (lastTag && this.options.unpairedTags.indexOf(lastTag.tagname) !== -1) {
+                    currentNode = this.tagsNodeStack.pop();
+                    jPath = jPath.substring(0, jPath.lastIndexOf("."));
+                  }
+                  if (tagName !== xmlObj.tagname) {
+                    jPath += jPath ? "." + tagName : tagName;
+                  }
+                  if (this.isItStopNode(this.options.stopNodes, jPath, tagName)) {
+                    let tagContent = "";
+                    if (tagExp.length > 0 && tagExp.lastIndexOf("/") === tagExp.length - 1) {
+                      if (tagName[tagName.length - 1] === "/") {
+                        tagName = tagName.substr(0, tagName.length - 1);
+                        jPath = jPath.substr(0, jPath.length - 1);
+                        tagExp = tagName;
+                      } else {
+                        tagExp = tagExp.substr(0, tagExp.length - 1);
+                      }
+                      i3 = result.closeIndex;
+                    } else if (this.options.unpairedTags.indexOf(tagName) !== -1) {
+                      i3 = result.closeIndex;
+                    } else {
+                      const result2 = this.readStopNodeData(xmlData, rawTagName, closeIndex + 1);
+                      if (!result2)
+                        throw new Error("Unexpected end of ".concat(rawTagName));
+                      i3 = result2.i;
+                      tagContent = result2.tagContent;
+                    }
+                    const childNode = new xmlNode(tagName);
+                    if (tagName !== tagExp && attrExpPresent) {
+                      childNode[":@"] = this.buildAttributesMap(tagExp, jPath, tagName);
+                    }
+                    if (tagContent) {
+                      tagContent = this.parseTextData(tagContent, tagName, jPath, true, attrExpPresent, true, true);
+                    }
+                    jPath = jPath.substr(0, jPath.lastIndexOf("."));
+                    childNode.add(this.options.textNodeName, tagContent);
+                    this.addChild(currentNode, childNode, jPath);
+                  } else {
+                    if (tagExp.length > 0 && tagExp.lastIndexOf("/") === tagExp.length - 1) {
+                      if (tagName[tagName.length - 1] === "/") {
+                        tagName = tagName.substr(0, tagName.length - 1);
+                        jPath = jPath.substr(0, jPath.length - 1);
+                        tagExp = tagName;
+                      } else {
+                        tagExp = tagExp.substr(0, tagExp.length - 1);
+                      }
+                      if (this.options.transformTagName) {
+                        tagName = this.options.transformTagName(tagName);
+                      }
+                      const childNode = new xmlNode(tagName);
+                      if (tagName !== tagExp && attrExpPresent) {
+                        childNode[":@"] = this.buildAttributesMap(tagExp, jPath, tagName);
+                      }
+                      this.addChild(currentNode, childNode, jPath);
+                      jPath = jPath.substr(0, jPath.lastIndexOf("."));
+                    } else {
+                      const childNode = new xmlNode(tagName);
+                      this.tagsNodeStack.push(currentNode);
+                      if (tagName !== tagExp && attrExpPresent) {
+                        childNode[":@"] = this.buildAttributesMap(tagExp, jPath, tagName);
+                      }
+                      this.addChild(currentNode, childNode, jPath);
+                      currentNode = childNode;
+                    }
+                    textData = "";
+                    i3 = closeIndex;
+                  }
+                }
+              } else {
+                textData += xmlData[i3];
+              }
+            }
+            return xmlObj.child;
+          };
+          function addChild(currentNode, childNode, jPath) {
+            const result = this.options.updateTag(childNode.tagname, jPath, childNode[":@"]);
+            if (result === false) {
+            } else if (typeof result === "string") {
+              childNode.tagname = result;
+              currentNode.addChild(childNode);
+            } else {
+              currentNode.addChild(childNode);
+            }
+          }
+          const replaceEntitiesValue = function(val2) {
+            if (this.options.processEntities) {
+              for (let entityName2 in this.docTypeEntities) {
+                const entity = this.docTypeEntities[entityName2];
+                val2 = val2.replace(entity.regx, entity.val);
+              }
+              for (let entityName2 in this.lastEntities) {
+                const entity = this.lastEntities[entityName2];
+                val2 = val2.replace(entity.regex, entity.val);
+              }
+              if (this.options.htmlEntities) {
+                for (let entityName2 in this.htmlEntities) {
+                  const entity = this.htmlEntities[entityName2];
+                  val2 = val2.replace(entity.regex, entity.val);
+                }
+              }
+              val2 = val2.replace(this.ampEntity.regex, this.ampEntity.val);
+            }
+            return val2;
+          };
+          function saveTextToParentTag(textData, currentNode, jPath, isLeafNode) {
+            if (textData) {
+              if (isLeafNode === void 0)
+                isLeafNode = Object.keys(currentNode.child).length === 0;
+              textData = this.parseTextData(
+                textData,
+                currentNode.tagname,
+                jPath,
+                false,
+                currentNode[":@"] ? Object.keys(currentNode[":@"]).length !== 0 : false,
+                isLeafNode
+              );
+              if (textData !== void 0 && textData !== "")
+                currentNode.add(this.options.textNodeName, textData);
+              textData = "";
+            }
+            return textData;
+          }
+          function isItStopNode(stopNodes, jPath, currentTagName) {
+            const allNodesExp = "*." + currentTagName;
+            for (const stopNodePath in stopNodes) {
+              const stopNodeExp = stopNodes[stopNodePath];
+              if (allNodesExp === stopNodeExp || jPath === stopNodeExp)
+                return true;
+            }
+            return false;
+          }
+          function tagExpWithClosingIndex(xmlData, i3, closingChar = ">") {
+            let attrBoundary;
+            let tagExp = "";
+            for (let index = i3; index < xmlData.length; index++) {
+              let ch = xmlData[index];
+              if (attrBoundary) {
+                if (ch === attrBoundary)
+                  attrBoundary = "";
+              } else if (ch === '"' || ch === "'") {
+                attrBoundary = ch;
+              } else if (ch === closingChar[0]) {
+                if (closingChar[1]) {
+                  if (xmlData[index + 1] === closingChar[1]) {
+                    return {
+                      data: tagExp,
+                      index
+                    };
+                  }
+                } else {
+                  return {
+                    data: tagExp,
+                    index
+                  };
+                }
+              } else if (ch === "	") {
+                ch = " ";
+              }
+              tagExp += ch;
+            }
+          }
+          function findClosingIndex(xmlData, str, i3, errMsg) {
+            const closingIndex = xmlData.indexOf(str, i3);
+            if (closingIndex === -1) {
+              throw new Error(errMsg);
+            } else {
+              return closingIndex + str.length - 1;
+            }
+          }
+          function readTagExp(xmlData, i3, removeNSPrefix, closingChar = ">") {
+            const result = tagExpWithClosingIndex(xmlData, i3 + 1, closingChar);
+            if (!result)
+              return;
+            let tagExp = result.data;
+            const closeIndex = result.index;
+            const separatorIndex = tagExp.search(/\s/);
+            let tagName = tagExp;
+            let attrExpPresent = true;
+            if (separatorIndex !== -1) {
+              tagName = tagExp.substring(0, separatorIndex);
+              tagExp = tagExp.substring(separatorIndex + 1).trimStart();
+            }
+            const rawTagName = tagName;
+            if (removeNSPrefix) {
+              const colonIndex = tagName.indexOf(":");
+              if (colonIndex !== -1) {
+                tagName = tagName.substr(colonIndex + 1);
+                attrExpPresent = tagName !== result.data.substr(colonIndex + 1);
+              }
+            }
+            return {
+              tagName,
+              tagExp,
+              closeIndex,
+              attrExpPresent,
+              rawTagName
+            };
+          }
+          function readStopNodeData(xmlData, tagName, i3) {
+            const startIndex = i3;
+            let openTagCount = 1;
+            for (; i3 < xmlData.length; i3++) {
+              if (xmlData[i3] === "<") {
+                if (xmlData[i3 + 1] === "/") {
+                  const closeIndex = findClosingIndex(xmlData, ">", i3, "".concat(tagName, " is not closed"));
+                  let closeTagName = xmlData.substring(i3 + 2, closeIndex).trim();
+                  if (closeTagName === tagName) {
+                    openTagCount--;
+                    if (openTagCount === 0) {
+                      return {
+                        tagContent: xmlData.substring(startIndex, i3),
+                        i: closeIndex
+                      };
+                    }
+                  }
+                  i3 = closeIndex;
+                } else if (xmlData[i3 + 1] === "?") {
+                  const closeIndex = findClosingIndex(xmlData, "?>", i3 + 1, "StopNode is not closed.");
+                  i3 = closeIndex;
+                } else if (xmlData.substr(i3 + 1, 3) === "!--") {
+                  const closeIndex = findClosingIndex(xmlData, "-->", i3 + 3, "StopNode is not closed.");
+                  i3 = closeIndex;
+                } else if (xmlData.substr(i3 + 1, 2) === "![") {
+                  const closeIndex = findClosingIndex(xmlData, "]]>", i3, "StopNode is not closed.") - 2;
+                  i3 = closeIndex;
+                } else {
+                  const tagData = readTagExp(xmlData, i3, ">");
+                  if (tagData) {
+                    const openTagName = tagData && tagData.tagName;
+                    if (openTagName === tagName && tagData.tagExp[tagData.tagExp.length - 1] !== "/") {
+                      openTagCount++;
+                    }
+                    i3 = tagData.closeIndex;
+                  }
+                }
+              }
+            }
+          }
+          function parseValue(val2, shouldParse, options2) {
+            if (shouldParse && typeof val2 === "string") {
+              const newval = val2.trim();
+              if (newval === "true")
+                return true;
+              else if (newval === "false")
+                return false;
+              else
+                return toNumber3(val2, options2);
+            } else {
+              if (util.isExist(val2)) {
+                return val2;
+              } else {
+                return "";
+              }
+            }
+          }
+          module4.exports = OrderedObjParser;
+        }, { "../util": 4, "./DocTypeReader": 8, "./xmlNode": 13, "strnum": 15 }], 11: [function(require2, module4, exports4) {
+          const { buildOptions } = require2("./OptionsBuilder");
+          const OrderedObjParser = require2("./OrderedObjParser");
+          const { prettify } = require2("./node2json");
+          const validator = require2("../validator");
+          class XMLParser {
+            constructor(options2) {
+              this.externalEntities = {};
+              this.options = buildOptions(options2);
+            }
+            /**
+             * Parse XML dats to JS object 
+             * @param {string|Buffer} xmlData 
+             * @param {boolean|Object} validationOption 
+             */
+            parse(xmlData, validationOption) {
+              if (typeof xmlData === "string") {
+              } else if (xmlData.toString) {
+                xmlData = xmlData.toString();
+              } else {
+                throw new Error("XML data is accepted in String or Bytes[] form.");
+              }
+              if (validationOption) {
+                if (validationOption === true)
+                  validationOption = {};
+                const result = validator.validate(xmlData, validationOption);
+                if (result !== true) {
+                  throw Error("".concat(result.err.msg, ":").concat(result.err.line, ":").concat(result.err.col));
+                }
+              }
+              const orderedObjParser = new OrderedObjParser(this.options);
+              orderedObjParser.addExternalEntities(this.externalEntities);
+              const orderedResult = orderedObjParser.parseXml(xmlData);
+              if (this.options.preserveOrder || orderedResult === void 0)
+                return orderedResult;
+              else
+                return prettify(orderedResult, this.options);
+            }
+            /**
+             * Add Entity which is not by default supported by this library
+             * @param {string} key 
+             * @param {string} value 
+             */
+            addEntity(key, value) {
+              if (value.indexOf("&") !== -1) {
+                throw new Error("Entity value can't have '&'");
+              } else if (key.indexOf("&") !== -1 || key.indexOf(";") !== -1) {
+                throw new Error("An entity must be set without '&' and ';'. Eg. use '#xD' for '&#xD;'");
+              } else if (value === "&") {
+                throw new Error("An entity with value '&' is not permitted");
+              } else {
+                this.externalEntities[key] = value;
+              }
+            }
+          }
+          module4.exports = XMLParser;
+        }, { "../validator": 5, "./OptionsBuilder": 9, "./OrderedObjParser": 10, "./node2json": 12 }], 12: [function(require2, module4, exports4) {
+          "use strict";
+          function prettify(node, options2) {
+            return compress(node, options2);
+          }
+          function compress(arr, options2, jPath) {
+            let text;
+            const compressedObj = {};
+            for (let i3 = 0; i3 < arr.length; i3++) {
+              const tagObj = arr[i3];
+              const property = propName(tagObj);
+              let newJpath = "";
+              if (jPath === void 0)
+                newJpath = property;
+              else
+                newJpath = jPath + "." + property;
+              if (property === options2.textNodeName) {
+                if (text === void 0)
+                  text = tagObj[property];
+                else
+                  text += "" + tagObj[property];
+              } else if (property === void 0) {
+                continue;
+              } else if (tagObj[property]) {
+                let val2 = compress(tagObj[property], options2, newJpath);
+                const isLeaf = isLeafTag(val2, options2);
+                if (tagObj[":@"]) {
+                  assignAttributes(val2, tagObj[":@"], newJpath, options2);
+                } else if (Object.keys(val2).length === 1 && val2[options2.textNodeName] !== void 0 && !options2.alwaysCreateTextNode) {
+                  val2 = val2[options2.textNodeName];
+                } else if (Object.keys(val2).length === 0) {
+                  if (options2.alwaysCreateTextNode)
+                    val2[options2.textNodeName] = "";
+                  else
+                    val2 = "";
+                }
+                if (compressedObj[property] !== void 0 && compressedObj.hasOwnProperty(property)) {
+                  if (!Array.isArray(compressedObj[property])) {
+                    compressedObj[property] = [compressedObj[property]];
+                  }
+                  compressedObj[property].push(val2);
+                } else {
+                  if (options2.isArray(property, newJpath, isLeaf)) {
+                    compressedObj[property] = [val2];
+                  } else {
+                    compressedObj[property] = val2;
+                  }
+                }
+              }
+            }
+            if (typeof text === "string") {
+              if (text.length > 0)
+                compressedObj[options2.textNodeName] = text;
+            } else if (text !== void 0)
+              compressedObj[options2.textNodeName] = text;
+            return compressedObj;
+          }
+          function propName(obj) {
+            const keys2 = Object.keys(obj);
+            for (let i3 = 0; i3 < keys2.length; i3++) {
+              const key = keys2[i3];
+              if (key !== ":@")
+                return key;
+            }
+          }
+          function assignAttributes(obj, attrMap, jpath, options2) {
+            if (attrMap) {
+              const keys2 = Object.keys(attrMap);
+              const len = keys2.length;
+              for (let i3 = 0; i3 < len; i3++) {
+                const atrrName = keys2[i3];
+                if (options2.isArray(atrrName, jpath + "." + atrrName, true, true)) {
+                  obj[atrrName] = [attrMap[atrrName]];
+                } else {
+                  obj[atrrName] = attrMap[atrrName];
+                }
+              }
+            }
+          }
+          function isLeafTag(obj, options2) {
+            const { textNodeName } = options2;
+            const propCount = Object.keys(obj).length;
+            if (propCount === 0) {
+              return true;
+            }
+            if (propCount === 1 && (obj[textNodeName] || typeof obj[textNodeName] === "boolean" || obj[textNodeName] === 0)) {
+              return true;
+            }
+            return false;
+          }
+          exports4.prettify = prettify;
+        }, {}], 13: [function(require2, module4, exports4) {
+          "use strict";
+          class XmlNode {
+            constructor(tagname) {
+              this.tagname = tagname;
+              this.child = [];
+              this[":@"] = {};
+            }
+            add(key, val2) {
+              if (key === "__proto__")
+                key = "#__proto__";
+              this.child.push({ [key]: val2 });
+            }
+            addChild(node) {
+              if (node.tagname === "__proto__")
+                node.tagname = "#__proto__";
+              if (node[":@"] && Object.keys(node[":@"]).length > 0) {
+                this.child.push({ [node.tagname]: node.child, [":@"]: node[":@"] });
+              } else {
+                this.child.push({ [node.tagname]: node.child });
+              }
+            }
+          }
+          ;
+          module4.exports = XmlNode;
+        }, {}], 14: [function(require2, module4, exports4) {
+          exports4.read = function(buffer, offset, isLE, mLen, nBytes) {
+            var e3, m2;
+            var eLen = nBytes * 8 - mLen - 1;
+            var eMax = (1 << eLen) - 1;
+            var eBias = eMax >> 1;
+            var nBits = -7;
+            var i3 = isLE ? nBytes - 1 : 0;
+            var d2 = isLE ? -1 : 1;
+            var s2 = buffer[offset + i3];
+            i3 += d2;
+            e3 = s2 & (1 << -nBits) - 1;
+            s2 >>= -nBits;
+            nBits += eLen;
+            for (; nBits > 0; e3 = e3 * 256 + buffer[offset + i3], i3 += d2, nBits -= 8) {
+            }
+            m2 = e3 & (1 << -nBits) - 1;
+            e3 >>= -nBits;
+            nBits += mLen;
+            for (; nBits > 0; m2 = m2 * 256 + buffer[offset + i3], i3 += d2, nBits -= 8) {
+            }
+            if (e3 === 0) {
+              e3 = 1 - eBias;
+            } else if (e3 === eMax) {
+              return m2 ? NaN : (s2 ? -1 : 1) * Infinity;
+            } else {
+              m2 = m2 + Math.pow(2, mLen);
+              e3 = e3 - eBias;
+            }
+            return (s2 ? -1 : 1) * m2 * Math.pow(2, e3 - mLen);
+          };
+          exports4.write = function(buffer, value, offset, isLE, mLen, nBytes) {
+            var e3, m2, c2;
+            var eLen = nBytes * 8 - mLen - 1;
+            var eMax = (1 << eLen) - 1;
+            var eBias = eMax >> 1;
+            var rt = mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0;
+            var i3 = isLE ? 0 : nBytes - 1;
+            var d2 = isLE ? 1 : -1;
+            var s2 = value < 0 || value === 0 && 1 / value < 0 ? 1 : 0;
+            value = Math.abs(value);
+            if (isNaN(value) || value === Infinity) {
+              m2 = isNaN(value) ? 1 : 0;
+              e3 = eMax;
+            } else {
+              e3 = Math.floor(Math.log(value) / Math.LN2);
+              if (value * (c2 = Math.pow(2, -e3)) < 1) {
+                e3--;
+                c2 *= 2;
+              }
+              if (e3 + eBias >= 1) {
+                value += rt / c2;
+              } else {
+                value += rt * Math.pow(2, 1 - eBias);
+              }
+              if (value * c2 >= 2) {
+                e3++;
+                c2 /= 2;
+              }
+              if (e3 + eBias >= eMax) {
+                m2 = 0;
+                e3 = eMax;
+              } else if (e3 + eBias >= 1) {
+                m2 = (value * c2 - 1) * Math.pow(2, mLen);
+                e3 = e3 + eBias;
+              } else {
+                m2 = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen);
+                e3 = 0;
+              }
+            }
+            for (; mLen >= 8; buffer[offset + i3] = m2 & 255, i3 += d2, m2 /= 256, mLen -= 8) {
+            }
+            e3 = e3 << mLen | m2;
+            eLen += mLen;
+            for (; eLen > 0; buffer[offset + i3] = e3 & 255, i3 += d2, e3 /= 256, eLen -= 8) {
+            }
+            buffer[offset + i3 - d2] |= s2 * 128;
+          };
+        }, {}], 15: [function(require2, module4, exports4) {
+          const hexRegex = /^[-+]?0x[a-fA-F0-9]+$/;
+          const numRegex = /^([\-\+])?(0*)(\.[0-9]+([eE]\-?[0-9]+)?|[0-9]+(\.[0-9]+([eE]\-?[0-9]+)?)?)$/;
+          if (!Number.parseInt && window.parseInt) {
+            Number.parseInt = window.parseInt;
+          }
+          if (!Number.parseFloat && window.parseFloat) {
+            Number.parseFloat = window.parseFloat;
+          }
+          const consider = {
+            hex: true,
+            leadingZeros: true,
+            decimalPoint: ".",
+            eNotation: true
+            //skipLike: /regex/
+          };
+          function toNumber3(str, options2 = {}) {
+            options2 = Object.assign({}, consider, options2);
+            if (!str || typeof str !== "string")
+              return str;
+            let trimmedStr = str.trim();
+            if (options2.skipLike !== void 0 && options2.skipLike.test(trimmedStr))
+              return str;
+            else if (options2.hex && hexRegex.test(trimmedStr)) {
+              return Number.parseInt(trimmedStr, 16);
+            } else {
+              const match = numRegex.exec(trimmedStr);
+              if (match) {
+                const sign2 = match[1];
+                const leadingZeros = match[2];
+                let numTrimmedByZeros = trimZeros(match[3]);
+                const eNotation = match[4] || match[6];
+                if (!options2.leadingZeros && leadingZeros.length > 0 && sign2 && trimmedStr[2] !== ".")
+                  return str;
+                else if (!options2.leadingZeros && leadingZeros.length > 0 && !sign2 && trimmedStr[1] !== ".")
+                  return str;
+                else {
+                  const num = Number(trimmedStr);
+                  const numStr = "" + num;
+                  if (numStr.search(/[eE]/) !== -1) {
+                    if (options2.eNotation)
+                      return num;
+                    else
+                      return str;
+                  } else if (eNotation) {
+                    if (options2.eNotation)
+                      return num;
+                    else
+                      return str;
+                  } else if (trimmedStr.indexOf(".") !== -1) {
+                    if (numStr === "0" && numTrimmedByZeros === "")
+                      return num;
+                    else if (numStr === numTrimmedByZeros)
+                      return num;
+                    else if (sign2 && numStr === "-" + numTrimmedByZeros)
+                      return num;
+                    else
+                      return str;
+                  }
+                  if (leadingZeros) {
+                    if (numTrimmedByZeros === numStr)
+                      return num;
+                    else if (sign2 + numTrimmedByZeros === numStr)
+                      return num;
+                    else
+                      return str;
+                  }
+                  if (trimmedStr === numStr)
+                    return num;
+                  else if (trimmedStr === sign2 + numStr)
+                    return num;
+                  return str;
+                }
+              } else {
+                return str;
+              }
+            }
+          }
+          function trimZeros(numStr) {
+            if (numStr && numStr.indexOf(".") !== -1) {
+              numStr = numStr.replace(/0+$/, "");
+              if (numStr === ".")
+                numStr = "0";
+              else if (numStr[0] === ".")
+                numStr = "0" + numStr;
+              else if (numStr[numStr.length - 1] === ".")
+                numStr = numStr.substr(0, numStr.length - 1);
+              return numStr;
+            }
+            return numStr;
+          }
+          module4.exports = toNumber3;
+        }, {}], 16: [function(require2, module4, exports4) {
+          (function(Buffer3) {
+            (function() {
+              "use strict";
+              var __awaiter = this && this.__awaiter || function(thisArg, _arguments, P2, generator) {
+                function adopt(value) {
+                  return value instanceof P2 ? value : new P2(function(resolve) {
+                    resolve(value);
+                  });
+                }
+                return new (P2 || (P2 = Promise))(function(resolve, reject) {
+                  function fulfilled(value) {
+                    try {
+                      step(generator.next(value));
+                    } catch (e3) {
+                      reject(e3);
+                    }
+                  }
+                  function rejected(value) {
+                    try {
+                      step(generator["throw"](value));
+                    } catch (e3) {
+                      reject(e3);
+                    }
+                  }
+                  function step(result) {
+                    result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+                  }
+                  step((generator = generator.apply(thisArg, _arguments || [])).next());
+                });
+              };
+              Object.defineProperty(exports4, "__esModule", { value: true });
+              exports4.osmFetch = void 0;
+              const auth_1 = require2("../auth");
+              const config_1 = require2("../config");
+              const _xml_1 = require2("./_xml");
+              const toBase64 = (text) => {
+                if (typeof btoa === "undefined") {
+                  return Buffer3.from(text, "binary").toString("base64");
+                }
+                return btoa(text);
+              };
+              function osmFetch(path, qsObject, fetchOptions) {
+                return __awaiter(this, void 0, void 0, function* () {
+                  const { apiUrl: apiUrl3, authHeader, basicAuth, userAgent } = (0, config_1.getConfig)();
+                  const maybeBasicAuthHeader = basicAuth && "Basic ".concat(toBase64("".concat(basicAuth.username, ":").concat(basicAuth.password)));
+                  const maybeOAuth2Token = (0, auth_1.getAuthToken)() && "Bearer ".concat((0, auth_1.getAuthToken)());
+                  let qs = new URLSearchParams(qsObject).toString();
+                  qs && (qs = "?".concat(qs));
+                  const response = yield fetch("".concat(apiUrl3, "/api").concat(path).concat(qs), Object.assign(Object.assign({}, fetchOptions), { headers: Object.assign({ Authorization: authHeader || maybeBasicAuthHeader || maybeOAuth2Token || "", "User-Agent": userAgent }, fetchOptions === null || fetchOptions === void 0 ? void 0 : fetchOptions.headers) }));
+                  const contentType = response.headers.get("Content-Type");
+                  if (contentType === null || contentType === void 0 ? void 0 : contentType.startsWith("application/xml")) {
+                    const xml = yield response.text();
+                    const json = yield _xml_1.xmlParser.parse(xml);
+                    return json;
+                  }
+                  if (contentType === null || contentType === void 0 ? void 0 : contentType.startsWith("application/json")) {
+                    return response.json();
+                  }
+                  if (response.ok) {
+                    return yield response.text();
+                  }
+                  throw new Error("OSM API: ".concat(yield response.text()));
+                });
+              }
+              exports4.osmFetch = osmFetch;
+            }).call(this);
+          }).call(this, require2("buffer").Buffer);
+        }, { "../auth": 37, "../config": 39, "./_xml": 17, "buffer": 2 }], 17: [function(require2, module4, exports4) {
+          "use strict";
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          exports4.xmlParser = void 0;
+          const fast_xml_parser_1 = require2("fast-xml-parser");
+          exports4.xmlParser = new fast_xml_parser_1.XMLParser({
+            ignoreAttributes: false,
+            attributesGroupName: "$",
+            attributeNamePrefix: "",
+            isArray: (tagName) => tagName !== "$"
+          });
+        }, { "fast-xml-parser": 3 }], 18: [function(require2, module4, exports4) {
+          "use strict";
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          exports4.createOsmChangeXml = exports4.createChangesetMetaXml = void 0;
+          const fast_xml_parser_1 = require2("fast-xml-parser");
+          const builder = new fast_xml_parser_1.XMLBuilder({
+            ignoreAttributes: false,
+            attributeNamePrefix: "$",
+            format: true,
+            suppressEmptyNode: true,
+            suppressBooleanAttributes: false
+          });
+          function createChangesetMetaXml(tags) {
+            return builder.build({
+              osm: {
+                changeset: {
+                  tag: Object.entries(tags).map(([$k, $v]) => ({ $k, $v }))
+                }
+              }
+            });
+          }
+          exports4.createChangesetMetaXml = createChangesetMetaXml;
+          const createGroup = (csId, features, isCreate) => features.reduce((ac, f2) => {
+            const base = {
+              $id: f2.id,
+              $version: isCreate ? 0 : f2.version,
+              $changeset: csId,
+              tag: Object.entries(f2.tags || {}).map(([$k, $v]) => ({
+                $k,
+                $v
+              }))
+            };
+            switch (f2.type) {
+              case "node": {
+                const feat = Object.assign(Object.assign({}, base), { $lat: f2.lat, $lon: f2.lon });
+                return Object.assign(Object.assign({}, ac), { node: [...ac.node, feat] });
+              }
+              case "way": {
+                if (!f2.nodes)
+                  throw new Error("Way has no nodes");
+                const feat = Object.assign(Object.assign({}, base), { nd: f2.nodes.map(($ref) => ({ $ref })) });
+                return Object.assign(Object.assign({}, ac), { way: [...ac.way, feat] });
+              }
+              case "relation": {
+                if (!f2.members)
+                  throw new Error("Relation has no members");
+                const feat = Object.assign(Object.assign({}, base), { member: f2.members.map((m2) => ({
+                  $type: m2.type,
+                  $ref: m2.ref,
+                  $role: m2.role
+                })) });
+                return Object.assign(Object.assign({}, ac), { relation: [...ac.relation, feat] });
+              }
+              default: {
+                return ac;
+              }
+            }
+          }, { node: [], way: [], relation: [] });
+          function createOsmChangeXml(csId, diff, metadata) {
+            return builder.build({
+              osmChange: {
+                $version: "0.6",
+                $generator: "osm-api-js",
+                changeset: metadata ? { tag: Object.entries(metadata).map(([$k, $v]) => ({ $k, $v })) } : void 0,
+                create: [createGroup(csId, diff.create, true)],
+                modify: [createGroup(csId, diff.modify)],
+                delete: [Object.assign({ "$if-unused": true }, createGroup(csId, diff.delete))]
+              }
+            });
+          }
+          exports4.createOsmChangeXml = createOsmChangeXml;
+        }, { "fast-xml-parser": 3 }], 19: [function(require2, module4, exports4) {
+          "use strict";
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          exports4.parseOsmChangeXml = exports4.parseOsmChangeJson = void 0;
+          const _xml_1 = require2("../_xml");
+          function parseTags(feat) {
+            if (!(feat === null || feat === void 0 ? void 0 : feat.tag))
+              return void 0;
+            return Object.fromEntries(feat.tag.map((tag2) => [tag2.$.k, tag2.$.v]));
+          }
+          function common(feat) {
+            return {
+              changeset: +feat.$.changeset,
+              id: +feat.$.id,
+              timestamp: feat.$.timestamp,
+              uid: +feat.$.uid,
+              user: feat.$.user,
+              version: +feat.$.version,
+              tags: parseTags(feat)
+            };
+          }
+          const mapSection = (c2) => {
+            const feats = [];
+            if (c2.node) {
+              const nodes = c2.node.map((n3) => Object.assign(Object.assign({ type: "node" }, common(n3)), { lat: +n3.$.lat, lon: +n3.$.lon }));
+              feats.push(...nodes);
+            }
+            if (c2.way) {
+              const ways = c2.way.map((w2) => {
+                var _a2;
+                return Object.assign(Object.assign({ type: "way" }, common(w2)), { nodes: ((_a2 = w2.nd) === null || _a2 === void 0 ? void 0 : _a2.map((n3) => +n3.$.ref)) || [] });
+              });
+              feats.push(...ways);
+            }
+            if (c2.relation) {
+              const relations = c2.relation.map((r2) => {
+                var _a2;
+                return Object.assign(Object.assign({ type: "relation" }, common(r2)), { members: ((_a2 = r2.member) === null || _a2 === void 0 ? void 0 : _a2.map((m2) => ({
+                  ref: +m2.$.ref,
+                  role: m2.$.role,
+                  type: m2.$.type
+                }))) || [] });
+              });
+              feats.push(...relations);
+            }
+            return feats;
+          };
+          function parseOsmChangeJson(raw) {
+            var _a2, _b, _c, _d;
+            const changesetTags = parseTags((_a2 = raw.osmChange[0].changeset) === null || _a2 === void 0 ? void 0 : _a2[0]);
+            const diff = {
+              create: ((_b = raw.osmChange[0].create) === null || _b === void 0 ? void 0 : _b.flatMap(mapSection)) || [],
+              modify: ((_c = raw.osmChange[0].modify) === null || _c === void 0 ? void 0 : _c.flatMap(mapSection)) || [],
+              delete: ((_d = raw.osmChange[0].delete) === null || _d === void 0 ? void 0 : _d.flatMap(mapSection)) || []
+            };
+            if (changesetTags)
+              diff.changeset = changesetTags;
+            return diff;
+          }
+          exports4.parseOsmChangeJson = parseOsmChangeJson;
+          function parseOsmChangeXml2(xml) {
+            const raw = _xml_1.xmlParser.parse(xml);
+            return parseOsmChangeJson(raw);
+          }
+          exports4.parseOsmChangeXml = parseOsmChangeXml2;
+        }, { "../_xml": 17 }], 20: [function(require2, module4, exports4) {
+          "use strict";
+          var __awaiter = this && this.__awaiter || function(thisArg, _arguments, P2, generator) {
+            function adopt(value) {
+              return value instanceof P2 ? value : new P2(function(resolve) {
+                resolve(value);
+              });
+            }
+            return new (P2 || (P2 = Promise))(function(resolve, reject) {
+              function fulfilled(value) {
+                try {
+                  step(generator.next(value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function rejected(value) {
+                try {
+                  step(generator["throw"](value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function step(result) {
+                result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+              }
+              step((generator = generator.apply(thisArg, _arguments || [])).next());
+            });
+          };
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          exports4.createChangesetComment = void 0;
+          const _osmFetch_1 = require2("../_osmFetch");
+          function createChangesetComment(changesetId, commentText) {
+            return __awaiter(this, void 0, void 0, function* () {
+              yield (0, _osmFetch_1.osmFetch)("/0.6/changeset/".concat(changesetId, "/comment"), void 0, {
+                method: "POST",
+                body: "text=".concat(encodeURIComponent(commentText)),
+                headers: {
+                  "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+                }
+              });
+            });
+          }
+          exports4.createChangesetComment = createChangesetComment;
+        }, { "../_osmFetch": 16 }], 21: [function(require2, module4, exports4) {
+          "use strict";
+          var __awaiter = this && this.__awaiter || function(thisArg, _arguments, P2, generator) {
+            function adopt(value) {
+              return value instanceof P2 ? value : new P2(function(resolve) {
+                resolve(value);
+              });
+            }
+            return new (P2 || (P2 = Promise))(function(resolve, reject) {
+              function fulfilled(value) {
+                try {
+                  step(generator.next(value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function rejected(value) {
+                try {
+                  step(generator["throw"](value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function step(result) {
+                result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+              }
+              step((generator = generator.apply(thisArg, _arguments || [])).next());
+            });
+          };
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          exports4.getChangesetDiff = void 0;
+          const _osmFetch_1 = require2("../_osmFetch");
+          const _parseOsmChangeXml_1 = require2("./_parseOsmChangeXml");
+          function getChangesetDiff(id2) {
+            return __awaiter(this, void 0, void 0, function* () {
+              const raw = yield (0, _osmFetch_1.osmFetch)("/0.6/changeset/".concat(id2, "/download"));
+              return (0, _parseOsmChangeXml_1.parseOsmChangeJson)(raw);
+            });
+          }
+          exports4.getChangesetDiff = getChangesetDiff;
+        }, { "../_osmFetch": 16, "./_parseOsmChangeXml": 19 }], 22: [function(require2, module4, exports4) {
+          "use strict";
+          var __awaiter = this && this.__awaiter || function(thisArg, _arguments, P2, generator) {
+            function adopt(value) {
+              return value instanceof P2 ? value : new P2(function(resolve) {
+                resolve(value);
+              });
+            }
+            return new (P2 || (P2 = Promise))(function(resolve, reject) {
+              function fulfilled(value) {
+                try {
+                  step(generator.next(value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function rejected(value) {
+                try {
+                  step(generator["throw"](value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function step(result) {
+                result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+              }
+              step((generator = generator.apply(thisArg, _arguments || [])).next());
+            });
+          };
+          var __rest = this && this.__rest || function(s2, e3) {
+            var t2 = {};
+            for (var p2 in s2)
+              if (Object.prototype.hasOwnProperty.call(s2, p2) && e3.indexOf(p2) < 0)
+                t2[p2] = s2[p2];
+            if (s2 != null && typeof Object.getOwnPropertySymbols === "function")
+              for (var i3 = 0, p2 = Object.getOwnPropertySymbols(s2); i3 < p2.length; i3++) {
+                if (e3.indexOf(p2[i3]) < 0 && Object.prototype.propertyIsEnumerable.call(s2, p2[i3]))
+                  t2[p2[i3]] = s2[p2[i3]];
+              }
+            return t2;
+          };
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          exports4.getChangeset = exports4.listChangesets = void 0;
+          const _osmFetch_1 = require2("../_osmFetch");
+          const mapRawChangeset = (raw) => {
+            var _a2, _b;
+            return {
+              id: +raw.$.id,
+              created_at: new Date(raw.$.created_at),
+              closed_at: new Date(raw.$.closed_at),
+              open: raw.$.open === "true",
+              comments_count: +raw.$.comments_count,
+              changes_count: +raw.$.changes_count,
+              min_lat: +raw.$.min_lat,
+              min_lon: +raw.$.min_lon,
+              max_lat: +raw.$.max_lat,
+              max_lon: +raw.$.max_lon,
+              uid: +raw.$.uid,
+              user: raw.$.user,
+              tags: Object.fromEntries(raw.tag.map((tag2) => [tag2.$.k, tag2.$.v])),
+              discussion: (_b = (_a2 = raw.discussion) === null || _a2 === void 0 ? void 0 : _a2[0].comment) === null || _b === void 0 ? void 0 : _b.map((comment) => ({
+                date: new Date(comment.$.date),
+                user: comment.$.user,
+                uid: comment.$.uid,
+                text: comment.text[0]
+              }))
+            };
+          };
+          function listChangesets(options2) {
+            var _a2;
+            return __awaiter(this, void 0, void 0, function* () {
+              const { only } = options2, otherOptions = __rest(options2, ["only"]);
+              const raw = yield (0, _osmFetch_1.osmFetch)("/0.6/changesets", Object.assign(Object.assign({}, only && { [only]: true }), otherOptions));
+              return ((_a2 = raw.osm[0].changeset) === null || _a2 === void 0 ? void 0 : _a2.map(mapRawChangeset)) || [];
+            });
+          }
+          exports4.listChangesets = listChangesets;
+          function getChangeset(id2, includeDiscussion = true) {
+            return __awaiter(this, void 0, void 0, function* () {
+              const raw = yield (0, _osmFetch_1.osmFetch)("/0.6/changeset/".concat(id2), includeDiscussion ? { include_discussion: 1 } : {});
+              return raw.osm[0].changeset.map(mapRawChangeset)[0];
+            });
+          }
+          exports4.getChangeset = getChangeset;
+        }, { "../_osmFetch": 16 }], 23: [function(require2, module4, exports4) {
+          "use strict";
+          var __createBinding = this && this.__createBinding || (Object.create ? function(o2, m2, k3, k22) {
+            if (k22 === void 0)
+              k22 = k3;
+            var desc = Object.getOwnPropertyDescriptor(m2, k3);
+            if (!desc || ("get" in desc ? !m2.__esModule : desc.writable || desc.configurable)) {
+              desc = { enumerable: true, get: function() {
+                return m2[k3];
+              } };
+            }
+            Object.defineProperty(o2, k22, desc);
+          } : function(o2, m2, k3, k22) {
+            if (k22 === void 0)
+              k22 = k3;
+            o2[k22] = m2[k3];
+          });
+          var __exportStar = this && this.__exportStar || function(m2, exports5) {
+            for (var p2 in m2)
+              if (p2 !== "default" && !Object.prototype.hasOwnProperty.call(exports5, p2))
+                __createBinding(exports5, m2, p2);
+          };
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          exports4.createOsmChangeXml = exports4.parseOsmChangeXml = void 0;
+          __exportStar(require2("./createChangesetComment"), exports4);
+          __exportStar(require2("./getChangesetDiff"), exports4);
+          __exportStar(require2("./getChangesets"), exports4);
+          __exportStar(require2("./uploadChangeset"), exports4);
+          var _parseOsmChangeXml_1 = require2("./_parseOsmChangeXml");
+          Object.defineProperty(exports4, "parseOsmChangeXml", { enumerable: true, get: function() {
+            return _parseOsmChangeXml_1.parseOsmChangeXml;
+          } });
+          var _createOsmChangeXml_1 = require2("./_createOsmChangeXml");
+          Object.defineProperty(exports4, "createOsmChangeXml", { enumerable: true, get: function() {
+            return _createOsmChangeXml_1.createOsmChangeXml;
+          } });
+        }, { "./_createOsmChangeXml": 18, "./_parseOsmChangeXml": 19, "./createChangesetComment": 20, "./getChangesetDiff": 21, "./getChangesets": 22, "./uploadChangeset": 24 }], 24: [function(require2, module4, exports4) {
+          "use strict";
+          var __awaiter = this && this.__awaiter || function(thisArg, _arguments, P2, generator) {
+            function adopt(value) {
+              return value instanceof P2 ? value : new P2(function(resolve) {
+                resolve(value);
+              });
+            }
+            return new (P2 || (P2 = Promise))(function(resolve, reject) {
+              function fulfilled(value) {
+                try {
+                  step(generator.next(value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function rejected(value) {
+                try {
+                  step(generator["throw"](value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function step(result) {
+                result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+              }
+              step((generator = generator.apply(thisArg, _arguments || [])).next());
+            });
+          };
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          exports4.uploadChangeset = void 0;
+          const _osmFetch_1 = require2("../_osmFetch");
+          const _createOsmChangeXml_1 = require2("./_createOsmChangeXml");
+          function uploadChangeset(tags, diff) {
+            return __awaiter(this, void 0, void 0, function* () {
+              const changesetXml = (0, _createOsmChangeXml_1.createChangesetMetaXml)(tags);
+              const csId = +(yield (0, _osmFetch_1.osmFetch)("/0.6/changeset/create", void 0, {
+                method: "PUT",
+                body: changesetXml,
+                headers: {
+                  "content-type": "application/xml; charset=utf-8"
+                }
+              }));
+              const osmChangeXml = (0, _createOsmChangeXml_1.createOsmChangeXml)(csId, diff);
+              yield (0, _osmFetch_1.osmFetch)("/0.6/changeset/".concat(csId, "/upload"), void 0, {
+                method: "POST",
+                body: osmChangeXml,
+                headers: {
+                  "content-type": "application/xml; charset=utf-8"
+                }
+              });
+              yield (0, _osmFetch_1.osmFetch)("/0.6/changeset/".concat(csId, "/close"), void 0, { method: "PUT" });
+              return +csId;
+            });
+          }
+          exports4.uploadChangeset = uploadChangeset;
+        }, { "../_osmFetch": 16, "./_createOsmChangeXml": 18 }], 25: [function(require2, module4, exports4) {
+          "use strict";
+          var __awaiter = this && this.__awaiter || function(thisArg, _arguments, P2, generator) {
+            function adopt(value) {
+              return value instanceof P2 ? value : new P2(function(resolve) {
+                resolve(value);
+              });
+            }
+            return new (P2 || (P2 = Promise))(function(resolve, reject) {
+              function fulfilled(value) {
+                try {
+                  step(generator.next(value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function rejected(value) {
+                try {
+                  step(generator["throw"](value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function step(result) {
+                result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+              }
+              step((generator = generator.apply(thisArg, _arguments || [])).next());
+            });
+          };
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          exports4.getCapabilities = void 0;
+          const _osmFetch_1 = require2("./_osmFetch");
+          function getCapabilities() {
+            var _a2;
+            return __awaiter(this, void 0, void 0, function* () {
+              const raw = yield (0, _osmFetch_1.osmFetch)("/capabilities");
+              const out = {
+                limits: {
+                  maxArea: +raw.osm[0].api[0].area[0].$.maximum,
+                  maxNoteArea: +raw.osm[0].api[0].note_area[0].$.maximum,
+                  maxTracepointPerPage: +raw.osm[0].api[0].tracepoints[0].$.per_page,
+                  maxWayNodes: +raw.osm[0].api[0].waynodes[0].$.maximum,
+                  maxChangesetElements: +raw.osm[0].api[0].changesets[0].$.maximum_elements,
+                  maxTimeout: +raw.osm[0].api[0].timeout[0].$.seconds
+                },
+                policy: {
+                  imageryBlacklist: ((_a2 = raw.osm[0].policy[0].imagery[0].blacklist) === null || _a2 === void 0 ? void 0 : _a2.map((item) => item.$.regex)) || []
+                }
+              };
+              return out;
+            });
+          }
+          exports4.getCapabilities = getCapabilities;
+        }, { "./_osmFetch": 16 }], 26: [function(require2, module4, exports4) {
+          "use strict";
+          var __awaiter = this && this.__awaiter || function(thisArg, _arguments, P2, generator) {
+            function adopt(value) {
+              return value instanceof P2 ? value : new P2(function(resolve) {
+                resolve(value);
+              });
+            }
+            return new (P2 || (P2 = Promise))(function(resolve, reject) {
+              function fulfilled(value) {
+                try {
+                  step(generator.next(value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function rejected(value) {
+                try {
+                  step(generator["throw"](value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function step(result) {
+                result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+              }
+              step((generator = generator.apply(thisArg, _arguments || [])).next());
+            });
+          };
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          exports4.getRelationsForElement = exports4.getWaysForNode = exports4.getFeatureHistory = exports4.getFeatureAtVersion = exports4.getFeatures = exports4.getFeature = void 0;
+          const _osmFetch_1 = require2("./_osmFetch");
+          function getFeature(type2, id2, full) {
+            return __awaiter(this, void 0, void 0, function* () {
+              const suffix = full && type2 !== "node" ? "/full" : "";
+              const raw = yield (0, _osmFetch_1.osmFetch)("/0.6/".concat(type2, "/").concat(id2).concat(suffix, ".json"));
+              return raw.elements;
+            });
+          }
+          exports4.getFeature = getFeature;
+          function getFeatures(type2, ids) {
+            return __awaiter(this, void 0, void 0, function* () {
+              const raw = yield (0, _osmFetch_1.osmFetch)("/0.6/".concat(type2, "s.json?").concat(type2, "s=").concat(ids.join(",")));
+              return raw.elements;
+            });
+          }
+          exports4.getFeatures = getFeatures;
+          function getFeatureAtVersion(type2, id2, version) {
+            return __awaiter(this, void 0, void 0, function* () {
+              const raw = yield (0, _osmFetch_1.osmFetch)("/0.6/".concat(type2, "/").concat(id2, "/").concat(version, ".json"));
+              return raw.elements[0];
+            });
+          }
+          exports4.getFeatureAtVersion = getFeatureAtVersion;
+          function getFeatureHistory(type2, id2) {
+            return __awaiter(this, void 0, void 0, function* () {
+              const raw = yield (0, _osmFetch_1.osmFetch)("/0.6/".concat(type2, "/").concat(id2, "/history.json"));
+              return raw.elements;
+            });
+          }
+          exports4.getFeatureHistory = getFeatureHistory;
+          function getWaysForNode(nodeId) {
+            return __awaiter(this, void 0, void 0, function* () {
+              const raw = yield (0, _osmFetch_1.osmFetch)("/0.6/node/".concat(nodeId, "/ways.json"));
+              return raw.elements;
+            });
+          }
+          exports4.getWaysForNode = getWaysForNode;
+          function getRelationsForElement(type2, id2) {
+            return __awaiter(this, void 0, void 0, function* () {
+              const raw = yield (0, _osmFetch_1.osmFetch)("/0.6/".concat(type2, "/").concat(id2, "/relations.json"));
+              return raw.elements;
+            });
+          }
+          exports4.getRelationsForElement = getRelationsForElement;
+        }, { "./_osmFetch": 16 }], 27: [function(require2, module4, exports4) {
+          "use strict";
+          var __awaiter = this && this.__awaiter || function(thisArg, _arguments, P2, generator) {
+            function adopt(value) {
+              return value instanceof P2 ? value : new P2(function(resolve) {
+                resolve(value);
+              });
+            }
+            return new (P2 || (P2 = Promise))(function(resolve, reject) {
+              function fulfilled(value) {
+                try {
+                  step(generator.next(value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function rejected(value) {
+                try {
+                  step(generator["throw"](value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function step(result) {
+                result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+              }
+              step((generator = generator.apply(thisArg, _arguments || [])).next());
+            });
+          };
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          exports4.getMapData = void 0;
+          const _osmFetch_1 = require2("./_osmFetch");
+          function getMapData2(bbox2) {
+            return __awaiter(this, void 0, void 0, function* () {
+              const raw = yield (0, _osmFetch_1.osmFetch)("/0.6/map.json", {
+                bbox: bbox2
+              });
+              return raw.elements;
+            });
+          }
+          exports4.getMapData = getMapData2;
+        }, { "./_osmFetch": 16 }], 28: [function(require2, module4, exports4) {
+          "use strict";
+          var __awaiter = this && this.__awaiter || function(thisArg, _arguments, P2, generator) {
+            function adopt(value) {
+              return value instanceof P2 ? value : new P2(function(resolve) {
+                resolve(value);
+              });
+            }
+            return new (P2 || (P2 = Promise))(function(resolve, reject) {
+              function fulfilled(value) {
+                try {
+                  step(generator.next(value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function rejected(value) {
+                try {
+                  step(generator["throw"](value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function step(result) {
+                result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+              }
+              step((generator = generator.apply(thisArg, _arguments || [])).next());
+            });
+          };
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          exports4.getUIdFromDisplayName = void 0;
+          const changesets_1 = require2("./changesets");
+          function getUIdFromDisplayName(displayName) {
+            return __awaiter(this, void 0, void 0, function* () {
+              const cs = yield (0, changesets_1.listChangesets)({ display_name: displayName });
+              if (!cs.length) {
+                throw new Error("Could not get uid because the user has never edited the map");
+              }
+              return cs[0].uid;
+            });
+          }
+          exports4.getUIdFromDisplayName = getUIdFromDisplayName;
+        }, { "./changesets": 23 }], 29: [function(require2, module4, exports4) {
+          "use strict";
+          var __awaiter = this && this.__awaiter || function(thisArg, _arguments, P2, generator) {
+            function adopt(value) {
+              return value instanceof P2 ? value : new P2(function(resolve) {
+                resolve(value);
+              });
+            }
+            return new (P2 || (P2 = Promise))(function(resolve, reject) {
+              function fulfilled(value) {
+                try {
+                  step(generator.next(value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function rejected(value) {
+                try {
+                  step(generator["throw"](value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function step(result) {
+                result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+              }
+              step((generator = generator.apply(thisArg, _arguments || [])).next());
+            });
+          };
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          exports4.getUsers = exports4.getUser = void 0;
+          const _osmFetch_1 = require2("./_osmFetch");
+          function getUser(user) {
+            return __awaiter(this, void 0, void 0, function* () {
+              const raw = yield (0, _osmFetch_1.osmFetch)("/0.6/user/".concat(user === "me" ? "details" : user, ".json"));
+              return Object.assign(Object.assign({}, raw.user), { account_created: new Date(raw.user.account_created) });
+            });
+          }
+          exports4.getUser = getUser;
+          function getUsers(users) {
+            return __awaiter(this, void 0, void 0, function* () {
+              const raw = yield (0, _osmFetch_1.osmFetch)("/0.6/users", { users });
+              return raw.users.map((u2) => Object.assign(Object.assign({}, u2), { account_created: new Date(u2.account_created) }));
+            });
+          }
+          exports4.getUsers = getUsers;
+        }, { "./_osmFetch": 16 }], 30: [function(require2, module4, exports4) {
+          "use strict";
+          var __createBinding = this && this.__createBinding || (Object.create ? function(o2, m2, k3, k22) {
+            if (k22 === void 0)
+              k22 = k3;
+            var desc = Object.getOwnPropertyDescriptor(m2, k3);
+            if (!desc || ("get" in desc ? !m2.__esModule : desc.writable || desc.configurable)) {
+              desc = { enumerable: true, get: function() {
+                return m2[k3];
+              } };
+            }
+            Object.defineProperty(o2, k22, desc);
+          } : function(o2, m2, k3, k22) {
+            if (k22 === void 0)
+              k22 = k3;
+            o2[k22] = m2[k3];
+          });
+          var __exportStar = this && this.__exportStar || function(m2, exports5) {
+            for (var p2 in m2)
+              if (p2 !== "default" && !Object.prototype.hasOwnProperty.call(exports5, p2))
+                __createBinding(exports5, m2, p2);
+          };
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          __exportStar(require2("./changesets"), exports4);
+          __exportStar(require2("./notes"), exports4);
+          __exportStar(require2("./getCapabilities"), exports4);
+          __exportStar(require2("./getFeature"), exports4);
+          __exportStar(require2("./getMapData"), exports4);
+          __exportStar(require2("./getUIdFromDisplayName"), exports4);
+          __exportStar(require2("./getUser"), exports4);
+        }, { "./changesets": 23, "./getCapabilities": 25, "./getFeature": 26, "./getMapData": 27, "./getUIdFromDisplayName": 28, "./getUser": 29, "./notes": 32 }], 31: [function(require2, module4, exports4) {
+          "use strict";
+          var __awaiter = this && this.__awaiter || function(thisArg, _arguments, P2, generator) {
+            function adopt(value) {
+              return value instanceof P2 ? value : new P2(function(resolve) {
+                resolve(value);
+              });
+            }
+            return new (P2 || (P2 = Promise))(function(resolve, reject) {
+              function fulfilled(value) {
+                try {
+                  step(generator.next(value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function rejected(value) {
+                try {
+                  step(generator["throw"](value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function step(result) {
+                result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+              }
+              step((generator = generator.apply(thisArg, _arguments || [])).next());
+            });
+          };
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          exports4.getNote = exports4.getNotesForArea = exports4.getNotesForQuery = void 0;
+          const _osmFetch_1 = require2("../_osmFetch");
+          const featureToNote = (feature3) => {
+            const [lng, lat] = feature3.geometry.coordinates;
+            return Object.assign(Object.assign({}, feature3.properties), { location: { lat, lng } });
+          };
+          function $getNotes(options2, suffix) {
+            return __awaiter(this, void 0, void 0, function* () {
+              const raw = yield (0, _osmFetch_1.osmFetch)("/0.6/notes".concat(suffix ? "/search" : "", ".json"), options2);
+              return raw.features.map(featureToNote);
+            });
+          }
+          function getNotesForQuery(options2) {
+            return $getNotes(options2, true);
+          }
+          exports4.getNotesForQuery = getNotesForQuery;
+          function getNotesForArea(bbox2) {
+            return $getNotes({ bbox: bbox2 }, false);
+          }
+          exports4.getNotesForArea = getNotesForArea;
+          function getNote(noteId) {
+            return __awaiter(this, void 0, void 0, function* () {
+              const raw = yield (0, _osmFetch_1.osmFetch)("/0.6/notes/".concat(noteId, ".json"));
+              return featureToNote(raw);
+            });
+          }
+          exports4.getNote = getNote;
+        }, { "../_osmFetch": 16 }], 32: [function(require2, module4, exports4) {
+          "use strict";
+          var __createBinding = this && this.__createBinding || (Object.create ? function(o2, m2, k3, k22) {
+            if (k22 === void 0)
+              k22 = k3;
+            var desc = Object.getOwnPropertyDescriptor(m2, k3);
+            if (!desc || ("get" in desc ? !m2.__esModule : desc.writable || desc.configurable)) {
+              desc = { enumerable: true, get: function() {
+                return m2[k3];
+              } };
+            }
+            Object.defineProperty(o2, k22, desc);
+          } : function(o2, m2, k3, k22) {
+            if (k22 === void 0)
+              k22 = k3;
+            o2[k22] = m2[k3];
+          });
+          var __exportStar = this && this.__exportStar || function(m2, exports5) {
+            for (var p2 in m2)
+              if (p2 !== "default" && !Object.prototype.hasOwnProperty.call(exports5, p2))
+                __createBinding(exports5, m2, p2);
+          };
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          __exportStar(require2("./getNotes"), exports4);
+          __exportStar(require2("./noteActions"), exports4);
+        }, { "./getNotes": 31, "./noteActions": 33 }], 33: [function(require2, module4, exports4) {
+          "use strict";
+          var __awaiter = this && this.__awaiter || function(thisArg, _arguments, P2, generator) {
+            function adopt(value) {
+              return value instanceof P2 ? value : new P2(function(resolve) {
+                resolve(value);
+              });
+            }
+            return new (P2 || (P2 = Promise))(function(resolve, reject) {
+              function fulfilled(value) {
+                try {
+                  step(generator.next(value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function rejected(value) {
+                try {
+                  step(generator["throw"](value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function step(result) {
+                result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+              }
+              step((generator = generator.apply(thisArg, _arguments || [])).next());
+            });
+          };
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          exports4.reopenNote = exports4.commentOnNote = exports4.createNote = void 0;
+          const _osmFetch_1 = require2("../_osmFetch");
+          function createNote(lat, lng, text) {
+            return __awaiter(this, void 0, void 0, function* () {
+              yield (0, _osmFetch_1.osmFetch)("/0.6/notes", { lat, lon: lng, text });
+            });
+          }
+          exports4.createNote = createNote;
+          function commentOnNote(nodeId, text) {
+            return __awaiter(this, void 0, void 0, function* () {
+              yield (0, _osmFetch_1.osmFetch)("/0.6/notes/".concat(nodeId, "/comment"), { text });
+            });
+          }
+          exports4.commentOnNote = commentOnNote;
+          function reopenNote(nodeId, text) {
+            return __awaiter(this, void 0, void 0, function* () {
+              yield (0, _osmFetch_1.osmFetch)("/0.6/notes/".concat(nodeId, "/reopen"), { text });
+            });
+          }
+          exports4.reopenNote = reopenNote;
+        }, { "../_osmFetch": 16 }], 34: [function(require2, module4, exports4) {
+          "use strict";
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          exports4.createPopup = void 0;
+          function createPopup(loginUrl) {
+            let resolved = false;
+            return new Promise((resolve, reject) => {
+              const [width, height] = [600, 550];
+              const settings = Object.entries({
+                width,
+                height,
+                left: window.screen.width / 2 - width / 2,
+                top: window.screen.height / 2 - height / 2
+              }).map(([k3, v2]) => "".concat(k3, "=").concat(v2)).join(",");
+              const popup = window.open("about:blank", "oauth_window", settings);
+              if (!popup)
+                throw new Error("Popup was blocked");
+              popup.location = loginUrl;
+              window.authComplete = (fullUrl) => {
+                resolve(fullUrl);
+                resolved = true;
+              };
+              const intervalId = setInterval(() => {
+                if (popup.closed) {
+                  if (!resolved)
+                    reject(new Error("Cancelled"));
+                  clearInterval(intervalId);
+                }
+              }, 500);
+            });
+          }
+          exports4.createPopup = createPopup;
+        }, {}], 35: [function(require2, module4, exports4) {
+          "use strict";
+          var __awaiter = this && this.__awaiter || function(thisArg, _arguments, P2, generator) {
+            function adopt(value) {
+              return value instanceof P2 ? value : new P2(function(resolve) {
+                resolve(value);
+              });
+            }
+            return new (P2 || (P2 = Promise))(function(resolve, reject) {
+              function fulfilled(value) {
+                try {
+                  step(generator.next(value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function rejected(value) {
+                try {
+                  step(generator["throw"](value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function step(result) {
+                result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+              }
+              step((generator = generator.apply(thisArg, _arguments || [])).next());
+            });
+          };
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          exports4.exchangeCode = void 0;
+          const helpers_1 = require2("./helpers");
+          function exchangeCode(fullUrl, { options: options2, pkceVerifier, state }) {
+            return __awaiter(this, void 0, void 0, function* () {
+              const responseQs = new URL(fullUrl).searchParams;
+              const error = responseQs.get("error_description");
+              const code = responseQs.get("code");
+              const responseState = responseQs.get("state");
+              if (error)
+                throw new Error(error);
+              if (!code)
+                throw new Error("No code in OAuth response");
+              if (!pkceVerifier || !state)
+                throw new Error("No login in progress");
+              if (state !== responseState)
+                throw new Error("State Mismatch");
+              const qs = {
+                grant_type: "authorization_code",
+                code,
+                redirect_uri: options2.redirectUrl,
+                client_id: options2.clientId,
+                code_verifier: pkceVerifier
+              };
+              const url = "".concat((0, helpers_1.getOAuthBaseUrl)(), "/oauth2/token?").concat(new URLSearchParams(qs).toString());
+              const request3 = yield fetch(url, {
+                method: "POST",
+                body: "",
+                headers: {
+                  "Content-Type": "application/x-www-form-urlencoded"
+                }
+              });
+              const exchangeResponse = yield request3.json();
+              if ("error_description" in exchangeResponse) {
+                throw new Error(exchangeResponse.error_description);
+              }
+              const loginData = {
+                issuedAt: new Date(exchangeResponse.created_at * 1e3).toISOString(),
+                accessToken: exchangeResponse.access_token,
+                scopes: exchangeResponse.scope.split(" ")
+              };
+              localStorage.setItem("__osmAuth", JSON.stringify(loginData));
+              delete window.authComplete;
+              return loginData;
+            });
+          }
+          exports4.exchangeCode = exchangeCode;
+        }, { "./helpers": 36 }], 36: [function(require2, module4, exports4) {
+          "use strict";
+          var __awaiter = this && this.__awaiter || function(thisArg, _arguments, P2, generator) {
+            function adopt(value) {
+              return value instanceof P2 ? value : new P2(function(resolve) {
+                resolve(value);
+              });
+            }
+            return new (P2 || (P2 = Promise))(function(resolve, reject) {
+              function fulfilled(value) {
+                try {
+                  step(generator.next(value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function rejected(value) {
+                try {
+                  step(generator["throw"](value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function step(result) {
+                result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+              }
+              step((generator = generator.apply(thisArg, _arguments || [])).next());
+            });
+          };
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          exports4.getOAuthBaseUrl = exports4.getRandomString = exports4.sha256 = void 0;
+          const config_1 = require2("../config");
+          function sha256(text) {
+            return __awaiter(this, void 0, void 0, function* () {
+              const data = new TextEncoder().encode(text);
+              const buf = yield window.crypto.subtle.digest("SHA-256", data);
+              const base642 = btoa(String.fromCharCode(...new Uint8Array(buf)));
+              return base642.replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
+            });
+          }
+          exports4.sha256 = sha256;
+          function getRandomString() {
+            return [...window.crypto.getRandomValues(new Uint32Array(32))].map((m2) => "0".concat(m2.toString(16)).slice(-2)).join("");
+          }
+          exports4.getRandomString = getRandomString;
+          function getOAuthBaseUrl() {
+            let baseUrl = (0, config_1.getConfig)().apiUrl;
+            if (baseUrl === "https://api.openstreetmap.org") {
+              baseUrl = "https://www.openstreetmap.org";
+            }
+            return baseUrl;
+          }
+          exports4.getOAuthBaseUrl = getOAuthBaseUrl;
+        }, { "../config": 39 }], 37: [function(require2, module4, exports4) {
+          "use strict";
+          var __createBinding = this && this.__createBinding || (Object.create ? function(o2, m2, k3, k22) {
+            if (k22 === void 0)
+              k22 = k3;
+            var desc = Object.getOwnPropertyDescriptor(m2, k3);
+            if (!desc || ("get" in desc ? !m2.__esModule : desc.writable || desc.configurable)) {
+              desc = { enumerable: true, get: function() {
+                return m2[k3];
+              } };
+            }
+            Object.defineProperty(o2, k22, desc);
+          } : function(o2, m2, k3, k22) {
+            if (k22 === void 0)
+              k22 = k3;
+            o2[k22] = m2[k3];
+          });
+          var __exportStar = this && this.__exportStar || function(m2, exports5) {
+            for (var p2 in m2)
+              if (p2 !== "default" && !Object.prototype.hasOwnProperty.call(exports5, p2))
+                __createBinding(exports5, m2, p2);
+          };
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          __exportStar(require2("./oauth2"), exports4);
+        }, { "./oauth2": 38 }], 38: [function(require2, module4, exports4) {
+          "use strict";
+          var __awaiter = this && this.__awaiter || function(thisArg, _arguments, P2, generator) {
+            function adopt(value) {
+              return value instanceof P2 ? value : new P2(function(resolve) {
+                resolve(value);
+              });
+            }
+            return new (P2 || (P2 = Promise))(function(resolve, reject) {
+              function fulfilled(value) {
+                try {
+                  step(generator.next(value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function rejected(value) {
+                try {
+                  step(generator["throw"](value));
+                } catch (e3) {
+                  reject(e3);
+                }
+              }
+              function step(result) {
+                result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+              }
+              step((generator = generator.apply(thisArg, _arguments || [])).next());
+            });
+          };
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          exports4.logout = exports4.isLoggedIn = exports4.getAuthToken = exports4.authReady = exports4.login = void 0;
+          const createPopup_1 = require2("./createPopup");
+          const exchangeCode_1 = require2("./exchangeCode");
+          const helpers_1 = require2("./helpers");
+          function login(options2) {
+            return __awaiter(this, void 0, void 0, function* () {
+              if (!options2.redirectUrl) {
+                throw new Error("You must include the 'redirectUrl' option");
+              }
+              if (!options2.clientId) {
+                throw new Error("You must include the 'clientId' option");
+              }
+              if (!options2.scopes) {
+                throw new Error("You must include the 'scopes' option");
+              }
+              const state = (0, helpers_1.getRandomString)();
+              const pkceVerifier = (0, helpers_1.getRandomString)();
+              const pkceChallenge = yield (0, helpers_1.sha256)(pkceVerifier);
+              const qs = {
+                scope: options2.scopes.join(" "),
+                include_granted_scopes: "true",
+                response_type: "code",
+                state,
+                redirect_uri: options2.redirectUrl,
+                client_id: options2.clientId,
+                code_challenge_method: "S256",
+                code_challenge: pkceChallenge
+              };
+              const loginUrl = "".concat((0, helpers_1.getOAuthBaseUrl)(), "/oauth2/authorize?").concat(new URLSearchParams(qs).toString());
+              const transaction = { state, pkceVerifier, options: options2 };
+              if (options2.mode === "popup") {
+                const fullUrl = yield (0, createPopup_1.createPopup)(loginUrl);
+                return (0, exchangeCode_1.exchangeCode)(fullUrl, transaction);
+              }
+              if (options2.mode === "redirect") {
+                localStorage.set("__osmAuthTemp", JSON.stringify(transaction));
+                window.location.replace(loginUrl);
+                return void 0;
+              }
+              throw new Error("options.mode must be 'popup' or 'redirect'");
+            });
+          }
+          exports4.login = login;
+          exports4.authReady = (() => __awaiter(void 0, void 0, void 0, function* () {
+            var _a2;
+            if (typeof window === "undefined")
+              return;
+            const fullUrl = window.location.href;
+            const loginState = localStorage.getItem("__osmAuthTemp");
+            if (new URL(fullUrl).searchParams.get("code")) {
+              if ((_a2 = window.opener) === null || _a2 === void 0 ? void 0 : _a2.authComplete) {
+                window.opener.authComplete(fullUrl);
+                window.close();
+              } else if (loginState) {
+                try {
+                  const transaction = JSON.parse(loginState);
+                  yield (0, exchangeCode_1.exchangeCode)(fullUrl, transaction);
+                  localStorage.removeItem("__osmAuthTemp");
+                } catch (ex) {
+                  console.error("OSM Auth Error", ex);
+                }
+              } else {
+              }
+            }
+          }))();
+          const getAuthToken = () => {
+            try {
+              const maybeJson = localStorage.getItem("__osmAuth");
+              return maybeJson ? JSON.parse(maybeJson).accessToken : void 0;
+            } catch (_a2) {
+              return void 0;
+            }
+          };
+          exports4.getAuthToken = getAuthToken;
+          const isLoggedIn = () => !!(0, exports4.getAuthToken)();
+          exports4.isLoggedIn = isLoggedIn;
+          function logout() {
+            localStorage.removeItem("__osmAuth");
+          }
+          exports4.logout = logout;
+        }, { "./createPopup": 34, "./exchangeCode": 35, "./helpers": 36 }], 39: [function(require2, module4, exports4) {
+          "use strict";
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          exports4.configure = exports4.getConfig = void 0;
+          const config = {
+            apiUrl: "https://api.openstreetmap.org",
+            userAgent: "https://github.com/k-yle/osm-api-js"
+          };
+          const getConfig = () => config;
+          exports4.getConfig = getConfig;
+          function configure(updatedConfig) {
+            Object.assign(config, updatedConfig);
+          }
+          exports4.configure = configure;
+        }, {}], 40: [function(require2, module4, exports4) {
+          "use strict";
+          var __createBinding = this && this.__createBinding || (Object.create ? function(o2, m2, k3, k22) {
+            if (k22 === void 0)
+              k22 = k3;
+            var desc = Object.getOwnPropertyDescriptor(m2, k3);
+            if (!desc || ("get" in desc ? !m2.__esModule : desc.writable || desc.configurable)) {
+              desc = { enumerable: true, get: function() {
+                return m2[k3];
+              } };
+            }
+            Object.defineProperty(o2, k22, desc);
+          } : function(o2, m2, k3, k22) {
+            if (k22 === void 0)
+              k22 = k3;
+            o2[k22] = m2[k3];
+          });
+          var __exportStar = this && this.__exportStar || function(m2, exports5) {
+            for (var p2 in m2)
+              if (p2 !== "default" && !Object.prototype.hasOwnProperty.call(exports5, p2))
+                __createBinding(exports5, m2, p2);
+          };
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          __exportStar(require2("./api"), exports4);
+          __exportStar(require2("./auth"), exports4);
+          __exportStar(require2("./config"), exports4);
+          __exportStar(require2("./types"), exports4);
+        }, { "./api": 30, "./auth": 37, "./config": 39, "./types": 44 }], 41: [function(require2, module4, exports4) {
+          "use strict";
+          Object.defineProperty(exports4, "__esModule", { value: true });
+        }, {}], 42: [function(require2, module4, exports4) {
+          arguments[4][41][0].apply(exports4, arguments);
+        }, { "dup": 41 }], 43: [function(require2, module4, exports4) {
+          arguments[4][41][0].apply(exports4, arguments);
+        }, { "dup": 41 }], 44: [function(require2, module4, exports4) {
+          "use strict";
+          var __createBinding = this && this.__createBinding || (Object.create ? function(o2, m2, k3, k22) {
+            if (k22 === void 0)
+              k22 = k3;
+            var desc = Object.getOwnPropertyDescriptor(m2, k3);
+            if (!desc || ("get" in desc ? !m2.__esModule : desc.writable || desc.configurable)) {
+              desc = { enumerable: true, get: function() {
+                return m2[k3];
+              } };
+            }
+            Object.defineProperty(o2, k22, desc);
+          } : function(o2, m2, k3, k22) {
+            if (k22 === void 0)
+              k22 = k3;
+            o2[k22] = m2[k3];
+          });
+          var __exportStar = this && this.__exportStar || function(m2, exports5) {
+            for (var p2 in m2)
+              if (p2 !== "default" && !Object.prototype.hasOwnProperty.call(exports5, p2))
+                __createBinding(exports5, m2, p2);
+          };
+          Object.defineProperty(exports4, "__esModule", { value: true });
+          __exportStar(require2("./changesets"), exports4);
+          __exportStar(require2("./features"), exports4);
+          __exportStar(require2("./general"), exports4);
+          __exportStar(require2("./notes"), exports4);
+          __exportStar(require2("./osmPatch"), exports4);
+          __exportStar(require2("./user"), exports4);
+        }, { "./changesets": 41, "./features": 42, "./general": 43, "./notes": 45, "./osmPatch": 46, "./user": 47 }], 45: [function(require2, module4, exports4) {
+          arguments[4][41][0].apply(exports4, arguments);
+        }, { "dup": 41 }], 46: [function(require2, module4, exports4) {
+          arguments[4][41][0].apply(exports4, arguments);
+        }, { "dup": 41 }], 47: [function(require2, module4, exports4) {
+          arguments[4][41][0].apply(exports4, arguments);
+        }, { "dup": 41 }] }, {}, [40])(40);
+      });
     }
   });
 
@@ -15163,6 +19788,8 @@
     actionDisconnect: () => actionDisconnect,
     actionDivide: () => actionDivide,
     actionExtract: () => actionExtract,
+    actionImportOsmChange: () => actionImportOsmChange,
+    actionImportOsmPatch: () => actionImportOsmPatch,
     actionJoin: () => actionJoin,
     actionMerge: () => actionMerge,
     actionMergeNodes: () => actionMergeNodes,
@@ -15174,6 +19801,8 @@
     actionNoop: () => actionNoop,
     actionOrthogonalize: () => actionOrthogonalize,
     actionReflect: () => actionReflect,
+    actionReplaceRelationMembers: () => actionReplaceRelationMembers,
+    actionReplaceWayNodes: () => actionReplaceWayNodes,
     actionRestrictTurn: () => actionRestrictTurn,
     actionReverse: () => actionReverse,
     actionRevert: () => actionRevert,
@@ -15829,6 +20458,7 @@
       "lodash-es": "~4.17.15",
       marked: "~12.0.2",
       "node-diff3": "~3.1.0",
+      "osm-api": "^2.1.3",
       "osm-auth": "~2.4.0",
       pannellum: "2.5.6",
       pbf: "^3.2.1",
@@ -15975,30 +20605,30 @@
       }
       return prom;
     }
-    _this.fileMap = function(val) {
+    _this.fileMap = function(val2) {
       if (!arguments.length)
         return _fileMap;
-      _fileMap = val;
+      _fileMap = val2;
       return _this;
     };
     let _assetPath = "";
-    _this.assetPath = function(val) {
+    _this.assetPath = function(val2) {
       if (!arguments.length)
         return _assetPath;
-      _assetPath = val;
+      _assetPath = val2;
       return _this;
     };
     let _assetMap = {};
-    _this.assetMap = function(val) {
+    _this.assetMap = function(val2) {
       if (!arguments.length)
         return _assetMap;
-      _assetMap = val;
+      _assetMap = val2;
       return _this;
     };
-    _this.asset = (val) => {
-      if (/^http(s)?:\/\//i.test(val))
-        return val;
-      const filename = _assetPath + val;
+    _this.asset = (val2) => {
+      if (/^http(s)?:\/\//i.test(val2))
+        return val2;
+      const filename = _assetPath + val2;
       return _assetMap[filename] || filename;
     };
     return _this;
@@ -22301,8 +26931,8 @@
     });
   }
   function utilArrayFlatten(a2) {
-    return a2.reduce(function(acc, val) {
-      return acc.concat(val);
+    return a2.reduce(function(acc, val2) {
+      return acc.concat(val2);
     }, []);
   }
   function utilArrayGroupBy(a2, key) {
@@ -22315,9 +26945,9 @@
   function utilArrayUniqBy(a2, key) {
     var seen = /* @__PURE__ */ new Set();
     return a2.reduce(function(acc, item) {
-      var val = typeof key === "function" ? key(item) : item[key];
-      if (val && !seen.has(val)) {
-        seen.add(val);
+      var val2 = typeof key === "function" ? key(item) : item[key];
+      if (val2 && !seen.has(val2)) {
+        seen.add(val2);
         acc.push(item);
       }
       return acc;
@@ -22555,10 +27185,10 @@
   }
   function utilTotalExtent(array2, graph) {
     var extent = geoExtent();
-    var val, entity;
+    var val2, entity;
     for (var i3 = 0; i3 < array2.length; i3++) {
-      val = array2[i3];
-      entity = typeof val === "string" ? graph.hasEntity(val) : val;
+      val2 = array2[i3];
+      entity = typeof val2 === "string" ? graph.hasEntity(val2) : val2;
       if (entity) {
         extent._extend(entity.extent(graph));
       }
@@ -22986,8 +27616,8 @@
   function utilSafeClassName(str) {
     return str.toLowerCase().replace(/[^a-z0-9]+/g, "_");
   }
-  function utilUniqueDomId(val) {
-    return "ideditor-" + utilSafeClassName(val.toString()) + "-" + (/* @__PURE__ */ new Date()).getTime().toString();
+  function utilUniqueDomId(val2) {
+    return "ideditor-" + utilSafeClassName(val2.toString()) + "-" + (/* @__PURE__ */ new Date()).getTime().toString();
   }
   function utilUnicodeCharsCount(str) {
     return Array.from(str).length;
@@ -23033,16 +27663,16 @@
     }
     return ids[oldestIDIndex];
   }
-  function utilCleanOsmString(val, maxChars) {
-    if (val === void 0 || val === null) {
-      val = "";
+  function utilCleanOsmString(val2, maxChars) {
+    if (val2 === void 0 || val2 === null) {
+      val2 = "";
     } else {
-      val = val.toString();
+      val2 = val2.toString();
     }
-    val = val.trim();
-    if (val.normalize)
-      val = val.normalize("NFC");
-    return utilUnicodeCharsTruncated(val, maxChars);
+    val2 = val2.trim();
+    if (val2.normalize)
+      val2 = val2.normalize("NFC");
+    return utilUnicodeCharsTruncated(val2, maxChars);
   }
 
   // modules/util/clean_tags.js
@@ -29374,12 +34004,12 @@
     return geoVecNormalizedDot(a2, b2, origin);
   }
   function geoOrthoFilterDotProduct(dotp, epsilon3, lowerThreshold, upperThreshold, allowStraightAngles) {
-    var val = Math.abs(dotp);
-    if (val < epsilon3) {
+    var val2 = Math.abs(dotp);
+    if (val2 < epsilon3) {
       return 0;
-    } else if (allowStraightAngles && Math.abs(val - 1) < epsilon3) {
+    } else if (allowStraightAngles && Math.abs(val2 - 1) < epsilon3) {
       return 0;
-    } else if (val < lowerThreshold || val > upperThreshold) {
+    } else if (val2 < lowerThreshold || val2 > upperThreshold) {
       return dotp;
     } else {
       return null;
@@ -29549,46 +34179,46 @@
         features
       };
     };
-    tiler9.tileSize = function(val) {
+    tiler9.tileSize = function(val2) {
       if (!arguments.length)
         return _tileSize;
-      _tileSize = val;
+      _tileSize = val2;
       return tiler9;
     };
-    tiler9.zoomExtent = function(val) {
+    tiler9.zoomExtent = function(val2) {
       if (!arguments.length)
         return _zoomExtent;
-      _zoomExtent = val;
+      _zoomExtent = val2;
       return tiler9;
     };
-    tiler9.size = function(val) {
+    tiler9.size = function(val2) {
       if (!arguments.length)
         return _size;
-      _size = val;
+      _size = val2;
       return tiler9;
     };
-    tiler9.scale = function(val) {
+    tiler9.scale = function(val2) {
       if (!arguments.length)
         return _scale;
-      _scale = val;
+      _scale = val2;
       return tiler9;
     };
-    tiler9.translate = function(val) {
+    tiler9.translate = function(val2) {
       if (!arguments.length)
         return _translate;
-      _translate = val;
+      _translate = val2;
       return tiler9;
     };
-    tiler9.margin = function(val) {
+    tiler9.margin = function(val2) {
       if (!arguments.length)
         return _margin;
-      _margin = +val;
+      _margin = +val2;
       return tiler9;
     };
-    tiler9.skipNullIsland = function(val) {
+    tiler9.skipNullIsland = function(val2) {
       if (!arguments.length)
         return _skipNullIsland;
-      _skipNullIsland = val;
+      _skipNullIsland = val2;
       return tiler9;
     };
     return tiler9;
@@ -30220,7 +34850,7 @@
       const leadingSuggestionsStripped = suggestions.filter((a2) => leadingStrict(a2.searchNameStripped())).sort(sortPresets("searchNameStripped"));
       const leadingTerms = searchable.filter((a2) => (a2.terms() || []).some(leading));
       const leadingSuggestionTerms = suggestions.filter((a2) => (a2.terms() || []).some(leading));
-      const leadingTagValues = searchable.filter((a2) => Object.values(a2.tags || {}).filter((val) => val !== "*").some(leading));
+      const leadingTagValues = searchable.filter((a2) => Object.values(a2.tags || {}).filter((val2) => val2 !== "*").some(leading));
       const similarName = searchable.map((a2) => ({ preset: a2, dist: utilEditDistance(value, a2.searchName()) })).filter((a2) => a2.dist + Math.min(value.length - a2.preset.searchName().length, 0) < 3).sort((a2, b2) => a2.dist - b2.dist).map((a2) => a2.preset);
       const similarSuggestions = suggestions.map((a2) => ({ preset: a2, dist: utilEditDistance(value, a2.searchName()) })).filter((a2) => a2.dist + Math.min(value.length - a2.preset.searchName().length, 0) < 1).sort((a2, b2) => a2.dist - b2.dist).map((a2) => a2.preset);
       const similarTerms = searchable.filter((a2) => {
@@ -30465,10 +35095,10 @@
       const tagCount = Object.keys(_this.tags).length;
       return tagCount === 0 || tagCount === 1 && _this.tags.hasOwnProperty("area");
     };
-    _this.addable = function(val) {
+    _this.addable = function(val2) {
       if (!arguments.length)
         return _addable;
-      _addable = val;
+      _addable = val2;
       return _this;
     };
     _this.reference = () => {
@@ -30912,12 +35542,12 @@
       }
       return result;
     };
-    _this.addablePresetIDs = function(val) {
+    _this.addablePresetIDs = function(val2) {
       if (!arguments.length)
         return _addablePresetIDs;
-      if (Array.isArray(val))
-        val = new Set(val);
-      _addablePresetIDs = val;
+      if (Array.isArray(val2))
+        val2 = new Set(val2);
+      _addablePresetIDs = val2;
       if (_addablePresetIDs) {
         _this.collection.forEach((p2) => {
           if (p2.addable)
@@ -32504,16 +37134,16 @@
             value: this.tags.side.toLowerCase()
           });
         }
-        let val = (this.tags.direction || "").toLowerCase();
+        let val2 = (this.tags.direction || "").toLowerCase();
         var re3 = /:(direction|orientation)$/i;
         var keys2 = Object.keys(this.tags);
         for (i3 = 0; i3 < keys2.length; i3++) {
           if (re3.test(keys2[i3])) {
-            val = this.tags[keys2[i3]].toLowerCase();
+            val2 = this.tags[keys2[i3]].toLowerCase();
             break;
           }
         }
-        for (const value of val.split(";")) {
+        for (const value of val2.split(";")) {
           rawValues.push({ type: "direction", value });
         }
       }
@@ -33458,10 +38088,10 @@
       if (sharedRelation)
         return "relation";
     };
-    action.limitWays = function(val) {
+    action.limitWays = function(val2) {
       if (!arguments.length)
         return wayIds;
-      wayIds = val;
+      wayIds = val2;
       return action;
     };
     return action;
@@ -33543,290 +38173,6 @@
     }
     action.getExtractedNodeID = function() {
       return extractedNodeID;
-    };
-    return action;
-  }
-
-  // modules/actions/join.js
-  function actionJoin(ids) {
-    function groupEntitiesByGeometry(graph) {
-      var entities = ids.map(function(id2) {
-        return graph.entity(id2);
-      });
-      return Object.assign(
-        { line: [] },
-        utilArrayGroupBy(entities, function(entity) {
-          return entity.geometry(graph);
-        })
-      );
-    }
-    var action = function(graph) {
-      var ways = ids.map(graph.entity, graph);
-      var survivorID = utilOldestID(ways.map((way) => way.id));
-      ways.sort(function(a2, b2) {
-        var aSided = a2.isSided();
-        var bSided = b2.isSided();
-        return aSided && !bSided ? -1 : bSided && !aSided ? 1 : 0;
-      });
-      var sequences = osmJoinWays(ways, graph);
-      var joined = sequences[0];
-      graph = sequences.actions.reduce(function(g3, action2) {
-        return action2(g3);
-      }, graph);
-      var survivor = graph.entity(survivorID);
-      survivor = survivor.update({ nodes: joined.nodes.map(function(n3) {
-        return n3.id;
-      }) });
-      graph = graph.replace(survivor);
-      joined.forEach(function(way) {
-        if (way.id === survivorID)
-          return;
-        graph.parentRelations(way).forEach(function(parent) {
-          graph = graph.replace(parent.replaceMember(way, survivor));
-        });
-        survivor = survivor.mergeTags(way.tags);
-        graph = graph.replace(survivor);
-        graph = actionDeleteWay(way.id)(graph);
-      });
-      function checkForSimpleMultipolygon() {
-        if (!survivor.isClosed())
-          return;
-        var multipolygons = graph.parentMultipolygons(survivor).filter(function(multipolygon2) {
-          return multipolygon2.members.length === 1;
-        });
-        if (multipolygons.length !== 1)
-          return;
-        var multipolygon = multipolygons[0];
-        for (var key in survivor.tags) {
-          if (multipolygon.tags[key] && // don't collapse if tags cannot be cleanly merged
-          multipolygon.tags[key] !== survivor.tags[key])
-            return;
-        }
-        survivor = survivor.mergeTags(multipolygon.tags);
-        graph = graph.replace(survivor);
-        graph = actionDeleteRelation(
-          multipolygon.id,
-          true
-          /* allow untagged members */
-        )(graph);
-        var tags = Object.assign({}, survivor.tags);
-        if (survivor.geometry(graph) !== "area") {
-          tags.area = "yes";
-        }
-        delete tags.type;
-        survivor = survivor.update({ tags });
-        graph = graph.replace(survivor);
-      }
-      checkForSimpleMultipolygon();
-      return graph;
-    };
-    action.resultingWayNodesLength = function(graph) {
-      return ids.reduce(function(count, id2) {
-        return count + graph.entity(id2).nodes.length;
-      }, 0) - ids.length - 1;
-    };
-    action.disabled = function(graph) {
-      var geometries = groupEntitiesByGeometry(graph);
-      if (ids.length < 2 || ids.length !== geometries.line.length) {
-        return "not_eligible";
-      }
-      var joined = osmJoinWays(ids.map(graph.entity, graph), graph);
-      if (joined.length > 1) {
-        return "not_adjacent";
-      }
-      var i3;
-      var sortedParentRelations = function(id2) {
-        return graph.parentRelations(graph.entity(id2)).filter((rel) => !rel.isRestriction() && !rel.isConnectivity()).sort((a2, b2) => a2.id - b2.id);
-      };
-      var relsA = sortedParentRelations(ids[0]);
-      for (i3 = 1; i3 < ids.length; i3++) {
-        var relsB = sortedParentRelations(ids[i3]);
-        if (!utilArrayIdentical(relsA, relsB)) {
-          return "conflicting_relations";
-        }
-      }
-      for (i3 = 0; i3 < ids.length - 1; i3++) {
-        for (var j2 = i3 + 1; j2 < ids.length; j2++) {
-          var path1 = graph.childNodes(graph.entity(ids[i3])).map(function(e3) {
-            return e3.loc;
-          });
-          var path2 = graph.childNodes(graph.entity(ids[j2])).map(function(e3) {
-            return e3.loc;
-          });
-          var intersections = geoPathIntersections(path1, path2);
-          var common = utilArrayIntersection(
-            joined[0].nodes.map(function(n3) {
-              return n3.loc.toString();
-            }),
-            intersections.map(function(n3) {
-              return n3.toString();
-            })
-          );
-          if (common.length !== intersections.length) {
-            return "paths_intersect";
-          }
-        }
-      }
-      var nodeIds = joined[0].nodes.map(function(n3) {
-        return n3.id;
-      }).slice(1, -1);
-      var relation;
-      var tags = {};
-      var conflicting = false;
-      joined[0].forEach(function(way) {
-        var parents = graph.parentRelations(way);
-        parents.forEach(function(parent) {
-          if ((parent.isRestriction() || parent.isConnectivity()) && parent.members.some(function(m2) {
-            return nodeIds.indexOf(m2.id) >= 0;
-          })) {
-            relation = parent;
-          }
-        });
-        for (var k3 in way.tags) {
-          if (!(k3 in tags)) {
-            tags[k3] = way.tags[k3];
-          } else if (tags[k3] && osmIsInterestingTag(k3) && tags[k3] !== way.tags[k3]) {
-            conflicting = true;
-          }
-        }
-      });
-      if (relation) {
-        return relation.isRestriction() ? "restriction" : "connectivity";
-      }
-      if (conflicting) {
-        return "conflicting_tags";
-      }
-    };
-    return action;
-  }
-
-  // modules/actions/merge.js
-  function actionMerge(ids) {
-    function groupEntitiesByGeometry(graph) {
-      var entities = ids.map(function(id2) {
-        return graph.entity(id2);
-      });
-      return Object.assign(
-        { point: [], area: [], line: [], relation: [] },
-        utilArrayGroupBy(entities, function(entity) {
-          return entity.geometry(graph);
-        })
-      );
-    }
-    var action = function(graph) {
-      var geometries = groupEntitiesByGeometry(graph);
-      var target = geometries.area[0] || geometries.line[0];
-      var points = geometries.point;
-      points.forEach(function(point2) {
-        target = target.mergeTags(point2.tags);
-        graph = graph.replace(target);
-        graph.parentRelations(point2).forEach(function(parent) {
-          graph = graph.replace(parent.replaceMember(point2, target));
-        });
-        var nodes = utilArrayUniq(graph.childNodes(target));
-        var removeNode = point2;
-        if (!point2.isNew()) {
-          var inserted = false;
-          var canBeReplaced = function(node2) {
-            return !(graph.parentWays(node2).length > 1 || graph.parentRelations(node2).length);
-          };
-          var replaceNode = function(node2) {
-            graph = graph.replace(point2.update({ tags: node2.tags, loc: node2.loc }));
-            target = target.replaceNode(node2.id, point2.id);
-            graph = graph.replace(target);
-            removeNode = node2;
-            inserted = true;
-          };
-          var i3;
-          var node;
-          for (i3 = 0; i3 < nodes.length; i3++) {
-            node = nodes[i3];
-            if (canBeReplaced(node) && node.isNew()) {
-              replaceNode(node);
-              break;
-            }
-          }
-          if (!inserted && point2.hasInterestingTags()) {
-            for (i3 = 0; i3 < nodes.length; i3++) {
-              node = nodes[i3];
-              if (canBeReplaced(node) && !node.hasInterestingTags()) {
-                replaceNode(node);
-                break;
-              }
-            }
-            if (!inserted) {
-              for (i3 = 0; i3 < nodes.length; i3++) {
-                node = nodes[i3];
-                if (canBeReplaced(node) && utilCompareIDs(point2.id, node.id) < 0) {
-                  replaceNode(node);
-                  break;
-                }
-              }
-            }
-          }
-        }
-        graph = graph.remove(removeNode);
-      });
-      if (target.tags.area === "yes") {
-        var tags = Object.assign({}, target.tags);
-        delete tags.area;
-        if (osmTagSuggestingArea(tags)) {
-          target = target.update({ tags });
-          graph = graph.replace(target);
-        }
-      }
-      return graph;
-    };
-    action.disabled = function(graph) {
-      var geometries = groupEntitiesByGeometry(graph);
-      if (geometries.point.length === 0 || geometries.area.length + geometries.line.length !== 1 || geometries.relation.length !== 0) {
-        return "not_eligible";
-      }
-    };
-    return action;
-  }
-
-  // modules/actions/merge_nodes.js
-  function actionMergeNodes(nodeIDs, loc) {
-    function chooseLoc(graph) {
-      if (!nodeIDs.length)
-        return null;
-      var sum = [0, 0];
-      var interestingCount = 0;
-      var interestingLoc;
-      for (var i3 = 0; i3 < nodeIDs.length; i3++) {
-        var node = graph.entity(nodeIDs[i3]);
-        if (node.hasInterestingTags()) {
-          interestingLoc = ++interestingCount === 1 ? node.loc : null;
-        }
-        sum = geoVecAdd(sum, node.loc);
-      }
-      return interestingLoc || geoVecScale(sum, 1 / nodeIDs.length);
-    }
-    var action = function(graph) {
-      if (nodeIDs.length < 2)
-        return graph;
-      var toLoc = loc;
-      if (!toLoc) {
-        toLoc = chooseLoc(graph);
-      }
-      for (var i3 = 0; i3 < nodeIDs.length; i3++) {
-        var node = graph.entity(nodeIDs[i3]);
-        if (node.loc !== toLoc) {
-          graph = graph.replace(node.move(toLoc));
-        }
-      }
-      return actionConnect(nodeIDs)(graph);
-    };
-    action.disabled = function(graph) {
-      if (nodeIDs.length < 2)
-        return "not_eligible";
-      for (var i3 = 0; i3 < nodeIDs.length; i3++) {
-        var entity = graph.entity(nodeIDs[i3]);
-        if (entity.type !== "node")
-          return "not_eligible";
-      }
-      return actionConnect(nodeIDs).disabled(graph);
     };
     return action;
   }
@@ -34645,16 +38991,16 @@
         }
       }
     };
-    action.limitWays = function(val) {
+    action.limitWays = function(val2) {
       if (!arguments.length)
         return _wayIDs;
-      _wayIDs = val;
+      _wayIDs = val2;
       return action;
     };
-    action.keepHistoryOn = function(val) {
+    action.keepHistoryOn = function(val2) {
       if (!arguments.length)
         return _keepHistoryOn;
-      _keepHistoryOn = val;
+      _keepHistoryOn = val2;
       return action;
     };
     return action;
@@ -35403,6 +39749,613 @@
     return "no_straight_on";
   }
 
+  // modules/actions/move_node.js
+  function actionMoveNode(nodeID, toLoc) {
+    var action = function(graph, t2) {
+      if (t2 === null || !isFinite(t2))
+        t2 = 1;
+      t2 = Math.min(Math.max(+t2, 0), 1);
+      var node = graph.entity(nodeID);
+      return graph.replace(
+        node.move(geoVecInterp(node.loc, toLoc, t2))
+      );
+    };
+    action.transitionable = true;
+    return action;
+  }
+
+  // modules/actions/replace_relation_members.js
+  function actionReplaceRelationMembers(entityId, newMembers) {
+    return (graph) => {
+      let entity = graph.entity(entityId);
+      entity = entity.update({ members: newMembers });
+      return graph.replace(entity);
+    };
+  }
+
+  // modules/actions/replace_way_nodes.js
+  function actionReplaceWayNodes(entityId, newNodeIds) {
+    return (graph) => {
+      let entity = graph.entity(entityId);
+      entity = entity.update({ nodes: newNodeIds });
+      return graph.replace(entity);
+    };
+  }
+
+  // modules/actions/import_osmChange.js
+  var getId = (type2, id2, idMap) => {
+    const mappedId = id2 > 0 ? type2[0] + id2 : idMap[type2][id2];
+    if (mappedId === void 0) {
+      throw new Error("No entry in idMap for ".concat(type2, " ").concat(id2));
+    }
+    return mappedId;
+  };
+  function actionImportOsmChange(osmChange, allowConflicts) {
+    return (graph) => {
+      const idMap = { node: {}, way: {}, relation: {} };
+      if (!allowConflicts) {
+        for (const feature3 of [...osmChange.modify, ...osmChange.delete]) {
+          const entity = graph.entity(getId(feature3.type, feature3.id, idMap));
+          if (+entity.version !== feature3.version) {
+            throw new Error("Conflicts");
+          }
+        }
+      }
+      for (const feature3 of osmChange.create) {
+        switch (feature3.type) {
+          case "node": {
+            const entity = osmNode({
+              tags: feature3.tags,
+              loc: [feature3.lon, feature3.lat]
+            });
+            idMap[feature3.type][feature3.id] = entity.id;
+            graph = actionAddEntity(entity)(graph);
+            break;
+          }
+          case "way": {
+            const entity = osmWay({
+              tags: feature3.tags,
+              // `nodes` are added later, once an ID has
+              // been allocated to all new features
+              nodes: []
+            });
+            idMap[feature3.type][feature3.id] = entity.id;
+            graph = actionAddEntity(entity)(graph);
+            break;
+          }
+          case "relation": {
+            const entity = osmRelation({
+              tags: feature3.tags,
+              // `members` are added later, once an ID has
+              // been allocated to all new features
+              members: []
+            });
+            idMap[feature3.type][feature3.id] = entity.id;
+            graph = actionAddEntity(entity)(graph);
+            break;
+          }
+          default:
+            feature3;
+        }
+      }
+      for (const feature3 of [...osmChange.create, ...osmChange.modify]) {
+        const entityId = getId(feature3.type, feature3.id, idMap);
+        graph = actionChangeTags(entityId, feature3.tags)(graph);
+        switch (feature3.type) {
+          case "node":
+            graph = actionMoveNode(entityId, [feature3.lon, feature3.lat])(graph);
+            break;
+          case "way": {
+            const newNodes = feature3.nodes.map((id2) => getId("node", id2, idMap));
+            graph = actionReplaceWayNodes(entityId, newNodes)(graph);
+            break;
+          }
+          case "relation": {
+            const newMembers = feature3.members.map((member) => ({
+              id: getId(member.type, member.ref, idMap),
+              role: member.role,
+              type: member.type
+            }));
+            graph = actionReplaceRelationMembers(entityId, newMembers)(graph);
+            break;
+          }
+          default:
+            feature3;
+        }
+      }
+      for (const feature3 of osmChange.delete) {
+        const entityId = getId(feature3.type, feature3.id, idMap);
+        switch (feature3.type) {
+          case "node":
+            graph = actionDeleteNode(entityId)(graph);
+            break;
+          case "way":
+            graph = actionDeleteWay(entityId)(graph);
+            break;
+          case "relation":
+            graph = actionDeleteRelation(entityId)(graph);
+            break;
+          default:
+            feature3;
+        }
+      }
+      return graph;
+    };
+  }
+
+  // modules/actions/import_osmPatch.js
+  function applyTagDiff(originalTags, diff) {
+    const newTags = { ...originalTags };
+    for (const [key, value] of Object.entries(diff)) {
+      if (value === "\u{1F5D1}\uFE0F") {
+        delete newTags[key];
+      } else {
+        newTags[key] = "".concat(value);
+      }
+    }
+    return newTags;
+  }
+  function applyMemberDiff(originalMembers, diff) {
+    let newMembersList = structuredClone(originalMembers);
+    for (const item of diff) {
+      const firstOldIndex = newMembersList.findIndex(
+        (m2) => m2.type === item.type && +m2.id.slice(1) === item.ref
+      );
+      newMembersList = newMembersList.filter(
+        (m2) => !(m2.type === item.type && +m2.id.slice(1) === item.ref)
+      );
+      if (item.role === "\u{1F5D1}\uFE0F") {
+      } else {
+        const member = {
+          id: item.type[0] + item.ref,
+          type: item.type,
+          role: item.role
+        };
+        if (firstOldIndex === -1) {
+          newMembersList.push(member);
+        } else {
+          newMembersList.splice(firstOldIndex, 0, member);
+        }
+      }
+    }
+    return newMembersList;
+  }
+  function geojsonToOsmGeometry(geom, tags, relationMembers) {
+    switch (geom.type) {
+      case "Point": {
+        return [osmNode({ tags, loc: geom.coordinates })];
+      }
+      case "MultiPoint": {
+        const children2 = geom.coordinates.map((loc) => osmNode({ loc }));
+        const site = osmRelation({
+          tags: { type: "site", ...tags },
+          members: children2.map((child) => ({
+            type: child.type,
+            id: child.id,
+            role: ""
+          }))
+        });
+        return [site, ...children2];
+      }
+      case "LineString": {
+        const children2 = geom.coordinates.map((loc) => osmNode({ loc }));
+        const way = osmWay({
+          tags,
+          nodes: children2.map((child) => child.id)
+        });
+        return [way, ...children2];
+      }
+      case "MultiLineString": {
+        const nodes = [];
+        const ways = [];
+        for (const segment of geom.coordinates) {
+          const segmentNodes = segment.map((loc) => osmNode({ loc }));
+          const way = osmWay({ nodes: segmentNodes.map((n3) => n3.id) });
+          nodes.push(...segmentNodes);
+          ways.push(way);
+        }
+        const relation = osmRelation({
+          tags: { type: "multilinestring", ...tags },
+          members: ways.map((w2) => ({ role: "", type: "way", id: w2.id }))
+        });
+        return [relation, ...ways, ...nodes];
+      }
+      case "GeometryCollection": {
+        return [osmRelation({ tags, members: relationMembers })];
+      }
+      case "Polygon":
+      case "MultiPolygon": {
+        const nodes = [];
+        const ways = [];
+        const groups = geom.type === "Polygon" ? [geom.coordinates] : geom.coordinates;
+        for (const rings of groups) {
+          for (const [index, ring] of rings.entries()) {
+            const ringNodes = ring.map((loc) => osmNode({ loc }));
+            if (ringNodes.length < 3)
+              return [];
+            const first = ringNodes[0];
+            const last = ringNodes[ringNodes.length - 1];
+            if (first.loc.join(",") === last.loc.join(",")) {
+              ringNodes.pop();
+              ringNodes.push(first);
+            } else {
+              ringNodes.push(first);
+            }
+            const way = osmWay({ nodes: ringNodes.map((n3) => n3.id) });
+            nodes.push(...ringNodes);
+            ways.push({ way, role: index === 0 ? "outer" : "inner" });
+          }
+          if (groups.length === 1 && rings.length === 1) {
+            let way = ways[0].way;
+            way = way.update({ tags });
+            return [way, ...nodes];
+          }
+        }
+        const relation = osmRelation({
+          tags: { type: "multipolygon", ...tags },
+          members: ways.map(({ way, role }) => ({
+            type: "way",
+            id: way.id,
+            role
+          }))
+        });
+        return [relation, ...ways.map((w2) => w2.way), ...nodes];
+      }
+      default: {
+        geom;
+        return [];
+      }
+    }
+  }
+  function actionImportOsmPatch(osmPatch) {
+    return (graph) => {
+      for (const feature3 of osmPatch.features) {
+        const {
+          __action,
+          __members: memberDiff,
+          ...tagDiff
+        } = feature3.properties;
+        switch (__action) {
+          case void 0: {
+            const entities = geojsonToOsmGeometry(
+              feature3.geometry,
+              tagDiff,
+              memberDiff
+            );
+            for (const entity of entities) {
+              graph = actionAddEntity(entity)(graph);
+            }
+            break;
+          }
+          case "edit": {
+            const entity = graph.entity(feature3.id);
+            graph = actionChangeTags(
+              feature3.id,
+              applyTagDiff(entity.tags, tagDiff)
+            )(graph);
+            if (entity.type === "relation" && memberDiff) {
+              const newMembers = applyMemberDiff(entity.members, memberDiff);
+              graph = actionReplaceRelationMembers(entity.id, newMembers)(graph);
+            }
+            break;
+          }
+          case "move": {
+            if (feature3.id[0] !== "n" || feature3.geometry.type !== "LineString") {
+              throw new Error("trying to move a non-node");
+            }
+            graph = actionMoveNode(
+              feature3.id,
+              feature3.geometry.coordinates[1]
+            )(graph);
+            break;
+          }
+          case "delete": {
+            switch (feature3.id[0]) {
+              case "n":
+                graph = actionDeleteNode(feature3.id)(graph);
+                break;
+              case "w":
+                graph = actionDeleteWay(feature3.id)(graph);
+                break;
+              case "r":
+                graph = actionDeleteRelation(feature3.id)(graph);
+                break;
+            }
+            break;
+          }
+          default: {
+            __action;
+          }
+        }
+      }
+      return graph;
+    };
+  }
+
+  // modules/actions/join.js
+  function actionJoin(ids) {
+    function groupEntitiesByGeometry(graph) {
+      var entities = ids.map(function(id2) {
+        return graph.entity(id2);
+      });
+      return Object.assign(
+        { line: [] },
+        utilArrayGroupBy(entities, function(entity) {
+          return entity.geometry(graph);
+        })
+      );
+    }
+    var action = function(graph) {
+      var ways = ids.map(graph.entity, graph);
+      var survivorID = utilOldestID(ways.map((way) => way.id));
+      ways.sort(function(a2, b2) {
+        var aSided = a2.isSided();
+        var bSided = b2.isSided();
+        return aSided && !bSided ? -1 : bSided && !aSided ? 1 : 0;
+      });
+      var sequences = osmJoinWays(ways, graph);
+      var joined = sequences[0];
+      graph = sequences.actions.reduce(function(g3, action2) {
+        return action2(g3);
+      }, graph);
+      var survivor = graph.entity(survivorID);
+      survivor = survivor.update({ nodes: joined.nodes.map(function(n3) {
+        return n3.id;
+      }) });
+      graph = graph.replace(survivor);
+      joined.forEach(function(way) {
+        if (way.id === survivorID)
+          return;
+        graph.parentRelations(way).forEach(function(parent) {
+          graph = graph.replace(parent.replaceMember(way, survivor));
+        });
+        survivor = survivor.mergeTags(way.tags);
+        graph = graph.replace(survivor);
+        graph = actionDeleteWay(way.id)(graph);
+      });
+      function checkForSimpleMultipolygon() {
+        if (!survivor.isClosed())
+          return;
+        var multipolygons = graph.parentMultipolygons(survivor).filter(function(multipolygon2) {
+          return multipolygon2.members.length === 1;
+        });
+        if (multipolygons.length !== 1)
+          return;
+        var multipolygon = multipolygons[0];
+        for (var key in survivor.tags) {
+          if (multipolygon.tags[key] && // don't collapse if tags cannot be cleanly merged
+          multipolygon.tags[key] !== survivor.tags[key])
+            return;
+        }
+        survivor = survivor.mergeTags(multipolygon.tags);
+        graph = graph.replace(survivor);
+        graph = actionDeleteRelation(
+          multipolygon.id,
+          true
+          /* allow untagged members */
+        )(graph);
+        var tags = Object.assign({}, survivor.tags);
+        if (survivor.geometry(graph) !== "area") {
+          tags.area = "yes";
+        }
+        delete tags.type;
+        survivor = survivor.update({ tags });
+        graph = graph.replace(survivor);
+      }
+      checkForSimpleMultipolygon();
+      return graph;
+    };
+    action.resultingWayNodesLength = function(graph) {
+      return ids.reduce(function(count, id2) {
+        return count + graph.entity(id2).nodes.length;
+      }, 0) - ids.length - 1;
+    };
+    action.disabled = function(graph) {
+      var geometries = groupEntitiesByGeometry(graph);
+      if (ids.length < 2 || ids.length !== geometries.line.length) {
+        return "not_eligible";
+      }
+      var joined = osmJoinWays(ids.map(graph.entity, graph), graph);
+      if (joined.length > 1) {
+        return "not_adjacent";
+      }
+      var i3;
+      var sortedParentRelations = function(id2) {
+        return graph.parentRelations(graph.entity(id2)).filter((rel) => !rel.isRestriction() && !rel.isConnectivity()).sort((a2, b2) => a2.id - b2.id);
+      };
+      var relsA = sortedParentRelations(ids[0]);
+      for (i3 = 1; i3 < ids.length; i3++) {
+        var relsB = sortedParentRelations(ids[i3]);
+        if (!utilArrayIdentical(relsA, relsB)) {
+          return "conflicting_relations";
+        }
+      }
+      for (i3 = 0; i3 < ids.length - 1; i3++) {
+        for (var j2 = i3 + 1; j2 < ids.length; j2++) {
+          var path1 = graph.childNodes(graph.entity(ids[i3])).map(function(e3) {
+            return e3.loc;
+          });
+          var path2 = graph.childNodes(graph.entity(ids[j2])).map(function(e3) {
+            return e3.loc;
+          });
+          var intersections = geoPathIntersections(path1, path2);
+          var common = utilArrayIntersection(
+            joined[0].nodes.map(function(n3) {
+              return n3.loc.toString();
+            }),
+            intersections.map(function(n3) {
+              return n3.toString();
+            })
+          );
+          if (common.length !== intersections.length) {
+            return "paths_intersect";
+          }
+        }
+      }
+      var nodeIds = joined[0].nodes.map(function(n3) {
+        return n3.id;
+      }).slice(1, -1);
+      var relation;
+      var tags = {};
+      var conflicting = false;
+      joined[0].forEach(function(way) {
+        var parents = graph.parentRelations(way);
+        parents.forEach(function(parent) {
+          if ((parent.isRestriction() || parent.isConnectivity()) && parent.members.some(function(m2) {
+            return nodeIds.indexOf(m2.id) >= 0;
+          })) {
+            relation = parent;
+          }
+        });
+        for (var k3 in way.tags) {
+          if (!(k3 in tags)) {
+            tags[k3] = way.tags[k3];
+          } else if (tags[k3] && osmIsInterestingTag(k3) && tags[k3] !== way.tags[k3]) {
+            conflicting = true;
+          }
+        }
+      });
+      if (relation) {
+        return relation.isRestriction() ? "restriction" : "connectivity";
+      }
+      if (conflicting) {
+        return "conflicting_tags";
+      }
+    };
+    return action;
+  }
+
+  // modules/actions/merge.js
+  function actionMerge(ids) {
+    function groupEntitiesByGeometry(graph) {
+      var entities = ids.map(function(id2) {
+        return graph.entity(id2);
+      });
+      return Object.assign(
+        { point: [], area: [], line: [], relation: [] },
+        utilArrayGroupBy(entities, function(entity) {
+          return entity.geometry(graph);
+        })
+      );
+    }
+    var action = function(graph) {
+      var geometries = groupEntitiesByGeometry(graph);
+      var target = geometries.area[0] || geometries.line[0];
+      var points = geometries.point;
+      points.forEach(function(point2) {
+        target = target.mergeTags(point2.tags);
+        graph = graph.replace(target);
+        graph.parentRelations(point2).forEach(function(parent) {
+          graph = graph.replace(parent.replaceMember(point2, target));
+        });
+        var nodes = utilArrayUniq(graph.childNodes(target));
+        var removeNode = point2;
+        if (!point2.isNew()) {
+          var inserted = false;
+          var canBeReplaced = function(node2) {
+            return !(graph.parentWays(node2).length > 1 || graph.parentRelations(node2).length);
+          };
+          var replaceNode = function(node2) {
+            graph = graph.replace(point2.update({ tags: node2.tags, loc: node2.loc }));
+            target = target.replaceNode(node2.id, point2.id);
+            graph = graph.replace(target);
+            removeNode = node2;
+            inserted = true;
+          };
+          var i3;
+          var node;
+          for (i3 = 0; i3 < nodes.length; i3++) {
+            node = nodes[i3];
+            if (canBeReplaced(node) && node.isNew()) {
+              replaceNode(node);
+              break;
+            }
+          }
+          if (!inserted && point2.hasInterestingTags()) {
+            for (i3 = 0; i3 < nodes.length; i3++) {
+              node = nodes[i3];
+              if (canBeReplaced(node) && !node.hasInterestingTags()) {
+                replaceNode(node);
+                break;
+              }
+            }
+            if (!inserted) {
+              for (i3 = 0; i3 < nodes.length; i3++) {
+                node = nodes[i3];
+                if (canBeReplaced(node) && utilCompareIDs(point2.id, node.id) < 0) {
+                  replaceNode(node);
+                  break;
+                }
+              }
+            }
+          }
+        }
+        graph = graph.remove(removeNode);
+      });
+      if (target.tags.area === "yes") {
+        var tags = Object.assign({}, target.tags);
+        delete tags.area;
+        if (osmTagSuggestingArea(tags)) {
+          target = target.update({ tags });
+          graph = graph.replace(target);
+        }
+      }
+      return graph;
+    };
+    action.disabled = function(graph) {
+      var geometries = groupEntitiesByGeometry(graph);
+      if (geometries.point.length === 0 || geometries.area.length + geometries.line.length !== 1 || geometries.relation.length !== 0) {
+        return "not_eligible";
+      }
+    };
+    return action;
+  }
+
+  // modules/actions/merge_nodes.js
+  function actionMergeNodes(nodeIDs, loc) {
+    function chooseLoc(graph) {
+      if (!nodeIDs.length)
+        return null;
+      var sum = [0, 0];
+      var interestingCount = 0;
+      var interestingLoc;
+      for (var i3 = 0; i3 < nodeIDs.length; i3++) {
+        var node = graph.entity(nodeIDs[i3]);
+        if (node.hasInterestingTags()) {
+          interestingLoc = ++interestingCount === 1 ? node.loc : null;
+        }
+        sum = geoVecAdd(sum, node.loc);
+      }
+      return interestingLoc || geoVecScale(sum, 1 / nodeIDs.length);
+    }
+    var action = function(graph) {
+      if (nodeIDs.length < 2)
+        return graph;
+      var toLoc = loc;
+      if (!toLoc) {
+        toLoc = chooseLoc(graph);
+      }
+      for (var i3 = 0; i3 < nodeIDs.length; i3++) {
+        var node = graph.entity(nodeIDs[i3]);
+        if (node.loc !== toLoc) {
+          graph = graph.replace(node.move(toLoc));
+        }
+      }
+      return actionConnect(nodeIDs)(graph);
+    };
+    action.disabled = function(graph) {
+      if (nodeIDs.length < 2)
+        return "not_eligible";
+      for (var i3 = 0; i3 < nodeIDs.length; i3++) {
+        var entity = graph.entity(nodeIDs[i3]);
+        if (entity.type !== "node")
+          return "not_eligible";
+      }
+      return actionConnect(nodeIDs).disabled(graph);
+    };
+    return action;
+  }
+
   // modules/actions/merge_polygon.js
   function actionMergePolygon(ids, newRelationId) {
     function groupEntities(graph) {
@@ -35454,8 +40407,8 @@
         contained = contained.filter(isContained).map(filterContained);
       }
       function isContained(d2, i3) {
-        return contained[i3].some(function(val) {
-          return val;
+        return contained[i3].some(function(val2) {
+          return val2;
         });
       }
       function filterContained(d2) {
@@ -36230,21 +41183,6 @@
     };
   }
 
-  // modules/actions/move_node.js
-  function actionMoveNode(nodeID, toLoc) {
-    var action = function(graph, t2) {
-      if (t2 === null || !isFinite(t2))
-        t2 = 1;
-      t2 = Math.min(Math.max(+t2, 0), 1);
-      var node = graph.entity(nodeID);
-      return graph.replace(
-        node.move(geoVecInterp(node.loc, toLoc, t2))
-      );
-    };
-    action.transitionable = true;
-    return action;
-  }
-
   // modules/actions/noop.js
   function actionNoop() {
     return function(graph) {
@@ -36383,10 +41321,10 @@
         p2 = geoVecNormalize(p2);
         q2 = geoVecNormalize(q2);
         var dotp2 = p2[0] * q2[0] + p2[1] * q2[1];
-        var val = Math.abs(dotp2);
-        if (val < lowerThreshold) {
+        var val2 = Math.abs(dotp2);
+        if (val2 < lowerThreshold) {
           corner.i = i4;
-          corner.dotp = val;
+          corner.dotp = val2;
           var vec = geoVecNormalize(geoVecAdd(p2, q2));
           return geoVecScale(vec, 0.1 * dotp2 * scale);
         }
@@ -36775,10 +41713,10 @@
       }
       return graph;
     };
-    action.useLongAxis = function(val) {
+    action.useLongAxis = function(val2) {
       if (!arguments.length)
         return _useLongAxis;
-      _useLongAxis = val;
+      _useLongAxis = val2;
       return action;
     };
     action.transitionable = true;
@@ -36973,16 +41911,16 @@
       selection2.on(_pointerPrefix + "over.hover", null).on(_pointerPrefix + "out.hover", null).on(_pointerPrefix + "down.hover", null);
       select_default2(window).on(_pointerPrefix + "up.hover pointercancel.hover", null, true).on("keydown.hover", null).on("keyup.hover", null);
     };
-    behavior.altDisables = function(val) {
+    behavior.altDisables = function(val2) {
       if (!arguments.length)
         return _altDisables;
-      _altDisables = val;
+      _altDisables = val2;
       return behavior;
     };
-    behavior.ignoreVertex = function(val) {
+    behavior.ignoreVertex = function(val2) {
       if (!arguments.length)
         return _ignoreVertex;
-      _ignoreVertex = val;
+      _ignoreVertex = val2;
       return behavior;
     };
     behavior.initialNodeID = function(nodeId) {
@@ -40196,8 +45134,8 @@
     let source = typeof regex === "string" ? regex : regex.source;
     opt = opt || "";
     const obj = {
-      replace: (name, val) => {
-        let valSource = typeof val === "string" ? val : val.source;
+      replace: (name, val2) => {
+        let valSource = typeof val2 === "string" ? val2 : val2.source;
         valSource = valSource.replace(caret, "$1");
         source = source.replace(name, valSource);
         return obj;
@@ -43677,16 +48615,16 @@
       _modalSelection.select("button.close").attr("class", "hide");
       return loading;
     };
-    loading.message = function(val) {
+    loading.message = function(val2) {
       if (!arguments.length)
         return _message;
-      _message = val;
+      _message = val2;
       return loading;
     };
-    loading.blocking = function(val) {
+    loading.blocking = function(val2) {
       if (!arguments.length)
         return _blocking;
-      _blocking = val;
+      _blocking = val2;
       return loading;
     };
     loading.close = () => {
@@ -43926,6 +48864,12 @@
           });
           return Array.from(s2);
         }
+      },
+      /** @param {string} name */
+      appendImageryUsed(name) {
+        const imagery = new Set(_imageryUsed);
+        imagery.add(name);
+        _imageryUsed = [...imagery];
       },
       photoOverlaysUsed: function(sources) {
         if (sources) {
@@ -45712,16 +50656,16 @@
       context.surface().classed("nope", false).classed("nope-disabled", false).classed("nope-suppressed", false);
       context.enter(modeBrowse(context));
     };
-    drawWay.nodeIndex = function(val) {
+    drawWay.nodeIndex = function(val2) {
       if (!arguments.length)
         return _nodeIndex;
-      _nodeIndex = val;
+      _nodeIndex = val2;
       return drawWay;
     };
-    drawWay.offsetFromEndNode = function(val) {
+    drawWay.offsetFromEndNode = function(val2) {
       if (!arguments.length)
         return _offsetFromEndNode;
-      _offsetFromEndNode = val;
+      _offsetFromEndNode = val2;
       return drawWay;
     };
     drawWay.activeID = function() {
@@ -47279,10 +52223,10 @@
     function nameMatchesRawTag(lowercaseName, tags) {
       for (let i3 = 0; i3 < keysToTestForGenericValues.length; i3++) {
         let key = keysToTestForGenericValues[i3];
-        let val = tags[key];
-        if (val) {
-          val = val.toLowerCase();
-          if (key === lowercaseName || val === lowercaseName || key.replace(/\_/g, " ") === lowercaseName || val.replace(/\_/g, " ") === lowercaseName) {
+        let val2 = tags[key];
+        if (val2) {
+          val2 = val2.toLowerCase();
+          if (key === lowercaseName || val2 === lowercaseName || key.replace(/\_/g, " ") === lowercaseName || val2.replace(/\_/g, " ") === lowercaseName) {
             return true;
           }
         }
@@ -48085,8 +53029,8 @@
           result.data.forEach(function(entity) {
             remoteGraph.replace(entity);
             _loaded[entity.id] = true;
-            _toLoad = _toLoad.filter(function(val) {
-              return val !== entity.id;
+            _toLoad = _toLoad.filter(function(val2) {
+              return val2 !== entity.id;
             });
             if (!entity.visible)
               return;
@@ -48135,7 +53079,7 @@
         function formatUser(d2) {
           return '<a href="' + osm.userURL(d2) + '" target="_blank">' + escape_default(d2) + "</a>";
         }
-        function entityName(entity) {
+        function entityName2(entity) {
           return utilDisplayName(entity) || utilDisplayType(entity.id) + " " + entity.id;
         }
         function sameVersions(local, remote) {
@@ -48168,7 +53112,7 @@
           var keepTheirs = _t("save.conflict." + (remote.visible ? "keep_remote" : "delete"));
           _conflicts.push({
             id: id2,
-            name: entityName(local),
+            name: entityName2(local),
             details: mergeConflicts,
             chosen: 1,
             choices: [
@@ -48336,15 +53280,15 @@
     source.tileSize = data.tileSize || 256;
     source.zoomExtent = data.zoomExtent || [0, 22];
     source.overzoom = data.overzoom !== false;
-    source.offset = function(val) {
+    source.offset = function(val2) {
       if (!arguments.length)
         return _offset;
-      _offset = val;
+      _offset = val2;
       return source;
     };
-    source.nudge = function(val, zoomlevel) {
-      _offset[0] += val[0] / Math.pow(2, zoomlevel);
-      _offset[1] += val[1] / Math.pow(2, zoomlevel);
+    source.nudge = function(val2, zoomlevel) {
+      _offset[0] += val2[0] / Math.pow(2, zoomlevel);
+      _offset[1] += val2[1] / Math.pow(2, zoomlevel);
       return source;
     };
     source.name = function() {
@@ -48376,11 +53320,11 @@
     source.imageryUsed = function() {
       return _name || source.id;
     };
-    source.template = function(val) {
+    source.template = function(val2) {
       if (!arguments.length)
         return _template;
       if (source.id === "custom" || source.id === "Bing") {
-        _template = val;
+        _template = val2;
       }
       return source;
     };
@@ -48674,8 +53618,8 @@
         if (callback)
           callback(err.message);
       });
-      function clean2(val) {
-        return String(val).trim() || unknown;
+      function clean2(val2) {
+        return String(val2).trim() || unknown;
       }
     };
     return esri;
@@ -49267,22 +54211,22 @@
         });
       }
     }
-    background.projection = function(val) {
+    background.projection = function(val2) {
       if (!arguments.length)
         return _projection;
-      _projection = val;
+      _projection = val2;
       return background;
     };
-    background.dimensions = function(val) {
+    background.dimensions = function(val2) {
       if (!arguments.length)
         return tiler9.size();
-      tiler9.size(val);
+      tiler9.size(val2);
       return background;
     };
-    background.source = function(val) {
+    background.source = function(val2) {
       if (!arguments.length)
         return _source;
-      _source = val;
+      _source = val2;
       _tileSize = _source.tileSize;
       _cache5 = {};
       tiler9.tileSize(_source.tileSize).zoomExtent(_source.zoomExtent);
@@ -49479,11 +54423,11 @@
         return visible[source.id];
       });
     };
-    background.dimensions = (val) => {
-      if (!val)
+    background.dimensions = (val2) => {
+      if (!val2)
         return;
-      baseLayer.dimensions(val);
-      _overlayLayers.forEach((layer) => layer.dimensions(val));
+      baseLayer.dimensions(val2);
+      _overlayLayers.forEach((layer) => layer.dimensions(val2));
     };
     background.baseLayerSource = function(d2) {
       if (!arguments.length)
@@ -50543,10 +55487,10 @@
       }
       return classes.filter((klass) => /^[-_a-z0-9]+$/.test(klass)).join(" ").trim();
     };
-    tagClasses.tags = function(val) {
+    tagClasses.tags = function(val2) {
       if (!arguments.length)
         return _tags;
-      _tags = val;
+      _tags = val2;
       return tagClasses;
     };
     return tagClasses;
@@ -50840,32 +55784,32 @@
     return properties;
   }
   function val1(node, tagName, callback) {
-    const val = nodeVal(get1(node, tagName));
-    if (val && callback)
-      return callback(val) || {};
+    const val2 = nodeVal(get1(node, tagName));
+    if (val2 && callback)
+      return callback(val2) || {};
     return {};
   }
   function $num(node, tagName, callback) {
-    const val = parseFloat(nodeVal(get1(node, tagName)));
-    if (isNaN(val))
+    const val2 = parseFloat(nodeVal(get1(node, tagName)));
+    if (isNaN(val2))
       return void 0;
-    if (val && callback)
-      return callback(val) || {};
+    if (val2 && callback)
+      return callback(val2) || {};
     return {};
   }
   function num1(node, tagName, callback) {
-    const val = parseFloat(nodeVal(get1(node, tagName)));
-    if (isNaN(val))
+    const val2 = parseFloat(nodeVal(get1(node, tagName)));
+    if (isNaN(val2))
       return void 0;
     if (callback)
-      callback(val);
-    return val;
+      callback(val2);
+    return val2;
   }
   function getMulti(node, propertyNames) {
     const properties = {};
     for (const property of propertyNames) {
-      val1(node, property, (val) => {
-        properties[property] = val;
+      val1(node, property, (val2) => {
+        properties[property] = val2;
       });
     }
     return properties;
@@ -50875,14 +55819,14 @@
   }
   function getLineStyle(node) {
     return get3(node, "line", (lineStyle) => {
-      const val = Object.assign({}, val1(lineStyle, "color", (color2) => {
+      const val2 = Object.assign({}, val1(lineStyle, "color", (color2) => {
         return { stroke: "#".concat(color2) };
       }), $num(lineStyle, "opacity", (opacity) => {
         return { "stroke-opacity": opacity };
       }), $num(lineStyle, "width", (width) => {
         return { "stroke-width": width * 96 / 25.4 };
       }));
-      return val;
+      return val2;
     });
   }
   function getExtensions(node) {
@@ -50896,8 +55840,8 @@
       if (name === "gpxtpx:TrackPointExtension") {
         values = values.concat(getExtensions(child));
       } else {
-        const val = nodeVal(child);
-        values.push([name, parseNumeric(val)]);
+        const val2 = nodeVal(child);
+        values.push([name, parseNumeric(val2)]);
       }
     }
     return values;
@@ -50905,9 +55849,9 @@
   function abbreviateName(name) {
     return ["heart", "gpxtpx:hr", "hr"].includes(name) ? "heart" : name;
   }
-  function parseNumeric(val) {
-    const num = parseFloat(val);
-    return isNaN(num) ? val : num;
+  function parseNumeric(val2) {
+    const num = parseFloat(val2);
+    return isNaN(num) ? val2 : num;
   }
   function coordPair$1(node) {
     const ll = [
@@ -50917,8 +55861,8 @@
     if (isNaN(ll[0]) || isNaN(ll[1])) {
       return null;
     }
-    num1(node, "ele", (val) => {
-      ll.push(val);
+    num1(node, "ele", (val2) => {
+      ll.push(val2);
     });
     const time = get1(node, "time");
     return {
@@ -50962,12 +55906,12 @@
       line.push(c2.coordinates);
       if (c2.time)
         times.push(c2.time);
-      for (const [name, val] of c2.extendedValues) {
+      for (const [name, val2] of c2.extendedValues) {
         const plural = name === "heart" ? name : name.replace("gpxtpx:", "") + "s";
         if (!extendedValues[plural]) {
           extendedValues[plural] = Array(pts.length).fill(null);
         }
-        extendedValues[plural][i3] = val;
+        extendedValues[plural][i3] = val2;
       }
     }
     if (line.length < 2)
@@ -51020,14 +55964,14 @@
       const props = properties.coordinateProperties;
       const entries = Object.entries(line.extendedValues);
       for (let i3 = 0; i3 < entries.length; i3++) {
-        const [name, val] = entries[i3];
+        const [name, val2] = entries[i3];
         if (multi) {
           if (!props[name]) {
             props[name] = extractedLines.map((line2) => new Array(line2.line.length).fill(null));
           }
-          props[name][i3] = val;
+          props[name][i3] = val2;
         } else {
-          props[name] = val;
+          props[name] = val2;
         }
       }
     }
@@ -51096,8 +56040,8 @@
   }
   function numericProperty(node, source, target) {
     const properties = {};
-    num1(node, source, (val) => {
-      properties[target] = val;
+    num1(node, source, (val2) => {
+      properties[target] = val2;
     });
     return properties;
   }
@@ -51777,16 +56721,16 @@
       dispatch14.call("change");
       return this;
     };
-    drawData.showLabels = function(val) {
+    drawData.showLabels = function(val2) {
       if (!arguments.length)
         return _showLabels;
-      _showLabels = val;
+      _showLabels = val2;
       return this;
     };
-    drawData.enabled = function(val) {
+    drawData.enabled = function(val2) {
       if (!arguments.length)
         return _enabled;
-      _enabled = val;
+      _enabled = val2;
       if (_enabled) {
         showLayer();
       } else {
@@ -51799,7 +56743,7 @@
       var gj = _geojson || {};
       return !!(_template || Object.keys(gj).length);
     };
-    drawData.template = function(val, src) {
+    drawData.template = function(val2, src) {
       if (!arguments.length)
         return _template;
       var osm = context.connection();
@@ -51810,20 +56754,20 @@
         var regex;
         for (var i3 = 0; i3 < blocklists.length; i3++) {
           regex = blocklists[i3];
-          fail = regex.test(val);
+          fail = regex.test(val2);
           tested++;
           if (fail)
             break;
         }
         if (!tested) {
           regex = /.*\.google(apis)?\..*\/(vt|kh)[\?\/].*([xyz]=.*){3}.*/;
-          fail = regex.test(val);
+          fail = regex.test(val2);
         }
       }
-      _template = val;
+      _template = val2;
       _fileList = null;
       _geojson = null;
-      _src = src || "vectortile:" + val.split(/[?#]/)[0];
+      _src = src || "vectortile:" + val2.split(/[?#]/)[0];
       dispatch14.call("change");
       return this;
     };
@@ -52194,10 +57138,10 @@
         }
       }
     }
-    drawKeepRight.enabled = function(val) {
+    drawKeepRight.enabled = function(val2) {
       if (!arguments.length)
         return _layerEnabled;
-      _layerEnabled = val;
+      _layerEnabled = val2;
       if (_layerEnabled) {
         layerOn();
       } else {
@@ -54711,10 +59655,10 @@
         layer.style("display", "none");
       });
     }
-    drawPhotos.enabled = function(val) {
+    drawPhotos.enabled = function(val2) {
       if (!arguments.length)
         return _enabled2;
-      _enabled2 = val;
+      _enabled2 = val2;
       if (_enabled2) {
         showLayer();
       } else {
@@ -54822,10 +59766,10 @@
         }
       }
     }
-    drawImproveOSM.enabled = function(val) {
+    drawImproveOSM.enabled = function(val2) {
       if (!arguments.length)
         return _layerEnabled2;
-      _layerEnabled2 = val;
+      _layerEnabled2 = val2;
       if (_layerEnabled2) {
         layerOn();
       } else {
@@ -54933,10 +59877,10 @@
         }
       }
     }
-    drawOsmose.enabled = function(val) {
+    drawOsmose.enabled = function(val2) {
       if (!arguments.length)
         return _layerEnabled3;
-      _layerEnabled3 = val;
+      _layerEnabled3 = val2;
       if (_layerEnabled3) {
         getService().loadStrings().then(layerOn).catch((err) => {
           console.log(err);
@@ -56324,10 +61268,10 @@
         dispatch14.call("change");
       });
     }
-    drawOsm.enabled = function(val) {
+    drawOsm.enabled = function(val2) {
       if (!arguments.length)
         return enabled;
-      enabled = val;
+      enabled = val2;
       if (enabled) {
         showLayer();
       } else {
@@ -56465,10 +61409,10 @@
         }
       }
     }
-    drawNotes.enabled = function(val) {
+    drawNotes.enabled = function(val2) {
       if (!arguments.length)
         return _notesEnabled;
-      _notesEnabled = val;
+      _notesEnabled = val2;
       if (_notesEnabled) {
         layerOn();
       } else {
@@ -56592,10 +61536,10 @@
       dispatch14.call("change");
       return this;
     };
-    drawLayers.dimensions = function(val) {
+    drawLayers.dimensions = function(val2) {
       if (!arguments.length)
         return utilGetDimensions(svg2);
-      utilSetDimensions(svg2, val);
+      utilSetDimensions(svg2, val2);
       return this;
     };
     return utilRebind(drawLayers, dispatch14, "on");
@@ -58191,8 +63135,8 @@
       utilSetTransform(supersurface, tX, tY, scale);
       scheduleRedraw();
       dispatch14.call("move", this, map2);
-      function isInteger(val) {
-        return typeof val === "number" && isFinite(val) && Math.floor(val) === val;
+      function isInteger(val2) {
+        return typeof val2 === "number" && isFinite(val2) && Math.floor(val2) === val2;
       }
     }
     function resetTransform() {
@@ -58255,16 +63199,16 @@
       var coord2 = map2.mouse() || pxCenter();
       return projection2.invert(coord2);
     };
-    map2.dblclickZoomEnable = function(val) {
+    map2.dblclickZoomEnable = function(val2) {
       if (!arguments.length)
         return _dblClickZoomEnabled;
-      _dblClickZoomEnabled = val;
+      _dblClickZoomEnabled = val2;
       return map2;
     };
-    map2.redrawEnable = function(val) {
+    map2.redrawEnable = function(val2) {
       if (!arguments.length)
         return _redrawEnabled;
-      _redrawEnabled = val;
+      _redrawEnabled = val2;
       return map2;
     };
     map2.isTransformed = function() {
@@ -58318,10 +63262,10 @@
       }
       return map2;
     };
-    map2.dimensions = function(val) {
+    map2.dimensions = function(val2) {
       if (!arguments.length)
         return _dimensions;
-      _dimensions = val;
+      _dimensions = val2;
       drawLayers.dimensions(_dimensions);
       context.background().dimensions(_dimensions);
       projection2.clipExtent([[0, 0], _dimensions]);
@@ -58462,18 +63406,18 @@
       _selection.interrupt();
       return map2;
     };
-    map2.extent = function(val) {
+    map2.extent = function(val2) {
       if (!arguments.length) {
         return new geoExtent(
           projection2.invert([0, _dimensions[1]]),
           projection2.invert([_dimensions[0], 0])
         );
       } else {
-        var extent = geoExtent(val);
+        var extent = geoExtent(val2);
         map2.centerZoom(extent.center(), map2.extentZoom(extent));
       }
     };
-    map2.trimmedExtent = function(val) {
+    map2.trimmedExtent = function(val2) {
       if (!arguments.length) {
         var headerY = 71;
         var footerY = 30;
@@ -58483,7 +63427,7 @@
           projection2.invert([_dimensions[0] - pad2, headerY + pad2])
         );
       } else {
-        var extent = geoExtent(val);
+        var extent = geoExtent(val2);
         map2.centerZoom(extent.center(), map2.trimmedExtentZoom(extent));
       }
     };
@@ -58497,14 +63441,14 @@
       var newZoom = map2.zoom() - Math.max(hZoomDiff, vZoomDiff);
       return newZoom;
     }
-    map2.extentZoom = function(val) {
-      return calcExtentZoom(geoExtent(val), _dimensions);
+    map2.extentZoom = function(val2) {
+      return calcExtentZoom(geoExtent(val2), _dimensions);
     };
-    map2.trimmedExtentZoom = function(val) {
+    map2.trimmedExtentZoom = function(val2) {
       var trimY = 120;
       var trimX = 40;
       var trimmed = [_dimensions[0] - trimX, _dimensions[1] - trimY];
-      return calcExtentZoom(geoExtent(val), trimmed);
+      return calcExtentZoom(geoExtent(val2), trimmed);
     };
     map2.withinEditableZoom = function() {
       return map2.zoom() >= context.minEditableZoom();
@@ -58524,10 +63468,10 @@
         return false;
       return map2.withinEditableZoom();
     };
-    map2.minzoom = function(val) {
+    map2.minzoom = function(val2) {
       if (!arguments.length)
         return _minzoom;
-      _minzoom = val;
+      _minzoom = val2;
       return map2;
     };
     map2.toggleHighlightEdited = function() {
@@ -58536,12 +63480,12 @@
       dispatch14.call("changeHighlighting", this);
     };
     map2.areaFillOptions = ["wireframe", "partial", "full"];
-    map2.activeAreaFill = function(val) {
+    map2.activeAreaFill = function(val2) {
       if (!arguments.length)
         return corePreferences("area-fill") || "partial";
-      corePreferences("area-fill", val);
-      if (val !== "wireframe") {
-        corePreferences("area-fill-toggle", val);
+      corePreferences("area-fill", val2);
+      if (val2 !== "wireframe") {
+        corePreferences("area-fill-toggle", val2);
       }
       updateAreaFill();
       map2.pan([0, 0]);
@@ -58607,24 +63551,24 @@
     photos.dateFilters = function() {
       return _dateFilters;
     };
-    photos.dateFilterValue = function(val) {
-      return val === _dateFilters[0] ? _fromDate : _toDate;
+    photos.dateFilterValue = function(val2) {
+      return val2 === _dateFilters[0] ? _fromDate : _toDate;
     };
-    photos.setDateFilter = function(type2, val, updateUrl) {
-      var date = val && new Date(val);
+    photos.setDateFilter = function(type2, val2, updateUrl) {
+      var date = val2 && new Date(val2);
       if (date && !isNaN(date)) {
-        val = date.toISOString().slice(0, 10);
+        val2 = date.toISOString().slice(0, 10);
       } else {
-        val = null;
+        val2 = null;
       }
       if (type2 === _dateFilters[0]) {
-        _fromDate = val;
+        _fromDate = val2;
         if (_fromDate && _toDate && new Date(_toDate) < new Date(_fromDate)) {
           _toDate = _fromDate;
         }
       }
       if (type2 === _dateFilters[1]) {
-        _toDate = val;
+        _toDate = val2;
         if (_fromDate && _toDate && new Date(_toDate) < new Date(_fromDate)) {
           _fromDate = _toDate;
         }
@@ -58638,16 +63582,16 @@
         setUrlFilterValue("photo_dates", rangeString);
       }
     };
-    photos.setUsernameFilter = function(val, updateUrl) {
-      if (val && typeof val === "string")
-        val = val.replace(/;/g, ",").split(",");
-      if (val) {
-        val = val.map((d2) => d2.trim()).filter(Boolean);
-        if (!val.length) {
-          val = null;
+    photos.setUsernameFilter = function(val2, updateUrl) {
+      if (val2 && typeof val2 === "string")
+        val2 = val2.replace(/;/g, ",").split(",");
+      if (val2) {
+        val2 = val2.map((d2) => d2.trim()).filter(Boolean);
+        if (!val2.length) {
+          val2 = null;
         }
       }
-      _usernames = val;
+      _usernames = val2;
       dispatch14.call("change", this);
       if (updateUrl) {
         var hashString;
@@ -58657,13 +63601,13 @@
         setUrlFilterValue("photo_username", hashString);
       }
     };
-    function setUrlFilterValue(property, val) {
+    function setUrlFilterValue(property, val2) {
       if (!window.mocha) {
         var hash = utilStringQs(window.location.hash);
-        if (val) {
-          if (hash[property] === val)
+        if (val2) {
+          if (hash[property] === val2)
             return;
-          hash[property] = val;
+          hash[property] = val2;
         } else {
           if (!(property in hash))
             return;
@@ -58685,10 +63629,10 @@
     photos.shouldFilterByUsername = function() {
       return !showsLayer("mapillary") && showsLayer("kartaview") && !showsLayer("streetside");
     };
-    photos.showsPhotoType = function(val) {
+    photos.showsPhotoType = function(val2) {
       if (!photos.shouldFilterByPhotoType())
         return true;
-      return _shownPhotoTypes.indexOf(val) !== -1;
+      return _shownPhotoTypes.indexOf(val2) !== -1;
     };
     photos.showsFlat = function() {
       return photos.showsPhotoType("flat");
@@ -58702,12 +63646,12 @@
     photos.toDate = function() {
       return _toDate;
     };
-    photos.togglePhotoType = function(val) {
-      var index = _shownPhotoTypes.indexOf(val);
+    photos.togglePhotoType = function(val2) {
+      var index = _shownPhotoTypes.indexOf(val2);
       if (index !== -1) {
         _shownPhotoTypes.splice(index, 1);
       } else {
-        _shownPhotoTypes.push(val);
+        _shownPhotoTypes.push(val2);
       }
       dispatch14.call("change", this);
       return photos;
@@ -58944,49 +63888,49 @@
     var _displayType = utilFunctor("");
     var _hasArrow = utilFunctor(true);
     var _pointerPrefix = "PointerEvent" in window ? "pointer" : "mouse";
-    popover.displayType = function(val) {
+    popover.displayType = function(val2) {
       if (arguments.length) {
-        _displayType = utilFunctor(val);
+        _displayType = utilFunctor(val2);
         return popover;
       } else {
         return _displayType;
       }
     };
-    popover.hasArrow = function(val) {
+    popover.hasArrow = function(val2) {
       if (arguments.length) {
-        _hasArrow = utilFunctor(val);
+        _hasArrow = utilFunctor(val2);
         return popover;
       } else {
         return _hasArrow;
       }
     };
-    popover.placement = function(val) {
+    popover.placement = function(val2) {
       if (arguments.length) {
-        _placement = utilFunctor(val);
+        _placement = utilFunctor(val2);
         return popover;
       } else {
         return _placement;
       }
     };
-    popover.alignment = function(val) {
+    popover.alignment = function(val2) {
       if (arguments.length) {
-        _alignment = utilFunctor(val);
+        _alignment = utilFunctor(val2);
         return popover;
       } else {
         return _alignment;
       }
     };
-    popover.scrollContainer = function(val) {
+    popover.scrollContainer = function(val2) {
       if (arguments.length) {
-        _scrollContainer = utilFunctor(val);
+        _scrollContainer = utilFunctor(val2);
         return popover;
       } else {
         return _scrollContainer;
       }
     };
-    popover.content = function(val) {
+    popover.content = function(val2) {
       if (arguments.length) {
-        _content = val;
+        _content = val2;
         return popover;
       } else {
         return _content;
@@ -59203,22 +64147,22 @@
     };
     var _heading = utilFunctor(null);
     var _keys = utilFunctor(null);
-    tooltip.title = function(val) {
+    tooltip.title = function(val2) {
       if (!arguments.length)
         return _title;
-      _title = utilFunctor(val);
+      _title = utilFunctor(val2);
       return tooltip;
     };
-    tooltip.heading = function(val) {
+    tooltip.heading = function(val2) {
       if (!arguments.length)
         return _heading;
-      _heading = utilFunctor(val);
+      _heading = utilFunctor(val2);
       return tooltip;
     };
-    tooltip.keys = function(val) {
+    tooltip.keys = function(val2) {
       if (!arguments.length)
         return _keys;
-      _keys = utilFunctor(val);
+      _keys = utilFunctor(val2);
       return tooltip;
     };
     tooltip.content(function() {
@@ -59416,23 +64360,23 @@
       _tooltips = [];
       dispatch14.call("toggled", this, false);
     };
-    editMenu.anchorLoc = function(val) {
+    editMenu.anchorLoc = function(val2) {
       if (!arguments.length)
         return _anchorLoc;
-      _anchorLoc = val;
+      _anchorLoc = val2;
       _anchorLocLonLat = context.projection.invert(_anchorLoc);
       return editMenu;
     };
-    editMenu.triggerType = function(val) {
+    editMenu.triggerType = function(val2) {
       if (!arguments.length)
         return _triggerType;
-      _triggerType = val;
+      _triggerType = val2;
       return editMenu;
     };
-    editMenu.operations = function(val) {
+    editMenu.operations = function(val2) {
       if (!arguments.length)
         return _operations;
-      _operations = val;
+      _operations = val2;
       return editMenu;
     };
     return utilRebind(editMenu, dispatch14, "on");
@@ -59745,9 +64689,9 @@
         _metadataKeys.forEach(function(k3) {
           if (k3 === "zoom" || k3 === "vintage")
             return;
-          var val = result[k3];
-          _metadata[k3] = val;
-          selection2.selectAll(".background-info-list-" + k3).classed("hide", !val).selectAll(".background-info-span-" + k3).text(val);
+          var val2 = result[k3];
+          _metadata[k3] = val2;
+          selection2.selectAll(".background-info-list-" + k3).classed("hide", !val2).selectAll(".background-info-span-" + k3).text(val2);
         });
       });
     }
@@ -60361,8 +65305,8 @@
       addrTags.forEach(function(k3) {
         var key2 = "intro.graph." + k3;
         var tag2 = "addr:" + k3;
-        var val = obj.tags && obj.tags[tag2];
-        var str = _t(key2, { default: val });
+        var val2 = obj.tags && obj.tags[tag2];
+        var str = _t(key2, { default: val2 });
         if (str) {
           if (str.match(/^<.*>$/) !== null) {
             delete obj.tags[tag2];
@@ -64055,16 +68999,16 @@
   function uiScale(context) {
     var projection2 = context.projection, isImperial = !_mainLocalizer.usesMetric(), maxLength = 180, tickHeight = 8;
     function scaleDefs(loc1, loc2) {
-      var lat = (loc2[1] + loc1[1]) / 2, conversion = isImperial ? 3.28084 : 1, dist = geoLonToMeters(loc2[0] - loc1[0], lat) * conversion, scale = { dist: 0, px: 0, text: "" }, buckets, i3, val, dLon;
+      var lat = (loc2[1] + loc1[1]) / 2, conversion = isImperial ? 3.28084 : 1, dist = geoLonToMeters(loc2[0] - loc1[0], lat) * conversion, scale = { dist: 0, px: 0, text: "" }, buckets, i3, val2, dLon;
       if (isImperial) {
         buckets = [528e4, 528e3, 52800, 5280, 500, 50, 5, 1];
       } else {
         buckets = [5e6, 5e5, 5e4, 5e3, 500, 50, 5, 1];
       }
       for (i3 = 0; i3 < buckets.length; i3++) {
-        val = buckets[i3];
-        if (dist >= val) {
-          scale.dist = Math.floor(dist / val) * val;
+        val2 = buckets[i3];
+        if (dist >= val2) {
+          scale.dist = Math.floor(dist / val2) * val2;
           break;
         } else {
           scale.dist = +dist.toFixed(2);
@@ -64262,10 +69206,10 @@
       iconEnter.append("div").attr("class", "preset-icon-28").call(svgIcon("#iD-icon-data", "note-fill"));
       headerEnter.append("div").attr("class", "data-header-label").call(_t.append("map_data.layers.custom.title"));
     }
-    dataHeader.datum = function(val) {
+    dataHeader.datum = function(val2) {
       if (!arguments.length)
         return _datum;
-      _datum = val;
+      _datum = val2;
       return this;
     };
     return dataHeader;
@@ -64286,7 +69230,7 @@
     var _minItems = 2;
     var _tDown = 0;
     var _mouseEnterHandler, _mouseLeaveHandler;
-    var _fetcher = function(val, cb) {
+    var _fetcher = function(val2, cb) {
       cb(_data.filter(function(d2) {
         var terms = d2.terms || [];
         terms.push(d2.value);
@@ -64294,7 +69238,7 @@
           terms.push(d2.key);
         }
         return terms.some(function(term) {
-          return term.toString().toLowerCase().indexOf(val.toLowerCase()) !== -1;
+          return term.toString().toLowerCase().indexOf(val2.toLowerCase()) !== -1;
         });
       }));
     };
@@ -64326,8 +69270,8 @@
         var start2 = input.property("selectionStart");
         var end = input.property("selectionEnd");
         if (start2 !== end) {
-          var val = utilGetSetValue(input);
-          input.node().setSelectionRange(val.length, val.length);
+          var val2 = utilGetSetValue(input);
+          input.node().setSelectionRange(val2.length, val2.length);
           return;
         }
         input.on("mouseup.combo-input", mouseup);
@@ -64436,16 +69380,16 @@
           doAutoComplete = true;
         fetchComboData(value(), function(skipAutosuggest) {
           _selected = null;
-          var val = input.property("value");
+          var val2 = input.property("value");
           if (_suggestions.length) {
-            if (doAutoComplete && !skipAutosuggest && input.property("selectionEnd") === val.length) {
+            if (doAutoComplete && !skipAutosuggest && input.property("selectionEnd") === val2.length) {
               _selected = tryAutocomplete();
             }
             if (!_selected) {
-              _selected = val;
+              _selected = val2;
             }
           }
-          if (val.length) {
+          if (val2.length) {
             var combo = container.selectAll(".combobox");
             if (combo.empty()) {
               show();
@@ -64515,10 +69459,10 @@
       function tryAutocomplete() {
         if (!_canAutocomplete)
           return;
-        var val = _caseSensitive ? value() : value().toLowerCase();
-        if (!val)
+        var val2 = _caseSensitive ? value() : value().toLowerCase();
+        if (!val2)
           return;
-        if (isFinite(val))
+        if (isFinite(val2))
           return;
         const suggestionValues = [];
         _suggestions.forEach((s2) => {
@@ -64531,17 +69475,17 @@
         for (var i3 = 0; i3 < suggestionValues.length; i3++) {
           var suggestion = suggestionValues[i3];
           var compare2 = _caseSensitive ? suggestion : suggestion.toLowerCase();
-          if (compare2 === val) {
+          if (compare2 === val2) {
             bestIndex = i3;
             break;
-          } else if (bestIndex === -1 && compare2.indexOf(val) === 0) {
+          } else if (bestIndex === -1 && compare2.indexOf(val2) === 0) {
             bestIndex = i3;
           }
         }
         if (bestIndex !== -1) {
           var bestVal = suggestionValues[bestIndex];
           input.property("value", bestVal);
-          input.node().setSelectionRange(val.length, bestVal.length);
+          input.node().setSelectionRange(val2.length, bestVal.length);
           dispatch14.call("update");
           return bestVal;
         }
@@ -64584,65 +69528,65 @@
           utilGetSetValue(input, d2.value);
           utilTriggerEvent(input, "change");
         }
-        var val = utilGetSetValue(input);
-        thiz.setSelectionRange(val.length, val.length);
-        d2 = _fetched[val];
-        dispatch14.call("accept", thiz, d2, val);
+        var val2 = utilGetSetValue(input);
+        thiz.setSelectionRange(val2.length, val2.length);
+        d2 = _fetched[val2];
+        dispatch14.call("accept", thiz, d2, val2);
         hide();
       }
       function cancel() {
         _cancelFetch = true;
         var thiz = input.node();
-        var val = utilGetSetValue(input);
+        var val2 = utilGetSetValue(input);
         var start2 = input.property("selectionStart");
         var end = input.property("selectionEnd");
-        val = val.slice(0, start2) + val.slice(end);
-        utilGetSetValue(input, val);
-        thiz.setSelectionRange(val.length, val.length);
+        val2 = val2.slice(0, start2) + val2.slice(end);
+        utilGetSetValue(input, val2);
+        thiz.setSelectionRange(val2.length, val2.length);
         dispatch14.call("cancel", thiz);
         hide();
       }
     };
-    combobox.canAutocomplete = function(val) {
+    combobox.canAutocomplete = function(val2) {
       if (!arguments.length)
         return _canAutocomplete;
-      _canAutocomplete = val;
+      _canAutocomplete = val2;
       return combobox;
     };
-    combobox.caseSensitive = function(val) {
+    combobox.caseSensitive = function(val2) {
       if (!arguments.length)
         return _caseSensitive;
-      _caseSensitive = val;
+      _caseSensitive = val2;
       return combobox;
     };
-    combobox.data = function(val) {
+    combobox.data = function(val2) {
       if (!arguments.length)
         return _data;
-      _data = val;
+      _data = val2;
       return combobox;
     };
-    combobox.fetcher = function(val) {
+    combobox.fetcher = function(val2) {
       if (!arguments.length)
         return _fetcher;
-      _fetcher = val;
+      _fetcher = val2;
       return combobox;
     };
-    combobox.minItems = function(val) {
+    combobox.minItems = function(val2) {
       if (!arguments.length)
         return _minItems;
-      _minItems = val;
+      _minItems = val2;
       return combobox;
     };
-    combobox.itemsMouseEnter = function(val) {
+    combobox.itemsMouseEnter = function(val2) {
       if (!arguments.length)
         return _mouseEnterHandler;
-      _mouseEnterHandler = val;
+      _mouseEnterHandler = val2;
       return combobox;
     };
-    combobox.itemsMouseLeave = function(val) {
+    combobox.itemsMouseLeave = function(val2) {
       if (!arguments.length)
         return _mouseLeaveHandler;
-      _mouseLeaveHandler = val;
+      _mouseLeaveHandler = val2;
       return combobox;
     };
     return utilRebind(combobox, dispatch14, "on");
@@ -64704,28 +69648,28 @@
         dispatch14.call("toggled", this, _expanded);
       }
     };
-    disclosure.label = function(val) {
+    disclosure.label = function(val2) {
       if (!arguments.length)
         return _label;
-      _label = utilFunctor(val);
+      _label = utilFunctor(val2);
       return disclosure;
     };
-    disclosure.expanded = function(val) {
+    disclosure.expanded = function(val2) {
       if (!arguments.length)
         return _expanded;
-      _expanded = val;
+      _expanded = val2;
       return disclosure;
     };
-    disclosure.updatePreference = function(val) {
+    disclosure.updatePreference = function(val2) {
       if (!arguments.length)
         return _updatePreference;
-      _updatePreference = val;
+      _updatePreference = val2;
       return disclosure;
     };
-    disclosure.content = function(val) {
+    disclosure.content = function(val2) {
       if (!arguments.length)
         return _content;
-      _content = val;
+      _content = val2;
       return disclosure;
     };
     return utilRebind(disclosure, dispatch14, "on");
@@ -64745,46 +69689,46 @@
     var section = {
       id: id2
     };
-    section.classes = function(val) {
+    section.classes = function(val2) {
       if (!arguments.length)
         return _classes;
-      _classes = utilFunctor(val);
+      _classes = utilFunctor(val2);
       return section;
     };
-    section.label = function(val) {
+    section.label = function(val2) {
       if (!arguments.length)
         return _label;
-      _label = utilFunctor(val);
+      _label = utilFunctor(val2);
       return section;
     };
-    section.expandedByDefault = function(val) {
+    section.expandedByDefault = function(val2) {
       if (!arguments.length)
         return _expandedByDefault;
-      _expandedByDefault = utilFunctor(val);
+      _expandedByDefault = utilFunctor(val2);
       return section;
     };
-    section.shouldDisplay = function(val) {
+    section.shouldDisplay = function(val2) {
       if (!arguments.length)
         return _shouldDisplay;
-      _shouldDisplay = utilFunctor(val);
+      _shouldDisplay = utilFunctor(val2);
       return section;
     };
-    section.content = function(val) {
+    section.content = function(val2) {
       if (!arguments.length)
         return _content;
-      _content = val;
+      _content = val2;
       return section;
     };
-    section.disclosureContent = function(val) {
+    section.disclosureContent = function(val2) {
       if (!arguments.length)
         return _disclosureContent;
-      _disclosureContent = val;
+      _disclosureContent = val2;
       return section;
     };
-    section.disclosureExpanded = function(val) {
+    section.disclosureExpanded = function(val2) {
       if (!arguments.length)
         return _disclosureExpanded;
-      _disclosureExpanded = val;
+      _disclosureExpanded = val2;
       return section;
     };
     section.render = function(selection2) {
@@ -64925,10 +69869,10 @@
         hide();
       }
     };
-    tagReference.showing = function(val) {
+    tagReference.showing = function(val2) {
       if (!arguments.length)
         return _showing;
-      _showing = val;
+      _showing = val2;
       return tagReference;
     };
     return tagReference;
@@ -65188,22 +70132,22 @@
         });
       }
     };
-    check.entityIDs = function(val) {
+    check.entityIDs = function(val2) {
       if (!arguments.length)
         return _entityIDs;
-      _entityIDs = val;
+      _entityIDs = val2;
       return check;
     };
     check.tags = function(tags) {
       _tags = tags;
-      function isChecked(val) {
-        return val !== "no" && val !== "" && val !== void 0 && val !== null;
+      function isChecked(val2) {
+        return val2 !== "no" && val2 !== "" && val2 !== void 0 && val2 !== null;
       }
-      function textFor(val) {
-        if (val === "")
-          val = void 0;
-        var index = values.indexOf(val);
-        return index !== -1 ? texts[index] : '"' + val + '"';
+      function textFor(val2) {
+        if (val2 === "")
+          val2 = void 0;
+        var index = values.indexOf(val2);
+        return index !== -1 ? texts[index] : '"' + val2 + '"';
       }
       checkImpliedYes();
       var isMixed = Array.isArray(tags[field.key]);
@@ -65238,8 +70182,8 @@
       _wrap = _wrap.enter().append("span").merge(_wrap).classed("length-indicator-wrap", true);
       selection2.call(_tooltip);
     };
-    lengthIndicator.update = function(val) {
-      const strLen = utilUnicodeCharsCount(utilCleanOsmString(val, Number.POSITIVE_INFINITY));
+    lengthIndicator.update = function(val2) {
+      const strLen = utilUnicodeCharsCount(utilCleanOsmString(val2, Number.POSITIVE_INFINITY));
       let indicator = _wrap.selectAll("span.length-indicator").data([strLen]);
       indicator.enter().append("span").merge(indicator).classed("length-indicator", true).classed("limit-reached", (d2) => d2 > maxChars).style("border-right-width", (d2) => "".concat(Math.abs(maxChars - d2) * 2, "px")).style("margin-right", (d2) => d2 > maxChars ? "".concat((maxChars - d2) * 2, "px") : 0).style("opacity", (d2) => d2 > maxChars * 0.8 ? Math.min(1, (d2 / maxChars - 0.8) / (1 - 0.8)) : 0).style("pointer-events", (d2) => d2 > maxChars * 0.8 ? null : "none");
       if (_silent)
@@ -65250,10 +70194,10 @@
         _tooltip.hide();
       }
     };
-    lengthIndicator.silent = function(val) {
+    lengthIndicator.silent = function(val2) {
       if (!arguments.length)
         return _silent;
-      _silent = val;
+      _silent = val2;
       return lengthIndicator;
     };
     return lengthIndicator;
@@ -65505,15 +70449,15 @@
     }
     function change() {
       var t2 = {};
-      var val;
+      var val2;
       if (_isMulti || _isSemi) {
         var vals;
         if (_isMulti) {
           vals = [tagValue(utilGetSetValue(_input))];
         } else if (_isSemi) {
-          val = tagValue(utilGetSetValue(_input)) || "";
-          val = val.replace(/,/g, ";");
-          vals = val.split(";");
+          val2 = tagValue(utilGetSetValue(_input)) || "";
+          val2 = val2.replace(/,/g, ";");
+          vals = val2.split(";");
         }
         vals = vals.filter(Boolean);
         if (!vals.length)
@@ -65546,8 +70490,8 @@
         var rawValue = utilGetSetValue(_input);
         if (!rawValue && Array.isArray(_tags[field.key]))
           return;
-        val = context.cleanTagValue(tagValue(rawValue));
-        t2[field.key] = val || void 0;
+        val2 = context.cleanTagValue(tagValue(rawValue));
+        t2[field.key] = val2 || void 0;
       }
       dispatch14.call("change", this, t2);
     }
@@ -65643,12 +70587,12 @@
         _countryCode = countryCode && countryCode.toLowerCase();
       }
       _input.on("change", change).on("blur", change).on("input", function() {
-        let val = utilGetSetValue(_input);
-        updateIcon(val);
+        let val2 = utilGetSetValue(_input);
+        updateIcon(val2);
         if (_isSemi && _tags[field.key]) {
-          val += ";" + _tags[field.key];
+          val2 += ";" + _tags[field.key];
         }
-        _lengthIndicator.update(val);
+        _lengthIndicator.update(val2);
       });
       _input.on("keydown.field", function(d3_event) {
         switch (d3_event.keyCode) {
@@ -65817,8 +70761,8 @@
         chips.select("a.remove").attr("href", "#").on("click", removeMultikey).attr("class", "remove").text("\xD7");
         updateIcon("");
       } else {
-        var mixedValues = isMixed && tags[field.key].map(function(val) {
-          return displayValue(val);
+        var mixedValues = isMixed && tags[field.key].map(function(val2) {
+          return displayValue(val2);
         }).filter(Boolean);
         utilGetSetValue(_input, !isMixed ? displayValue(tags[field.key]) : "").data([tags[field.key]]).classed("raw-value", isRawValue).classed("known-value", isKnownValue).attr("readonly", isReadOnly ? "readonly" : void 0).attr("title", isMixed ? mixedValues.join("\n") : void 0).attr("placeholder", isMixed ? _t("inspector.multiple_values") : _staticPlaceholder || "").classed("mixed", isMixed).on("keydown.deleteCapture", function(d3_event) {
           if (isReadOnly && isKnownValue(tags[field.key]) && (d3_event.keyCode === utilKeybinding.keyCodes["\u232B"] || d3_event.keyCode === utilKeybinding.keyCodes["\u2326"])) {
@@ -65931,10 +70875,10 @@
     combo.focus = function() {
       _input.node().focus();
     };
-    combo.entityIDs = function(val) {
+    combo.entityIDs = function(val2) {
       if (!arguments.length)
         return _entityIDs;
-      _entityIDs = val;
+      _entityIDs = val2;
       return combo;
     };
     function combinedEntityExtent() {
@@ -66190,14 +71134,14 @@
     function change(onInput) {
       return function() {
         var t2 = {};
-        var val = utilGetSetValue(input);
+        var val2 = utilGetSetValue(input);
         if (!onInput)
-          val = context.cleanTagValue(val);
-        if (!val && getVals(_tags).size > 1)
+          val2 = context.cleanTagValue(val2);
+        if (!val2 && getVals(_tags).size > 1)
           return;
-        var displayVal = val;
-        if (field.type === "number" && val) {
-          var numbers2 = val.split(";");
+        var displayVal = val2;
+        if (field.type === "number" && val2) {
+          var numbers2 = val2.split(";");
           numbers2 = numbers2.map(function(v2) {
             if (likelyRawNumberFormat.test(v2)) {
               return v2;
@@ -66206,19 +71150,19 @@
             const fractionDigits = countDecimalPlaces(v2);
             return isFinite(num) ? clamped(num).toFixed(fractionDigits) : v2;
           });
-          val = numbers2.join(";");
+          val2 = numbers2.join(";");
         }
         if (!onInput)
           utilGetSetValue(input, displayVal);
-        t2[field.key] = val || void 0;
+        t2[field.key] = val2 || void 0;
         if (field.keys) {
           dispatch14.call("change", this, (tags) => {
             if (field.keys.some((key) => tags[key])) {
               field.keys.filter((key) => tags[key]).forEach((key) => {
-                tags[key] = val || void 0;
+                tags[key] = val2 || void 0;
               });
             } else {
-              tags[field.key] = val || void 0;
+              tags[field.key] = val2 || void 0;
             }
             return tags;
           }, onInput);
@@ -66227,10 +71171,10 @@
         }
       };
     }
-    i3.entityIDs = function(val) {
+    i3.entityIDs = function(val2) {
       if (!arguments.length)
         return _entityIDs;
-      _entityIDs = val;
+      _entityIDs = val2;
       return i3;
     };
     i3.tags = function(tags) {
@@ -66238,10 +71182,10 @@
       _tags = tags;
       const vals = getVals(tags);
       const isMixed = vals.size > 1;
-      var val = vals.size === 1 ? (_a2 = [...vals][0]) != null ? _a2 : "" : "";
+      var val2 = vals.size === 1 ? (_a2 = [...vals][0]) != null ? _a2 : "" : "";
       var shouldUpdate;
-      if (field.type === "number" && val) {
-        var numbers2 = val.split(";");
+      if (field.type === "number" && val2) {
+        var numbers2 = val2.split(";");
         var oriNumbers = utilGetSetValue(input).split(";");
         if (numbers2.length !== oriNumbers.length)
           shouldUpdate = true;
@@ -66253,7 +71197,7 @@
           const fractionDigits = v2.includes(".") ? v2.split(".")[1].length : 0;
           return formatFloat(num, fractionDigits);
         });
-        val = numbers2.join(";");
+        val2 = numbers2.join(";");
         shouldUpdate = (inputValue, setValue) => {
           const inputNums = inputValue.split(";").map(
             (setVal) => likelyRawNumberFormat.test(setVal) ? parseFloat(setVal) : parseLocaleFloat(setVal)
@@ -66262,14 +71206,14 @@
           return !isEqual_default(inputNums, setNums);
         };
       }
-      utilGetSetValue(input, val, shouldUpdate).attr("title", isMixed ? [...vals].join("\n") : void 0).attr("placeholder", isMixed ? _t("inspector.multiple_values") : field.placeholder() || _t("inspector.unknown")).classed("mixed", isMixed);
+      utilGetSetValue(input, val2, shouldUpdate).attr("title", isMixed ? [...vals].join("\n") : void 0).attr("placeholder", isMixed ? _t("inspector.multiple_values") : field.placeholder() || _t("inspector.unknown")).classed("mixed", isMixed);
       if (field.type === "number") {
         const buttons = wrap2.selectAll(".increment, .decrement");
         if (isMixed) {
           buttons.attr("disabled", "disabled").classed("disabled", true);
         } else {
           var raw_vals = tags[field.key] || "0";
-          const canIncDec = raw_vals.split(";").some((val2) => isFinite(Number(val2)) || isDirectionField && cardinal[val2.trim().toLowerCase()]);
+          const canIncDec = raw_vals.split(";").some((val3) => isFinite(Number(val3)) || isDirectionField && cardinal[val3.trim().toLowerCase()]);
           buttons.attr("disabled", canIncDec ? null : "disabled").classed("disabled", !canIncDec);
         }
       }
@@ -66548,8 +71492,8 @@
               return placeholdersByKey[tags[key]][d2];
             }
           } else {
-            var impliedAccesses = tags[key].filter(Boolean).map(function(val) {
-              return placeholdersByKey[val] && placeholdersByKey[val][d2];
+            var impliedAccesses = tags[key].filter(Boolean).map(function(val2) {
+              return placeholdersByKey[val2] && placeholdersByKey[val2][d2];
             }).filter(Boolean);
             if (impliedAccesses.length === tags[key].length && new Set(impliedAccesses).size === 1) {
               return impliedAccesses[0];
@@ -66839,24 +71783,24 @@
     }
     function updateTags(tags) {
       utilGetSetValue(_wrap.selectAll("input"), (subfield) => {
-        var val;
+        var val2;
         if (subfield.isAutoStreetPlace) {
           const streetKey = "".concat(field.key, ":street");
           const placeKey = "".concat(field.key, ":place");
           if (tags[streetKey] !== void 0 || tags[placeKey] === void 0) {
-            val = tags[streetKey];
+            val2 = tags[streetKey];
             subfield.id = "street";
           } else {
-            val = tags[placeKey];
+            val2 = tags[placeKey];
             subfield.id = "place";
           }
         } else {
-          val = tags["".concat(field.key, ":").concat(subfield.id)];
+          val2 = tags["".concat(field.key, ":").concat(subfield.id)];
         }
-        return typeof val === "string" ? val : "";
+        return typeof val2 === "string" ? val2 : "";
       }).attr("title", function(subfield) {
-        var val = tags[field.key + ":" + subfield.id];
-        return val && Array.isArray(val) ? val.filter(Boolean).join("\n") : void 0;
+        var val2 = tags[field.key + ":" + subfield.id];
+        return val2 && Array.isArray(val2) ? val2.filter(Boolean).join("\n") : void 0;
       }).classed("mixed", function(subfield) {
         return Array.isArray(tags[field.key + ":" + subfield.id]);
       }).call(updatePlaceholder);
@@ -66864,10 +71808,10 @@
     function combinedEntityExtent() {
       return _entityIDs && _entityIDs.length && utilTotalExtent(_entityIDs, context.graph());
     }
-    address.entityIDs = function(val) {
+    address.entityIDs = function(val2) {
       if (!arguments.length)
         return _entityIDs;
-      _entityIDs = val;
+      _entityIDs = val2;
       return address;
     };
     address.tags = function(tags) {
@@ -67006,8 +71950,8 @@
         return d4.direction === "backward" ? "visible" : "hidden";
       });
     }
-    lanes.entityIDs = function(val) {
-      _entityIDs = val;
+    lanes.entityIDs = function(val2) {
+      _entityIDs = val2;
     };
     lanes.tags = function() {
     };
@@ -67163,13 +72107,13 @@
             d3_event.preventDefault();
             return;
           }
-          var val = utilGetSetValue(select_default2(this));
+          var val2 = utilGetSetValue(select_default2(this));
           if (!onInput)
-            val = context.cleanTagValue(val);
-          if (!val && Array.isArray(_tags[field.key]))
+            val2 = context.cleanTagValue(val2);
+          if (!val2 && Array.isArray(_tags[field.key]))
             return;
           var t2 = {};
-          t2[field.key] = val || void 0;
+          t2[field.key] = val2 || void 0;
           dispatch14.call("change", this, t2, onInput);
         };
       }
@@ -67308,10 +72252,10 @@
     localized.focus = function() {
       input.node().focus();
     };
-    localized.entityIDs = function(val) {
+    localized.entityIDs = function(val2) {
       if (!arguments.length)
         return _entityIDs;
-      _entityIDs = val;
+      _entityIDs = val2;
       _multilingual = [];
       loadCountryCode();
       return localized;
@@ -67446,8 +72390,8 @@
     roadheight.focus = function() {
       primaryInput.node().focus();
     };
-    roadheight.entityIDs = function(val) {
-      _entityIDs = val;
+    roadheight.entityIDs = function(val2) {
+      _entityIDs = val2;
     };
     function combinedEntityExtent() {
       return _entityIDs && _entityIDs.length && utilTotalExtent(_entityIDs, context.graph());
@@ -67545,8 +72489,8 @@
     roadspeed.focus = function() {
       input.node().focus();
     };
-    roadspeed.entityIDs = function(val) {
-      _entityIDs = val;
+    roadspeed.entityIDs = function(val2) {
+      _entityIDs = val2;
     };
     function combinedEntityExtent() {
       return _entityIDs && _entityIDs.length && utilTotalExtent(_entityIDs, context.graph());
@@ -67644,19 +72588,19 @@
       var key = selectedKey();
       if (!key)
         return;
-      var val = t2[key];
-      if (val !== "no") {
-        _oldType[key] = val;
+      var val2 = t2[key];
+      if (val2 !== "no") {
+        _oldType[key] = val2;
       }
       if (field.type === "structureRadio") {
-        if (val === "no" || key !== "bridge" && key !== "tunnel" || key === "tunnel" && val === "building_passage") {
+        if (val2 === "no" || key !== "bridge" && key !== "tunnel" || key === "tunnel" && val2 === "building_passage") {
           t2.layer = void 0;
         }
         if (t2.layer === void 0) {
-          if (key === "bridge" && val !== "no") {
+          if (key === "bridge" && val2 !== "no") {
             t2.layer = "1";
           }
-          if (key === "tunnel" && val !== "no" && val !== "building_passage") {
+          if (key === "tunnel" && val2 !== "no" && val2 !== "building_passage") {
             t2.layer = "-1";
           }
         }
@@ -67683,8 +72627,8 @@
           if (active)
             t2[field.key] = d2;
         } else {
-          var val = _oldType[activeKey] || "yes";
-          t2[d2] = active ? val : void 0;
+          var val2 = _oldType[activeKey] || "yes";
+          t2[d2] = active ? val2 : void 0;
         }
       });
       if (field.type === "structureRadio") {
@@ -67742,10 +72686,10 @@
     radio.focus = function() {
       radios.node().focus();
     };
-    radio.entityIDs = function(val) {
+    radio.entityIDs = function(val2) {
       if (!arguments.length)
         return _entityIDs;
-      _entityIDs = val;
+      _entityIDs = val2;
       _oldType = {};
       return radio;
     };
@@ -67805,8 +72749,8 @@
       distControlEnter.append("input").attr("class", "restriction-distance-input").attr("type", "range").attr("min", "20").attr("max", "50").attr("step", "5");
       distControlEnter.append("span").attr("class", "restriction-distance-text");
       selection2.selectAll(".restriction-distance-input").property("value", _maxDistance).on("input", function() {
-        var val = select_default2(this).property("value");
-        _maxDistance = +val;
+        var val2 = select_default2(this).property("value");
+        _maxDistance = +val2;
         _intersection = null;
         _container.selectAll(".layer-osm .layer-turns *").remove();
         corePreferences("turn-restriction-distance", _maxDistance);
@@ -67820,8 +72764,8 @@
       viaControlEnter.append("input").attr("class", "restriction-via-way-input").attr("type", "range").attr("min", "0").attr("max", "2").attr("step", "1");
       viaControlEnter.append("span").attr("class", "restriction-via-way-text");
       selection2.selectAll(".restriction-via-way-input").property("value", _maxViaWay).on("input", function() {
-        var val = select_default2(this).property("value");
-        _maxViaWay = +val;
+        var val2 = select_default2(this).property("value");
+        _maxViaWay = +val2;
         _container.selectAll(".layer-osm .layer-turns *").remove();
         corePreferences("turn-restriction-via-way0", _maxViaWay);
         _parent.call(restrictions);
@@ -68111,11 +73055,11 @@
       var type2 = matched && matched.name() || utilDisplayType(entity.id);
       return name || type2;
     }
-    restrictions.entityIDs = function(val) {
+    restrictions.entityIDs = function(val2) {
       _intersection = null;
       _fromWayID = null;
       _oldTurns = null;
-      _vertexID = val[0];
+      _vertexID = val2[0];
     };
     restrictions.tags = function() {
     };
@@ -68145,13 +73089,13 @@
       wrap2.call(_lengthIndicator);
       function change(onInput) {
         return function() {
-          var val = utilGetSetValue(input);
+          var val2 = utilGetSetValue(input);
           if (!onInput)
-            val = context.cleanTagValue(val);
-          if (!val && Array.isArray(_tags[field.key]))
+            val2 = context.cleanTagValue(val2);
+          if (!val2 && Array.isArray(_tags[field.key]))
             return;
           var t2 = {};
-          t2[field.key] = val || void 0;
+          t2[field.key] = val2 || void 0;
           dispatch14.call("change", this, t2, onInput);
         };
       }
@@ -68404,10 +73348,10 @@
       }
       return propObj[langKeys[0]].value;
     }
-    wiki.entityIDs = function(val) {
+    wiki.entityIDs = function(val2) {
       if (!arguments.length)
         return _entityIDs;
-      _entityIDs = val;
+      _entityIDs = val2;
       return wiki;
     };
     wiki.focus = function() {
@@ -68606,10 +73550,10 @@
       const underscoredAnchor = anchor.replace(/ /g, "_");
       return "#" + encodeURIComponent(underscoredAnchor);
     };
-    wiki.entityIDs = (val) => {
+    wiki.entityIDs = (val2) => {
       if (!arguments.length)
         return _entityIDs;
-      _entityIDs = val;
+      _entityIDs = val2;
       return wiki;
     };
     wiki.focus = () => {
@@ -68805,16 +73749,16 @@
       icon2.enter().append("svg").attr("class", "icon").append("use").attr("xlink:href", "#fas-lock");
       container.call(_locked ? _lockedTip : _lockedTip.destroy);
     };
-    field.state = function(val) {
+    field.state = function(val2) {
       if (!arguments.length)
         return _state;
-      _state = val;
+      _state = val2;
       return field;
     };
-    field.tags = function(val) {
+    field.tags = function(val2) {
       if (!arguments.length)
         return _tags;
-      _tags = val;
+      _tags = val2;
       if (tagsContainFieldKey() && !_show) {
         _show = true;
         if (!field.impl) {
@@ -68823,10 +73767,10 @@
       }
       return field;
     };
-    field.locked = function(val) {
+    field.locked = function(val2) {
       if (!arguments.length)
         return _locked;
-      _locked = val;
+      _locked = val2;
       return field;
     };
     field.show = function() {
@@ -68967,22 +73911,22 @@
         _lastPlaceholder = placeholder;
       }
     }
-    formFields.fieldsArr = function(val) {
+    formFields.fieldsArr = function(val2) {
       if (!arguments.length)
         return _fieldsArr;
-      _fieldsArr = val || [];
+      _fieldsArr = val2 || [];
       return formFields;
     };
-    formFields.state = function(val) {
+    formFields.state = function(val2) {
       if (!arguments.length)
         return _state;
-      _state = val;
+      _state = val2;
       return formFields;
     };
-    formFields.klass = function(val) {
+    formFields.klass = function(val2) {
       if (!arguments.length)
         return _klass;
-      _klass = val;
+      _klass = val2;
       return formFields;
     };
     return formFields;
@@ -69415,6 +74359,7 @@
       }
       var detected = utilDetect();
       var tags = {
+        ...context.defaultChangesetTags(),
         comment: corePreferences("comment") || "",
         created_by: context.cleanTagValue("iD " + context.version),
         host: context.cleanTagValue(detected.host),
@@ -70043,11 +74988,11 @@
         return null;
       });
     }
-    section.entityIDs = function(val) {
+    section.entityIDs = function(val2) {
       if (!arguments.length)
         return _entityIDs;
-      if (!_entityIDs || !val || !utilArrayIdentical(_entityIDs, val)) {
-        _entityIDs = val;
+      if (!_entityIDs || !val2 || !utilArrayIdentical(_entityIDs, val2)) {
+        _entityIDs = val2;
         _activeIssueID = null;
         reloadIssues();
       }
@@ -70268,16 +75213,16 @@
       renderSvgIcon(container, picon, geom, isFramed, isCategory, tagClasses);
       renderImageIcon(container, imageURL);
     }
-    presetIcon.preset = function(val) {
+    presetIcon.preset = function(val2) {
       if (!arguments.length)
         return _preset;
-      _preset = utilFunctor(val);
+      _preset = utilFunctor(val2);
       return presetIcon;
     };
-    presetIcon.geometry = function(val) {
+    presetIcon.geometry = function(val2) {
       if (!arguments.length)
         return _geometry;
-      _geometry = utilFunctor(val);
+      _geometry = utilFunctor(val2);
       return presetIcon;
     };
     return presetIcon;
@@ -70327,17 +75272,17 @@
         d2(select_default2(this));
       });
     }
-    section.entityIDs = function(val) {
+    section.entityIDs = function(val2) {
       if (!arguments.length)
         return _entityIDs;
-      _entityIDs = val;
+      _entityIDs = val2;
       return section;
     };
-    section.presets = function(val) {
+    section.presets = function(val2) {
       if (!arguments.length)
         return _presets;
-      if (!utilArrayIdentical(val, _presets)) {
-        _presets = val;
+      if (!utilArrayIdentical(val2, _presets)) {
+        _presets = val2;
         if (_presets.length === 1) {
           _tagReference = uiTagReference(_presets[0].reference(), context).showing(false);
         }
@@ -70443,32 +75388,32 @@
         formFields.fieldsArr(_fieldsArr).state(_state).klass("grouped-items-area")
       );
     }
-    section.presets = function(val) {
+    section.presets = function(val2) {
       if (!arguments.length)
         return _presets;
-      if (!_presets || !val || !utilArrayIdentical(_presets, val)) {
-        _presets = val;
+      if (!_presets || !val2 || !utilArrayIdentical(_presets, val2)) {
+        _presets = val2;
         _fieldsArr = null;
       }
       return section;
     };
-    section.state = function(val) {
+    section.state = function(val2) {
       if (!arguments.length)
         return _state;
-      _state = val;
+      _state = val2;
       return section;
     };
-    section.tags = function(val) {
+    section.tags = function(val2) {
       if (!arguments.length)
         return _tags;
-      _tags = val;
+      _tags = val2;
       return section;
     };
-    section.entityIDs = function(val) {
+    section.entityIDs = function(val2) {
       if (!arguments.length)
         return _entityIDs;
-      if (!val || !_entityIDs || !utilArrayIdentical(_entityIDs, val)) {
-        _entityIDs = val;
+      if (!val2 || !_entityIDs || !utilArrayIdentical(_entityIDs, val2)) {
+        _entityIDs = val2;
         _fieldsArr = null;
       }
       return section;
@@ -70703,10 +75648,10 @@
         row.selectAll("input.member-role").call(uiCombobox.off, context);
       }
     }
-    section.entityIDs = function(val) {
+    section.entityIDs = function(val2) {
       if (!arguments.length)
         return _entityIDs;
-      _entityIDs = val;
+      _entityIDs = val2;
       return section;
     };
     return section;
@@ -70910,16 +75855,16 @@
       function baseDisplayValue(entity) {
         var matched = _mainPresetIndex.match(entity, graph);
         var presetName = matched && matched.name() || _t("inspector.relation");
-        var entityName = utilDisplayName(entity) || "";
-        return presetName + " " + entityName;
+        var entityName2 = utilDisplayName(entity) || "";
+        return presetName + " " + entityName2;
       }
       function baseDisplayLabel(entity) {
         var matched = _mainPresetIndex.match(entity, graph);
         var presetName = matched && matched.name() || _t("inspector.relation");
-        var entityName = utilDisplayName(entity) || "";
+        var entityName2 = utilDisplayName(entity) || "";
         return (selection2) => {
           selection2.append("b").text(presetName + " ");
-          selection2.append("span").classed("has-colour", entity.tags.colour && isColourValid(entity.tags.colour)).style("border-color", entity.tags.colour).text(entityName);
+          selection2.append("span").classed("has-colour", entity.tags.colour && isColourValid(entity.tags.colour)).style("border-color", entity.tags.colour).text(entityName2);
         };
       }
       var explicitRelation = q2 && context.hasEntity(q2.toLowerCase());
@@ -71089,10 +76034,10 @@
         row.selectAll("input.member-role").call(uiCombobox.off, context);
       }
     }
-    section.entityIDs = function(val) {
+    section.entityIDs = function(val2) {
       if (!arguments.length)
         return _entityIDs;
-      _entityIDs = val;
+      _entityIDs = val2;
       _showBlank = false;
       return section;
     };
@@ -71112,10 +76057,10 @@
         section.reRender();
       }
     });
-    section.entityIDs = function(val) {
+    section.entityIDs = function(val2) {
       if (!arguments.length)
         return _selectedIDs;
-      _selectedIDs = val;
+      _selectedIDs = val2;
       return section;
     };
     function selectEntity(d3_event, entity) {
@@ -71332,33 +76277,33 @@
       }
       context.validator().validate();
     }
-    entityEditor.modified = function(val) {
+    entityEditor.modified = function(val2) {
       if (!arguments.length)
         return _modified;
-      _modified = val;
+      _modified = val2;
       return entityEditor;
     };
-    entityEditor.state = function(val) {
+    entityEditor.state = function(val2) {
       if (!arguments.length)
         return _state;
-      _state = val;
+      _state = val2;
       return entityEditor;
     };
-    entityEditor.entityIDs = function(val) {
+    entityEditor.entityIDs = function(val2) {
       if (!arguments.length)
         return _entityIDs;
       _base = context.graph();
       _coalesceChanges = false;
-      if (val && _entityIDs && utilArrayIdentical(_entityIDs, val))
+      if (val2 && _entityIDs && utilArrayIdentical(_entityIDs, val2))
         return entityEditor;
-      _entityIDs = val;
+      _entityIDs = val2;
       loadActivePresets(true);
       return entityEditor.modified(false);
     };
-    entityEditor.newFeature = function(val) {
+    entityEditor.newFeature = function(val2) {
       if (!arguments.length)
         return _newFeature;
-      _newFeature = val;
+      _newFeature = val2;
       return entityEditor;
     };
     function loadActivePresets(isForNewSelection) {
@@ -71385,11 +76330,11 @@
       }
       entityEditor.presets(matches);
     }
-    entityEditor.presets = function(val) {
+    entityEditor.presets = function(val2) {
       if (!arguments.length)
         return _activePresets;
-      if (!utilArrayIdentical(val, _activePresets)) {
-        _activePresets = val;
+      if (!utilArrayIdentical(val2, _activePresets)) {
+        _activePresets = val2;
       }
       return entityEditor;
     };
@@ -71661,10 +76606,10 @@
         return null;
       return d2.toLocaleDateString(_mainLocalizer.localeCode(), options2);
     }
-    noteComments.note = function(val) {
+    noteComments.note = function(val2) {
       if (!arguments.length)
         return _note;
-      _note = val;
+      _note = val2;
       return noteComments;
     };
     return noteComments;
@@ -71706,10 +76651,10 @@
         return _t.html("note.note") + " " + d2.id + " " + (d2.status === "closed" ? _t.html("note.closed") : "");
       });
     }
-    noteHeader.note = function(val) {
+    noteHeader.note = function(val2) {
       if (!arguments.length)
         return _note;
-      _note = val;
+      _note = val2;
       return noteHeader;
     };
     return noteHeader;
@@ -71730,10 +76675,10 @@
       }).call(svgIcon("#iD-icon-out-link", "inline"));
       linkEnter.append("span").call(_t.append("note.report"));
     }
-    noteReport.note = function(val) {
+    noteReport.note = function(val2) {
       if (!arguments.length)
         return _note;
-      _note = val;
+      _note = val2;
       return noteReport;
     };
     return noteReport;
@@ -71866,8 +76811,8 @@
       }
       function changeInput() {
         var input = select_default2(this);
-        var val = input.property("value").trim() || void 0;
-        _note = _note.update({ newComment: val });
+        var val2 = input.property("value").trim() || void 0;
+        _note = _note.update({ newComment: val2 });
         var osm = services.osm;
         if (osm) {
           osm.replaceNote(_note);
@@ -71972,16 +76917,16 @@
         });
       }
     }
-    noteEditor.note = function(val) {
+    noteEditor.note = function(val2) {
       if (!arguments.length)
         return _note;
-      _note = val;
+      _note = val2;
       return noteEditor;
     };
-    noteEditor.newNote = function(val) {
+    noteEditor.newNote = function(val2) {
       if (!arguments.length)
         return _newNote;
-      _newNote = val;
+      _newNote = val2;
       return noteEditor;
     };
     return utilRebind(noteEditor, dispatch14, "on");
@@ -72046,10 +76991,10 @@
         context.map().centerZoomEase(note.loc, 20);
       }
     };
-    mode.newFeature = function(val) {
+    mode.newFeature = function(val2) {
       if (!arguments.length)
         return _newFeature;
-      _newFeature = val;
+      _newFeature = val2;
       return mode;
     };
     mode.enter = function() {
@@ -72379,16 +77324,16 @@
         });
       }
     }
-    success.changeset = function(val) {
+    success.changeset = function(val2) {
       if (!arguments.length)
         return _changeset2;
-      _changeset2 = val;
+      _changeset2 = val2;
       return success;
     };
-    success.location = function(val) {
+    success.location = function(val2) {
       if (!arguments.length)
         return _location;
-      _location = val;
+      _location = val2;
       return success;
     };
     return utilRebind(success, dispatch14, "on");
@@ -72561,10 +77506,10 @@
         return null;
       return d2.toLocaleDateString(_mainLocalizer.localeCode(), options2);
     }
-    issueComments.issue = function(val) {
+    issueComments.issue = function(val2) {
       if (!arguments.length)
         return _qaItem;
-      _qaItem = val;
+      _qaItem = val2;
       return issueComments;
     };
     return issueComments;
@@ -72636,10 +77581,10 @@
       context.features().forceVisible(relatedEntities);
       context.map().pan([0, 0]);
     }
-    improveOsmDetails.issue = function(val) {
+    improveOsmDetails.issue = function(val2) {
       if (!arguments.length)
         return _qaItem;
-      _qaItem = val;
+      _qaItem = val2;
       return improveOsmDetails;
     };
     return improveOsmDetails;
@@ -72666,10 +77611,10 @@
       svgEnter.append("use").attr("class", "icon-annotation").attr("width", "12px").attr("height", "12px").attr("transform", "translate(4, 5.5)").attr("xlink:href", (d2) => d2.icon ? "#" + d2.icon : "");
       headerEnter.append("div").attr("class", "qa-header-label").html(issueTitle);
     }
-    improveOsmHeader.issue = function(val) {
+    improveOsmHeader.issue = function(val2) {
       if (!arguments.length)
         return _qaItem;
-      _qaItem = val;
+      _qaItem = val2;
       return improveOsmHeader;
     };
     return improveOsmHeader;
@@ -72705,11 +77650,11 @@
       saveSection = saveSectionEnter.merge(saveSection).call(qaSaveButtons);
       function changeInput() {
         const input = select_default2(this);
-        let val = input.property("value").trim();
-        if (val === "") {
-          val = void 0;
+        let val2 = input.property("value").trim();
+        if (val2 === "") {
+          val2 = void 0;
         }
-        _qaItem = _qaItem.update({ newComment: val });
+        _qaItem = _qaItem.update({ newComment: val2 });
         const qaService = services.improveOSM;
         if (qaService) {
           qaService.replaceItem(_qaItem);
@@ -72756,10 +77701,10 @@
         }
       });
     }
-    improveOsmEditor.error = function(val) {
+    improveOsmEditor.error = function(val2) {
       if (!arguments.length)
         return _qaItem;
-      _qaItem = val;
+      _qaItem = val2;
       return improveOsmEditor;
     };
     return utilRebind(improveOsmEditor, dispatch14, "on");
@@ -72834,10 +77779,10 @@
       context.features().forceVisible(relatedEntities);
       context.map().pan([0, 0]);
     }
-    keepRightDetails.issue = function(val) {
+    keepRightDetails.issue = function(val2) {
       if (!arguments.length)
         return _qaItem;
-      _qaItem = val;
+      _qaItem = val2;
       return keepRightDetails;
     };
     return keepRightDetails;
@@ -72868,10 +77813,10 @@
       iconEnter.append("div").attr("class", (d2) => "preset-icon-28 qaItem ".concat(d2.service, " itemId-").concat(d2.id, " itemType-").concat(d2.parentIssueType)).call(svgIcon("#iD-icon-bolt", "qaItem-fill"));
       headerEnter.append("div").attr("class", "qa-header-label").html(issueTitle);
     }
-    keepRightHeader.issue = function(val) {
+    keepRightHeader.issue = function(val2) {
       if (!arguments.length)
         return _qaItem;
-      _qaItem = val;
+      _qaItem = val2;
       return keepRightHeader;
     };
     return keepRightHeader;
@@ -72890,10 +77835,10 @@
       const linkEnter = link3.enter().append("a").attr("class", "view-on-keepRight").attr("target", "_blank").attr("rel", "noopener").attr("href", (d2) => d2).call(svgIcon("#iD-icon-out-link", "inline"));
       linkEnter.append("span").call(_t.append("inspector.view_on_keepRight"));
     }
-    viewOnKeepRight.what = function(val) {
+    viewOnKeepRight.what = function(val2) {
       if (!arguments.length)
         return _qaItem;
-      _qaItem = val;
+      _qaItem = val2;
       return viewOnKeepRight;
     };
     return viewOnKeepRight;
@@ -72930,11 +77875,11 @@
       saveSection = saveSectionEnter.merge(saveSection).call(qaSaveButtons);
       function changeInput() {
         const input = select_default2(this);
-        let val = input.property("value").trim();
-        if (val === _qaItem.comment) {
-          val = void 0;
+        let val2 = input.property("value").trim();
+        if (val2 === _qaItem.comment) {
+          val2 = void 0;
         }
-        _qaItem = _qaItem.update({ newComment: val });
+        _qaItem = _qaItem.update({ newComment: val2 });
         const qaService = services.keepRight;
         if (qaService) {
           qaService.replaceItem(_qaItem);
@@ -72981,10 +77926,10 @@
         }
       });
     }
-    keepRightEditor.error = function(val) {
+    keepRightEditor.error = function(val2) {
       if (!arguments.length)
         return _qaItem;
-      _qaItem = val;
+      _qaItem = val2;
       return keepRightEditor;
     };
     return utilRebind(keepRightEditor, dispatch14, "on");
@@ -73079,10 +78024,10 @@
         console.log(err);
       });
     }
-    osmoseDetails.issue = function(val) {
+    osmoseDetails.issue = function(val2) {
       if (!arguments.length)
         return _qaItem;
-      _qaItem = val;
+      _qaItem = val2;
       return osmoseDetails;
     };
     return osmoseDetails;
@@ -73110,10 +78055,10 @@
       svgEnter.append("use").attr("class", "icon-annotation").attr("width", "12px").attr("height", "12px").attr("transform", "translate(4, 5.5)").attr("xlink:href", (d2) => d2.icon ? "#" + d2.icon : "");
       headerEnter.append("div").attr("class", "qa-header-label").text(issueTitle);
     }
-    osmoseHeader.issue = function(val) {
+    osmoseHeader.issue = function(val2) {
       if (!arguments.length)
         return _qaItem;
-      _qaItem = val;
+      _qaItem = val2;
       return osmoseHeader;
     };
     return osmoseHeader;
@@ -73132,10 +78077,10 @@
       const linkEnter = link3.enter().append("a").attr("class", "view-on-osmose").attr("target", "_blank").attr("rel", "noopener").attr("href", (d2) => d2).call(svgIcon("#iD-icon-out-link", "inline"));
       linkEnter.append("span").call(_t.append("inspector.view_on_osmose"));
     }
-    viewOnOsmose.what = function(val) {
+    viewOnOsmose.what = function(val2) {
       if (!arguments.length)
         return _qaItem;
-      _qaItem = val;
+      _qaItem = val2;
       return viewOnOsmose;
     };
     return viewOnOsmose;
@@ -73195,10 +78140,10 @@
         }
       });
     }
-    osmoseEditor.error = function(val) {
+    osmoseEditor.error = function(val2) {
       if (!arguments.length)
         return _qaItem;
-      _qaItem = val;
+      _qaItem = val2;
       return osmoseEditor;
     };
     return utilRebind(osmoseEditor, dispatch14, "on");
@@ -73822,16 +78767,16 @@
         }
       });
     }
-    presetList.autofocus = function(val) {
+    presetList.autofocus = function(val2) {
       if (!arguments.length)
         return _autofocus;
-      _autofocus = val;
+      _autofocus = val2;
       return presetList;
     };
-    presetList.entityIDs = function(val) {
+    presetList.entityIDs = function(val2) {
       if (!arguments.length)
         return _entityIDs;
-      _entityIDs = val;
+      _entityIDs = val2;
       _currLoc = null;
       if (_entityIDs && _entityIDs.length) {
         const extent = _entityIDs.reduce(function(extent2, entityID) {
@@ -73846,10 +78791,10 @@
       }
       return presetList;
     };
-    presetList.presets = function(val) {
+    presetList.presets = function(val2) {
       if (!arguments.length)
         return _currentPresets;
-      _currentPresets = val;
+      _currentPresets = val2;
       return presetList;
     };
     function entityGeometries() {
@@ -73958,24 +78903,24 @@
         editorPane.call(entityEditor);
       }
     };
-    inspector.state = function(val) {
+    inspector.state = function(val2) {
       if (!arguments.length)
         return _state;
-      _state = val;
+      _state = val2;
       entityEditor.state(_state);
       context.container().selectAll(".field-help-body").remove();
       return inspector;
     };
-    inspector.entityIDs = function(val) {
+    inspector.entityIDs = function(val2) {
       if (!arguments.length)
         return _entityIDs;
-      _entityIDs = val;
+      _entityIDs = val2;
       return inspector;
     };
-    inspector.newFeature = function(val) {
+    inspector.newFeature = function(val2) {
       if (!arguments.length)
         return _newFeature;
-      _newFeature = val;
+      _newFeature = val2;
       return inspector;
     };
     return inspector;
@@ -74525,8 +79470,8 @@
         var rawVal = row.value;
         if (typeof rawVal !== "string")
           rawVal = "*";
-        var val = rawVal ? stringify3(rawVal) : "";
-        return stringify3(row.key) + "=" + val;
+        var val2 = rawVal ? stringify3(rawVal) : "";
+        return stringify3(row.key) + "=" + val2;
       }).join("\n");
       if (_state !== "hover" && str.length) {
         return str + "\n";
@@ -74723,19 +79668,19 @@
         _pendingChange = null;
       }, 10);
     }
-    section.state = function(val) {
+    section.state = function(val2) {
       if (!arguments.length)
         return _state;
-      if (_state !== val) {
+      if (_state !== val2) {
         _orderedKeys = [];
-        _state = val;
+        _state = val2;
       }
       return section;
     };
-    section.presets = function(val) {
+    section.presets = function(val2) {
       if (!arguments.length)
         return _presets;
-      _presets = val;
+      _presets = val2;
       if (_presets && _presets.length && _presets[0].isFallback()) {
         section.disclosureExpanded(true);
       } else if (!_didInteract) {
@@ -74743,25 +79688,25 @@
       }
       return section;
     };
-    section.tags = function(val) {
+    section.tags = function(val2) {
       if (!arguments.length)
         return _tags;
-      _tags = val;
+      _tags = val2;
       return section;
     };
-    section.entityIDs = function(val) {
+    section.entityIDs = function(val2) {
       if (!arguments.length)
         return _entityIDs;
-      if (!_entityIDs || !val || !utilArrayIdentical(_entityIDs, val)) {
-        _entityIDs = val;
+      if (!_entityIDs || !val2 || !utilArrayIdentical(_entityIDs, val2)) {
+        _entityIDs = val2;
         _orderedKeys = [];
       }
       return section;
     };
-    section.readOnlyTags = function(val) {
+    section.readOnlyTags = function(val2) {
       if (!arguments.length)
         return _readOnlyTags;
-      _readOnlyTags = val;
+      _readOnlyTags = val2;
       return section;
     };
     return utilRebind(section, dispatch14, "on");
@@ -74788,10 +79733,10 @@
         rawTagEditor.tags(_datum && _datum.properties || {}).state("hover").render
       ).selectAll("textarea.tag-text").attr("readonly", true).classed("readonly", true);
     }
-    dataEditor.datum = function(val) {
+    dataEditor.datum = function(val2) {
       if (!arguments.length)
         return _datum;
-      _datum = val;
+      _datum = val2;
       return this;
     };
     return dataEditor;
@@ -75288,10 +80233,10 @@
       }
     }
     function updateCount() {
-      var val = history.difference().summary().length;
-      if (val === _numChanges)
+      var val2 = history.difference().summary().length;
+      if (val2 === _numChanges)
         return;
-      _numChanges = val;
+      _numChanges = val2;
       if (tooltipBehavior) {
         tooltipBehavior.title(() => _t.append(_numChanges > 0 ? "save.help" : "save.no_changes")).keys([key]);
       }
@@ -75614,34 +80559,34 @@
     var pane = {
       id: id2
     };
-    pane.label = function(val) {
+    pane.label = function(val2) {
       if (!arguments.length)
         return _label;
-      _label = val;
+      _label = val2;
       return pane;
     };
-    pane.key = function(val) {
+    pane.key = function(val2) {
       if (!arguments.length)
         return _key;
-      _key = val;
+      _key = val2;
       return pane;
     };
-    pane.description = function(val) {
+    pane.description = function(val2) {
       if (!arguments.length)
         return _description;
-      _description = val;
+      _description = val2;
       return pane;
     };
-    pane.iconName = function(val) {
+    pane.iconName = function(val2) {
       if (!arguments.length)
         return _iconName;
-      _iconName = val;
+      _iconName = val2;
       return pane;
     };
-    pane.sections = function(val) {
+    pane.sections = function(val2) {
       if (!arguments.length)
         return _sections;
-      _sections = val;
+      _sections = val2;
       return pane;
     };
     pane.selection = function() {
@@ -75698,12 +80643,12 @@
     function clamp3(x2, min3, max3) {
       return Math.max(min3, Math.min(x2, max3));
     }
-    function updateValue(d2, val) {
-      val = clamp3(val, _minVal, _maxVal);
-      _options[d2] = val;
-      context.background()[d2](val);
+    function updateValue(d2, val2) {
+      val2 = clamp3(val2, _minVal, _maxVal);
+      _options[d2] = val2;
+      context.background()[d2](val2);
       if (d2 === "brightness") {
-        corePreferences("background-opacity", val);
+        corePreferences("background-opacity", val2);
       }
       section.reRender();
     }
@@ -75722,11 +80667,11 @@
       sildersControlEnter.append("input").attr("class", function(d2) {
         return "display-option-input display-option-input-" + d2;
       }).attr("type", "range").attr("min", _minVal).attr("max", _maxVal).attr("step", "0.05").on("input", function(d3_event, d2) {
-        var val = select_default2(this).property("value");
-        if (!val && d3_event && d3_event.target) {
-          val = d3_event.target.value;
+        var val2 = select_default2(this).property("value");
+        if (!val2 && d3_event && d3_event.target) {
+          val2 = d3_event.target.value;
         }
-        updateValue(d2, val);
+        updateValue(d2, val2);
       });
       sildersControlEnter.append("button").attr("title", function(d2) {
         return "".concat(_t("background.reset"), " ").concat(_t("background." + d2));
@@ -76545,8 +81490,8 @@
         return _t.html("issues.options." + d2.key + ".title");
       });
       var valuesEnter = optionsEnter.selectAll("label").data(function(d2) {
-        return d2.values.map(function(val) {
-          return { value: val, key: d2.key };
+        return d2.values.map(function(val2) {
+          return { value: val2, key: d2.key };
         });
       }).enter().append("label");
       valuesEnter.append("input").attr("type", "radio").attr("name", function(d2) {
@@ -76570,11 +81515,11 @@
         // 'all', 'visible'
       };
     }
-    function updateOptionValue(d3_event, d2, val) {
-      if (!val && d3_event && d3_event.target) {
-        val = d3_event.target.value;
+    function updateOptionValue(d3_event, d2, val2) {
+      if (!val2 && d3_event && d3_event.target) {
+        val2 = d3_event.target.value;
       }
-      corePreferences("validate-" + d2, val);
+      corePreferences("validate-" + d2, val2);
       context.validator().validate();
     }
     return section;
@@ -76852,14 +81797,78 @@
     return utilRebind(render, dispatch14, "on");
   }
 
+  // modules/operations/import_file.js
+  var import_osm_api = __toESM(require_dist());
+
+  // modules/util/dom.js
+  function uploadFile(options2) {
+    return new Promise((resolve) => {
+      const input = document.createElement("input");
+      Object.assign(input, { type: "file", ...options2 });
+      input.onchange = () => resolve(Array.from(input.files || []).filter(Boolean));
+      input.oncancel = () => resolve([]);
+      input.click();
+      input.remove();
+    });
+  }
+
+  // modules/operations/import_file.js
+  async function downloadFeatures(context, entityIds) {
+    for (const chunk of utilArrayChunk(entityIds, 10)) {
+      await Promise.all(chunk.map(context.loadEntity));
+    }
+  }
+  async function operationImportFile(context, allowConflicts, onLoadingStart) {
+    var _a2;
+    const files = await uploadFile({
+      accept: ".osc,.osmPatch.geo.json",
+      multiple: true
+    });
+    if (!files.length)
+      return;
+    onLoadingStart == null ? void 0 : onLoadingStart();
+    for (const file of files) {
+      if (file.name.endsWith(".osc")) {
+        const osmChange = (0, import_osm_api.parseOsmChangeXml)(await file.text());
+        context.defaultChangesetTags((_a2 = osmChange.changeset) == null ? void 0 : _a2.tags);
+        await downloadFeatures(
+          context,
+          [...osmChange.modify, ...osmChange.delete].map(
+            (feature3) => feature3.type[0] + feature3.id
+          )
+        );
+        const annotation = _t("operations.import_from_file.annotation.osmChange");
+        context.history().appendImageryUsed(".osmChange data file");
+        context.perform(
+          actionImportOsmChange(osmChange, allowConflicts),
+          annotation
+        );
+      } else if (file.name.endsWith(".osmPatch.geo.json")) {
+        const osmPatch = JSON.parse(await file.text());
+        context.defaultChangesetTags(osmPatch.changesetTags);
+        await downloadFeatures(
+          context,
+          osmPatch.features.filter((f2) => f2.properties.__action).map((f2) => (
+            /** @type {string} */
+            f2.id
+          ))
+        );
+        const annotation = _t("operations.import_from_file.annotation.osmPatch");
+        context.history().appendImageryUsed(".osmPatch data file");
+        context.perform(actionImportOsmPatch(osmPatch), annotation);
+      }
+    }
+  }
+
   // modules/ui/sections/data_layers.js
   function uiSectionDataLayers(context) {
+    const _loading = uiLoading(context).message(_t.html("operations.import_from_file.loading")).blocking(true);
     var settingsCustomData = uiSettingsCustomData(context).on("change", customChanged);
     var layers = context.layers();
     var section = uiSection("data-layers", context).label(() => _t.append("map_data.data_layers")).disclosureContent(renderDisclosureContent);
     function renderDisclosureContent(selection2) {
       var container = selection2.selectAll(".data-layer-container").data([0]);
-      container.enter().append("div").attr("class", "data-layer-container").merge(container).call(drawOsmItems).call(drawQAItems).call(drawCustomDataItems).call(drawVectorItems).call(drawPanelItems);
+      container.enter().append("div").attr("class", "data-layer-container").merge(container).call(drawOsmItems).call(drawQAItems).call(drawCustomDataItems).call(drawVectorItems).call(drawPanelItems).call(drawImportItems);
     }
     function showsLayer(which) {
       var layer = layers.layer(which);
@@ -77050,6 +82059,16 @@
         dataLayer.fileList(d2.fileList);
       }
     }
+    async function onClickImport(event) {
+      try {
+        await operationImportFile(context, event.ctrlKey, () => {
+          context.container().call(_loading);
+        });
+      } catch {
+        context.ui().flash.duration(4e3).iconName("#iD-icon-no").label(_t.append("operations.import_from_file.error"))();
+      }
+      _loading.close();
+    }
     function drawPanelItems(selection2) {
       var panelsListEnter = selection2.selectAll(".md-extras-list").data([0]).enter().append("ul").attr("class", "layer-list md-extras-list");
       var historyPanelLabelEnter = panelsListEnter.append("li").attr("class", "history-panel-toggle-item").append("label").call(
@@ -77068,6 +82087,12 @@
         context.ui().info.toggle("measurement");
       });
       measurementPanelLabelEnter.append("span").call(_t.append("map_data.measurement_panel.title"));
+    }
+    function drawImportItems(selection2) {
+      const importDivEnter = selection2.selectAll(".layer-list-import").data([0]).enter().append("div").attr("class", "layer-list-import");
+      importDivEnter.append("button").attr("class", "button-link").call(
+        uiTooltip().title(() => _t.append("operations.import_from_file.tooltip")).placement("right")
+      ).call(svgIcon("#iD-icon-save", "inline")).call(_t.append("operations.import_from_file.title")).on("click", onClickImport);
     }
     context.layers().on("change.uiSectionDataLayers", section.reRender);
     context.map().on(
@@ -77889,36 +82914,43 @@
     let _defaultChangesetComment = context.initialHashParams.comment;
     let _defaultChangesetSource = context.initialHashParams.source;
     let _defaultChangesetHashtags = context.initialHashParams.hashtags;
-    context.defaultChangesetComment = function(val) {
+    let _defaultChangesetTags = {};
+    context.defaultChangesetComment = function(val2) {
       if (!arguments.length)
         return _defaultChangesetComment;
-      _defaultChangesetComment = val;
+      _defaultChangesetComment = val2;
       return context;
     };
-    context.defaultChangesetSource = function(val) {
+    context.defaultChangesetSource = function(val2) {
       if (!arguments.length)
         return _defaultChangesetSource;
-      _defaultChangesetSource = val;
+      _defaultChangesetSource = val2;
       return context;
     };
-    context.defaultChangesetHashtags = function(val) {
+    context.defaultChangesetHashtags = function(val2) {
       if (!arguments.length)
         return _defaultChangesetHashtags;
-      _defaultChangesetHashtags = val;
+      _defaultChangesetHashtags = val2;
+      return context;
+    };
+    context.defaultChangesetTags = function(val2) {
+      if (!arguments.length)
+        return _defaultChangesetTags;
+      _defaultChangesetTags = val2;
       return context;
     };
     let _setsDocumentTitle = true;
-    context.setsDocumentTitle = function(val) {
+    context.setsDocumentTitle = function(val2) {
       if (!arguments.length)
         return _setsDocumentTitle;
-      _setsDocumentTitle = val;
+      _setsDocumentTitle = val2;
       return context;
     };
     let _documentTitleBase = document.title;
-    context.documentTitleBase = function(val) {
+    context.documentTitleBase = function(val2) {
       if (!arguments.length)
         return _documentTitleBase;
-      _documentTitleBase = val;
+      _documentTitleBase = val2;
       return context;
     };
     let _ui;
@@ -77993,11 +83025,11 @@
       });
       _deferred2.add(handle);
     };
-    context.loadEntity = (entityID, callback) => {
+    context.loadEntity = async (entityID, callback) => {
       if (_connection) {
         const cid = _connection.getConnectionId();
-        _connection.loadEntity(entityID, afterLoad(cid, callback));
-        _connection.loadEntityRelations(entityID, afterLoad(cid, callback));
+        await _connection.loadEntity(entityID, afterLoad(cid, callback));
+        await _connection.loadEntityRelations(entityID, afterLoad(cid, callback));
       }
     };
     context.loadNote = (entityID, callback) => {
@@ -78032,26 +83064,26 @@
       });
     };
     let _minEditableZoom = 16;
-    context.minEditableZoom = function(val) {
+    context.minEditableZoom = function(val2) {
       if (!arguments.length)
         return _minEditableZoom;
-      _minEditableZoom = val;
+      _minEditableZoom = val2;
       if (_connection) {
-        _connection.tileZoom(val);
+        _connection.tileZoom(val2);
       }
       return context;
     };
     context.maxCharsForTagKey = () => 255;
     context.maxCharsForTagValue = () => 255;
     context.maxCharsForRelationRole = () => 255;
-    context.cleanTagKey = (val) => utilCleanOsmString(val, context.maxCharsForTagKey());
-    context.cleanTagValue = (val) => utilCleanOsmString(val, context.maxCharsForTagValue());
-    context.cleanRelationRole = (val) => utilCleanOsmString(val, context.maxCharsForRelationRole());
+    context.cleanTagKey = (val2) => utilCleanOsmString(val2, context.maxCharsForTagKey());
+    context.cleanTagValue = (val2) => utilCleanOsmString(val2, context.maxCharsForTagValue());
+    context.cleanRelationRole = (val2) => utilCleanOsmString(val2, context.maxCharsForRelationRole());
     let _inIntro = false;
-    context.inIntro = function(val) {
+    context.inIntro = function(val2) {
       if (!arguments.length)
         return _inIntro;
-      _inIntro = val;
+      _inIntro = val2;
       return context;
     };
     context.save = () => {
@@ -78119,18 +83151,18 @@
     let _copyGraph;
     context.copyGraph = () => _copyGraph;
     let _copyIDs = [];
-    context.copyIDs = function(val) {
+    context.copyIDs = function(val2) {
       if (!arguments.length)
         return _copyIDs;
-      _copyIDs = val;
+      _copyIDs = val2;
       _copyGraph = _history.graph();
       return context;
     };
     let _copyLonLat;
-    context.copyLonLat = function(val) {
+    context.copyLonLat = function(val2) {
       if (!arguments.length)
         return _copyLonLat;
-      _copyLonLat = val;
+      _copyLonLat = val2;
       return context;
     };
     let _background;
@@ -78170,57 +83202,57 @@
     };
     context.debugFlags = () => _debugFlags;
     context.getDebug = (flag) => flag && _debugFlags[flag];
-    context.setDebug = function(flag, val) {
+    context.setDebug = function(flag, val2) {
       if (arguments.length === 1)
-        val = true;
-      _debugFlags[flag] = val;
+        val2 = true;
+      _debugFlags[flag] = val2;
       dispatch14.call("change");
       return context;
     };
     let _container = select_default2(null);
-    context.container = function(val) {
+    context.container = function(val2) {
       if (!arguments.length)
         return _container;
-      _container = val;
+      _container = val2;
       _container.classed("ideditor", true);
       return context;
     };
-    context.containerNode = function(val) {
+    context.containerNode = function(val2) {
       if (!arguments.length)
         return context.container().node();
-      context.container(select_default2(val));
+      context.container(select_default2(val2));
       return context;
     };
     let _embed;
-    context.embed = function(val) {
+    context.embed = function(val2) {
       if (!arguments.length)
         return _embed;
-      _embed = val;
+      _embed = val2;
       return context;
     };
     let _assetPath = "";
-    context.assetPath = function(val) {
+    context.assetPath = function(val2) {
       if (!arguments.length)
         return _assetPath;
-      _assetPath = val;
-      _mainFileFetcher.assetPath(val);
+      _assetPath = val2;
+      _mainFileFetcher.assetPath(val2);
       return context;
     };
     let _assetMap = {};
-    context.assetMap = function(val) {
+    context.assetMap = function(val2) {
       if (!arguments.length)
         return _assetMap;
-      _assetMap = val;
-      _mainFileFetcher.assetMap(val);
+      _assetMap = val2;
+      _mainFileFetcher.assetMap(val2);
       return context;
     };
-    context.asset = (val) => {
-      if (/^http(s)?:\/\//i.test(val))
-        return val;
-      const filename = _assetPath + val;
+    context.asset = (val2) => {
+      if (/^http(s)?:\/\//i.test(val2))
+        return val2;
+      const filename = _assetPath + val2;
       return _assetMap[filename] || filename;
     };
-    context.imagePath = (val) => context.asset("img/".concat(val));
+    context.imagePath = (val2) => context.asset("img/".concat(val2));
     context.reset = context.flush = () => {
       context.debouncedSave.cancel();
       Array.from(_deferred2).forEach((handle) => {
@@ -78438,9 +83470,9 @@
           callback(err.message);
       });
     },
-    search: function(val, callback) {
+    search: function(val2, callback) {
       const params = {
-        q: val,
+        q: val2,
         limit: 10,
         format: "json"
       };
@@ -80909,16 +85941,16 @@
       xhr.send(data);
       return xhr;
     };
-    oauth2.preauth = function(val) {
-      if (val && val.access_token) {
-        token("oauth2_access_token", val.access_token);
+    oauth2.preauth = function(val2) {
+      if (val2 && val2.access_token) {
+        token("oauth2_access_token", val2.access_token);
       }
       return oauth2;
     };
-    oauth2.options = function(val) {
+    oauth2.options = function(val2) {
       if (!arguments.length)
         return o2;
-      o2 = val;
+      o2 = val2;
       o2.apiUrl = o2.apiUrl || "https://api.openstreetmap.org";
       o2.url = o2.url || "https://www.openstreetmap.org";
       o2.auto = o2.auto || false;
@@ -81579,17 +86611,20 @@
     // GET /api/0.6/node/#id
     // GET /api/0.6/[way|relation]/#id/full
     loadEntity: function(id2, callback) {
-      var type2 = osmEntity.id.type(id2);
-      var osmID = osmEntity.id.toOSM(id2);
-      var options2 = { skipSeen: false };
-      this.loadFromAPI(
-        "/api/0.6/" + type2 + "/" + osmID + (type2 !== "node" ? "/full" : "") + ".json",
-        function(err, entities) {
-          if (callback)
-            callback(err, { data: entities });
-        },
-        options2
-      );
+      return new Promise((resolve, reject) => {
+        var type2 = osmEntity.id.type(id2);
+        var osmID = osmEntity.id.toOSM(id2);
+        var options2 = { skipSeen: false };
+        this.loadFromAPI(
+          "/api/0.6/" + type2 + "/" + osmID + (type2 !== "node" ? "/full" : "") + ".json",
+          function(err, entities) {
+            if (callback)
+              callback(err, { data: entities });
+            return err ? reject(err) : resolve(entities);
+          },
+          options2
+        );
+      });
     },
     // Load a single note by id , XML format
     // GET /api/0.6/notes/#id
@@ -81622,17 +86657,20 @@
     // Load the relations of a single entity with the given.
     // GET /api/0.6/[node|way|relation]/#id/relations
     loadEntityRelations: function(id2, callback) {
-      var type2 = osmEntity.id.type(id2);
-      var osmID = osmEntity.id.toOSM(id2);
-      var options2 = { skipSeen: false };
-      this.loadFromAPI(
-        "/api/0.6/" + type2 + "/" + osmID + "/relations.json",
-        function(err, entities) {
-          if (callback)
-            callback(err, { data: entities });
-        },
-        options2
-      );
+      return new Promise((resolve, reject) => {
+        var type2 = osmEntity.id.type(id2);
+        var osmID = osmEntity.id.toOSM(id2);
+        var options2 = { skipSeen: false };
+        this.loadFromAPI(
+          "/api/0.6/" + type2 + "/" + osmID + "/relations.json",
+          function(err, entities) {
+            if (callback)
+              callback(err, { data: entities });
+            return err ? reject(err) : resolve(entities);
+          },
+          options2
+        );
+      });
     },
     // Load multiple entities in chunks
     // (note: callback may be called multiple times)
@@ -81880,8 +86918,8 @@
           if (maxWayNodes && isFinite(maxWayNodes))
             _maxWayNodes = maxWayNodes;
           var apiStatus = xml.getElementsByTagName("status");
-          var val = apiStatus[0].getAttribute("api");
-          return callback(void 0, val);
+          var val2 = apiStatus[0].getAttribute("api");
+          return callback(void 0, val2);
         }
       }
     },
@@ -82095,10 +87133,10 @@
       }
     },
     /* connection options for source switcher (optional) */
-    apiConnections: function(val) {
+    apiConnections: function(val2) {
       if (!arguments.length)
         return _apiConnections;
-      _apiConnections = val;
+      _apiConnections = val2;
       return this;
     },
     switch: function(newOptions) {
@@ -82118,8 +87156,8 @@
       dispatch10.call("change");
       return this;
     },
-    toggle: function(val) {
-      _off = !val;
+    toggle: function(val2) {
+      _off = !val2;
       return this;
     },
     isChangesetInflight: function() {
@@ -82211,10 +87249,10 @@
     imageryBlocklists: function() {
       return _imageryBlocklists;
     },
-    tileZoom: function(val) {
+    tileZoom: function(val2) {
       if (!arguments.length)
         return _tileZoom4;
-      _tileZoom4 = val;
+      _tileZoom4 = val2;
       return this;
     },
     // get all cached notes covering the viewport
@@ -82530,10 +87568,10 @@
     addLocale: function(langCode, qid) {
       _localeIDs[langCode] = qid;
     },
-    apibase: function(val) {
+    apibase: function(val2) {
       if (!arguments.length)
         return apibase3;
-      apibase3 = val;
+      apibase3 = val2;
       return this;
     }
   };
@@ -85226,8 +90264,8 @@
       return _t("operations.copy.annotation", { n: selectedIDs.length });
     };
     var _point;
-    operation2.point = function(val) {
-      _point = val;
+    operation2.point = function(val2) {
+      _point = val2;
       return operation2;
     };
     operation2.id = "copy";
@@ -85697,8 +90735,8 @@
       context.replace(actionMove(newIDs, delta, projection2), operation2.annotation());
       context.enter(modeSelect(context, newIDs));
     };
-    operation2.point = function(val) {
-      _pastePoint = val;
+    operation2.point = function(val2) {
+      _pastePoint = val2;
       return operation2;
     };
     operation2.available = function() {
@@ -86069,31 +91107,31 @@
       }
       return parentIds.length ? parentIds[0] : null;
     }
-    mode.selectedIDs = function(val) {
+    mode.selectedIDs = function(val2) {
       if (!arguments.length)
         return selectedIDs;
-      selectedIDs = val;
+      selectedIDs = val2;
       return mode;
     };
     mode.zoomToSelected = function() {
       context.map().zoomToEase(selectedEntities());
     };
-    mode.newFeature = function(val) {
+    mode.newFeature = function(val2) {
       if (!arguments.length)
         return _newFeature;
-      _newFeature = val;
+      _newFeature = val2;
       return mode;
     };
-    mode.selectBehavior = function(val) {
+    mode.selectBehavior = function(val2) {
       if (!arguments.length)
         return _selectBehavior;
-      _selectBehavior = val;
+      _selectBehavior = val2;
       return mode;
     };
-    mode.follow = function(val) {
+    mode.follow = function(val2) {
       if (!arguments.length)
         return _follow;
-      _follow = val;
+      _follow = val2;
       return mode;
     };
     function loadOperations() {
@@ -86541,10 +91579,10 @@
     var sidebar;
     var _selectBehavior;
     var _behaviors = [];
-    mode.selectBehavior = function(val) {
+    mode.selectBehavior = function(val2) {
       if (!arguments.length)
         return _selectBehavior;
-      _selectBehavior = val;
+      _selectBehavior = val2;
       return mode;
     };
     mode.enter = function() {
