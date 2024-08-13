@@ -490,6 +490,7 @@ export default {
     // GET /api/0.6/node/#id
     // GET /api/0.6/[way|relation]/#id/full
     loadEntity: function(id, callback) {
+      return new Promise((resolve, reject) => {
         var type = osmIdManager.type(id);
         var osmID = osmIdManager.toOSM(id);
         var options = { skipSeen: false };
@@ -498,9 +499,11 @@ export default {
             '/api/0.6/' + type + '/' + osmID + (type !== 'node' ? '/full' : '') + '.json',
             function(err, entities) {
                 if (callback) callback(err, { data: entities });
+                return err ? reject(err) : resolve(entities);
             },
             options
         );
+      });
     },
 
     // Load a single note by id , XML format
@@ -537,6 +540,7 @@ export default {
     // Load the relations of a single entity with the given.
     // GET /api/0.6/[node|way|relation]/#id/relations
     loadEntityRelations: function(id, callback) {
+      return new Promise((resolve, reject) => {
         var type = osmIdManager.type(id);
         var osmID = osmIdManager.toOSM(id);
         var options = { skipSeen: false };
@@ -545,9 +549,11 @@ export default {
             '/api/0.6/' + type + '/' + osmID + '/relations.json',
             function(err, entities) {
                 if (callback) callback(err, { data: entities });
+                return err ? reject(err) : resolve(entities);
             },
             options
         );
+      });
     },
 
 

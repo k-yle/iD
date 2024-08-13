@@ -362,6 +362,12 @@ export function coreHistory(context) {
             }
         },
 
+        /** @param {string} name */
+        appendImageryUsed(name) {
+            const imagery = new Set(_imageryUsed);
+            imagery.add(name);
+            _imageryUsed = [...imagery];
+        },
 
         photoOverlaysUsed: function(sources) {
             if (sources) {
