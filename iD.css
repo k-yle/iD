@@ -3938,9 +3938,6 @@
 .ideditor button.secondary-action:active {
     background: #cccccc;
 }
-.ideditor button.secondary-action.small {
-    padding: 2px 5px;
-}
 
 .ideditor button.action.disabled,
 .ideditor button[disabled].action {

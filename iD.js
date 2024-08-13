@@ -39795,9 +39795,12 @@
       const idMap = { node: {}, way: {}, relation: {} };
       if (!allowConflicts) {
         for (const feature3 of [...osmChange.modify, ...osmChange.delete]) {
-          const entity = graph.entity(getId(feature3.type, feature3.id, idMap));
+          const entityId = getId(feature3.type, feature3.id, idMap);
+          const entity = graph.entity(entityId);
           if (+entity.version !== feature3.version) {
-            throw new Error("Conflicts");
+            throw new Error(
+              "Conflicts on ".concat(entityId, ", expected v").concat(feature3.version, ", got v").concat(entity.version)
+            );
           }
         }
       }
@@ -81860,9 +81863,101 @@
     }
   }
 
+  // node_modules/d3-brush/src/brush.js
+  var { abs: abs2, max: max2, min: min2 } = Math;
+  function number1(e3) {
+    return [+e3[0], +e3[1]];
+  }
+  function number22(e3) {
+    return [number1(e3[0]), number1(e3[1])];
+  }
+  var X3 = {
+    name: "x",
+    handles: ["w", "e"].map(type),
+    input: function(x2, e3) {
+      return x2 == null ? null : [[+x2[0], e3[0][1]], [+x2[1], e3[1][1]]];
+    },
+    output: function(xy) {
+      return xy && [xy[0][0], xy[1][0]];
+    }
+  };
+  var Y3 = {
+    name: "y",
+    handles: ["n", "s"].map(type),
+    input: function(y2, e3) {
+      return y2 == null ? null : [[e3[0][0], +y2[0]], [e3[1][0], +y2[1]]];
+    },
+    output: function(xy) {
+      return xy && [xy[0][1], xy[1][1]];
+    }
+  };
+  var XY = {
+    name: "xy",
+    handles: ["n", "w", "e", "s", "nw", "ne", "sw", "se"].map(type),
+    input: function(xy) {
+      return xy == null ? null : number22(xy);
+    },
+    output: function(xy) {
+      return xy;
+    }
+  };
+  function type(t2) {
+    return { type: t2 };
+  }
+
+  // modules/ui/error_modal.js
+  function uiErrorModal() {
+    let _modal = select_default2(null);
+    let _title = "";
+    let _subtitle = "";
+    let errorModal = (selection2) => {
+      _modal = uiConfirm(selection2).okButton();
+      _modal.select(".modal-section.header").append("h3").html(_title);
+      _modal.select(".modal-section.message-text").html(_subtitle);
+      _modal.select("button.close").attr("class", "hide");
+      return errorModal;
+    };
+    errorModal.setTitle = (val2) => {
+      _title = val2;
+      return errorModal;
+    };
+    errorModal.setSubtitle = (val2) => {
+      _subtitle = val2;
+      return errorModal;
+    };
+    errorModal.close = () => _modal.remove();
+    return errorModal;
+  }
+
+  // modules/ui/sections/import_file.js
+  function uiSectionImportFile(context) {
+    const _loading = uiLoading(context).message(_t.html("operations.import_from_file.loading")).blocking(true);
+    const _errorModal = uiErrorModal();
+    async function onClickImport(event) {
+      try {
+        await operationImportFile(context, event.ctrlKey, () => {
+          context.container().call(_loading);
+        });
+      } catch (error) {
+        console.error(error);
+        const subtitle = "".concat(error).includes("Conflicts") ? _t.html("operations.import_from_file.error.conflicts") : _t.html("operations.import_from_file.error.unknown");
+        context.container().call(
+          _errorModal.setTitle(_t.html("operations.import_from_file.error.title")).setSubtitle(subtitle)
+        );
+      }
+      _loading.close();
+    }
+    return (selection2) => {
+      const importDivEnter = selection2.selectAll(".layer-list-import").data([0]).enter().append("div").attr("class", "layer-list-import");
+      importDivEnter.append("button").attr("class", "button-link").call(
+        uiTooltip().title(() => _t.append("operations.import_from_file.tooltip")).placement("right")
+      ).call(svgIcon("#iD-icon-save", "inline")).call(_t.append("operations.import_from_file.title")).on("click", onClickImport);
+    };
+  }
+
   // modules/ui/sections/data_layers.js
   function uiSectionDataLayers(context) {
-    const _loading = uiLoading(context).message(_t.html("operations.import_from_file.loading")).blocking(true);
+    const drawImportItems = uiSectionImportFile(context);
     var settingsCustomData = uiSettingsCustomData(context).on("change", customChanged);
     var layers = context.layers();
     var section = uiSection("data-layers", context).label(() => _t.append("map_data.data_layers")).disclosureContent(renderDisclosureContent);
@@ -82059,16 +82154,6 @@
         dataLayer.fileList(d2.fileList);
       }
     }
-    async function onClickImport(event) {
-      try {
-        await operationImportFile(context, event.ctrlKey, () => {
-          context.container().call(_loading);
-        });
-      } catch {
-        context.ui().flash.duration(4e3).iconName("#iD-icon-no").label(_t.append("operations.import_from_file.error"))();
-      }
-      _loading.close();
-    }
     function drawPanelItems(selection2) {
       var panelsListEnter = selection2.selectAll(".md-extras-list").data([0]).enter().append("ul").attr("class", "layer-list md-extras-list");
       var historyPanelLabelEnter = panelsListEnter.append("li").attr("class", "history-panel-toggle-item").append("label").call(
@@ -82087,12 +82172,6 @@
         context.ui().info.toggle("measurement");
       });
       measurementPanelLabelEnter.append("span").call(_t.append("map_data.measurement_panel.title"));
-    }
-    function drawImportItems(selection2) {
-      const importDivEnter = selection2.selectAll(".layer-list-import").data([0]).enter().append("div").attr("class", "layer-list-import");
-      importDivEnter.append("button").attr("class", "button-link").call(
-        uiTooltip().title(() => _t.append("operations.import_from_file.tooltip")).placement("right")
-      ).call(svgIcon("#iD-icon-save", "inline")).call(_t.append("operations.import_from_file.title")).on("click", onClickImport);
     }
     context.layers().on("change.uiSectionDataLayers", section.reRender);
     context.map().on(
@@ -91814,48 +91893,6 @@
       window.location.hash = "";
     };
     return behavior;
-  }
-
-  // node_modules/d3-brush/src/brush.js
-  var { abs: abs2, max: max2, min: min2 } = Math;
-  function number1(e3) {
-    return [+e3[0], +e3[1]];
-  }
-  function number22(e3) {
-    return [number1(e3[0]), number1(e3[1])];
-  }
-  var X3 = {
-    name: "x",
-    handles: ["w", "e"].map(type),
-    input: function(x2, e3) {
-      return x2 == null ? null : [[+x2[0], e3[0][1]], [+x2[1], e3[1][1]]];
-    },
-    output: function(xy) {
-      return xy && [xy[0][0], xy[1][0]];
-    }
-  };
-  var Y3 = {
-    name: "y",
-    handles: ["n", "s"].map(type),
-    input: function(y2, e3) {
-      return y2 == null ? null : [[e3[0][0], +y2[0]], [e3[1][0], +y2[1]]];
-    },
-    output: function(xy) {
-      return xy && [xy[0][1], xy[1][1]];
-    }
-  };
-  var XY = {
-    name: "xy",
-    handles: ["n", "w", "e", "s", "nw", "ne", "sw", "se"].map(type),
-    input: function(xy) {
-      return xy == null ? null : number22(xy);
-    },
-    output: function(xy) {
-      return xy;
-    }
-  };
-  function type(t2) {
-    return { type: t2 };
   }
 
   // modules/index.js
