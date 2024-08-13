@@ -75,6 +75,7 @@ export interface coreContext extends Pick<Dispatch<object, EventMap>, 'on'> {
     defaultChangesetComment: GetSet<coreContext, string>;
     defaultChangesetSource: GetSet<coreContext, string>;
     defaultChangesetHashtags: GetSet<coreContext, string>;
+    defaultChangesetTags:  GetSet<coreContext, Tags>;
     setsDocumentTitle: GetSet<coreContext, boolean>;
     documentTitleBase: GetSet<coreContext, string>;
     ui(): ReturnType<typeof uiInit>;
@@ -193,6 +194,7 @@ export function coreContext(this: object): coreContext {
   let _defaultChangesetComment = context.initialHashParams.comment;
   let _defaultChangesetSource = context.initialHashParams.source;
   let _defaultChangesetHashtags = context.initialHashParams.hashtags;
+  let _defaultChangesetTags = {};
 
   context.defaultChangesetComment = function(val) {
     if (!arguments.length) return _defaultChangesetComment;
@@ -211,6 +213,11 @@ export function coreContext(this: object): coreContext {
     _defaultChangesetHashtags = val;
     return context;
   } as coreContext['defaultChangesetHashtags'];
+  context.defaultChangesetTags = function(val) {
+    if (!arguments.length) return _defaultChangesetTags;
+    _defaultChangesetTags = val;
+    return context;
+  } as coreContext['defaultChangesetTags'];
 
   /* Document title */
   /* (typically shown as the label for the browser window/tab) */
@@ -318,12 +325,12 @@ export function coreContext(this: object): coreContext {
   };
 
   // Download the full entity and its parent relations. The callback may be called multiple times.
-  context.loadEntity = (entityID, callback) => {
+  context.loadEntity = async (entityID, callback) => {
     if (_connection) {
       const cid = _connection.getConnectionId();
-      _connection.loadEntity(entityID, afterLoad(cid, callback));
+      await _connection.loadEntity(entityID, afterLoad(cid, callback));
       // We need to fetch the parent relations separately.
-      _connection.loadEntityRelations(entityID, afterLoad(cid, callback));
+      await _connection.loadEntityRelations(entityID, afterLoad(cid, callback));
     }
   };
 

@@ -412,6 +412,11 @@ export class coreHistory extends EventDispatcher<EventMap> {
             }
         }
 
+        appendImageryUsed(name: string) {
+            const imagery = new Set(this._imageryUsed);
+            imagery.add(name);
+            this._imageryUsed = [...imagery];
+        }
 
         photoOverlaysUsed(sources?: string[]) {
             if (sources) {

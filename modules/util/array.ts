@@ -65,6 +65,12 @@ export function utilArrayUniq<T>(a: Iterable<T>): T[] {
 }
 
 
+/**
+ * @template T
+ * @param {T[]} a
+ * @param {number} chunkSize
+ * @returns {T[][]}
+ */
 // Splits array into chunks of given chunk size
 // var a = [1,2,3,4,5,6,7];
 // utilArrayChunk(a, 3);

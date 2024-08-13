@@ -135,19 +135,29 @@ em {
 strong {
     font-weight: bold;
 }
+
+.button-link,
 a,
 a:visited,
 a:active {
         color: var(--link-color);
 }
+.button-link:focus,
 a:focus {
     color: var(--link-focus-color);
 }
 @media (hover: hover) {
+    .button-link:hover,
     a:hover {
         color: var(--link-focus-color);
     }
 }
+
+.button-link {
+    display: flex;
+    align-items: center;
+}
+
 kbd {
     display: inline-block;
     text-align: center;

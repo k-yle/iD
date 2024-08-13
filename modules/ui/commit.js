@@ -85,6 +85,7 @@ export function uiCommit(context) {
 
         var detected = utilDetect();
         var tags = {
+            ...context.defaultChangesetTags(),
             comment: prefs('comment') || '',
             created_by: context.cleanTagValue('iD ' + context.version),
             // eslint-disable-next-line no-constant-binary-expression
