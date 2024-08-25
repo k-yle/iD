@@ -88,13 +88,39 @@ function loadNsiPresets() {
         dissolved: nsi_dissolved.dissolved,
       }).presets;
 
+      const tfnswLogos = {
+        B: 'Q5001345',
+        T: 'Q7660181',
+        F: 'Q3162795',
+        M: 'Q14774571',
+        L: 'Q771666',
+        C: 'Q6955406',
+      };
+
+      for (const [char, qId] of Object.entries(tfnswLogos)) {
+        nsiPresets[`advertising/logo/${qId}`] = {
+          'name': `TfNSW ${char}`,
+          'locationSet': { 'include': ['au'] },
+          'icon': 'temaki-billboard',
+          'geometry': ['point', 'vertex'],
+          'matchScore': 2,
+          'imageURL': `https://commons.wikimedia.org/w/index.php?title=Special%3ARedirect%2Ffile%2FTfNSW_${char}.svg&width=150`,
+          'terms': ['Transport for NSW', 'Sydney'],
+          'tags': {
+            'advertising': 'logo',
+            'brand:wikidata': qId,
+            'wikimedia_commons': `File:TfNSW_${char}.svg`
+          },
+        };
+      }
+
       for (const [id, preset] of Object.entries(nsiPresets)) {
         // Add `suggestion=true` to all the nsi presets
         // The preset json schema doesn't include it, but the iD code still uses it
         preset.suggestion = true;
         // stop-gap while https://github.com/osmlab/name-suggestion-index/pull/12449 is not out yet
         preset.fields = (preset.fields?.filter(f => !f.startsWith('{')) || []).concat(
-            allPresets[id.split('/').slice(0, -1).join('/')].fields().map(f => f.id));
+            allPresets[id.split('/').slice(0, -1).join('/')]?.fields().map(f => f.id) || []);
       }
 
       // nsi does not specify *:wikipedia (anymore):
