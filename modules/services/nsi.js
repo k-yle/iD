@@ -78,6 +78,34 @@ function loadNsiPresets() {
       fileFetcher.get('nsi_features')
     ])
     .then(vals => {
+      console.log("Loaded NSI", vals);
+
+      const data = {
+        B: 'Q5001345',
+        T: 'Q7660181',
+        F: 'Q3162795',
+        M: 'Q14774571',
+        L: 'Q771666',
+        C: 'Q6955406',
+      }
+
+      for (const [char, qId] of Object.entries(data)) {
+        vals[0].presets[`advertising/logo/${qId}`] = {
+          "name": `TfNSW ${char}`,
+          "locationSet": { "include": ["au"] },
+          "icon": "temaki-billboard",
+          "geometry": ["point", "vertex"],
+          "matchScore": 2,
+          "imageURL": `https://commons.wikimedia.org/w/index.php?title=Special%3ARedirect%2Ffile%2FTfNSW_${char}.svg&width=150`,
+          "terms": ["Transport for NSW", "Sydney"],
+          "tags": {
+            "advertising": "logo",
+            "brand:wikidata": qId,
+            "wikimedia_commons": `File:TfNSW_${char}.svg`
+          },
+      }
+    }
+
       // Add `suggestion=true` to all the nsi presets
       // The preset json schema doesn't include it, but the iD code still uses it
       Object.values(vals[0].presets).forEach(preset => preset.suggestion = true);
