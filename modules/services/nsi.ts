@@ -124,6 +124,32 @@ function loadNsiPresets() {
         dissolved: nsi_dissolved.dissolved,
       }).presets;
 
+      const tfnswLogos = {
+        B: 'Q5001345',
+        T: 'Q7660181',
+        F: 'Q3162795',
+        M: 'Q14774571',
+        L: 'Q771666',
+        C: 'Q6955406',
+      };
+
+      for (const [char, qId] of Object.entries(tfnswLogos)) {
+        nsiPresets[`advertising/logo/${qId}`] = {
+          'name': `TfNSW ${char}`,
+          'locationSet': { 'include': ['au'] },
+          'icon': 'temaki-billboard',
+          'geometry': ['point', 'vertex'],
+          'matchScore': 2,
+          'imageURL': `https://commons.wikimedia.org/w/index.php?title=Special%3ARedirect%2Ffile%2FTfNSW_${char}.svg&width=150`,
+          'terms': ['Transport for NSW', 'Sydney'],
+          'tags': {
+            'advertising': 'logo',
+            'brand:wikidata': qId,
+            'wikimedia_commons': `File:TfNSW_${char}.svg`
+          },
+        };
+      }
+
       for (const preset of Object.values(nsiPresets)) {
         // Add `suggestion=true` to all the nsi presets
         // @ts-expect-error:
