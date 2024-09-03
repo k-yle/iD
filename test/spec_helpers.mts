@@ -131,6 +131,7 @@ cached.deprecated = [];
 // Initializing `coreContext` initializes `_uploader`, which tries loading:
 cached.discarded = {};
 
+// @ts-expect-error
 window.d3 = iD.d3; // Remove this if we can avoid exporting all of d3.js
 
 // @ts-expect-error
@@ -206,3 +207,7 @@ fetchMock.sticky({
           }, vegbilderOwsCapabilities, {sticky: true});
 fetchMock.config.fallbackToNetwork = true;
 fetchMock.config.overwriteRoutes = false;
+
+beforeAll(async () => {
+  await iD.coreLocalizer().ensureLoaded();
+});
