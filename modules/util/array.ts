@@ -162,5 +162,19 @@ export function utilArrayUniqBy<T, K>(a: T[], key: keyof T | ((item: T) => K)): 
     }, []);
 }
 
+/** like {@link Array.findIndex} but supports multiple results. */
+export function utilArrayFindIndexMultiple<T>(
+    array: T[],
+    callback: (item: T, index: number, array: T[]) => boolean
+): number[] {
+    const indexes: number[] = [];
+    for (let i = 0; i < array.length; i++) {
+        if (callback(array[i], i, array)){
+            indexes.push(i);
+        }
+    }
+    return indexes;
+}
+
 /** Function composition, like lodash's `pipeline` */
 export const pipe = <T>(...functions: ((value: T) => T)[]): ((value: T) => T) => x0 => functions.reduce((x, f) => f(x), x0);
