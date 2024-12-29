@@ -1714,12 +1714,6 @@ en:
       title: Mismatched Geometry
       tip: "Find features with conflicting tags and geometry"
       reference: Most features are limited to certain geometry types.
-    missing_role:
-      title: Missing Roles
-      message: "{member} has no role within {relation}"
-      tip: "Find relations with missing or incorrect member roles"
-      multipolygon:
-        reference: "Multipolygon members must have an inner or outer role."
     missing_tag:
       title: Missing Tags
       tip: "Find features that are missing descriptive tags"
@@ -1767,6 +1761,36 @@ en:
       reference: "Sensitive data like personal phone numbers should not be tagged."
       contact:
         message: '{feature} might be tagged with private contact information'
+    relation:
+      title: Invalid Relations
+      role: "“{role}”"
+      messages:
+        too_few:
+          message: "{relation} does not have enough members with the role {role}"
+          reference: "{relationPreset} requires at least {min} members with the role {role}"
+          action: "Add {n} member/s with the role {role}"
+        too_many:
+          message: "{relation} has too many members with the role {role}"
+          reference: "{relationPreset} can only have {max} or fewer members with the role {role}"
+          action: "Remove {n} member/s with the role {role}"
+        invalid_tags:
+          message: "{memberPreset} {member} needs different tags"
+          reference: "Members of a “{relationPreset}” with the role “{role}” must have specific tags."
+          action: "Change to a {presetName}"
+        invalid_geometry:
+          message: "{memberPreset} {member} can’t have this geometry, since it belongs to {relation}"
+          reference: "Members of “{relationPreset}” with the role “{role}” must be a {expectedGeometry}"
+          action: "Change the geometry to a {expectedGeometry}"
+        wrong_role:
+          message: "{memberPreset} {member} has the wrong role within {relation}"
+          reference: "When a “{memberPreset}” is included in a “{relationPreset}”, it must have a role of {expectedRoles}"
+          action: "Change role to {role}"
+        role_not_allowed:
+          message: "{relation} cannot have a member with the role “{role}”"
+          reference: "{relationPreset} only allows specific roles"
+        duplicate_member:
+          message: "{memberPreset} {member} is included multiple times in {relation}"
+          reference: "{relationPreset} must not contain duplicate members"
     suspicious_name:
       title: Suspicious Names
       tip: "Find features with generic or suspicious names"

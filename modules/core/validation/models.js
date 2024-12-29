@@ -94,6 +94,20 @@ validationIssue.ICONS = {
 };
 
 
+/**
+ * @typedef {{
+ *  title: unknown;
+ *  id?: unknown;
+ *  onClick?(context: iD.Context): void;
+ *  disabledReason?: unknown;
+ *  icon?: unknown;
+ *  entityIds?: unknown[];
+ *  autoArgs?: unknown;
+ *  issue?: unknown;
+ * }} ValidationIssueFix
+ * @param {ValidationIssueFix} attrs
+ * @returns {ValidationIssueFix}
+ */
 export function validationIssueFix(attrs) {
     this.title = attrs.title;                   // Required
     this.id = attrs.id;                         // Optional

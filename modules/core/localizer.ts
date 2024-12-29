@@ -39,10 +39,15 @@ export type LocaleDataKey = `locale_${string}_${string}`; // e.g. 'locales_gener
 /** the return type from `t.append()` */
 export interface LocalizedTextRenderer extends d3.Selector {
     stringId: string
+    /**
+     * the resolved translation, so that callers (e.g. tests) can read the
+     * text without rendering it to the DOM. Only set by `t.append()`.
+     */
+    info?: TInfo
 };
 
 /** the return type from `tInfo()` */
-type TInfo = {
+export type TInfo = {
     locale: string | null,
     texts: (string | d3.Selector)[]
 };
@@ -306,6 +311,22 @@ export class coreLocalizer {
         return this._pluralRule(number, this._localeCode);
     };
 
+    /** Joins a list of strings into a single localized sentence fragment */
+    get listFormat() {
+        return {
+            /** e.g. `a, b, and c` */
+            and: (list: string[]) => new Intl.ListFormat(this._localeCode, {
+                style: 'short',
+                type: 'conjunction',
+            }).format(list),
+            /** e.g. `a, b, or c` */
+            or: (list: string[]) => new Intl.ListFormat(this._localeCode, {
+                style: 'short',
+                type: 'disjunction',
+            }).format(list),
+        };
+    };
+
     // Returns the plural rule for the given `number` with the given `localeCode`.
     // One of: `zero`, `one`, `two`, `few`, `many`, `other`
     private _pluralRule = function(number: number, localeCode: string) {
@@ -527,8 +548,8 @@ export class coreLocalizer {
 
     // Adds localized text wrapped as an HTML span element with locale info to the DOM
     t_append(stringId: string, replacements?: Replacements, locale?: string): LocalizedTextRenderer {
+        const info = this.tInfo(stringId, replacements, locale);
         const ret: LocalizedTextRenderer = <T extends HTMLElement>(selection: d3.Selection<T>) => {
-            const info = this.tInfo(stringId, replacements, locale);
             if (Array.isArray(info)) {
                 console.error(`${stringId} is unexpectedly an array of texts`);  // eslint-disable-line
                 return;
@@ -551,6 +572,7 @@ export class coreLocalizer {
             });
         };
         ret.stringId = stringId;
+        if (!Array.isArray(info)) ret.info = info;
         return ret;
     };
 

@@ -49,6 +49,16 @@ export function presetPreset(presetID, preset, addable, allFields, allPresets) {
 
   _this.geometry = (_this.geometry || []);
 
+  // a preset can point at another preset's relation schema instead of
+  // repeating it. Resolved lazily, since the referenced preset may not
+  // have been created yet.
+  Object.defineProperty(_this, 'relation', {
+    enumerable: true,
+    configurable: true,
+    get: () => preset.relation ||
+      allPresets[(preset.relationCrossReference || '').replace(/^{(.+)}$/, '$1')]?.relation
+  });
+
   _this.matchGeometry = (geom) => _this.geometry.indexOf(geom) >= 0;
 
   _this.matchAllGeometry = (geoms) => geoms.every(_this.matchGeometry);

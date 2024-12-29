@@ -470,10 +470,6 @@ A feature's tags indicate it should have a different geometry than it currently 
 * `vertex_as_point`: a detached node has tags implying it should be attached to a way (e.g. `highway=stop`)
 * `unclosed_multipolygon_part`: a relation is tagged as a multipolygon but not all of its member ways form closed rings
 
-##### `missing_role`
-
-A relation membership does not have a set `role`.
-
 ##### `missing_tag`
 
 A feature does not have enough tags to define what it is.
@@ -499,6 +495,15 @@ A feature has nonstandard tags.
 ##### `private_data`
 
 An email address, phone number, or fax number is present on a residential feature that isn't also tagged as a POI.
+
+##### `relation`
+
+A relation does not match its schema. For example, if:
+ - Some relation members have invalid geometry
+ - Some relation members have invalid tags
+ - Some relation members have an invalid role
+ - There are duplicate relation members
+ - There are not enough or too many members with a certain role
 
 ##### `suspicious_name`
 
