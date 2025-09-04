@@ -1,0 +1,10 @@
+tmp*
+node_modules
+.DS_Store
+
+# to make it easier to switch branches
+dist
+!dist/index.js
+!dist/index.d.ts
+img
+*.auth
