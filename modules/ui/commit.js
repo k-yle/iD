@@ -21,10 +21,8 @@ var readOnlyTags = [
     /^changesets_count$/,
     /^created_by$/,
     /^ideditor:/,
-    /^imagery_used$/,
     /^host$/,
     /^locale$/,
-    /^warnings:/,
     /^resolved:/,
     /^closed:note$/,
     /^closed:osmose:/
@@ -39,6 +37,7 @@ export function uiCommit(context) {
     var dispatch = d3_dispatch('cancel');
     var _userDetails;
     var _selection;
+    var _overridenKeys = new Set();
 
     var changesetEditor = uiChangesetEditor(context)
         .on('change', changeTags);
@@ -88,7 +87,8 @@ export function uiCommit(context) {
         var tags = {
             comment: prefs('comment') || '',
             created_by: context.cleanTagValue('iD ' + context.version),
-            host: context.cleanTagValue(detected.host),
+            // eslint-disable-next-line no-constant-binary-expression
+            host: context.cleanTagValue('https://openstreetmap.org/edit' || detected.host) ,
             locale: context.cleanTagValue(localizer.localeCode())
         };
 
@@ -194,6 +194,15 @@ export function uiCommit(context) {
         // add counts of issues resolved by the user's edits
         var resolvedIssues = context.validator().getResolvedIssues();
         addIssueCounts(resolvedIssues, 'resolved');
+
+        // don't overwrite manually edited tags
+        for (const overridenKey of _overridenKeys) {
+            if (overridenKey in context.changeset.tags) {
+                tags[overridenKey] = context.changeset.tags[overridenKey];
+            } else {
+                delete tags[overridenKey];
+            }
+        }
 
         context.changeset = context.changeset.update({ tags: tags });
     }
@@ -494,6 +503,10 @@ export function uiCommit(context) {
         }
         // no need to update `prefs` for `hashtags` here since it's done in `updateChangeset`
 
+        for (const k in changed) {
+            _overridenKeys.add(context.cleanTagKey(k));
+        };
+
         updateChangeset(changed, onInput);
 
         if (_selection) {
@@ -620,6 +633,7 @@ export function uiCommit(context) {
 
     commit.reset = function() {
         context.changeset = null;
+        _overridenKeys.clear();
     };
 
 

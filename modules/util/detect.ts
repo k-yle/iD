@@ -112,6 +112,10 @@ export function utilDetect(refresh?: boolean) {
         .filter(Boolean)
     ));
 
+  if (_detected.browserLocales[0].startsWith('en')) {
+    _detected.browserLocales = ['en-NZ'];
+  }
+
 
   /* Host */
   let loc;
