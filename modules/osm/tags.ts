@@ -95,6 +95,10 @@ export const osmAreaKeysExceptions: TagDictionary<boolean> = {
         designated: false,
         destination: false,
         official: false
+    },
+    'seamark:type': {
+        'shoreline_construction': true,
+        'water_turbulence': true
     }
 };
 
@@ -316,6 +320,7 @@ export const osmSidednessTags: TagDictionary<true | string> = {
         'platform_edge': 'man_made', // re-use rendering style for one-sided man_made=*
     },
     'waterway': {
+        'floating_barrier': true,
         'weir': true
     },
     'cutting': {
@@ -331,6 +336,9 @@ export const osmSidednessTags: TagDictionary<true | string> = {
         'left': 'embankment-left',
         'right': 'embankment-right'
     },
+    'seamark:shoreline_construction:category': {
+        'fender': 'man_made', // re-use rendering style for one-sided man_made=*
+    }
 };
 
 // "highway" tag values for pedestrian or vehicle right-of-ways that make up the routable network

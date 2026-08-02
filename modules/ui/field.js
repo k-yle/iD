@@ -357,7 +357,6 @@ export function uiField(context, presetField, entityIDs, options) {
         var prerequisiteTag = field.prerequisiteTag;
 
         if (entityIDs &&
-            !tagsContainFieldKey() && // ignore tagging prerequisites if a value is already present
             prerequisiteTag) {
 
             if (!entityIDs.every(function(entityID) {
