@@ -57,7 +57,7 @@ describe('iD.uiFieldCombo', () => {
             instance.tags({ destination: 'none; kirribilli' }); // space before value
             instance.on('change', onChange);
 
-            const input = selection.selectAll('.form-field-input-wrap input');
+            const input = selection.selectAll<HTMLInputElement, unknown>('.form-field-input-wrap input');
             iD.utilGetSetValue(input, 'kirribilli'); // add the same value again
             input.dispatch('change');
 

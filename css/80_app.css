@@ -1719,12 +1719,14 @@ input.date-selector {
 
 .form-field-input-combo input.raw-value,
 .form-field-input-semicombo input.raw-value,
-.form-field-input-multicombo input.raw-value {
+.form-field-input-multicombo input.raw-value,
+.form-field-input-measurement input.raw-value {
     font-family: monospace;
 }
 .form-field-input-combo input.known-value,
 .form-field-input-semicombo input.known-value,
-.form-field-input-multicombo input.known-value {
+.form-field-input-multicombo input.known-value,
+.form-field-input-measurement input.known-value {
     color: var(--link-color);
 }
 
@@ -2162,38 +2164,50 @@ input.date-selector {
 }
 
 
-/* Field - roadheight and roadspeed
+/* Field - roadheight, roadspeed and measurement
 ------------------------------------------------------- */
 .form-field-input-roadheight input.roadheight-number,
 .form-field-input-roadheight input.roadheight-secondary-number,
-.form-field-input-roadspeed input.roadspeed-number {
+.form-field-input-roadspeed input.roadspeed-number,
+.form-field-input-measurement input.measurement-number,
+.form-field-input-measurement input.measurement-secondary-number {
     flex-basis: 0;
     width: 0;
 }
 .form-field-input-roadheight input.roadheight-unit,
-.form-field-input-roadheight input.roadheight-secondary-unit {
+.form-field-input-roadheight input.roadheight-secondary-unit,
+.form-field-input-measurement input.measurement-secondary-unit {
     flex: 0 1 auto;
     width: 60px;
 }
-.form-field-input-roadspeed input.roadspeed-unit {
+.form-field-input-roadspeed input.roadspeed-unit,
+.form-field-input-measurement input.measurement-unit {
     flex: 0 1 auto;
     width: 80px;
 }
+/* feet & inches need two numbers, so the units have less room to work with */
+.form-field-input-measurement:has(input.measurement-secondary-unit) input.measurement-unit {
+    width: 60px;
+}
 .ideditor[dir='ltr'] .form-field-input-roadheight > input:first-of-type,
-.ideditor[dir='ltr'] .form-field-input-roadspeed > input:first-of-type {
+.ideditor[dir='ltr'] .form-field-input-roadspeed > input:first-of-type,
+.ideditor[dir='ltr'] .form-field-input-measurement > input:first-of-type {
     border-radius: 0 0 0 4px;
 }
 .ideditor[dir='rtl'] .form-field-input-roadheight > input:first-of-type,
-.ideditor[dir='rtl'] .form-field-input-roadspeed > input:first-of-type {
+.ideditor[dir='rtl'] .form-field-input-roadspeed > input:first-of-type,
+.ideditor[dir='rtl'] .form-field-input-measurement > input:first-of-type {
     border-radius: 0 0 4px 0;
 }
 .ideditor[dir='ltr'] .form-field-input-roadheight > input:last-of-type,
-.ideditor[dir='ltr'] .form-field-input-roadspeed > input:last-of-type {
+.ideditor[dir='ltr'] .form-field-input-roadspeed > input:last-of-type,
+.ideditor[dir='ltr'] .form-field-input-measurement > input:last-of-type {
     border-left: 0;
     border-radius: 0 0 4px 0;
 }
 .ideditor[dir='rtl'] .form-field-input-roadheight > input:last-of-type,
-.ideditor[dir='rtl'] .form-field-input-roadspeed > input:last-of-type {
+.ideditor[dir='rtl'] .form-field-input-roadspeed > input:last-of-type,
+.ideditor[dir='rtl'] .form-field-input-measurement > input:last-of-type {
     border-right: 0;
     border-radius: 0 0 0 4px;
 }
