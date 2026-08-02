@@ -2,7 +2,7 @@ import { t } from '../core/localizer';
 import { behaviorDrawWay } from '../behavior/draw_way';
 
 
-export function modeDrawLine(context, wayID, startGraph, button, affix, continuing) {
+export function modeDrawLine(context, wayID, startGraph, button, position, continuing) {
     var mode = {};
     mode.button = button;
     mode.id = 'draw-line';
@@ -14,13 +14,21 @@ export function modeDrawLine(context, wayID, startGraph, button, affix, continui
                 .label(t.append('self_intersection.error.lines'))();
         });
 
+    // If the position is a node index rather than an affix string, the node index will be dynamic based on an offset from the end.
+    var offsetFromEndNode;
+    if (typeof position === 'number') {
+        offsetFromEndNode = context.entity(wayID).nodes.length - position - 1;
+    }
+
     mode.wayID = wayID;
 
     mode.isContinuing = continuing;
 
     mode.enter = function() {
-        behavior
-            .nodeIndex(affix === 'prefix' ? 0 : undefined);
+        behavior.offsetFromEndNode(offsetFromEndNode);
+        if (position === 'prefix') {
+            behavior.nodeIndex(0);
+        }
 
         context.install(behavior);
     };
