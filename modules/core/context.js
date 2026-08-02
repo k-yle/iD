@@ -126,6 +126,7 @@ export function coreContext() {
 
   /** @param {string | string[]} locale */
   // A string or array or locale codes to prefer over the browser's settings
+  /** @type {GetSet<typeof context, string>} */
   context.locale = function(locale) {
     if (!arguments.length) return localizer.localeCode();
     localizer.preferredLocaleCodes(locale);
@@ -411,6 +412,7 @@ export function coreContext() {
   context.photos = () => _photos;
 
 
+  /** @type {ReturnType<rendererMap>} */
   /* Map */
   /** @type {ReturnType<typeof rendererMap>} */
   let _map;

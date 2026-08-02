@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- this useless line is required for some weird reason
+import type * as Presets from '@openstreetmap/id-tagging-schema/dist' with { 'resolution-mode': 'import' };
+
 declare global {
   declare var iD: typeof import('.');
   declare var VITEST: true;
@@ -33,14 +36,18 @@ declare global {
   }
 
   declare namespace d3 {
-    export type Selection<T = HTMLElement> = import('d3-selection').Selection<
+    export type Selection<T = HTMLElement, Datum = any> = import('d3-selection').Selection<
       T,
-      any,
+      Datum,
       any,
       unknown
     >;
 
     export type Selector = <T extends HTMLElement>(selection: Selection<T>) => void;
+  }
+
+  namespace Presets {
+    export type * from '@openstreetmap/id-tagging-schema/dist' with { 'resolution-mode': 'import' };
   }
 
     interface ObjectConstructor {

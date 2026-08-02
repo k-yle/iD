@@ -2602,6 +2602,23 @@ div.combobox:has(.has-description) {
     z-index: 10;
 }
 
+
+/* Field - Plugins
+------------------------------------------------------- */
+
+.form-field-plugin {
+    display: inline-block;
+}
+.form-field > aside {
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-top: 0;
+
+    width: 100%;
+    height: 300px;
+}
+
+
 /* Field Help
 ------------------------------------------------------- */
 .field-help-body {

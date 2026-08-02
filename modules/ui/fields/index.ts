@@ -54,6 +54,7 @@ import { uiFieldLocalized } from './localized';
 import { uiFieldRoadheight } from './roadheight';
 import { uiFieldRoadspeed } from './roadspeed';
 import { uiFieldRestrictions } from './restrictions';
+import { uiFieldPlugin } from './plugin';
 import { uiFieldTextarea } from './textarea';
 import { uiFieldWikidata } from './wikidata';
 import { uiFieldWikipedia } from './wikipedia';
@@ -80,6 +81,7 @@ export var uiFields = {
     networkCombo: uiFieldNetworkCombo,
     number: uiFieldNumber,
     onewayCheck: uiFieldOnewayCheck,
+    plugin: uiFieldPlugin,
     radio: uiFieldRadio,
     restrictions: uiFieldRestrictions,
     schedule: uiFieldSchedule,

@@ -99,6 +99,14 @@ export function presetIndex() {
 
     // Merge Fields
     if (d.fields) {
+
+      // TEMP: merge custom fields
+      d.fields['Platform Exit Map'] = { type: 'plugin', url: 'https://kyle.kiwi/iD-plugin-exit-carriages/iD-plugin.js' };
+      d.fields['Power Socket'] = { type: 'plugin', url: 'https://kyle.kiwi/iD-plugin-socket/iD-plugin.js' };
+      d.fields['Lane Editor'] = { type: 'plugin', url: 'https://kyle.kiwi/osm-lane-editor-dist/dist/iD-plugin.js' };
+      d.fields.Signals = { type: 'plugin', url: 'https://kyle.kiwi/iD-plugin-rail-signals/iD-plugin.js' };
+      d.fields['Seamark Preview'] = { type: 'plugin', url: 'https://kyle.kiwi/OpenSeaMap-vector/iD-plugin.js' };
+
       Object.keys(d.fields).forEach(fieldID => {
         let f = d.fields[fieldID];
 
@@ -115,6 +123,31 @@ export function presetIndex() {
 
     // Merge Presets
     if (d.presets) {
+
+      // TEMP: merge custom presets
+      for (const id in d.presets) {
+        if (id.startsWith('public_transport/stop_position')) {
+          d.presets[id].fields.push('Platform Exit Map');
+        }
+        if (id === 'power/outlet') {
+          d.presets[id].fields = ['Power Socket'];
+        }
+        if (id === 'amenity/charging_station' || id === 'man_made/charge_point') {
+          d.presets[id].fields.unshift('Power Socket');
+        }
+        if (id.startsWith('highway/') && d.presets[id].geometry?.includes('line')) {
+          d.presets[id].fields ||= [];
+          d.presets[id].fields.push('Lane Editor');
+        }
+        if (id === 'railway/signal') {
+          d.presets[id].fields.push('Signals');
+        }
+        if (id.startsWith('seamark/')) {
+          d.presets[id].fields ||= [];
+          d.presets[id].fields.push('Seamark Preview');
+        }
+      }
+
       Object.keys(d.presets).forEach(presetID => {
         let p = d.presets[presetID];
 
