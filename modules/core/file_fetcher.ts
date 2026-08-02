@@ -1,4 +1,4 @@
-import { presetsCdnUrl, ociCdnUrl, wmfSitematrixCdnUrl } from '../../config/id.js';
+import { eliCdnUrl, presetsCdnUrl, ociCdnUrl, wmfSitematrixCdnUrl } from '../../config/id.js';
 import type {
     Discarded,
     Deprecated,
@@ -30,6 +30,7 @@ import packageJSON from '../../package.json';
 interface Definitions {
   address_formats: AddressFormatsJSON;
   imagery: unknown;
+  manual_imagery: unknown;
   intro_graph: Record<EntityId, OsmEntity>;
   languages: LanguagesJSON;
   locales: LocalesJSON;
@@ -92,7 +93,8 @@ export function coreFileFetcher() {
   let _inflight: Record<string, Promise<any>> = {};
   let _fileMap: FileMap = {
     'address_formats': 'data/address_formats.min.json',
-    'imagery': 'data/imagery.min.json',
+    'imagery': `${eliCdnUrl}imagery.geojson`,
+    'manual_imagery': 'data/manual_imagery.min.json',
     'intro_graph': 'data/intro_graph.min.json',
     'languages': 'data/languages.min.json',
     'locales': 'locales/index.min.json',
