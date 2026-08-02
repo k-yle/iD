@@ -124,7 +124,7 @@ export class osmNode extends OsmAbstractEntity {
             let val = (this.tags.direction || '').toLowerCase();
 
             // better suffix-style direction tag
-            const re = /:direction$/i;
+            const re = /:(direction|orientation)$/i;
             for (const key of Object.keys(this.tags)) {
                 if (re.test(key)) {
                     val = this.tags[key].toLowerCase();
