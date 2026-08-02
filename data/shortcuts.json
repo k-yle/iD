@@ -342,6 +342,10 @@
             "text": "shortcuts.editing.operations.reflect_long"
           },
           {
+              "shortcuts": ["operations.sequence.key"],
+              "text": "shortcuts.editing.operations.sequence"
+          },
+          {
             "shortcuts": ["operations.reflect.key.short"],
             "text": "shortcuts.editing.operations.reflect_short"
           },

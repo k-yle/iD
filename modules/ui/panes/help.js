@@ -150,6 +150,7 @@ export function uiPaneHelp(context) {
             'orthogonalize',
             'circularize',
             'divide',
+            'sequence',
             'move',
             'rotate',
             'reflect',
