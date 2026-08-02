@@ -21,10 +21,8 @@ var readOnlyTags = [
     /^changesets_count$/,
     /^created_by$/,
     /^ideditor:/,
-    /^imagery_used$/,
     /^host$/,
     /^locale$/,
-    /^warnings:/,
     /^resolved:/,
     /^closed:note$/,
     /^closed:osmose:/

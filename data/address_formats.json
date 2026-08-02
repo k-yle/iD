@@ -8,6 +8,7 @@
   {
     "countryCodes": ["au"],
     "format": [
+      ["housename"],
       ["unit","housenumber", "street"],
       ["suburb", "state", "postcode"]
     ]
@@ -97,6 +98,7 @@
   {
     "countryCodes": ["nz"],
     "format": [
+      ["housename"],
       ["housenumber", "street"],
       ["suburb"],
       ["city", "postcode"]
