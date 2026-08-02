@@ -70,6 +70,7 @@ export function helpHtml(id, replacements) {
         // operation icons
         circularize_icon: icon('#iD-operation-circularize', 'inline operation'),
         divide_icon: icon('#iD-operation-divide', 'inline operation'),
+        sequence_icon: icon('#iD-operation-sequence', 'inline operation'),
         continue_icon: icon('#iD-operation-continue', 'inline operation'),
         copy_icon: icon('#iD-operation-copy', 'inline operation'),
         delete_icon: icon('#iD-operation-delete', 'inline operation'),
@@ -133,6 +134,7 @@ export function helpHtml(id, replacements) {
         reflect_short: localizer.t_html('operations.reflect.title.short'),
         reverse: localizer.t_html('operations.reverse.title'),
         rotate: localizer.t_html('operations.rotate.title'),
+        sequence: localizer.t_html('operations.sequence.title'),
         split: localizer.t_html('operations.split.title'),
         straighten: localizer.t_html('operations.straighten.title'),
 
