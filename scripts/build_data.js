@@ -21,7 +21,7 @@ dotenv.config({ quiet: true });
 
 const presetsVersion = packageJson.devDependencies['@openstreetmap/id-tagging-schema'];
 /* eslint-disable no-process-env */
-const presetsUrl = (process.env.ID_PRESETS_CDN_URL || 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@{presets_version}').replace('{presets_version}', presetsVersion);
+const presetsUrl = (process.env.ID_PRESETS_CDN_URL || 'https://raw.githubusercontent.com/k-yle/id-tagging-schema/kyle-deploy').replace('{presets_version}', presetsVersion);
 /* eslint-enable no-process-env */
 
 let _currBuild = null;
@@ -259,7 +259,7 @@ function writeFaIcons(faIcons) {
       fs.writeFileSync(`svg/fontawesome/${key}.svg`, svg);
     } catch (error) {
       console.error(`Error: No FontAwesome icon for ${key}`);
-      throw (error);
+      console.error(error);
     }
   });
 }

@@ -1,6 +1,6 @@
 {
   "name": "@openstreetmap/id",
-  "version": "2.42.0-dev",
+  "version": "2.50.0-beta",
   "description": "A friendly editor for OpenStreetMap",
   "main": "dist/iD.min.js",
   "repository": {
@@ -85,7 +85,7 @@
     "@fortawesome/free-solid-svg-icons": "^7.2.0",
     "@mapbox/maki": "^8.2.0",
     "@openstreetmap/editor-layer-index": "github:osmlab/editor-layer-index#gh-pages",
-    "@openstreetmap/id-tagging-schema": "^7.0.0",
+    "@openstreetmap/id-tagging-schema": "github:k-yle/id-tagging-schema#kyle-deploy",
     "@rapideditor/mapillary_sprite_source": "^1.8.0",
     "@rapideditor/temaki": "^5.11.0",
     "@transifex/api": "^8.0.0",
