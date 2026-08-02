@@ -14,6 +14,7 @@ import { rendererTileLayer } from './tile_layer';
 import { utilAesDecrypt, utilStringQs } from '../util';
 import { utilRebind } from '../util/rebind';
 import { patchHash } from '../behavior';
+import { processImageryLayer } from '../services/eli';
 
 
 let _imageryIndex = null;
@@ -31,13 +32,34 @@ export function rendererBackground(context) {
 
 
   function ensureImageryIndex() {
-    return fileFetcher.get('imagery')
-      .then(async sources => {
+    return Promise.all([
+      fileFetcher.get('imagery'),
+      fileFetcher.get('manual_imagery'),
+    ])
+      .then(async ([sources, manualSources]) => {
         if (_imageryIndex) return _imageryIndex;
 
         const featuresById = {};
+        const overridenIds = new Set(manualSources.map(s => s.id));
+
+        /** @type {import("geojson").Feature[]} */
+        const merged = [
+          ...sources.features.filter(s => !overridenIds.has(s.properties.id)),
+          ...manualSources.map(source => ({
+            type: 'Feature',
+            properties: { ...source, ...source.extent },
+            geometry: source.polygon
+              ? { type: 'Polygon', coordinates: source.polygon }
+              : null,
+            bbox: source.bbox,
+          })),
+        ]
+          .map(layer => processImageryLayer(layer, sources))
+          .filter(Boolean)
+          .sort((a, b) => a.name.localeCompare(b.name));
+
         // use which-polygon to support efficient index and querying for imagery
-        const features = sources.map(source => {
+        const features = merged.map(source => {
           if (!source.polygon) return null;
           // workaround for editor-layer-index weirdness..
           // Add an extra array nest to each element in `source.polygon`
@@ -57,17 +79,17 @@ export function rendererBackground(context) {
 
         }).filter(Boolean);
 
-        for (const source of sources) {
+        for (const source of merged) {
           if (source.encrypted) {
             source.template = await utilAesDecrypt(source.template);
           }
         }
 
         _imageryIndex = {
-          imagery: sources,
+          imagery: merged,
           features: featuresById,
           query: whichPolygon({ type: 'FeatureCollection', features: features }),
-          backgrounds: sources.map(source => {
+          backgrounds: merged.map(source => {
             // Instantiate `rendererBackgroundSource` objects for each source
             if (source.type === 'bing') {
               return rendererBackgroundSource.Bing(source, dispatch);

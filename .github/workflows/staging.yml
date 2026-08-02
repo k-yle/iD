@@ -39,7 +39,6 @@ jobs:
       - run: npm install editor-layer-index
       - run: npm audit signatures
       - run: mkdir dist/data
-      - run: npm run imagery
       - run: npm run all
       - run: npm run translations
         env:
