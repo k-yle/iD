@@ -5,6 +5,7 @@ export * from './access';
 export * from './address';
 export * from './directional_combo';
 export * from './localized';
+export * from './measurement';
 export * from './roadheight';
 export * from './roadspeed';
 export * from './radio';
@@ -48,6 +49,7 @@ import {
 import { uiFieldAccess } from './access';
 import { uiFieldAddress } from './address';
 import { uiFieldDirectionalCombo } from './directional_combo';
+import { uiFieldMeasurement } from './measurement';
 import { uiFieldLocalized } from './localized';
 import { uiFieldRoadheight } from './roadheight';
 import { uiFieldRoadspeed } from './roadspeed';
@@ -71,9 +73,8 @@ export var uiFields = {
     identifier: uiFieldIdentifier,
     integer: uiFieldInteger,
     localized: uiFieldLocalized,
-    roadheight: uiFieldRoadheight,
-    roadspeed: uiFieldRoadspeed,
     manyCombo: uiFieldManyCombo,
+    measurement: uiFieldMeasurement,
     multiCombo: uiFieldMultiCombo,
     networkCombo: uiFieldNetworkCombo,
     number: uiFieldNumber,
@@ -81,6 +82,8 @@ export var uiFields = {
     plugin: uiFieldPlugin,
     radio: uiFieldRadio,
     restrictions: uiFieldRestrictions,
+    roadheight: uiFieldRoadheight,
+    roadspeed: uiFieldRoadspeed,
     schedule: uiFieldSchedule,
     semiCombo: uiFieldSemiCombo,
     structureRadio: uiFieldStructureRadio,

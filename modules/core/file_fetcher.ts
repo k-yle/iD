@@ -26,6 +26,13 @@ import type { EntityId } from '../osm/id_manager.js';
 import type { OsmEntity } from '../osm/abstract-entity.js';
 import packageJSON from '../../package.json';
 
+/** temp */
+export interface Units {
+    [dimension: string]: {
+        [cldrUnitValue: string]: string[];
+    }
+}
+
 
 interface Definitions {
   address_formats: AddressFormatsJSON;
@@ -50,6 +57,7 @@ interface Definitions {
   preset_defaults: PresetDefaults;
   preset_fields: Fields;
   preset_presets: Presets;
+  preset_units: Units;
   wmf_sitematrix: WmfSite[];
 
   nsi_data: NsiJSON;
@@ -114,6 +122,7 @@ export function coreFileFetcher() {
     'preset_defaults': presetsCdnUrl + 'dist/preset_defaults.min.json',
     'preset_fields': presetsCdnUrl + 'dist/fields.min.json',
     'preset_presets': presetsCdnUrl + 'dist/presets.min.json',
+    'preset_units': presetsCdnUrl + 'dist/units.min.json',
     'wmf_sitematrix': wmfSitematrixCdnUrl.replace('{version}', '0.2') + 'data/wikipedia.min.json'
   };
 

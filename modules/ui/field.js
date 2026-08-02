@@ -144,6 +144,10 @@ export function uiField(context, presetField, entityIDs, options) {
         d3_event.preventDefault();
         if (_locked) return;
 
+        // let the field discard any state of its own that the tags don't describe,
+        // before the tags it's rendering disappear
+        if (d.impl && d.impl.reset) d.impl.reset();
+
         var t = {};
         allKeys(_tags).forEach(function(key) {
             t[key] = undefined;
