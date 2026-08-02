@@ -5,7 +5,7 @@
         "allowJs": true,
         "skipLibCheck": true,
         "esModuleInterop": true,
-        "lib": ["esnext", "dom"],
+        "lib": ["esnext", "dom", "dom.iterable"],
         "target": "esnext",
         "module": "preserve",
         "moduleResolution": "bundler",
