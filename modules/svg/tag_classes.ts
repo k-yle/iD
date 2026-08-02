@@ -17,7 +17,8 @@ export function svgTagClasses<T>() {
         'oneway', 'bridge', 'tunnel', 'barrier',
         'surface', 'tracktype', 'footway', 'crossing', 'service', 'sport',
         'public_transport', 'location', 'parking', 'golf', 'type', 'leisure',
-        'man_made', 'indoor', 'construction', 'proposed', 'bicycle', 'foot'
+        'man_made', 'indoor', 'construction', 'proposed', 'bicycle', 'foot',
+        'expressway'
     ];
 
     // this function is the default callback, but it can be overridden
