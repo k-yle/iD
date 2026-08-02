@@ -1,8 +1,12 @@
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../../core/localizer';
+import { localizer, t } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { uiSection } from '../section';
+import { uiCustomFeatures } from '../settings/custom_features';
+import { svgIcon } from '../../svg';
+import { utilQsString, utilStringQs } from '../../util';
+
 
 export function uiSectionMapFeatures(context) {
 
@@ -12,6 +16,9 @@ export function uiSectionMapFeatures(context) {
         .label(() => t.append('map_data.map_features'))
         .disclosureContent(renderDisclosureContent)
         .expandedByDefault(false);
+
+    var _customFeatures = uiCustomFeatures()
+        .on('change', customChanged);
 
     function renderDisclosureContent(selection) {
 
@@ -70,7 +77,10 @@ export function uiSectionMapFeatures(context) {
 
         // Enter
         var enter = items.enter()
-            .append('li')
+            .append('li');
+
+        var label = enter
+            .append('label')
             .call(uiTooltip()
                 .title(function(d) {
                     var tip = t.append(name + '.' + d + '.tooltip');
@@ -86,9 +96,6 @@ export function uiSectionMapFeatures(context) {
                 .placement('top')
             );
 
-        var label = enter
-            .append('label');
-
         label
             .append('input')
             .attr('type', type)
@@ -100,6 +107,19 @@ export function uiSectionMapFeatures(context) {
             .each(function(d) {
                 d3_select(this).call(t.append(name + '.' + d + '.description'));
             });
+
+        enter.filter(function(d) { return d === 'custom'; })
+            .append('button')
+            .attr('class', 'custom-features-options')
+            .call(uiTooltip()
+                .title(() => t.append('settings.custom_features.tooltip'))
+                .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
+            )
+            .on('click', function(d3_event) {
+                d3_event.preventDefault();
+                editCustom();
+            })
+            .call(svgIcon('#iD-icon-more'));
 
         // Update
         items = items
@@ -120,6 +140,21 @@ export function uiSectionMapFeatures(context) {
         return context.features().enabled(d);
     }
 
+    function customChanged(d) {
+        var hash = utilStringQs(window.location.hash);
+        if (d && d.template) {
+            hash.custom_features = d.template;
+            context.features().updateCustom();
+        } else {
+            delete hash.custom_features;
+            if (context.features().enabled('custom')) {
+                context.features().reset();
+                context.features().disable('custom');
+            }
+        }
+        window.location.replace('#' + utilQsString(hash, true));
+    }
+
     function clickFeature(d3_event, d) {
         context.features().toggle(d);
     }
@@ -127,6 +162,11 @@ export function uiSectionMapFeatures(context) {
     function showsLayer(id) {
         var layer = context.layers().layer(id);
         return layer && layer.enabled();
+    }
+
+    function editCustom() {
+        context.container()
+            .call(_customFeatures);
     }
 
     // add listeners

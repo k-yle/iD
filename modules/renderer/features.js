@@ -220,7 +220,7 @@ export function rendererFeatures(context) {
             traffic_roads[tags.highway] ||
             service_roads[tags.highway] ||
             paths[tags.highway]
-        ) { return false; }
+            ) {return false; }
 
         const keys = Object.keys(tags);
 
@@ -241,15 +241,20 @@ export function rendererFeatures(context) {
         return (geometry === 'line' || geometry === 'area');
     });
 
-
+    defineRule('custom', function isCustom(tags) {
+        const [key, value] = prefs('map-features-custom')?.split('=') || [];
+        if (key) {
+            if (value === '*') return tags[key];
+            return tags[key] === value;
+        }
+    });
 
     features.features = function() {
         return _rules;
     };
 
-
     features.keys = function() {
-        return _keys;
+    return _keys;
     };
 
 
@@ -302,7 +307,6 @@ export function rendererFeatures(context) {
         }
         if (didEnable) update();
     };
-
 
     features.disable = function(k) {
         if (_rules[k] && _rules[k].enabled) {
@@ -410,6 +414,12 @@ export function rendererFeatures(context) {
         });
 
         _cache = {};
+    };
+
+    features.updateCustom = function() {
+        features.reset();
+        features.disable('custom');
+        features.enable('custom');
     };
 
     // only certain relations are worth checking

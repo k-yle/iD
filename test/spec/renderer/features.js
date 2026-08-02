@@ -19,7 +19,7 @@ describe('iD.rendererFeatures', function() {
             expect(keys).toContain(
                 'points', 'traffic_roads', 'service_roads', 'paths',
                 'buildings', 'landuse', 'boundaries', 'water', 'rail',
-                'power', 'past_future', 'others'
+                'power', 'past_future', 'others', 'custom'
             );
         });
     });
