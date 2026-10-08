@@ -20,6 +20,7 @@ import { uiFeatureInfo } from './feature_info';
 import { uiFlash } from './flash';
 import { uiFullScreen } from './full_screen';
 import { uiGeolocate } from './geolocate';
+import { uiImportFromPostMessage } from './import_from_postmessage';
 import { uiInfo } from './info';
 import { uiIntro } from './intro';
 import { uiIssuesInfo } from './issues_info';
@@ -447,6 +448,8 @@ export function uiInit(context) {
 
             context.container()
                 .call(ui.shortcuts);
+
+            uiImportFromPostMessage(context);
         }
 
         var osm = context.connection();
