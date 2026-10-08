@@ -1,41 +1,18 @@
 import { t } from '../../core';
 import { operationImportFile } from '../../operations/import_file';
 import { svgIcon } from '../../svg';
-import { uiLoading } from '../loading';
 import { uiTooltip } from '../tooltip';
-import { uiErrorModal } from '../error_modal';
+import { uiImportFile } from '../import_file';
 
 /** @param {iD.Context} context */
 export function uiSectionImportFile(context) {
-  const _loading = uiLoading(context)
-    .message(t('operations.import_from_file.loading'))
-    .blocking(true);
-
-  const _errorModal = uiErrorModal();
+  const importFile = uiImportFile(context);
 
   /** @param {PointerEvent} event */
-  async function onClickImport(event) {
-    try {
-      await operationImportFile(context, event.ctrlKey, () => {
-        context.container().call(_loading);
-      });
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-
-      const subtitle = `${error}`.includes('Conflicts')
-        ? t('operations.import_from_file.error.conflicts')
-        : t('operations.import_from_file.error.unknown');
-
-      context
-        .container()
-        .call(
-          _errorModal
-            .setTitle(t('operations.import_from_file.error.title'))
-            .setSubtitle(subtitle)
-        );
-    }
-    _loading.close();
+  function onClickImport(event) {
+    return importFile((onLoadingStart) =>
+      operationImportFile(context, event.ctrlKey, onLoadingStart)
+    );
   }
 
   /** @param {d3.Selection} selection */

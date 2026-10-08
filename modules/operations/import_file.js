@@ -39,6 +39,15 @@ export async function operationImportFile(
 
   onLoadingStart?.();
 
+  await operationImportFiles(context, files, allowConflicts);
+}
+
+/**
+ * @param {iD.Context} context
+ * @param {File[]} files
+ * @param {boolean} allowConflicts
+ */
+export async function operationImportFiles(context, files, allowConflicts) {
   for (const file of files) {
     if (file.name.endsWith('.osc')) {
       // osmChange
